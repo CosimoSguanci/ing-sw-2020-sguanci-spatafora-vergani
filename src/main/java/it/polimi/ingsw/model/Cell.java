@@ -79,6 +79,10 @@ public class Cell {
         }
     }
 
+    public void setLevel(BlockType level) {
+        this.level = level;
+    }
+
     /**
      * The method returns the difference between the level of the caller-cell and the
      * level of the parameter-cell, using attribute 'levelNumber' of class 'BlockType'.
