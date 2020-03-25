@@ -18,6 +18,9 @@ public class Worker {
     /**
      * Worker is the builder of the class. At the moment of a worker creation a player is
      * associated to it and the relative board in which the player is playing.
+     *
+     * @param player indicates the player who has the control on the worker being created.
+     * @param board indicates the board table in which the player is involved in.
      */
     public Worker(Player player, Board board) { //Alternatively, we can give as parameter to constructor the firstPosition
         this.player = player;
@@ -37,6 +40,8 @@ public class Worker {
 
     /**
      * This method sets the first cell of a worker
+     *
+     * @param initialPosition indicates the first position associated to a single worker at the beginning of the match
      */
     public void setInitialPosition(Cell initialPosition) {
         this.position = initialPosition;
@@ -48,6 +53,8 @@ public class Worker {
      * no other worker is on it and the cell is not at the maximum level it can
      * reach and the cell is adjacent to the cell the worker is at the moment of invocation.
      * The worker can move up at most one level.
+     *
+     * @param newCell indicates the Cell in which a player wants his worker to move in.
      *
      * @throws Exception either a worker tries to move in a non adjacent cell or if the cell
      * is already occupied or has reached its maximum level. It also throws Exception if a
@@ -68,6 +75,8 @@ public class Worker {
      * no other worker is on it and the cell is not at the maximum level it can
      * reach and the cell is adjacent to the cell the worker is at the moment of invocation.
      * As a result of this method the level of a cell is increased.
+     *
+     * @param cell indicates the Cell in which a player wants his worker to build in.
      *
      * @throws Exception either a worker tries to build in a non adjacent cell or if the cell
      * is already occupied or has reached its maximum level.

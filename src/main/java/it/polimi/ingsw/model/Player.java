@@ -35,15 +35,15 @@ public class Player {
      *
      * @return the chosen color of worker, it returns null if the color has not been set yet
      */
-    //tested
     public String getColor() {
         return this.color;
     }
 
     /**
      * This setter method allows players to set the color of their workers.
+     *
+     * @param color is the String that indicates the color chosen from a Player at the beginning of the match
      */
-    //tested
     public void setColor(String color) {
         this.color = color;
     }
@@ -53,15 +53,15 @@ public class Player {
      *
      * @return the first worker associated to the player, it returns null if the worker has not been set yet
      */
-    //tested
     public Worker getWorkerFirst() {
         return this.workerFirst;
     }
 
     /**
      * This setter method allows players to set the first of their workers.
+     *
+     * @param firstWorker is the first worker chosen from a Player at the beginning of the match
      */
-    //tested
     public void setWorkerFirst(Worker firstWorker) {
         this.workerFirst = firstWorker;
     }
@@ -71,15 +71,15 @@ public class Player {
      *
      * @return the second worker associated to the player, it returns null if the worker has not been set yet
      */
-    //tested
     public Worker getWorkerSecond() {
         return this.workerSecond;
     }
 
     /**
      * This setter method allows players to set the second of their workers.
+     *
+     * @param secondWorker is the second worker chosen from a Player at the beginning of the match
      */
-    //tested
     public void setWorkerSecond(Worker secondWorker) {
         this.workerSecond = secondWorker;
     }
@@ -89,15 +89,15 @@ public class Player {
      *
      * @return the God associated to the player, it returns null if the God has not been set yet
      */
-    //tested
     public God getGod() {
         return this.god;
     }
 
     /**
      * This setter method allows players to set the God associated to them.
+     *
+     * @param god is the God chosen from a Player at the beginning of the match
      */
-    //tested
     public void setGod(God god) {
         this.god = god;
     }
