@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
-
 /**
  * This class contains information about Players who are playing a match, including
  * a unique ID, nickname, the color of the chosen workers, a reference to two different
