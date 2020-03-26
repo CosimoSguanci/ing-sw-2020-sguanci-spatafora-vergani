@@ -153,7 +153,7 @@ public class Board {
      * @return true if a building in any direction by parameter-worker is possible; otherwise, false
      *
      */
-    public boolean canBuild(Worker worker) {
+    public boolean canBuild(Worker worker) throws Exception {
         ArrayList<Integer> coord = getCoordinates(worker.getPosition());
         int row = coord.get(0);  //i value for (i,j) coordinates of parameter
         int column = coord.get(1);  //j value for (i,j) coordinates of parameter
@@ -167,6 +167,22 @@ public class Board {
             }  //end internal cycle
         }  //end external cycle
         return false;
+    }
+
+    /**
+     * The method controls if it is possible to return a reference to a Cell of the board
+     *
+     * @param row indicates the row of the Cell requested in the board
+     * @param col indicates the column of the Cell requested in the board
+     *
+     * @return a reference to the Cell requested if possible
+     * @throws Exception if the parameters are not valid for a Cell in the board.
+     * */
+    public Cell getCell(int row, int col) throws Exception {
+        if((row >= 0) && (row <= 5) && (col >= 0) && (col <= 5)) {
+            return board[row][col];
+        }
+        throw new Exception(); // invalidCellRequestedException()
     }
 
 }
