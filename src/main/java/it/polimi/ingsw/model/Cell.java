@@ -11,16 +11,21 @@ package it.polimi.ingsw.model;
 public class Cell {
     private BlockType level;
     private Worker worker;
+    private final int rowIdentifier;
+    private final int colIdentifier;
 
 
     /**
      * Cell is the builder of the class. When a cell is created, its level is the ground
      * level and no worker is on it
      */
-    public Cell() {
+    public Cell(int rowIdentifier, int colIdentifier) {
         this.level = BlockType.GROUND;
         this.worker = null;
+        this.rowIdentifier = rowIdentifier;
+        this.colIdentifier = colIdentifier;
     }
+
 
     /**
      * The method returns 'true' if no worker is on the considered cell, so this one is
@@ -32,6 +37,7 @@ public class Cell {
         return this.worker == null;
     }
 
+
     /**
      * The method is a simple getter of the worker on the considered cell. If there is no
      * worker on the cell, the return value is 'null'
@@ -41,6 +47,7 @@ public class Cell {
     public Worker getWorker() {
         return worker;
     }
+
 
     /**
      * The method is a simple getter of the level on the considered cell. As described in
@@ -53,6 +60,7 @@ public class Cell {
     public BlockType getLevel() {
         return level;
     }
+
 
     /**
      * The method is thought to perform a build on the considered cell. Every build
@@ -79,9 +87,11 @@ public class Cell {
         }
     }
 
+
     public void setLevel(BlockType level) {
         this.level = level;
     }
+
 
     /**
      * The method returns the difference between the level of the caller-cell and the
@@ -99,6 +109,23 @@ public class Cell {
     //tested
     public int levelDifference(Cell cell) {
         return this.getLevel().getLevelNumber()-cell.getLevel().getLevelNumber();
+    }
+
+    /**
+     * The method is a getter of the row index of the relative cell in the board.
+     *
+     * @return the int number that identifies the cell in board's rows.*/
+    public int getRowIdentifier() {
+        return this.rowIdentifier;
+    }
+
+
+    /**
+     * The method is a getter of the column index of the relative cell in the board.
+     *
+     * @return the int number that identifies the cell in board's columns.*/
+    public int getColIdentifier() {
+        return this.colIdentifier;
     }
 
 }

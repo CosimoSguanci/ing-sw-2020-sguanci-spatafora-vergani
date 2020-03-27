@@ -41,10 +41,14 @@ public class Worker {
     /**
      * This method sets the first cell of a worker
      *
-     * @param initialPosition indicates the first position associated to a single worker at the beginning of the match
+     * @param row indicates the row position associated to a single worker at the beginning of the match
+     * @param col indicates the column position associated to a single worker at the beginning of the match
      */
-    public void setInitialPosition(Cell initialPosition) {
-        this.position = initialPosition;
+    public void setInitialPosition(int row, int col) throws Exception {
+        if(board.getCell(row, col).isEmpty()) {
+            this.position = board.getCell(row, col);
+        }
+        else { throw new Exception(); } //cellAlreadyOccupiedExcepion();
     }
 
     /**

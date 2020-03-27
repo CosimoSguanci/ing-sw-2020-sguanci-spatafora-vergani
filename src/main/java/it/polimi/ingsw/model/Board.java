@@ -23,7 +23,7 @@ public class Board {
         //initialization of a "empty" board at ground level (every cell with these starting configurations)
         for(int i=0; i<board.length; i++) {
             for(int j=0; j<board[i].length; j++) {
-                board[i][j] = new Cell();
+                board[i][j] = new Cell(i, j);
             }  //initialization of every cell in the board
         }
     }
