@@ -90,8 +90,8 @@ public class Cell {
      * return value will be 2; instead, if the caller is level two and the parameter is
      * level three, return value will be -1.
      * Note that a movement from caller-cell to parameter-cell is possible only if the two
-     * cells are adjacent, this method returns a value >=(-1) and the parameter level is
-     * not a dome
+     * cells are adjacent, this method returns a value >=(-1), the parameter level is
+     * not a dome and there is no worker on it
      *
      * @param cell  cell you want to know level difference with
      * @return level difference between caller-cell and parameter-cell

@@ -179,7 +179,7 @@ public class Board {
      * @throws Exception if the parameters are not valid for a Cell in the board.
      * */
     public Cell getCell(int row, int col) throws Exception {
-        if((row >= 0) && (row <= 5) && (col >= 0) && (col <= 5)) {
+        if((row >= 0) && (row < board.length) && (col >= 0) && (col < board[0].length)) {
             return board[row][col];
         }
         throw new Exception(); // invalidCellRequestedException()
