@@ -65,7 +65,7 @@ public class Worker {
      * worker tries to move up more than a single level.
      */
     public void move(Cell newCell) throws Exception {
-        if (board.adjacent(this.position, newCell) && (newCell.isEmpty()) && (newCell.getLevel() != BlockType.DOME)) {
+        if (this.position.isAdjacentTo(newCell) && (newCell.isEmpty()) && (newCell.getLevel() != BlockType.DOME)) {
             if(this.player.match.getCanMove()) {
                 if (newCell.levelDifference(this.position) <= 1) { // Moving into a DOME is not allowed.
                     this.position = newCell;
@@ -86,7 +86,7 @@ public class Worker {
      * is already occupied or has reached its maximum level.
      */
     public void build(Cell cell) throws Exception {
-        if (board.adjacent(this.position, cell) && (cell.getLevel() != BlockType.DOME) && (cell.isEmpty())) {// Workers can build if the cell level is not the maximum and if the cell has not another Worker in it.
+        if (this.position.isAdjacentTo(cell) && (cell.getLevel() != BlockType.DOME) && (cell.isEmpty())) {// Workers can build if the cell level is not the maximum and if the cell has not another Worker in it.
             cell.increaseLevel();
         }  else {throw new Exception();} //{ throw new InvalidCellException(); }
     }

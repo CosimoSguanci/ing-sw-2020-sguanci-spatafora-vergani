@@ -28,6 +28,7 @@ public class Board {
         }
     }
 
+    /*
     /**
      * This private method helps in getting the coordinates (i,j) of a cell in the board.
      * Knowing coordinates is, in fact, very useful in other (public) methods of this class:
@@ -40,6 +41,7 @@ public class Board {
      * @throws Exception    when cell is not in the board, so something went wrong
      *
      */
+    /*
     private ArrayList<Integer> getCoordinates (Cell cell) throws Exception {
         ArrayList<Integer> coordinates = new ArrayList<>();
 
@@ -55,8 +57,9 @@ public class Board {
         if(coordinates.size()!=2) throw new Exception();
         return coordinates;
     }
+    */
 
-
+    /*
     /**
      * The method controls if two cells in the board are adjacent. Reading game rules,
      * every cell has (up to) eight neighbouring spaces: so, two cells are adjacent
@@ -68,6 +71,7 @@ public class Board {
      * @throws Exception    if a method called inside throws Exception
      *
      */
+    /*
     public boolean adjacent(Cell first, Cell second) throws Exception {
         ArrayList<Integer> firstCoord = getCoordinates(first);
         ArrayList<Integer> secondCoord = getCoordinates(second);
@@ -78,6 +82,7 @@ public class Board {
         if(iDiff == 0 && jDiff == 0) return false;  //case 'first' and 'second' are the same cell, so they are not adjacent
         else return (Math.abs(iDiff) <= 1 && Math.abs(jDiff) <= 1);
     }
+    */
 
     /**
      * The method controls if a player won the match, with one of his/her two workers.
@@ -106,13 +111,16 @@ public class Board {
      *
      * @param cell is the starting cell, from which possible movements must be considered
      * @return true if a movement in any direction from parameter-cell is possible; otherwise, false
-     * @throws Exception    if a method called inside throws Exception
      *
      */
-    private boolean movementPossibleFromCell(Cell cell) throws Exception {
+    private boolean movementPossibleFromCell(Cell cell) {  // throws Exception {
+        /*
         ArrayList<Integer> coord = getCoordinates(cell);
         int row = coord.get(0);  //i value for (i,j) coordinates of parameter
         int column = coord.get(1);  //j value for (i,j) coordinates of parameter
+        */
+        int row = cell.getRowIdentifier();  //i value for (i,j) coordinates of parameter
+        int column = cell.getColIdentifier();  //j value for (i,j) coordinates of parameter
         for(int i = Math.max(row-1, 0); i <= Math.min(row+1, board.length-1); i++) {
             for(int j = Math.max(column-1, 0); j<= Math.min(column+1, board[i].length-1); j++) {
                 if(i!=row && j!=column) {  //explore all adjacent cells
@@ -132,10 +140,9 @@ public class Board {
      *
      * @param player is the considered player, so the one you want to study possible movements
      * @return true if a movement in any direction by one of the workers of parameter-player is possible; otherwise, false
-     * @throws Exception    if a method called inside throws Exception
      *
      */
-    public boolean canMove(Player player) throws Exception {
+    public boolean canMove(Player player) {  // throws Exception {
         Cell cellOne = player.getWorkerFirst().getPosition();  //actual cell of the first worker
         Cell cellTwo = player.getWorkerSecond().getPosition();  //actual cell of the second worker
         boolean possibleOne = movementPossibleFromCell(cellOne);  //true if movement from cellOne is possible, so first worker can move somewhere
@@ -153,10 +160,14 @@ public class Board {
      * @return true if a building in any direction by parameter-worker is possible; otherwise, false
      *
      */
-    public boolean canBuild(Worker worker) throws Exception {
+    public boolean canBuild(Worker worker) {  // throws Exception {
+        /*
         ArrayList<Integer> coord = getCoordinates(worker.getPosition());
         int row = coord.get(0);  //i value for (i,j) coordinates of parameter
         int column = coord.get(1);  //j value for (i,j) coordinates of parameter
+        */
+        int row = worker.getPosition().getRowIdentifier();  //i value for (i,j) coordinates of worker's cell
+        int column = worker.getPosition().getColIdentifier();  //j value for (i,j) coordinates of worker's cell
         for(int i = Math.max(row-1, 0); i <= Math.min(row+1, board.length-1); i++) {
             for(int j = Math.max(column-1, 0); j<= Math.min(column+1, board[i].length-1); j++) {
                 if(i!=row && j!=column) {  //explore all adjacent cells

@@ -88,6 +88,7 @@ public class Cell {
     }
 
 
+    //may be useful for Gods that can build a dome everywhere
     public void setLevel(BlockType level) {
         this.level = level;
     }
@@ -126,6 +127,26 @@ public class Cell {
      * @return the int number that identifies the cell in board's columns.*/
     public int getColIdentifier() {
         return this.colIdentifier;
+    }
+
+
+
+    /**
+     * The method controls if the caller-cell is adjacent to the parameter-cell in
+     * the board. Reading game rules, every cell has (up to) eight neighbouring
+     * spaces: so, two cells are adjacent when they have at least one point in common
+     *
+     * @param other   possible adjacent cell to the caller-cell
+     * @return true if parameter-cell and caller-cell are adjacent; otherwise, false
+     *
+     */
+    public boolean isAdjacentTo(Cell other) {
+        int iDiff = this.getRowIdentifier()-other.getRowIdentifier();  //iDiff contains difference between i values of (i,j) coordinates for the two cells
+        int jDiff = this.getColIdentifier()-other.getColIdentifier();  //jDiff contains difference between j values of (i,j) coordinates for the two cells
+        //case adjacent cells: absolute value of difference between cells' coordinates is <=1, so a cell "surrounds" the other one
+        //in other cases, cells are not adjacent
+        if(iDiff == 0 && jDiff == 0) return false;  //case 'first' and 'second' are the same cell, so they are not adjacent
+        else return (Math.abs(iDiff) <= 1 && Math.abs(jDiff) <= 1);
     }
 
 }
