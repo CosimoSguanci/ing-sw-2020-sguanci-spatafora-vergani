@@ -68,25 +68,25 @@ public class MatchTest {
             e.printStackTrace();
         }
 
-        assertEquals(0, match.getTurn());
+        assertEquals(p1, match.getCurrentPlayer());
         match.nextTurn();
-        assertEquals(1, match.getTurn());
+        assertEquals(p2, match.getCurrentPlayer());
         match.nextTurn();
-        assertEquals(2, match.getTurn());
+        assertEquals(p3, match.getCurrentPlayer());
         match.nextTurn();
-        assertEquals(0, match.getTurn());
+        assertEquals(p1, match.getCurrentPlayer());
         match.nextTurn();
-        assertEquals(1, match.getTurn());
+        assertEquals(p2, match.getCurrentPlayer());
 
         match.removePlayer(p2);
-        assertEquals(1, match.getTurn());
+        assertEquals(p2, match.getCurrentPlayer());
         match.nextTurn();
-        assertEquals(0, match.getTurn());
+        assertEquals(p3, match.getCurrentPlayer());
 
     }
 
     @Test
-    public void getTurn() throws Exception {
+    public void getCurrentPlayerTest() throws Exception {
         Match match = new Match(2);
         Player p1 = new Player("Marco", "mc", match);
         Player p2 = new Player("Alessandro", "ale", match);
@@ -97,12 +97,12 @@ public class MatchTest {
             e.printStackTrace();
         }
 
-        assertEquals(0, match.getTurn());
+        assertEquals(p1, match.getCurrentPlayer());
         match.nextTurn();
-        assertEquals(1, match.getTurn());
+        assertEquals(p2, match.getCurrentPlayer());
         match.nextTurn();
-        assertEquals(0, match.getTurn());
+        assertEquals(p1, match.getCurrentPlayer());
         match.nextTurn();
-        assertEquals(1, match.getTurn());
+        assertEquals(p2, match.getCurrentPlayer());
     }
 }

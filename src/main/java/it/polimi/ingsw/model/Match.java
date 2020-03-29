@@ -73,11 +73,16 @@ public class Match {
      * @param p     the player to be removed from the match
      *
      */
+    //when current player is removed, turn goes directly to the next player, without calling nextTurn()
     public void removePlayer(Player p) {
         int position = players.indexOf(p);  //index of p in the array-list; -1 if not present
         if(position >= 0) {  //p is in the array-list
             players.remove(position);
             players.trimToSize();
+            //when current player is removed, turn goes directly to the next player, without calling nextTurn()
+            if(position == players.size()) {
+                turn=0;
+            }
         }
     }
 
@@ -117,12 +122,12 @@ public class Match {
 
 
     /**
-     * The method is a getter for 'turn' attribute of this class
+     * The method returns the player who has the right to play his (current) turn
      *
-     * @return turn value
+     * @return player who is playing / going to play
      *
      */
-    public int getTurn() {
-        return turn;
+    public Player getCurrentPlayer() {
+        return players.get(turn);
     }
 }
