@@ -38,6 +38,7 @@ public class Artemis implements GodStrategy {
         previousCellNeededDelegate.setPreviousPosition(worker.getPosition());
         try {
             worker.move(moveCell);
+            multipleMovementDelegate.increaseMoveCount();
         } catch (Exception e) {
             e.printStackTrace();
         }

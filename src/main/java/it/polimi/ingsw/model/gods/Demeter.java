@@ -45,9 +45,7 @@ public class Demeter implements GodStrategy {
     }
 
     @Override
-    public void prepareGame() {
-
-    }
+    public void prepareGame() {}
 
     @Override
     public boolean checkGamePreparation() {
@@ -56,6 +54,6 @@ public class Demeter implements GodStrategy {
 
     @Override
     public void endTurn(Match match) {
-
+        multipleBuildDelegate.reinitializeBuildCount();
     }
 }

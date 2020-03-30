@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.Cell;
 class PreviousCellNeededDelegate {
     private Cell previousCell;
 
-    void setPreviousPosition(Cell cell) {
+    void setPreviousCell(Cell cell) {
         this.previousCell = cell;
     }
 

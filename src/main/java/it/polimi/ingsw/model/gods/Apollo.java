@@ -29,7 +29,8 @@ public class Apollo implements GodStrategy {
 
     @Override
     public void executeMovement(Worker worker, Cell moveCell) {
-       if(!moveCell.isEmpty()) {
+
+        if(!moveCell.isEmpty()) {
            opponentWorkerMoverDelegate.moveOpponentWorker(worker, moveCell.getWorker());
        }
 
@@ -38,8 +39,6 @@ public class Apollo implements GodStrategy {
        } catch(Exception e) {
            e.printStackTrace();
        }
-
-
     }
 
     @Override
