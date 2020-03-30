@@ -1,41 +1,63 @@
 package it.polimi.ingsw.model.gods;
 
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Worker;
-import it.polimi.ingsw.model.gods.handlers.MultipleBuildHandler;
-import it.polimi.ingsw.model.gods.strategies.GodStrategy;
-import it.polimi.ingsw.model.gods.strategies.MultipleBuildStrategy;
+import it.polimi.ingsw.model.*;
 
-public class Poseidon implements MultipleBuildStrategy {
+public class Poseidon implements GodStrategy {
     final int POSEIDON_MAX_BUILD_NUM = 3;
-    private MultipleBuildHandler multipleBuildHandler;
+    private MultipleBuildDelegate multipleBuildDelegate;
+    private Worker movedWorker;
 
     public Poseidon() {
-        multipleBuildHandler = new MultipleBuildHandler(POSEIDON_MAX_BUILD_NUM);
+        multipleBuildDelegate = new MultipleBuildDelegate(POSEIDON_MAX_BUILD_NUM);
     }
 
     @Override
     public boolean checkMovement(Worker worker, Cell moveCell) {
-        return false;
+        return standardCheckMovement(worker, moveCell);
     }
 
     @Override
-    public boolean checkConstruction(Worker worker, Cell buildCell) {
-        return false;
+    public boolean checkBuild(Worker worker, Cell buildCell) {
+        Worker unmovedWorker = worker.player.getWorkerFirst().equals(movedWorker) ?
+                worker.player.getWorkerSecond() : worker.player.getWorkerFirst();
+        if(unmovedWorker.getPosition().getLevel() == BlockType.GROUND)
+            return standardCheckBuild(worker, buildCell) && multipleBuildDelegate.canBuildAgain();
+
+        return standardCheckBuild(worker, buildCell);
     }
 
     @Override
-    public int getBuildCount() {
-        return multipleBuildHandler.getBuildCount();
+    public void executeMovement(Worker worker, Cell moveCell) {
+        try {
+            worker.move(moveCell);
+            movedWorker = worker;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public boolean canBuildAgain() {
-        return multipleBuildHandler.canBuildAgain();
+    public void executeBuild(Worker worker, Cell buildCell) {
+        try {
+            worker.build(buildCell);
+            multipleBuildDelegate.increaseBuildCount();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void increaseBuildCount() {
-        multipleBuildHandler.increaseBuildCount();
+    public void prepareGame() {
+
+    }
+
+    @Override
+    public boolean checkGamePreparation() {
+        return true;
+    }
+
+    @Override
+    public void endTurn(Match match) {
+        multipleBuildDelegate.reinitializeBuildCount();
     }
 }

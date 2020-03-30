@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.gods.strategies.GodStrategy;
+import it.polimi.ingsw.model.gods.GodStrategy;
 
 /** This class contains general information about a single God.
  *  It consists of attributes that describe God and its rule.

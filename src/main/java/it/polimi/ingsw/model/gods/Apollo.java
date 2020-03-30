@@ -1,48 +1,65 @@
 package it.polimi.ingsw.model.gods;
 
+import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Worker;
-import it.polimi.ingsw.model.gods.handlers.PreviousPositionHandler;
-import it.polimi.ingsw.model.gods.strategies.GodStrategy;
-import it.polimi.ingsw.model.gods.strategies.OpponentWorkerMoverStrategy;
-import it.polimi.ingsw.model.gods.strategies.PreviousPositionStrategy;
 
-public class Apollo implements OpponentWorkerMoverStrategy, PreviousPositionStrategy {
 
-    PreviousPositionHandler previousPositionHandler;
+public class Apollo implements GodStrategy {
+
+    private final OpponentWorkerMoverDelegate opponentWorkerMoverDelegate;
 
     public Apollo() {
-        this.previousPositionHandler = new PreviousPositionHandler();
+        this.opponentWorkerMoverDelegate = new OpponentWorkerMoverDelegate();
     }
 
     @Override
     public boolean checkMovement(Worker worker, Cell moveCell) {
-        setPreviousPosition(worker.getPosition());// maybe add another event? (callback)
-        return true; // Apollo can always move to an adjacent cell
+        return worker.getPosition().isAdjacentTo(moveCell)
+                && worker.getPosition().levelDifference(moveCell) >= -1
+                && moveCell.getLevel() != BlockType.DOME; // Apollo: all controls except moveCell.isEmpty()
+
     }
 
     @Override
-    public boolean checkConstruction(Worker worker, Cell buildCell) {
-        return true;
+    public boolean checkBuild(Worker worker, Cell buildCell) {
+        return standardCheckBuild(worker, buildCell);
     }
 
     @Override
-    public void moveOpponentWorker(Worker opponentWorker) {
+    public void executeMovement(Worker worker, Cell moveCell) {
+       if(!moveCell.isEmpty()) {
+           opponentWorkerMoverDelegate.moveOpponentWorker(worker, moveCell.getWorker());
+       }
+
+       try {
+           worker.move(moveCell);
+       } catch(Exception e) {
+           e.printStackTrace();
+       }
+
+
+    }
+
+    @Override
+    public void executeBuild(Worker worker, Cell buildCell) {
 
         try {
-            opponentWorker.move(getPreviousPosition());
+            worker.build(buildCell);
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public Cell getPreviousPosition() {
-        return previousPositionHandler.getPreviousPosition();
+    public void prepareGame() {}
+
+    @Override
+    public boolean checkGamePreparation() {
+        return true;
     }
 
     @Override
-    public void setPreviousPosition(Cell previousPosition) {
-        this.previousPositionHandler.setPreviousPosition(previousPosition);
-    }
+    public void endTurn(Match match) {}
 }

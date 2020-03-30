@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Worker;
-import it.polimi.ingsw.model.gods.strategies.GodStrategy;
 
 public class Prometheus implements GodStrategy {
     @Override
@@ -11,7 +11,32 @@ public class Prometheus implements GodStrategy {
     }
 
     @Override
-    public boolean checkConstruction(Worker worker, Cell buildCell) {
+    public boolean checkBuild(Worker worker, Cell buildCell) {
         return false;
+    }
+
+    @Override
+    public void executeBuild(Worker worker, Cell buildCell) {
+
+    }
+
+    @Override
+    public void executeMovement(Worker worker, Cell moveCell) {
+
+    }
+
+    @Override
+    public void prepareGame() {
+
+    }
+
+    @Override
+    public boolean checkGamePreparation() {
+        return true;
+    }
+
+    @Override
+    public void endTurn(Match match) {
+
     }
 }

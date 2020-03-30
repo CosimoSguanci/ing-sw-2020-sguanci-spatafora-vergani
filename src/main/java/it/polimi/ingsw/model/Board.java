@@ -10,6 +10,8 @@ import java.util.ArrayList;
  * @author Andrea Mario Vergani
  */
 public class Board {
+    public final static int WIDTH_SIZE = 5;
+    public final static int HEIGHT_SIZE = 5;
     private Cell[][] board;
 
     /**
@@ -19,7 +21,7 @@ public class Board {
      * starting the match
      */
     public Board() {
-        board = new Cell[5][5];
+        board = new Cell[WIDTH_SIZE][HEIGHT_SIZE];
         //initialization of a "empty" board at ground level (every cell with these starting configurations)
         for(int i=0; i<board.length; i++) {
             for(int j=0; j<board[i].length; j++) {

@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
-import it.polimi.ingsw.model.gods.strategies.GodStrategy;
 import org.junit.jupiter.api.Test;
 
 public class PlayerTest {

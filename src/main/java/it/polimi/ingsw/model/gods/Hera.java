@@ -1,17 +1,50 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Worker;
-import it.polimi.ingsw.model.gods.strategies.GodStrategy;
 
-public class Hera implements GodStrategy {
+public class Hera implements GodStrategy { // handle flag(s)
     @Override
     public boolean checkMovement(Worker worker, Cell moveCell) {
-        return false;
+        return standardCheckMovement(worker, moveCell);
     }
 
     @Override
-    public boolean checkConstruction(Worker worker, Cell buildCell) {
-        return false;
+    public boolean checkBuild(Worker worker, Cell buildCell) {
+        return standardCheckBuild(worker, buildCell);
+    }
+
+    @Override
+    public void executeMovement(Worker worker, Cell moveCell) {
+        try {
+            worker.move(moveCell);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void executeBuild(Worker worker, Cell buildCell) {
+        try {
+            worker.move(buildCell);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void prepareGame() {
+
+    }
+
+    @Override
+    public boolean checkGamePreparation() {
+        return true;
+    }
+
+    @Override
+    public void endTurn(Match match) {
+
     }
 }

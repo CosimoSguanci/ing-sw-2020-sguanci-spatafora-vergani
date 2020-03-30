@@ -1,24 +1,58 @@
 package it.polimi.ingsw.model.gods;
 
+import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Worker;
-import it.polimi.ingsw.model.gods.strategies.GodStrategy;
-import it.polimi.ingsw.model.gods.strategies.OpponentWorkerMoverStrategy;
 
-public class Minotaur implements OpponentWorkerMoverStrategy {
+public class Minotaur implements GodStrategy {
+
+    private final OpponentWorkerMoverDelegate opponentWorkerMoverDelegate;
+
+    public Minotaur() {
+        this.opponentWorkerMoverDelegate = new OpponentWorkerMoverDelegate();
+    }
 
     @Override
     public boolean checkMovement(Worker worker, Cell moveCell) {
+        if(!(worker.getPosition().isAdjacentTo(moveCell)
+                && worker.getPosition().levelDifference(moveCell) >= -1
+                && moveCell.getLevel() != BlockType.DOME))
+            return false;
+        if(!moveCell.isEmpty()) {
+            return true; // NEED TO IMPLEMENT BOARD SINGLETON
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean checkBuild(Worker worker, Cell buildCell) {
         return false;
     }
 
     @Override
-    public boolean checkConstruction(Worker worker, Cell buildCell) {
-        return false;
+    public void executeMovement(Worker worker, Cell moveCell) {
+
     }
 
     @Override
-    public void moveOpponentWorker(Worker worker) {
+    public void executeBuild(Worker worker, Cell buildCell) {
+
+    }
+
+    @Override
+    public void prepareGame() {
+
+    }
+
+    @Override
+    public boolean checkGamePreparation() {
+        return true;
+    }
+
+    @Override
+    public void endTurn(Match match) {
 
     }
 }

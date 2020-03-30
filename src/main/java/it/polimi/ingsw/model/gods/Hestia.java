@@ -1,41 +1,66 @@
 package it.polimi.ingsw.model.gods;
 
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Worker;
-import it.polimi.ingsw.model.gods.handlers.MultipleBuildHandler;
-import it.polimi.ingsw.model.gods.strategies.GodStrategy;
-import it.polimi.ingsw.model.gods.strategies.MultipleBuildStrategy;
 
-public class Hestia implements MultipleBuildStrategy {
+public class Hestia implements GodStrategy {
     final int HESTIA_MAX_BUILD_NUM = 2;
-    private MultipleBuildHandler multipleBuildHandler;
+    private MultipleBuildDelegate multipleBuildDelegate;
 
     public Hestia() {
-        multipleBuildHandler = new MultipleBuildHandler(HESTIA_MAX_BUILD_NUM);
+        multipleBuildDelegate = new MultipleBuildDelegate(HESTIA_MAX_BUILD_NUM);
     }
 
     @Override
     public boolean checkMovement(Worker worker, Cell moveCell) {
-        return false;
+        return standardCheckMovement(worker, moveCell);
     }
 
     @Override
-    public boolean checkConstruction(Worker worker, Cell buildCell) {
-        return false;
+    public boolean checkBuild(Worker worker, Cell buildCell) {
+
+        if(!standardCheckBuild(worker, buildCell) || !multipleBuildDelegate.canBuildAgain())
+            return false;
+        return multipleBuildDelegate.getBuildCount() != HESTIA_MAX_BUILD_NUM - 1 || !isPerimeterCell(buildCell);
+
     }
 
     @Override
-    public int getBuildCount() {
-        return multipleBuildHandler.getBuildCount();
+    public void executeBuild(Worker worker, Cell buildCell) {
+        try {
+            worker.move(buildCell);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public boolean canBuildAgain() {
-        return multipleBuildHandler.canBuildAgain();
+    public void executeMovement(Worker worker, Cell moveCell) {
+        try {
+            worker.move(moveCell);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void increaseBuildCount() {
-        multipleBuildHandler.increaseBuildCount();
+    public void prepareGame() {
+
+    }
+
+    @Override
+    public boolean checkGamePreparation() {
+        return true;
+    }
+
+    @Override
+    public void endTurn(Match match) {
+
+    }
+
+    private boolean isPerimeterCell(Cell cell) {
+        return cell.getColIdentifier() == Board.WIDTH_SIZE - 1 || cell.getRowIdentifier() == Board.HEIGHT_SIZE;
     }
 }

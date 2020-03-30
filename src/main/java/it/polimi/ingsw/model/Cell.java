@@ -48,6 +48,13 @@ public class Cell {
         return worker;
     }
 
+    /**
+     * The method is a simple setter of the worker on the considered cell.
+     */
+    public void setWorker(Worker worker) {
+         this.worker = worker;
+    }
+
 
     /**
      * The method is a simple getter of the level on the considered cell. As described in
@@ -72,18 +79,23 @@ public class Cell {
      */
     //tested
     public void increaseLevel() throws Exception {
-        if(this.level==BlockType.DOME) throw new Exception();
-        else if (this.level==BlockType.LEVEL_THREE) {
-            this.level=BlockType.DOME;
-        }
-        else if (this.level==BlockType.LEVEL_TWO) {
-            this.level=BlockType.LEVEL_THREE;
-        }
-        else if (this.level==BlockType.LEVEL_ONE) {
-            this.level=BlockType.LEVEL_TWO;
-        }
-        else {
-            this.level=BlockType.LEVEL_ONE;
+
+        switch(this.level) {
+            case GROUND:
+                this.level = BlockType.LEVEL_ONE;
+                break;
+            case LEVEL_ONE:
+                this.level = BlockType.LEVEL_TWO;
+                break;
+            case LEVEL_TWO:
+                this.level = BlockType.LEVEL_THREE;
+                break;
+            case LEVEL_THREE:
+                this.level = BlockType.DOME;
+                break;
+            case DOME:
+                throw new Exception();
+
         }
     }
 

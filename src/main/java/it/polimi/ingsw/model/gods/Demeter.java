@@ -1,55 +1,61 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Worker;
-import it.polimi.ingsw.model.gods.handlers.MultipleBuildHandler;
-import it.polimi.ingsw.model.gods.handlers.PreviousPositionHandler;
-import it.polimi.ingsw.model.gods.strategies.GodStrategy;
-import it.polimi.ingsw.model.gods.strategies.MultipleBuildStrategy;
-import it.polimi.ingsw.model.gods.strategies.PreviousPositionStrategy;
 
-public class Demeter implements PreviousPositionStrategy, MultipleBuildStrategy {
+
+public class Demeter implements GodStrategy {
     final int DEMETER_MAX_BUILD_NUM = 2;
-    private MultipleBuildHandler multipleBuildHandler;
-    private PreviousPositionHandler previousPositionHandler;
+    private MultipleBuildDelegate multipleBuildDelegate;
+    private PreviousCellNeededDelegate previousCellNeededDelegate;
 
     public Demeter() {
-        multipleBuildHandler = new MultipleBuildHandler(DEMETER_MAX_BUILD_NUM);
-        previousPositionHandler = new PreviousPositionHandler();
+        multipleBuildDelegate = new MultipleBuildDelegate(DEMETER_MAX_BUILD_NUM);
+        previousCellNeededDelegate = new PreviousCellNeededDelegate();
     }
 
     @Override
     public boolean checkMovement(Worker worker, Cell moveCell) {
+        return standardCheckMovement(worker, moveCell);
+    }
+
+    @Override
+    public boolean checkBuild(Worker worker, Cell buildCell) {
+        return standardCheckBuild(worker, buildCell) && multipleBuildDelegate.canBuildAgain() && !(previousCellNeededDelegate.getPreviousCell().equals(buildCell));
+    }
+
+    @Override
+    public void executeBuild(Worker worker, Cell buildCell) {
+        try {
+            worker.build(buildCell);
+            previousCellNeededDelegate.setPreviousPosition(buildCell);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void executeMovement(Worker worker, Cell moveCell) {
+        try {
+            worker.move(moveCell);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void prepareGame() {
+
+    }
+
+    @Override
+    public boolean checkGamePreparation() {
         return true;
     }
 
     @Override
-    public boolean checkConstruction(Worker worker, Cell buildCell) {
-        return canBuildAgain() && !(getPreviousPosition().equals(buildCell));
-    }
+    public void endTurn(Match match) {
 
-    @Override
-    public int getBuildCount() {
-        return multipleBuildHandler.getBuildCount();
-    }
-
-    @Override
-    public boolean canBuildAgain() {
-        return multipleBuildHandler.canBuildAgain();
-    }
-
-    @Override
-    public void increaseBuildCount() {
-        multipleBuildHandler.increaseBuildCount();
-    }
-
-    @Override
-    public Cell getPreviousPosition() {
-        return previousPositionHandler.getPreviousPosition();
-    }
-
-    @Override
-    public void setPreviousPosition(Cell previousPosition) {
-        previousPositionHandler.setPreviousPosition(previousPosition);
     }
 }
