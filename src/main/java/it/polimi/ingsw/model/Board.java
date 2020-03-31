@@ -126,7 +126,7 @@ public class Board {
         for(int i = Math.max(row-1, 0); i <= Math.min(row+1, board.length-1); i++) {
             for(int j = Math.max(column-1, 0); j<= Math.min(column+1, board[i].length-1); j++) {
                 if(i!=row && j!=column) {  //explore all adjacent cells
-                    if (cell.levelDifference(board[i][j]) >= -1 && board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()) {
+                    if (cell.isLevelDifferenceOk(board[i][j]) && board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()) {
                         return true;  //movement is possible if an adjacent cell is at lower, same or (+1) level, it is empty and not a dome
                     }
                 }

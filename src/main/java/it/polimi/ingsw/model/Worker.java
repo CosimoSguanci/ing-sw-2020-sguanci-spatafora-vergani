@@ -67,7 +67,7 @@ public class Worker {
     public void move(Cell newCell) throws Exception {
         if (this.position.isAdjacentTo(newCell) && (newCell.isEmpty()) && (newCell.getLevel() != BlockType.DOME)) {
             if(this.player.match.getCanMove()) {
-                if (newCell.levelDifference(this.position) <= 1) { // Moving into a DOME is not allowed.
+                if (this.position.isLevelDifferenceOk(newCell)) { // Moving into a DOME is not allowed.
                     this.position.setWorker(this);
                     this.position = newCell;
                 } else {throw new Exception(); } //else { throw new InvalidMoveException(); }

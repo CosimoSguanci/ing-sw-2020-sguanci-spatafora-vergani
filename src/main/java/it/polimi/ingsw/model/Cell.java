@@ -124,6 +124,24 @@ public class Cell {
         return this.getLevel().getLevelNumber()-cell.getLevel().getLevelNumber();
     }
 
+
+    /**
+     * The method returns a boolean that represents the possibility to move from
+     * caller-cell to parameter-cell, based on level difference between the two
+     * cells. Considering only level difference, this method returns true (so the
+     * movement is possible) if parameter-cell is at most one level higher than
+     * caller-cell.
+     * Note that a movement from caller-cell to parameter-cell is possible only if the two
+     * cells are adjacent, this method returns true, the parameter level is
+     * not a dome and there is no worker on it
+     *
+     * @param destination  cell you want to move to
+     * @return true if level difference between caller-cell and parameter-cell is >=(-1)
+     */
+    public boolean isLevelDifferenceOk (Cell destination) {
+        return this.levelDifference(destination) >= -1;
+    }
+
     /**
      * The method is a getter of the row index of the relative cell in the board.
      *

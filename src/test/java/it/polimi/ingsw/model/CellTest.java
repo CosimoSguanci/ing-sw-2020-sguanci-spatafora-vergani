@@ -46,6 +46,30 @@ public class CellTest {
     }
 
     @Test
+    public void isLevelDifferenceOkTest() throws Exception {
+        Cell cell = new Cell(4,2);
+        cell.increaseLevel();
+        cell.increaseLevel();  //cell is level two
+        Cell c = new Cell(0,3);  //c is ground level
+
+        assertTrue(cell.isLevelDifferenceOk(c));
+        assertFalse(c.isLevelDifferenceOk(cell));
+        assertTrue(cell.isLevelDifferenceOk(cell));
+
+        c.increaseLevel();  //c is level one
+        assertTrue(cell.isLevelDifferenceOk(c));
+        assertTrue(c.isLevelDifferenceOk(cell));
+
+        Cell t = new Cell(1,1);
+        t.increaseLevel();
+        t.increaseLevel();
+        t.increaseLevel();  //t is level three
+        assertFalse(c.isLevelDifferenceOk(t));
+        assertTrue(cell.isLevelDifferenceOk(t));
+    }
+
+
+    @Test
     public void levelDifferenceTest() throws Exception {
         Cell cell = new Cell(4,2);
         cell.increaseLevel();
@@ -59,6 +83,13 @@ public class CellTest {
         c.increaseLevel();  //c is level one
         assertEquals(1, cell.levelDifference(c));
         assertEquals(-1, c.levelDifference(cell));
+
+        Cell t = new Cell(1,1);
+        t.increaseLevel();
+        t.increaseLevel();
+        t.increaseLevel();  //t is level three
+        assertEquals(-2, c.levelDifference(t));
+        assertEquals(-1, cell.levelDifference(t));
     }
 
     @Test

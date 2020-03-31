@@ -17,7 +17,7 @@ public class Apollo implements GodStrategy {
     @Override
     public boolean checkMovement(Worker worker, Cell moveCell) {
         return worker.getPosition().isAdjacentTo(moveCell)
-                && worker.getPosition().levelDifference(moveCell) >= -1
+                && worker.getPosition().isLevelDifferenceOk(moveCell)
                 && moveCell.getLevel() != BlockType.DOME; // Apollo: all controls except moveCell.isEmpty()
 
     }

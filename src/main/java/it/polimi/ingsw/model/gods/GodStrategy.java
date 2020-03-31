@@ -10,7 +10,7 @@ public interface GodStrategy  {
     default boolean standardCheckMovement(Worker worker, Cell moveCell) {
         return worker.getPosition().isAdjacentTo(moveCell)
                 && moveCell.isEmpty()
-                && worker.getPosition().levelDifference(moveCell) >= -1
+                && worker.getPosition().isLevelDifferenceOk(moveCell)
                 && moveCell.getLevel() != BlockType.DOME;
     }
 
