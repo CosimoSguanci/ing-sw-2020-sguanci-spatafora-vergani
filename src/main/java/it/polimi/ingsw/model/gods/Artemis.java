@@ -35,7 +35,7 @@ public class Artemis implements GodStrategy {
 
     @Override
     public void executeMovement(Worker worker, Cell moveCell) {
-        previousCellNeededDelegate.setPreviousPosition(worker.getPosition());
+        previousCellNeededDelegate.setPreviousCell(worker.getPosition());
         try {
             worker.move(moveCell);
             multipleMovementDelegate.increaseMoveCount();

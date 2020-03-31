@@ -71,7 +71,7 @@ public class Worker {
                     this.position.setWorker(this);
                     this.position = newCell;
                 } else {throw new Exception(); } //else { throw new InvalidMoveException(); }
-            }
+            } else { throw new Exception(); } //else { throw new WorkerCannotMoveUpException(); }
         } else {throw new Exception(); } // else { throw new InvalidCellException(); }
     }
 

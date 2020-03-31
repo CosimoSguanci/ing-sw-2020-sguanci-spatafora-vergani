@@ -29,7 +29,7 @@ public class Demeter implements GodStrategy {
     public void executeBuild(Worker worker, Cell buildCell) {
         try {
             worker.build(buildCell);
-            previousCellNeededDelegate.setPreviousPosition(buildCell);
+            previousCellNeededDelegate.setPreviousCell(buildCell);
         } catch(Exception e) {
             e.printStackTrace();
         }
