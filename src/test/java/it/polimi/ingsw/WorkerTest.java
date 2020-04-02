@@ -53,12 +53,9 @@ public class WorkerTest {
         System.out.println("testing move() with an invalid movement: an adjacent cell must be requested for movement...");
 
         testWorker.setInitialPosition(0,0);
-        try {
-            testWorker.move(testBoard.getCell(0,2));
-            System.out.println("Test failed.");
-        } catch (Exception e) {
-            System.out.println("Test successfully completed.");
-        }
+
+        Exception exception = assertThrows(Exception.class, () -> {testWorker.move(testBoard.getCell(0,2));});
+        System.out.println("Test successfully completed.");
     }
 
     @Test
@@ -74,12 +71,9 @@ public class WorkerTest {
 
         testWorker.setInitialPosition(0,0);
         testOccupantWorker.setInitialPosition(0,1);
-        try {
-            testWorker.move(testBoard.getCell(0,1));
-            System.out.println("Test failed.");
-        } catch (Exception e) {
-            System.out.println("Test successfully completed.");
-        }
+
+        Exception exception = assertThrows(Exception.class, () -> {testWorker.move(testBoard.getCell(0,1));});
+        System.out.println("Test successfully completed.");
     }
 
 
@@ -95,12 +89,9 @@ public class WorkerTest {
 
         testWorker.setInitialPosition(0,0);
         testBoard.getCell(0,1).setLevel(BlockType.DOME);
-        try {
-            testWorker.move(testBoard.getCell(0,1));
-            System.out.println("Test failed.");
-        } catch (Exception e) {
-            System.out.println("Test successfully completed.");
-        }
+
+        Exception exception = assertThrows(Exception.class, () -> {testWorker.move(testBoard.getCell(0,1));});
+        System.out.println("Test successfully completed.");
     }
 
 
@@ -117,12 +108,9 @@ public class WorkerTest {
         testWorker.setInitialPosition(0,0);
         testBoard.getCell(0,1).setLevel(BlockType.LEVEL_ONE);
         testPlayer.match.setCanMove(false);
-        try {
-            testWorker.move(testBoard.getCell(0,1));
-            System.out.println("Test failed.");
-        } catch (Exception e) {
-            System.out.println("Test successfully completed.");
-        }
+
+        Exception exception = assertThrows(Exception.class, () -> {testWorker.move(testBoard.getCell(0,1));});
+        System.out.println("Test successfully completed.");
     }
 
 
@@ -146,6 +134,9 @@ public class WorkerTest {
         testWorker.build(testBoard.getCell(0,1));
         assertEquals(BlockType.LEVEL_THREE, testBoard.getCell(0,1).getLevel());
 
+        testWorker.build(testBoard.getCell(0,1));
+        assertEquals(BlockType.DOME, testBoard.getCell(0,1).getLevel());
+
         System.out.println("Test successfully completed.");
     }
 
@@ -161,12 +152,9 @@ public class WorkerTest {
         System.out.println("testing build() with an invalid movement: an adjacent cell must be requested to build in...");
 
         testWorker.setInitialPosition(0,0);
-        try {
-            testWorker.build(testBoard.getCell(0,2));
-            System.out.println("Test failed.");
-        } catch (Exception e) {
-            System.out.println("Test successfully completed.");
-        }
+
+        assertThrows(Exception.class, () -> {testWorker.build(testBoard.getCell(0,2));});
+        System.out.println("Test successfully completed.");
     }
 
 
@@ -183,12 +171,9 @@ public class WorkerTest {
 
         testWorker.setInitialPosition(0,0);
         testSecondWorker.setInitialPosition(0,1);
-        try {
-            testWorker.build(testBoard.getCell(0,1));
-            System.out.println("Test failed.");
-        } catch (Exception e) {
-            System.out.println("Test successfully completed.");
-        }
+
+        assertThrows(Exception.class, () -> {testWorker.build(testBoard.getCell(0,1));});
+        System.out.println("Test successfully completed.");
     }
 
 
@@ -204,12 +189,9 @@ public class WorkerTest {
 
         testWorker.setInitialPosition(0,0);
         testBoard.getCell(0,1).setLevel(BlockType.DOME);
-        try {
-            testWorker.build(testBoard.getCell(0,1));
-            System.out.println("Test failed.");
-        } catch (Exception e) {
-            System.out.println("Test successfully completed.");
-        }
+
+        Exception exception = assertThrows(Exception.class, () -> {testWorker.build(testBoard.getCell(0,1));});
+        System.out.println("Test successfully completed.");
     }
 
 }

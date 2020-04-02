@@ -47,6 +47,7 @@ public class Worker {
     public void setInitialPosition(int row, int col) throws Exception {
         if(board.getCell(row, col).isEmpty()) {
             this.position = board.getCell(row, col);
+            this.board.getCell(row, col).setWorker(this);
         }
         else { throw new Exception(); } //cellAlreadyOccupiedException();
     }
@@ -68,8 +69,9 @@ public class Worker {
         if (this.position.isAdjacentTo(newCell) && (newCell.isEmpty()) && (newCell.getLevel() != BlockType.DOME)) {
             if(this.player.match.getCanMove()) {
                 if (this.position.isLevelDifferenceOk(newCell)) { // Moving into a DOME is not allowed.
-                    this.position.setWorker(this);
+                    this.position.setWorker(null);
                     this.position = newCell;
+                    newCell.setWorker(this);
                 } else {throw new Exception(); } //else { throw new InvalidMoveException(); }
             } else { throw new Exception(); } //else { throw new WorkerCannotMoveUpException(); }
         } else {throw new Exception(); } // else { throw new InvalidCellException(); }
