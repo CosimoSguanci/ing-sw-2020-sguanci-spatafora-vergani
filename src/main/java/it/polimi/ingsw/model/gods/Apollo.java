@@ -15,7 +15,7 @@ public class Apollo implements GodStrategy {
     }
 
     @Override
-    public boolean checkMovement(Worker worker, Cell moveCell) {
+    public boolean checkMove(Worker worker, Cell moveCell) {
         return worker.getPosition().isAdjacentTo(moveCell)
                 && worker.getPosition().isLevelDifferenceOk(moveCell)
                 && moveCell.getLevel() != BlockType.DOME; // Apollo: all controls except moveCell.isEmpty()
@@ -23,32 +23,23 @@ public class Apollo implements GodStrategy {
     }
 
     @Override
-    public boolean checkBuild(Worker worker, Cell buildCell) {
-        return standardCheckBuild(worker, buildCell);
+    public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+        return worker.standardCheckBuild(buildCell);
     }
 
     @Override
-    public void executeMovement(Worker worker, Cell moveCell) {
+    public void executeMove(Worker worker, Cell moveCell) {
 
         if(!moveCell.isEmpty()) {
            opponentWorkerMoverDelegate.moveOpponentWorker(worker, moveCell.getWorker());
        }
 
-       try {
-           worker.move(moveCell);
-       } catch(Exception e) {
-           e.printStackTrace();
-       }
+       worker.move(moveCell);
     }
 
     @Override
-    public void executeBuild(Worker worker, Cell buildCell) {
-
-        try {
-            worker.build(buildCell);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+        worker.build(buildCell);
     }
 
     @Override

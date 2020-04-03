@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gods;
 
+import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Worker;
@@ -15,33 +16,25 @@ public class Artemis implements GodStrategy {
     }
 
     @Override
-    public boolean checkMovement(Worker worker, Cell moveCell) {
-        return standardCheckMovement(worker, moveCell) && multipleMovementDelegate.canMoveAgain() && !(moveCell.equals(previousCellNeededDelegate.getPreviousCell()));
+    public boolean checkMove(Worker worker, Cell moveCell) {
+        return worker.standardCheckMove(moveCell) && multipleMovementDelegate.canMoveAgain() && !(moveCell.equals(previousCellNeededDelegate.getPreviousCell()));
     }
 
     @Override
-    public boolean checkBuild(Worker worker, Cell buildCell) {
-        return standardCheckBuild(worker, buildCell);
+    public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+        return worker.standardCheckBuild(buildCell);
     }
 
     @Override
-    public void executeBuild(Worker worker, Cell buildCell) {
-        try {
-            worker.build(buildCell);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+        worker.build(buildCell);
     }
 
     @Override
-    public void executeMovement(Worker worker, Cell moveCell) {
+    public void executeMove(Worker worker, Cell moveCell) {
         previousCellNeededDelegate.setPreviousCell(worker.getPosition());
-        try {
-            worker.move(moveCell);
-            multipleMovementDelegate.increaseMoveCount();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        worker.move(moveCell);
+        multipleMovementDelegate.increaseMoveCount();
     }
 
     @Override

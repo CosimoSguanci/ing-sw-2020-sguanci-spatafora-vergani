@@ -5,45 +5,25 @@ import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Worker;
 
-public class Minotaur implements GodStrategy {
-
-    private final OpponentWorkerMoverDelegate opponentWorkerMoverDelegate;
-
-    public Minotaur() {
-        this.opponentWorkerMoverDelegate = new OpponentWorkerMoverDelegate();
-    }
-
+public class Zeus implements GodStrategy {
     @Override
     public boolean checkMove(Worker worker, Cell moveCell) {
-        if(!(worker.getPosition().isAdjacentTo(moveCell)
-                && worker.getPosition().isLevelDifferenceOk(moveCell)
-                && moveCell.getLevel() != BlockType.DOME))
-            return false;
-        if(!moveCell.isEmpty()) {
-            return true; // NEED TO IMPLEMENT BOARD SINGLETON
-        }
-
-        return true;
+        return worker.standardCheckMove(moveCell);
     }
 
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        return worker.standardCheckBuild(buildCell);
+        return (worker.getPosition().isAdjacentTo(buildCell) || buildCell.equals(worker.getPosition())) && (buildCell.getLevel() != BlockType.DOME);
     }
 
     @Override
     public void executeMove(Worker worker, Cell moveCell) {
-
-        if(!moveCell.isEmpty()) {
-            opponentWorkerMoverDelegate.moveOpponentWorker(worker, moveCell.getWorker());
-        }
-
         worker.move(moveCell);
     }
 
     @Override
     public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        worker.build(buildCell);
+        worker.build(buildCell); //checkAndExecute ?
     }
 
     @Override

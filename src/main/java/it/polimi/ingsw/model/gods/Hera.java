@@ -1,36 +1,29 @@
 package it.polimi.ingsw.model.gods;
 
+import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Worker;
 
 public class Hera implements GodStrategy { // handle flag(s)
     @Override
-    public boolean checkMovement(Worker worker, Cell moveCell) {
-        return standardCheckMovement(worker, moveCell);
+    public boolean checkMove(Worker worker, Cell moveCell) {
+        return worker.standardCheckMove(moveCell);
     }
 
     @Override
-    public boolean checkBuild(Worker worker, Cell buildCell) {
-        return standardCheckBuild(worker, buildCell);
+    public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+        return worker.standardCheckBuild(buildCell);
     }
 
     @Override
-    public void executeMovement(Worker worker, Cell moveCell) {
-        try {
-            worker.move(moveCell);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void executeMove(Worker worker, Cell moveCell) {
+        worker.move(moveCell);
     }
 
     @Override
-    public void executeBuild(Worker worker, Cell buildCell) {
-        try {
-            worker.move(buildCell);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+        worker.build(buildCell);
     }
 
     @Override

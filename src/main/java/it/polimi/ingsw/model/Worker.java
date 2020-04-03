@@ -52,6 +52,31 @@ public class Worker {
         else { throw new Exception(); } //cellAlreadyOccupiedException();
     }
 
+    public boolean standardCheckMove(Cell moveCell) {
+        if (this.position.isAdjacentTo(moveCell) && (moveCell.isEmpty()) && (moveCell.getLevel() != BlockType.DOME)) {
+            if(this.player.match.getCanMove()) {
+                if (this.position.isLevelDifferenceOk(moveCell)) { // Moving into a DOME is not allowed.
+                    return true;
+                }
+                //else {throw new Exception(); } //else { throw new InvalidMoveException(); }
+            }
+            //else { throw new Exception(); } //else { throw new WorkerCannotMoveUpException(); }
+        }
+        //else {throw new Exception(); }
+
+        return false;
+    }
+
+    public boolean standardCheckBuild(Cell buildCell) {
+        if (this.position.isAdjacentTo(buildCell) && (buildCell.getLevel() != BlockType.DOME) && (buildCell.isEmpty())) {// Workers can build if the cell level is not the maximum and if the cell has not another Worker in it.
+            return true;
+        }
+        else {
+            return false;
+            //throw new Exception();
+        } //{ throw new InvalidCellException(); } // TOO MUCH EXCEPTIONS
+    }
+
     /**
      * This method allows worker to move to a cell that is specified as parameter.
      * Respecting the playing condition a worker can move to another cell only if
@@ -59,22 +84,16 @@ public class Worker {
      * reach and the cell is adjacent to the cell the worker is at the moment of invocation.
      * The worker can move up at most one level.
      *
-     * @param newCell indicates the Cell in which a player wants his worker to move in.
+     * @param moveCell indicates the Cell in which a player wants his worker to move in.
      *
      * @throws Exception either a worker tries to move in a non adjacent cell or if the cell
      * is already occupied or has reached its maximum level. It also throws Exception if a
      * worker tries to move up more than a single level.
      */
-    public void move(Cell newCell) throws Exception {
-        if (this.position.isAdjacentTo(newCell) && (newCell.isEmpty()) && (newCell.getLevel() != BlockType.DOME)) {
-            if(this.player.match.getCanMove()) {
-                if (this.position.isLevelDifferenceOk(newCell)) { // Moving into a DOME is not allowed.
-                    this.position.setWorker(null);
-                    this.position = newCell;
-                    newCell.setWorker(this);
-                } else {throw new Exception(); } //else { throw new InvalidMoveException(); }
-            } else { throw new Exception(); } //else { throw new WorkerCannotMoveUpException(); }
-        } else {throw new Exception(); } // else { throw new InvalidCellException(); }
+    public void move(Cell moveCell) {
+        this.position.setWorker(null);
+        this.position = moveCell;
+        moveCell.setWorker(this);
     }
 
     /** This method allows worker to build into a cell that is specified as parameter.
@@ -83,15 +102,18 @@ public class Worker {
      * reach and the cell is adjacent to the cell the worker is at the moment of invocation.
      * As a result of this method the level of a cell is increased.
      *
-     * @param cell indicates the Cell in which a player wants his worker to build in.
+     * @param buildCell indicates the Cell in which a player wants his worker to build in.
      *
      * @throws Exception either a worker tries to build in a non adjacent cell or if the cell
      * is already occupied or has reached its maximum level.
      */
-    public void build(Cell cell) throws Exception {
-        if (this.position.isAdjacentTo(cell) && (cell.getLevel() != BlockType.DOME) && (cell.isEmpty())) {// Workers can build if the cell level is not the maximum and if the cell has not another Worker in it.
-            cell.increaseLevel();
-        }  else {throw new Exception();} //{ throw new InvalidCellException(); }
+    public void build(Cell buildCell) {
+
+        try {
+            buildCell.increaseLevel();
+        } catch(Exception e) { // Move this exception
+            e.printStackTrace();
+        }
     }
 
 }

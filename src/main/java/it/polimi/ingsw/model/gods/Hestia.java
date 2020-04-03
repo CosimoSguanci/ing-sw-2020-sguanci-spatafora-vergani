@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.gods;
 
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Match;
-import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.*;
 
 public class Hestia implements GodStrategy {
     final int HESTIA_MAX_BUILD_NUM = 2;
@@ -14,35 +11,27 @@ public class Hestia implements GodStrategy {
     }
 
     @Override
-    public boolean checkMovement(Worker worker, Cell moveCell) {
-        return standardCheckMovement(worker, moveCell);
+    public boolean checkMove(Worker worker, Cell moveCell) {
+        return worker.standardCheckMove(moveCell);
     }
 
     @Override
-    public boolean checkBuild(Worker worker, Cell buildCell) {
+    public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
 
-        if(!standardCheckBuild(worker, buildCell) || !multipleBuildDelegate.canBuildAgain())
+        if(!worker.standardCheckBuild(buildCell) || !multipleBuildDelegate.canBuildAgain())
             return false;
         return multipleBuildDelegate.getBuildCount() != HESTIA_MAX_BUILD_NUM - 1 || !isPerimeterCell(buildCell);
 
     }
 
     @Override
-    public void executeBuild(Worker worker, Cell buildCell) {
-        try {
-            worker.move(buildCell);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+        worker.build(buildCell);
     }
 
     @Override
-    public void executeMovement(Worker worker, Cell moveCell) {
-        try {
-            worker.move(moveCell);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void executeMove(Worker worker, Cell moveCell) {
+        worker.move(moveCell);
     }
 
     @Override
@@ -61,6 +50,6 @@ public class Hestia implements GodStrategy {
     }
 
     private boolean isPerimeterCell(Cell cell) {
-        return cell.getColIdentifier() == Board.WIDTH_SIZE - 1 || cell.getRowIdentifier() == Board.HEIGHT_SIZE;
+        return cell.getColIdentifier() == Board.WIDTH_SIZE - 1 || cell.getRowIdentifier() == Board.HEIGHT_SIZE - 1;
     }
 }

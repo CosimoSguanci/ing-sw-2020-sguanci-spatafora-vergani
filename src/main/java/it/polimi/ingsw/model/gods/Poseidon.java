@@ -12,38 +12,30 @@ public class Poseidon implements GodStrategy {
     }
 
     @Override
-    public boolean checkMovement(Worker worker, Cell moveCell) {
-        return standardCheckMovement(worker, moveCell);
+    public boolean checkMove(Worker worker, Cell moveCell) {
+        return worker.standardCheckMove(moveCell);
     }
 
     @Override
-    public boolean checkBuild(Worker worker, Cell buildCell) {
+    public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
         Worker unmovedWorker = worker.player.getWorkerFirst().equals(movedWorker) ?
                 worker.player.getWorkerSecond() : worker.player.getWorkerFirst();
         if(unmovedWorker.getPosition().getLevel() == BlockType.GROUND)
-            return standardCheckBuild(worker, buildCell) && multipleBuildDelegate.canBuildAgain();
+            return worker.standardCheckBuild(buildCell) && multipleBuildDelegate.canBuildAgain();
 
-        return standardCheckBuild(worker, buildCell);
+        return worker.standardCheckBuild(buildCell);
     }
 
     @Override
-    public void executeMovement(Worker worker, Cell moveCell) {
-        try {
-            worker.move(moveCell);
-            movedWorker = worker;
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void executeMove(Worker worker, Cell moveCell) {
+        worker.move(moveCell);
+        movedWorker = worker;
     }
 
     @Override
-    public void executeBuild(Worker worker, Cell buildCell) {
-        try {
-            worker.build(buildCell);
-            multipleBuildDelegate.increaseBuildCount();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+        worker.build(buildCell);
+        multipleBuildDelegate.increaseBuildCount();
     }
 
     @Override

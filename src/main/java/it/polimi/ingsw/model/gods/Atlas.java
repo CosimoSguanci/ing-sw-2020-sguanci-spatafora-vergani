@@ -7,27 +7,23 @@ import it.polimi.ingsw.model.Worker;
 
 public class Atlas implements GodStrategy {
     @Override
-    public boolean checkMovement(Worker worker, Cell moveCell) {
-        return standardCheckMovement(worker, moveCell);
+    public boolean checkMove(Worker worker, Cell moveCell) {
+        return worker.standardCheckMove(moveCell);
     }
 
     @Override
-    public boolean checkBuild(Worker worker, Cell buildCell) {
+    public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
         return worker.getPosition().isAdjacentTo(buildCell);
     }
 
     @Override
-    public void executeBuild(Worker worker, Cell buildCell) {
-        try {
-            worker.build(buildCell); // handle domes, maybe pass PlayerCommand as parameter? Or Block Type
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+        buildCell.setLevel(buildCellBlockType); // handles domes anywhere
     }
 
     @Override
-    public void executeMovement(Worker worker, Cell moveCell) {
-
+    public void executeMove(Worker worker, Cell moveCell) {
+        worker.move(moveCell);
     }
 
     @Override
@@ -45,7 +41,4 @@ public class Atlas implements GodStrategy {
 
     }
 
-    /*public void buildDome(Cell cell) {
-        cell.setLevel(BlockType.DOME);
-    }*/
 }
