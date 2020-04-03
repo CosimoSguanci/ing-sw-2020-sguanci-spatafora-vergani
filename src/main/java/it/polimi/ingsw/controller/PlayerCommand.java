@@ -12,7 +12,7 @@ import it.polimi.ingsw.model.Worker;
  * the cell in which the player wants the worker to move in or build in.
  */
 public class PlayerCommand {
-    final Player player;
+
     final CommandType commandType;
     final Player player;
     final Worker worker;
@@ -23,10 +23,9 @@ public class PlayerCommand {
      * PlayerCommand is the builder of the class. Taken as parameters
      * the builder sets the class' attributes to the relatives values received.
      */
-    public PlayerCommand(Player player, CommandType commandType, Worker worker, Cell cell) {
+    public PlayerCommand(Player player, CommandType commandType, Worker worker, Cell cell, BlockType cellBlockType) {
         this.player = player;
         this.commandType = commandType;
-        this.player = player;
         this.worker = worker;
         this.cell = cell;
         this.cellBlockType = cellBlockType;
