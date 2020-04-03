@@ -15,7 +15,7 @@ import java.util.ArrayList;
  *
  * @author Andrea Mario Vergani
  */
-public class Match {
+public class Match {  //tested with 100% coverage
     private ArrayList<Player> players;
     private Board matchBoard;
     private int turn;

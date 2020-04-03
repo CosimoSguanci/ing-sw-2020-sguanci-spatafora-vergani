@@ -34,8 +34,20 @@ public class CellTest {
         assertEquals(BlockType.LEVEL_THREE, cell.getLevel());
         cell.increaseLevel();
         assertEquals(BlockType.DOME, cell.getLevel());
+    }
+
+    @Test
+    public void increaseLevelDomeTest() throws Exception {
+        Cell cell = new Cell(2,1);
+        cell.increaseLevel();
+        assertEquals(BlockType.LEVEL_ONE, cell.getLevel());
+        cell.increaseLevel();
+        assertEquals(BlockType.LEVEL_TWO, cell.getLevel());
+        cell.increaseLevel();
+        assertEquals(BlockType.LEVEL_THREE, cell.getLevel());
         cell.increaseLevel();
         assertEquals(BlockType.DOME, cell.getLevel());
+        assertThrows(Exception.class, cell::increaseLevel);
     }
 
     @Test

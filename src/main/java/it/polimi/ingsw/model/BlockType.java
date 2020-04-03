@@ -11,7 +11,7 @@ package it.polimi.ingsw.model;
  *
  * @author Andrea Mario Vergani
  */
-public enum BlockType {
+public enum BlockType {  //100% covered with tests
     GROUND(0), LEVEL_ONE(1), LEVEL_TWO(2), LEVEL_THREE(3), DOME(4);
     private int levelNumber;
 
