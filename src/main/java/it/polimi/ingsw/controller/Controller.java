@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.observer.Observer;
 
 
-
 /**
  * This class represents the Controller in MVC design pattern. The whole
  * application, in fact, is based on MVC pattern, and in particular
@@ -27,8 +26,7 @@ public class Controller implements Observer<PlayerCommand> {
      * needs to reference to the general Model of the game, so that changes
      * and operations in it are possible.
      *
-     * @param model   class Model of MVC pattern
-     *
+     * @param model class Model of MVC pattern
      */
     public Controller(Model model) {
         this.model = model;
@@ -39,15 +37,13 @@ public class Controller implements Observer<PlayerCommand> {
      * This method is an overriding method of "update" in Observer interface.
      * Its task is to handle player command coming from View.
      *
-     * @param message   player move/build from View
-     *
+     * @param message player move/build from View
      */
     @Override
     public void update(PlayerCommand message) {
         try {
             handleCommand(message);
-        }
-        catch(Exception e) {  //must be understood what happens when this exception occurs
+        } catch (Exception e) {  //must be understood what happens when this exception occurs
             //this exception occurs when a player is giving a command during a turn "owned" by another player
             e.printStackTrace();
         }
@@ -61,23 +57,35 @@ public class Controller implements Observer<PlayerCommand> {
      * since its state will not modify); call the selected command from the
      * player, as an invocation of one of model's methods.
      *
-     * @param playerCommand   player command from View
-     * @throws Exception    when command's player is not current player
-     *
+     * @param playerCommand player command from View
+     * @throws Exception when command's player is not current player
      */
     private void handleCommand(PlayerCommand playerCommand) throws Exception {
         Player currentPlayer = model.getCurrentPlayer();
-        if(!playerCommand.player.equals(currentPlayer)) {
+        if (!playerCommand.player.equals(currentPlayer)) {
             throw new Exception();
-        }
-        else{
-            if(playerCommand.commandType == CommandType.MOVE) {
-                currentPlayer.getGod().godStrategy.executeMove(playerCommand.worker, playerCommand.cell);
+        } else {
+
+            switch (playerCommand.commandType) {
+                case MOVE:
+                    break;
+                case BUILD:
+                    break;
+                case END_TURN:
+                    break;
             }
-            else if(playerCommand.commandType == CommandType.BUILD) {
-                currentPlayer.getGod().godStrategy.executeBuild(playerCommand.worker, playerCommand.cell, playerCommand.cellBlockType);
-            }
-            else {
+            if (playerCommand.commandType == CommandType.MOVE) {
+
+                if (currentPlayer.getGod().godStrategy.checkMove(playerCommand.worker, playerCommand.cell)) {
+                    currentPlayer.getGod().godStrategy.executeMove(playerCommand.worker, playerCommand.cell);
+                }
+            } else if (playerCommand.commandType == CommandType.BUILD) {
+
+                if (currentPlayer.getGod().godStrategy.checkBuild(playerCommand.worker, playerCommand.cell, playerCommand.cellBlockType)) {
+                    currentPlayer.getGod().godStrategy.executeBuild(playerCommand.worker, playerCommand.cell, playerCommand.cellBlockType);
+
+                }
+            } else {
                 model.endTurn();
             }
         }
