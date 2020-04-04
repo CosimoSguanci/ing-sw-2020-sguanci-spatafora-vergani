@@ -27,9 +27,7 @@ public class Atlas implements GodStrategy {
     }
 
     @Override
-    public void prepareGame() {
-
-    }
+    public void prepareGame() {}
 
     @Override
     public boolean checkGamePreparation() {

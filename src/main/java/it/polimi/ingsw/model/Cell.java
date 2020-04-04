@@ -78,7 +78,7 @@ public class Cell {
      * actual level is the highest one: a dome
      */
     //tested
-    public void increaseLevel() throws Exception {
+    public void increaseLevel() {
 
         switch(this.level) {
             case GROUND:
@@ -93,8 +93,8 @@ public class Cell {
             case LEVEL_THREE:
                 this.level = BlockType.DOME;
                 break;
-            case DOME:
-                throw new Exception();
+            /*case DOME:
+                throw new Exception();*/
 
         }
     }

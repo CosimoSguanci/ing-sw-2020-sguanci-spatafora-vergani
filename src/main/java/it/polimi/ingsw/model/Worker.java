@@ -108,12 +108,7 @@ public class Worker {
      * is already occupied or has reached its maximum level.
      */
     public void build(Cell buildCell) {
-
-        try {
-            buildCell.increaseLevel();
-        } catch(Exception e) { // Move this exception
-            e.printStackTrace();
-        }
+        buildCell.increaseLevel();
     }
 
 }

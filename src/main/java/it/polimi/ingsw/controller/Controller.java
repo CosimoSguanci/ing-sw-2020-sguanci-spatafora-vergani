@@ -68,25 +68,19 @@ public class Controller implements Observer<PlayerCommand> {
 
             switch (playerCommand.commandType) {
                 case MOVE:
+                    if (currentPlayer.getGod().godStrategy.checkMove(playerCommand.worker, playerCommand.cell)) {
+                        currentPlayer.getGod().godStrategy.executeMove(playerCommand.worker, playerCommand.cell);
+                    }
                     break;
                 case BUILD:
+                    if (currentPlayer.getGod().godStrategy.checkBuild(playerCommand.worker, playerCommand.cell, playerCommand.cellBlockType)) {
+                        currentPlayer.getGod().godStrategy.executeBuild(playerCommand.worker, playerCommand.cell, playerCommand.cellBlockType);
+                    }
                     break;
                 case END_TURN:
+                    model.endTurn();
                     break;
-            }
-            if (playerCommand.commandType == CommandType.MOVE) {
 
-                if (currentPlayer.getGod().godStrategy.checkMove(playerCommand.worker, playerCommand.cell)) {
-                    currentPlayer.getGod().godStrategy.executeMove(playerCommand.worker, playerCommand.cell);
-                }
-            } else if (playerCommand.commandType == CommandType.BUILD) {
-
-                if (currentPlayer.getGod().godStrategy.checkBuild(playerCommand.worker, playerCommand.cell, playerCommand.cellBlockType)) {
-                    currentPlayer.getGod().godStrategy.executeBuild(playerCommand.worker, playerCommand.cell, playerCommand.cellBlockType);
-
-                }
-            } else {
-                model.endTurn();
             }
         }
     }
