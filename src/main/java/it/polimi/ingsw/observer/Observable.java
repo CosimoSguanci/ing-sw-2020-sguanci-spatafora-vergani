@@ -14,8 +14,10 @@ import java.util.List;
  *
  * @author Andrea Mario Vergani
  */
+
 public class Observable<T> {
-    private List<Observer<T>> observers = new ArrayList();
+
+    private List<Observer<T>> observers = new ArrayList<>();
 
     /**
      * This method attaches the parameter object (an observer) to the list
@@ -25,8 +27,8 @@ public class Observable<T> {
      * @param observer   observer object that wants to attach to observable's list
      *
      */
-    public void attach(Observer<T> observer) {
-        if(!(observers.contains(observer))) {  //observer not present in the list of observers; otherwise, there is no need to add it
+    public void addObserver(Observer<T> observer){
+        synchronized (observers) {
             observers.add(observer);
         }
     }
@@ -40,10 +42,11 @@ public class Observable<T> {
      * @param observer   observer object that wants to detach from observable's list
      *
      */
-    public void detach(Observer<T> observer) {
-        observers.remove(observer);
+    public void removeObserver(Observer<T> observer){
+        synchronized (observers) {
+            observers.remove(observer);
+        }
     }
-
 
     /**
      * This method is useful to notify to all observers (in the list) of a
@@ -54,9 +57,12 @@ public class Observable<T> {
      * @param message   object that represents the change, so that observers can understand what happened
      *
      */
-    public void notify(T message) {
-        for(Observer<T> obs: observers) {
-            obs.update(message);
+    public void notify(T message){
+        synchronized (observers) {
+            for (Observer<T> observer : observers) {
+                observer.update(message);
+            }
         }
     }
+
 }

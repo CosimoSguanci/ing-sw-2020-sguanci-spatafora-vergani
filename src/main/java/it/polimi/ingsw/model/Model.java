@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.observer.Observable;
 
-public class Model extends Observable {
+public class Model extends Observable<ModelUpdate> {
     private Match match;
 
     public Model(Match match) {

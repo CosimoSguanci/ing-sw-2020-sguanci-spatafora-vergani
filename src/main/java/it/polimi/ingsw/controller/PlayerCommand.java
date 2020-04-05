@@ -30,4 +30,10 @@ public class PlayerCommand {
         this.cell = cell;
         this.cellBlockType = cellBlockType;
     }
+
+
+
+    /*public static PlayerCommand parseInput(String command) {
+
+    }*/
 }
