@@ -10,4 +10,8 @@ package it.polimi.ingsw.controller;
 public enum CommandType {
 
     MOVE, BUILD, END_TURN;
+
+    public static CommandType parseCommandType(String input) {
+        return Enum.valueOf(CommandType.class, input.toUpperCase());
+    }
 }
