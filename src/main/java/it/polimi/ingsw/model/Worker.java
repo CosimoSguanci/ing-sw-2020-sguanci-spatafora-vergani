@@ -85,7 +85,8 @@ public class Worker {
      * The worker can move up at most one level.
      *
      * @param moveCell indicates the Cell in which a player wants his worker to move in.
-     *
+     */
+    /*
      * @throws Exception either a worker tries to move in a non adjacent cell or if the cell
      * is already occupied or has reached its maximum level. It also throws Exception if a
      * worker tries to move up more than a single level.
@@ -103,7 +104,8 @@ public class Worker {
      * As a result of this method the level of a cell is increased.
      *
      * @param buildCell indicates the Cell in which a player wants his worker to build in.
-     *
+     */
+    /*
      * @throws Exception either a worker tries to build in a non adjacent cell or if the cell
      * is already occupied or has reached its maximum level.
      */

@@ -73,7 +73,8 @@ public class Cell {
      * The method is thought to perform a build on the considered cell. Every build
      * increases the level of the cell of one block, if it is possible. An exception is
      * thrown when the level is the highest one (dome), so no increase is possible
-     *
+     */
+    /*
      * @throws Exception when someone is trying to increase the level of the cell, but the
      * actual level is the highest one: a dome
      */

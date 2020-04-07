@@ -3,7 +3,8 @@ package it.polimi.ingsw.model;
 import static org.junit.Assert.*;
 
 import it.polimi.ingsw.model.*;
-import org.junit.jupiter.api.Test;
+import org.junit.Ignore;
+import org.junit.Test;
 
 
 public class WorkerTest {
@@ -42,6 +43,7 @@ public class WorkerTest {
     }
 
 
+    @Ignore  //there is no exception for this, since conditions are checked in checkMove() method (GodStrategy)
     @Test
     public void testCellNotAdjacentMove() throws Exception {
 
@@ -58,6 +60,7 @@ public class WorkerTest {
         System.out.println("Test successfully completed.");
     }
 
+    @Ignore  //there is no exception for this, since conditions are checked in checkMove() method (GodStrategy)
     @Test
     public void testCellNotEmptyMove() throws Exception {
 
@@ -77,6 +80,7 @@ public class WorkerTest {
     }
 
 
+    @Ignore  //there is no exception for this, since conditions are checked in checkMove() method (GodStrategy)
     @Test
     public void testDomeMove() throws Exception {
 
@@ -95,6 +99,7 @@ public class WorkerTest {
     }
 
 
+    @Ignore  //there is no exception for this, since conditions are checked in checkMove() method (GodStrategy)
     @Test
     public void testCannotMove() throws Exception {
 
@@ -141,6 +146,7 @@ public class WorkerTest {
     }
 
 
+    @Ignore  //there is no exception for this, since conditions are checked in checkBuild() method (GodStrategy)
     @Test
     public void testCellNotAdjacentBuild() throws Exception {
 
@@ -158,6 +164,7 @@ public class WorkerTest {
     }
 
 
+    @Ignore  //there is no exception for this, since conditions are checked in checkBuild() method (GodStrategy)
     @Test
     public void testCellNotEmptyBuild() throws Exception {
 
@@ -177,6 +184,7 @@ public class WorkerTest {
     }
 
 
+    @Ignore  //there is no exception for this, since conditions are checked in checkBuild() method (GodStrategy)
     @Test
     public void testDomeBuild() throws Exception {
 
