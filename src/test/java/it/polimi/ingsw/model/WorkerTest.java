@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import static org.junit.Assert.*;
 
 import it.polimi.ingsw.model.*;
-import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -43,7 +42,6 @@ public class WorkerTest {
     }
 
 
-    @Ignore  //there is no exception for this, since conditions are checked in checkMove() method (GodStrategy)
     @Test
     public void testCellNotAdjacentMove() throws Exception {
 
@@ -56,11 +54,11 @@ public class WorkerTest {
 
         testWorker.setInitialPosition(0,0);
 
-        Exception exception = assertThrows(Exception.class, () -> {testWorker.move(testBoard.getCell(0,2));});
+        assertFalse(testWorker.standardCheckMove(testBoard.getCell(0,2)));
         System.out.println("Test successfully completed.");
     }
 
-    @Ignore  //there is no exception for this, since conditions are checked in checkMove() method (GodStrategy)
+
     @Test
     public void testCellNotEmptyMove() throws Exception {
 
@@ -75,12 +73,12 @@ public class WorkerTest {
         testWorker.setInitialPosition(0,0);
         testOccupantWorker.setInitialPosition(0,1);
 
-        Exception exception = assertThrows(Exception.class, () -> {testWorker.move(testBoard.getCell(0,1));});
+        assertFalse(testWorker.standardCheckMove(testBoard.getCell(0,1)));
         System.out.println("Test successfully completed.");
     }
 
 
-    @Ignore  //there is no exception for this, since conditions are checked in checkMove() method (GodStrategy)
+
     @Test
     public void testDomeMove() throws Exception {
 
@@ -94,12 +92,12 @@ public class WorkerTest {
         testWorker.setInitialPosition(0,0);
         testBoard.getCell(0,1).setLevel(BlockType.DOME);
 
-        Exception exception = assertThrows(Exception.class, () -> {testWorker.move(testBoard.getCell(0,1));});
+        assertFalse(testWorker.standardCheckMove(testBoard.getCell(0,1)));
         System.out.println("Test successfully completed.");
     }
 
 
-    @Ignore  //there is no exception for this, since conditions are checked in checkMove() method (GodStrategy)
+
     @Test
     public void testCannotMove() throws Exception {
 
@@ -114,7 +112,7 @@ public class WorkerTest {
         testBoard.getCell(0,1).setLevel(BlockType.LEVEL_ONE);
         testPlayer.match.setCanMove(false);
 
-        Exception exception = assertThrows(Exception.class, () -> {testWorker.move(testBoard.getCell(0,1));});
+        assertFalse(testWorker.standardCheckMove(testBoard.getCell(0,1)));
         System.out.println("Test successfully completed.");
     }
 
@@ -146,7 +144,7 @@ public class WorkerTest {
     }
 
 
-    @Ignore  //there is no exception for this, since conditions are checked in checkBuild() method (GodStrategy)
+
     @Test
     public void testCellNotAdjacentBuild() throws Exception {
 
@@ -159,12 +157,12 @@ public class WorkerTest {
 
         testWorker.setInitialPosition(0,0);
 
-        assertThrows(Exception.class, () -> {testWorker.build(testBoard.getCell(0,2));});
+        assertFalse(testWorker.standardCheckBuild(testBoard.getCell(0,2)));
         System.out.println("Test successfully completed.");
     }
 
 
-    @Ignore  //there is no exception for this, since conditions are checked in checkBuild() method (GodStrategy)
+
     @Test
     public void testCellNotEmptyBuild() throws Exception {
 
@@ -179,12 +177,12 @@ public class WorkerTest {
         testWorker.setInitialPosition(0,0);
         testSecondWorker.setInitialPosition(0,1);
 
-        assertThrows(Exception.class, () -> {testWorker.build(testBoard.getCell(0,1));});
+        assertFalse(testWorker.standardCheckBuild(testBoard.getCell(0,1)));
         System.out.println("Test successfully completed.");
     }
 
 
-    @Ignore  //there is no exception for this, since conditions are checked in checkBuild() method (GodStrategy)
+
     @Test
     public void testDomeBuild() throws Exception {
 
@@ -198,7 +196,7 @@ public class WorkerTest {
         testWorker.setInitialPosition(0,0);
         testBoard.getCell(0,1).setLevel(BlockType.DOME);
 
-        Exception exception = assertThrows(Exception.class, () -> {testWorker.build(testBoard.getCell(0,1));});
+        assertFalse(testWorker.standardCheckBuild(testBoard.getCell(0,1)));
         System.out.println("Test successfully completed.");
     }
 
