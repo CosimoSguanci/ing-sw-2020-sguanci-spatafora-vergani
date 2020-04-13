@@ -27,6 +27,17 @@ public class Server {
     public synchronized void lobby(ClientHandler c, String nickname) {
 
         waitingConnection.put(nickname, c);
+
+        if (waitingConnection.size() == 1) {
+            try {
+                c.sendRequest(Request.ASK_PLAYER_NUM);
+                return;
+            } catch(Exception e) {
+
+            }
+        }
+
+
         if (waitingConnection.size() == 2) { // 3/4? Chiediamo all'inizio?
 
             try {

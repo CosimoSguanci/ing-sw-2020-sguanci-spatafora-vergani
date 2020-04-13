@@ -1,14 +1,12 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.controller.PlayerCommand;
-import it.polimi.ingsw.model.Model;
-import it.polimi.ingsw.model.ModelUpdate;
+import it.polimi.ingsw.model.messages.ModelUpdate;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
-public abstract class View extends Observable<PlayerCommand> implements Observer<ModelUpdate> {
+public abstract class View extends Observable<PlayerCommand> implements Observer<Object> {
 
     private Player player;
 

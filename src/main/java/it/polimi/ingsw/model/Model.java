@@ -1,8 +1,12 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.CommandType;
+import it.polimi.ingsw.model.messages.ErrorUpdate;
+import it.polimi.ingsw.model.messages.ModelUpdate;
+import it.polimi.ingsw.model.messages.TurnUpdate;
 import it.polimi.ingsw.observer.Observable;
 
-public class Model extends Observable<ModelUpdate> {
+public class Model extends Observable<Object> {
     private Match match;
 
     public Model(Match match) {
@@ -27,5 +31,12 @@ public class Model extends Observable<ModelUpdate> {
      */
     public void endTurn() {
         match.nextTurn();
+        TurnUpdate turnUpdate = new TurnUpdate(match.getCurrentPlayer());
+        notify(turnUpdate);
+    }
+
+    public void reportError(Player player, CommandType commandType) {
+        ErrorUpdate errorUpdate = new ErrorUpdate(player, commandType);
+        notify(errorUpdate);
     }
 }

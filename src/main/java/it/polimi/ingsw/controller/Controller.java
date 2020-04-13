@@ -61,6 +61,9 @@ public class Controller implements Observer<PlayerCommand> {
      * @throws Exception when command's player is not current player
      */
     private void handleCommand(PlayerCommand playerCommand) throws Exception {
+
+        //playerCommand.cell =
+
         Player currentPlayer = model.getCurrentPlayer();
         if (!playerCommand.player.equals(currentPlayer)) {
             throw new Exception();
@@ -71,10 +74,16 @@ public class Controller implements Observer<PlayerCommand> {
                     if (currentPlayer.getGod().godStrategy.checkMove(playerCommand.worker, playerCommand.cell)) {
                         currentPlayer.getGod().godStrategy.executeMove(playerCommand.worker, playerCommand.cell);
                     }
+                    else {
+                        model.reportError(playerCommand.player, playerCommand.commandType);
+                    }
                     break;
                 case BUILD:
                     if (currentPlayer.getGod().godStrategy.checkBuild(playerCommand.worker, playerCommand.cell, playerCommand.cellBlockType)) {
                         currentPlayer.getGod().godStrategy.executeBuild(playerCommand.worker, playerCommand.cell, playerCommand.cellBlockType);
+                    }
+                    else {
+                        model.reportError(playerCommand.player, playerCommand.commandType);
                     }
                     break;
                 case END_TURN:

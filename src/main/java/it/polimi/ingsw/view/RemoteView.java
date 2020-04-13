@@ -1,7 +1,8 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.PlayerCommand;
-import it.polimi.ingsw.model.ModelUpdate;
+import it.polimi.ingsw.model.messages.ErrorUpdate;
+import it.polimi.ingsw.model.messages.ModelUpdate;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.server.ClientHandler;
@@ -42,8 +43,23 @@ public class RemoteView extends View {
     }
 
     @Override
-    public void update(ModelUpdate message)
+    public void update(Object message)
     {
+        try {
+
+            if(message instanceof ErrorUpdate) {
+                ErrorUpdate errorUpdate = (ErrorUpdate) message;
+
+                if (getPlayer().equals(errorUpdate.getPlayer())) {
+                    clientHandler.sendObject(message);
+                }
+            }
+            else
+                clientHandler.sendObject(message);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
        /* showMessage(message.getBoard());
         String resultMsg = "";
         boolean gameOver = message.getBoard().isGameOver(message.getPlayer().getMarker());
