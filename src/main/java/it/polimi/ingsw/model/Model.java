@@ -25,6 +25,11 @@ public class Model extends Observable<Object> {
     }
 
 
+    public Board getBoard() {
+        return match.getMatchBoard();
+    }
+
+
     /**
      * The method calls for the end of turn of current player.
      *

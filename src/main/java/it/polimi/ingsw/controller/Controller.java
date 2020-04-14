@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.observer.Observer;
@@ -42,6 +43,8 @@ public class Controller implements Observer<PlayerCommand> {
     @Override
     public void update(PlayerCommand message) {
         try {
+            Cell correctCell = model.getBoard().getCell(message.getCell().getRowIdentifier(), message.getCell().getColIdentifier());
+            message.setCell(correctCell);
             handleCommand(message);
         } catch (Exception e) {  //must be understood what happens when this exception occurs
             //this exception occurs when a player is giving a command during a turn "owned" by another player
@@ -61,9 +64,6 @@ public class Controller implements Observer<PlayerCommand> {
      * @throws Exception when command's player is not current player
      */
     private void handleCommand(PlayerCommand playerCommand) throws Exception {
-
-        //playerCommand.cell =
-
         Player currentPlayer = model.getCurrentPlayer();
         if (!playerCommand.player.equals(currentPlayer)) {
             throw new Exception();
@@ -71,16 +71,16 @@ public class Controller implements Observer<PlayerCommand> {
 
             switch (playerCommand.commandType) {
                 case MOVE:
-                    if (currentPlayer.getGod().godStrategy.checkMove(playerCommand.worker, playerCommand.cell)) {
-                        currentPlayer.getGod().godStrategy.executeMove(playerCommand.worker, playerCommand.cell);
+                    if (currentPlayer.getGod().godStrategy.checkMove(playerCommand.worker, playerCommand.getCell())) {
+                        currentPlayer.getGod().godStrategy.executeMove(playerCommand.worker, playerCommand.getCell());
                     }
                     else {
                         model.reportError(playerCommand.player, playerCommand.commandType);
                     }
                     break;
                 case BUILD:
-                    if (currentPlayer.getGod().godStrategy.checkBuild(playerCommand.worker, playerCommand.cell, playerCommand.cellBlockType)) {
-                        currentPlayer.getGod().godStrategy.executeBuild(playerCommand.worker, playerCommand.cell, playerCommand.cellBlockType);
+                    if (currentPlayer.getGod().godStrategy.checkBuild(playerCommand.worker, playerCommand.getCell(), playerCommand.cellBlockType)) {
+                        currentPlayer.getGod().godStrategy.executeBuild(playerCommand.worker, playerCommand.getCell(), playerCommand.cellBlockType);
                     }
                     else {
                         model.reportError(playerCommand.player, playerCommand.commandType);

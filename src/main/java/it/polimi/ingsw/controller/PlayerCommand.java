@@ -13,7 +13,7 @@ public class PlayerCommand {
     final CommandType commandType;
     final Player player;
     final Worker worker;
-    final Cell cell;
+    private Cell cell;
     final BlockType cellBlockType;
 
     /**
@@ -28,9 +28,16 @@ public class PlayerCommand {
         this.cellBlockType = cellBlockType;
     }
 
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
+
+    public Cell getCell() {
+        return cell;
+    }
 
 
-    public static PlayerCommand parseInput(Player player, String command) throws Exception{
+    public static PlayerCommand parseInput(Player player, String command) throws Exception {
 
         CommandType commandType;
         Worker worker;
@@ -39,13 +46,13 @@ public class PlayerCommand {
 
         String[] s = command.split("\\s+");
 
-        if(s.length > 4) {
+        if (s.length > 4) {
             throw new Exception();
         }
 
         String type = s[0];
 
-        switch(type.toLowerCase()) {
+        switch (type.toLowerCase()) {
             case "move":
                 commandType = CommandType.MOVE;
                 break;
@@ -59,13 +66,13 @@ public class PlayerCommand {
                 throw new Exception();
         }
 
-        if(type.toLowerCase().equals("end")) {
+        if (type.toLowerCase().equals("end")) {
             return new PlayerCommand(player, CommandType.END_TURN, null, null, null);
         }
 
         String workerStr = s[1];
 
-        if(!workerStr.toLowerCase().equals("w1") && !workerStr.toLowerCase().equals("w2")) {
+        if (!workerStr.toLowerCase().equals("w1") && !workerStr.toLowerCase().equals("w2")) {
             throw new Exception();
         }
 
@@ -74,15 +81,15 @@ public class PlayerCommand {
         char rowChar = cellStr.charAt(0);
         int colNum = Integer.parseInt(cellStr.substring(1));
 
-        if(cellStr.length() != 2 || colNum < 1 || colNum > Board.WIDTH_SIZE || rowChar < 'a' || rowChar > ('a' + Board.HEIGHT_SIZE)) {
+        if (cellStr.length() != 2 || colNum < 1 || colNum > Board.WIDTH_SIZE || rowChar < 'a' || rowChar > ('a' + Board.HEIGHT_SIZE)) {
             throw new Exception();
         }
 
         String blockTypeStr;
-        if(s.length == 4) {
+        if (s.length == 4) {
             blockTypeStr = s[3];
 
-            switch(blockTypeStr) {
+            switch (blockTypeStr) {
                 case "one":
                     blockType = BlockType.LEVEL_ONE;
                     break;
@@ -101,13 +108,9 @@ public class PlayerCommand {
         }
 
         worker = workerStr.equals("w1") ? player.getWorkerFirst() : player.getWorkerSecond(); // JML
-        cell = new Cell((int)rowChar - 'a', colNum - 1);
+        cell = new Cell((int) rowChar - 'a', colNum - 1);
 
         return new PlayerCommand(player, commandType, worker, cell, blockType);
-
-
-
-
 
 
     }

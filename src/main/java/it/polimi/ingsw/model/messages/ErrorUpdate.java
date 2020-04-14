@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.messages;
 
 import it.polimi.ingsw.controller.CommandType;
-import it.polimi.ingsw.controller.PlayerCommand;
 import it.polimi.ingsw.model.Player;
 
 public class ErrorUpdate {
