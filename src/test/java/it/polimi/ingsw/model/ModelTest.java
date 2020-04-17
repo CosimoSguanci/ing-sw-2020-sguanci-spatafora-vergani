@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -26,6 +27,11 @@ public class ModelTest {
         assertEquals(p1, model.getCurrentPlayer());
         model.endTurn();
         assertEquals(p2, model.getCurrentPlayer());
+    }
+
+    @Ignore
+    @Test
+    public void getBoardTest() {
     }
 
     @Test

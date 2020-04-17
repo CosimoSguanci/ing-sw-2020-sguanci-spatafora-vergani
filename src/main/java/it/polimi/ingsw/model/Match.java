@@ -130,4 +130,8 @@ public class Match {  //tested with 100% coverage
     public Player getCurrentPlayer() {
         return players.get(turn);
     }
+
+
+    public Board getMatchBoard() { return matchBoard; }
 }
+
