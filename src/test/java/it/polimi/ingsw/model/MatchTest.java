@@ -161,4 +161,9 @@ public class MatchTest {
         match.nextTurn();
         assertEquals(p2, match.getCurrentPlayer());
     }
+
+    @Ignore
+    @Test
+    public void getMatchBoardTest() {
+    }
 }
