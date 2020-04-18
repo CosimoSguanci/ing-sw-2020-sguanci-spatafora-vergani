@@ -130,4 +130,15 @@ public class Match {  //tested with 100% coverage
     public Player getCurrentPlayer() {
         return players.get(turn);
     }
+
+
+    /**
+     * The method returns corresponding game board of this specific match
+     *
+     * @return the board that is being used for this match
+     *
+     */
+    public Board getMatchBoard() {
+        return matchBoard;
+    }
 }
