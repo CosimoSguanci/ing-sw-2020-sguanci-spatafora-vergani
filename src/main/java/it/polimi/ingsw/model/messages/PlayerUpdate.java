@@ -1,15 +1,15 @@
 package it.polimi.ingsw.model.messages;
 
-import it.polimi.ingsw.model.Player;
+import java.io.Serializable;
 
-public class PlayerUpdate {
-    private Player player;
+public class PlayerUpdate implements Serializable {
+    private String playerID;
 
-    PlayerUpdate(Player player) {
-        this.player = player;
+    public PlayerUpdate(String playerID) {
+        this.playerID = playerID;
     }
 
-    public Player getPlayer() {
-        return this.player;
+    public String getPlayerID() {
+        return this.playerID;
     }
 }
