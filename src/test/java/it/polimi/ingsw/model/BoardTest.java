@@ -3,6 +3,8 @@ package it.polimi.ingsw.model;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static org.junit.Assert.*;
 
 public class BoardTest {
@@ -15,8 +17,11 @@ public class BoardTest {
 
     @Test
     public void canMoveTrueTest() throws Exception {
-        Match match = new Match(2);
-        Board board = new Board();
+        int playersNum = 2;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Board board = Board.getInstance(key);;
+
         Player player = new Player("Andrea", "andv", match);
         Worker w1 = new Worker(player, board);
         Worker w2 = new Worker(player, board);
@@ -58,8 +63,10 @@ public class BoardTest {
 
     @Test
     public void canMoveFalseTest() throws Exception {
-        Match match = new Match(2);
-        Board board = new Board();
+        int playersNum = 2;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Board board = Board.getInstance(key);;
         Player player = new Player("Andrea", "andv", match);
         Worker w1 = new Worker(player, board);
         Worker w2 = new Worker(player, board);
@@ -100,14 +107,17 @@ public class BoardTest {
 
     @Test
     public void canBuildTrueTest() throws Exception {
-        Board board = new Board();
-        Player player = new Player("Andrea", "andv", null);
+        int playersNum = 2;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Board board = Board.getInstance(key);;
+        Player player = new Player("Andrea", "andv", match);
         Worker w1 = new Worker(player, board);
         Worker w2 = new Worker(player, board);
         player.setWorkerFirst(w1);
         player.setWorkerSecond(w2);
 
-        Player opponent = new Player("Marco", "mc",null);
+        Player opponent = new Player("Marco", "mc",match);
         Worker wOpp1 = new Worker(opponent, board);
         Worker wOpp2 = new Worker(opponent, board);
         opponent.setWorkerFirst(wOpp1);
@@ -144,8 +154,11 @@ public class BoardTest {
 
     @Test
     public void canBuildFalseTest() throws Exception {
-        Board board = new Board();
-        Player player = new Player("Andrea", "andv", null);
+        int playersNum = 2;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Board board = Board.getInstance(key);;
+        Player player = new Player("Andrea", "andv", match);
         Worker w1 = new Worker(player, board);
         Worker w2 = new Worker(player, board);
         player.setWorkerFirst(w1);
