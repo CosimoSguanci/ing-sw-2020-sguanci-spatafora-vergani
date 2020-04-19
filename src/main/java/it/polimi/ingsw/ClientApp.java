@@ -1,22 +1,23 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.MessageListener;
 import it.polimi.ingsw.client.controller.Controller;
-import it.polimi.ingsw.controller.PlayerCommand;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.view.cli.Cli;
+import it.polimi.ingsw.view.cli.GameManager;
 
 public class ClientApp
 {
     public static void main(String[] args) throws Exception{
-        /*Client client = new Client();
+        Client client = new Client();
+        MessageListener messageListener = new MessageListener(client.getSocket());
+        new Thread(messageListener).start();
         Controller controller = new Controller(client);
-        Cli cli = new Cli(client);
+        GameManager gameManager = new GameManager(client);
+        Cli cli = new Cli(client, gameManager);
+        messageListener.addObserver(cli);
         cli.addObserver(controller);
-        cli.start();*/
-
-        PlayerCommand c = PlayerCommand.parseInput(new Player("", "", null), "move       w1 c5 dome");
-
-        System.out.println("");
+        gameManager.addObserver(controller);
+        cli.start();
     }
 }
