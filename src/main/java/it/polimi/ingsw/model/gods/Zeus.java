@@ -2,42 +2,27 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Worker;
 
-public class Zeus implements GodStrategy {
-    @Override
-    public boolean checkMove(Worker worker, Cell moveCell) {
-        return worker.standardCheckMove(moveCell);
-    }
+/**
+ * This class implements the Zeus strategy used by the Player who chose the powers of this God.
+ * Specifically, the selected Worker is allowed to build a block under itself.
+ *
+ * @author Cosimo Sguanci
+ */
 
+public class Zeus extends GodStrategy {
+
+    /**
+     * This method implements build check to also allow the construction of a block on the same position of the selected Worker.
+     *
+     * @param worker    the worker who want to build a new level.
+     * @param buildCell the cell in which the Player want to build a new level.
+     * @return true if the Build passed as parameter can be performed, false otherwise.
+     */
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        return (worker.getPosition().isAdjacentTo(buildCell) || buildCell.equals(worker.getPosition())) && (buildCell.getLevel() != BlockType.DOME);
+        return isUsingSelectedWorker(worker) && worker.hasMoved() && !worker.hasBuilt() && (worker.getPosition().isAdjacentTo(buildCell) || worker.getPosition().equals(buildCell)) && (buildCell.getLevel() != BlockType.DOME);
     }
 
-    @Override
-    public void executeMove(Worker worker, Cell moveCell) {
-        worker.move(moveCell);
-    }
-
-    @Override
-    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        worker.build(buildCell); //checkAndExecute ?
-    }
-
-    @Override
-    public void prepareGame() {
-
-    }
-
-    @Override
-    public boolean checkGamePreparation() {
-        return true;
-    }
-
-    @Override
-    public void endTurn(Match match) {
-
-    }
 }

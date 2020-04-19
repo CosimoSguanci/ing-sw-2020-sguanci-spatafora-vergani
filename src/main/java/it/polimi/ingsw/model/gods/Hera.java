@@ -1,43 +1,36 @@
 package it.polimi.ingsw.model.gods;
 
-import it.polimi.ingsw.model.BlockType;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Match;
-import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.*;
 
-public class Hera implements GodStrategy { // handle flag(s)
+/**
+ * This class implements the Hera strategy used by the Player who chose the powers of this God.
+ * Specifically, Hera imposes Win constraints to other players: an opponent cannot win by moving into a perimeter space.
+ *
+ * @author Cosimo Sguanci
+ */
+
+public class Hera extends GodStrategy {
+
+    /**
+     * Implements Hera Win Constraints to other players.
+     *
+     * @see Hera#isPerimeterCell(Cell)
+     * @param opponentWorker    the opponent selected worker for the current turn.
+     * @param moveCell          the cell in which the opponent Player moved the selected worker.
+     * @return true if the Cell where the opposite Worker moved is not a perimeter Cell, false otherwise
+     */
     @Override
-    public boolean checkMove(Worker worker, Cell moveCell) {
-        return worker.standardCheckMove(moveCell);
+    public boolean checkWinConstraints(Worker opponentWorker, Cell moveCell) {
+        return !isPerimeterCell(moveCell);
     }
 
-    @Override
-    public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        return worker.standardCheckBuild(buildCell);
-    }
-
-    @Override
-    public void executeMove(Worker worker, Cell moveCell) {
-        worker.move(moveCell);
-    }
-
-    @Override
-    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        worker.build(buildCell);
-    }
-
-    @Override
-    public void prepareGame() {
-
-    }
-
-    @Override
-    public boolean checkGamePreparation() {
-        return true;
-    }
-
-    @Override
-    public void endTurn(Match match) {
-
+    /**
+     * Checks if the Cell passed is on the perimeter of the game Board.
+     *
+     * @param cell    the Cell in which the Opponent Worker was moved
+     * @return true if the Cell is in the perimeter of the game Board, false otherwise.
+     */
+    private boolean isPerimeterCell(Cell cell) {
+        return cell.getColIdentifier() == Board.WIDTH_SIZE - 1 || cell.getRowIdentifier() == Board.HEIGHT_SIZE - 1;
     }
 }

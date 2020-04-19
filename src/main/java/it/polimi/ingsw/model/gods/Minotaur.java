@@ -1,63 +1,137 @@
 package it.polimi.ingsw.model.gods;
 
-import it.polimi.ingsw.model.BlockType;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Match;
-import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.*;
 
-public class Minotaur implements GodStrategy {
+/**
+ * This class implements the Minotaur strategy used by the Player who chose the powers of this God.
+ * Specifically, Minotaur allows the selected worker to move to an opponent Worker's space, if the
+ * opponent Worker can be forced on space straight backwards to an unoccupied space at any level.
+ *
+ * @author Cosimo Sguanci
+ */
+
+public class Minotaur extends GodStrategy {
 
     private final OpponentWorkerMoverDelegate opponentWorkerMoverDelegate;
+    private Cell backwardCell;
 
     public Minotaur() {
         this.opponentWorkerMoverDelegate = new OpponentWorkerMoverDelegate();
     }
 
+    /**
+     * Implements standard controls on worker movement if the moveCell is empty. Otherwise,
+     * it's necessary to check that the opponent worker's backward Cell is unoccupied (it needs
+     * to be empty and without a Dome on it).
+     *
+     * @see GodStrategy#checkMove(Worker, Cell)
+     * @see Minotaur#computeBackwardCell(Cell, Cell)
+     * @param worker   the worker that the Player wants to move.
+     * @param moveCell the cell in which the Player want to move the worker.
+     * @return true if the Move passed as parameter can be performed, false otherwise.
+     */
     @Override
     public boolean checkMove(Worker worker, Cell moveCell) {
-        if(!(worker.getPosition().isAdjacentTo(moveCell)
-                && worker.getPosition().isLevelDifferenceOk(moveCell)
-                && moveCell.getLevel() != BlockType.DOME))
-            return false;
-        if(!moveCell.isEmpty()) {
-            return true; // NEED TO IMPLEMENT BOARD SINGLETON
+
+        if (moveCell.isEmpty())
+            return super.checkMove(worker, moveCell);
+
+        else {
+            try {
+                backwardCell = computeBackwardCell(worker.getPosition(), moveCell);
+
+                return  !worker.hasMoved() &&
+                        !worker.hasBuilt() &&
+                        worker.getPosition().isAdjacentTo(moveCell) &&
+                        backwardCell.getRowIdentifier() < Board.WIDTH_SIZE &&
+                        backwardCell.getColIdentifier() < Board.HEIGHT_SIZE &&
+                        backwardCell.isEmpty() &&
+                        backwardCell.getLevel() != BlockType.DOME;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+
         }
 
-        return true;
     }
 
-    @Override
-    public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        return worker.standardCheckBuild(buildCell);
-    }
-
+    /**
+     * Implements standard execute worker movement, but if moveCell is not empty,
+     * the opponent's worker that is occupying moveCell must be moved to the backward Cell,
+     * and this is done delegating to {@link OpponentWorkerMoverDelegate}.
+     *
+     * @see GodStrategy#executeMove(Worker, Cell)
+     * @see OpponentWorkerMoverDelegate#moveOpponentWorker(Worker, Cell)
+     * @param worker   the worker that the Player wants to move.
+     * @param moveCell the cell in which the Player want to move the worker.
+     */
     @Override
     public void executeMove(Worker worker, Cell moveCell) {
 
-        if(!moveCell.isEmpty()) {
-            opponentWorkerMoverDelegate.moveOpponentWorker(worker, moveCell.getWorker());
+        if (!moveCell.isEmpty()) {
+            opponentWorkerMoverDelegate.moveOpponentWorker(moveCell.getWorker(), backwardCell);
         }
 
-        worker.move(moveCell);
+        super.executeMove(worker, moveCell);
     }
 
-    @Override
-    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        worker.build(buildCell);
+    /**
+     * This method finds opponent Worker backward Cell, using the original Player Worker to determine
+     * the moving direction (diagonal or not).
+     *
+     * @param workerCell    the position of worker that the Player wants to move.
+     * @param moveCell      the cell in which the Player want to move the worker.
+     * @return The Cell that is backward of moveCell.
+     * @throws Exception if any Cell is invalid
+     */
+    private Cell computeBackwardCell(Cell workerCell, Cell moveCell) throws Exception {
+
+        Board board = Board.getInstance(String.valueOf(Thread.currentThread().getId())); // worker.player.match.getMatchBoard()
+
+        int backwardRow;
+        int backwardCol;
+
+        boolean isRowDiff = workerCell.getRowIdentifier() != moveCell.getRowIdentifier();
+        boolean isColDiff = workerCell.getColIdentifier() != moveCell.getColIdentifier();
+
+        if (isRowDiff && isColDiff) {
+            // Diagonal
+
+            if (workerCell.getRowIdentifier() > moveCell.getRowIdentifier()) {
+                backwardRow = moveCell.getRowIdentifier() - 1;
+            } else {
+                backwardRow = moveCell.getRowIdentifier() + 1;
+            }
+
+            if (workerCell.getColIdentifier() > moveCell.getColIdentifier()) {
+                backwardCol = moveCell.getColIdentifier() - 1;
+            } else {
+                backwardCol = moveCell.getColIdentifier() + 1;
+            }
+
+        } else {
+            if (isRowDiff) {
+                if (workerCell.getRowIdentifier() > moveCell.getRowIdentifier()) {
+                    backwardRow = moveCell.getRowIdentifier() - 1;
+                } else {
+                    backwardRow = moveCell.getRowIdentifier() + 1;
+                }
+
+                backwardCol = moveCell.getColIdentifier();
+            } else {
+                if (workerCell.getColIdentifier() > moveCell.getColIdentifier()) {
+                    backwardCol = moveCell.getColIdentifier() - 1;
+                } else {
+                    backwardCol = moveCell.getColIdentifier() + 1;
+                }
+                backwardRow = moveCell.getRowIdentifier();
+            }
+        }
+
+        return board.getCell(backwardRow, backwardCol);
     }
 
-    @Override
-    public void prepareGame() {
 
-    }
-
-    @Override
-    public boolean checkGamePreparation() {
-        return true;
-    }
-
-    @Override
-    public void endTurn(Match match) {
-
-    }
 }
