@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 
 /**
@@ -14,31 +17,55 @@ import java.util.ArrayList;
  * its value depends on moves by the player owning this God (if there is one).
  *
  * @author Andrea Mario Vergani
+ * @author Cosimo Sguanci
  */
 public class Match {  //tested with 100% coverage
     private ArrayList<Player> players;
     private Board matchBoard;
     private int turn;
-    private boolean canMove;
     private int playersNumber;
+    private final String id;
+
+    private static final ConcurrentMap<String, Match> matchInstances = new ConcurrentHashMap<>();
 
     /**
      * The constructor creates an instance of Match class starting from the number of
      * players who are going to join the match. So, it sets the right number of players
      * and some other general things about moves (such as attributes 'turn' and 'canMove'
      *
-     * @param number   number of total players who will join the match
+     *-- @param number   number of total players who will join the match
      * @throws Exception    when the number of players is not 2 or 3 (game option)
      *
      */
-    public Match(int number) throws Exception {
-        if(number != 2 && number != 3)  throw new Exception();
+    private Match(String id, int playersNumber) throws Exception {
+        this.id = id;
+
+        if(playersNumber != 2 && playersNumber != 3)  throw new Exception();
         this.players = new ArrayList<>();
-        this.matchBoard = new Board();
+        this.matchBoard = Board.getInstance(String.valueOf(Thread.currentThread().getId()));
         this.turn = 0;
-        this.canMove = true;
-        this.playersNumber = number;
+        this.playersNumber = playersNumber;
+
     }
+
+    /**
+     * Implements Multiton Pattern: one instance for each thread representing a match that's being played.
+     *
+     * @param key Thread id
+     * @return a new instance of Match if the key was not already contained in matchInstances, otherwise the previous created instance.
+     */
+    public static Match getInstance(final String key, Integer playersNumber) throws Exception {
+        Match match = matchInstances.get(key);
+
+        if (match == null)
+        {
+            match = new Match(key, playersNumber);
+            matchInstances.putIfAbsent(key, new Match(key, playersNumber));
+        }
+
+        return match;
+    }
+
 
     private boolean nicknameAlreadyInside(Player p) {
         String nick = p.nickname;
@@ -86,27 +113,14 @@ public class Match {  //tested with 100% coverage
         }
     }
 
-    /**
-     * The method is a getter for 'canMove' attribute of the class
-     *
-     * @return value of canMove
-     *
-     */
-    public boolean getCanMove() {
-        return canMove;
+    public List<Player> getPlayers() {
+        return players;
     }
 
-
-    /**
-     * The method sets the value of 'canMove' attribute, so that the new value is
-     * the one passed as parameter
-     *
-     * @param canMove   new value of canMove
-     *
-     */
-    public void setCanMove(boolean canMove) {
-        this.canMove = canMove;
+    public int getPlayersNumber() {
+        return playersNumber;
     }
+
 
     /**
      * The method establishes who is the next player to play the turn. As seen, 'turn'
