@@ -30,6 +30,10 @@ public class Board {
         return boardInstances.computeIfAbsent(key, Board::new);
     }
 
+    public static void clearInstances() {
+        boardInstances.clear();
+    }
+
     /**
      * The constructor creates the game board: in Santorini, it is a 5x5 space where
      * workers can move and build. Every cell of the board is initialized with its

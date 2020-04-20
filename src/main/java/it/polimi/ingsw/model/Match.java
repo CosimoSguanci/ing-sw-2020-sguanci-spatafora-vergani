@@ -66,6 +66,10 @@ public class Match {  //tested with 100% coverage
         return match;
     }
 
+    public static void clearInstances() {
+        matchInstances.clear();
+    }
+
 
     private boolean nicknameAlreadyInside(Player p) {
         String nick = p.nickname;
