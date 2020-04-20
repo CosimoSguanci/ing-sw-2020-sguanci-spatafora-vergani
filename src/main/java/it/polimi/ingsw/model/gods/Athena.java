@@ -30,7 +30,7 @@ public class Athena extends GodStrategy {
     public void executeMove(Worker worker, Cell moveCell) {
         Cell prev = worker.getPosition();
         super.executeMove(worker, moveCell);
-        shouldBlockLevelUp = (moveCell.levelDifference(prev) == 1);
+        shouldBlockLevelUp = (moveCell.levelDifference(prev) >= 1);
     }
 
     /**
@@ -43,7 +43,8 @@ public class Athena extends GodStrategy {
      */
     @Override
     public boolean checkMoveConstraints(Worker oppositeWorker, Cell moveCell) {
-        return !shouldBlockLevelUp || oppositeWorker.getPosition().getLevel().getLevelNumber() < moveCell.getLevel().getLevelNumber();
+        //return !(shouldBlockLevelUp && moveCell.getLevel().getLevelNumber() > oppositeWorker.getPosition().getLevel().getLevelNumber());
+        return !shouldBlockLevelUp || moveCell.getLevel().getLevelNumber() <= oppositeWorker.getPosition().getLevel().getLevelNumber();
     }
 
     /**
