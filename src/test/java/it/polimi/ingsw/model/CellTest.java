@@ -1,18 +1,18 @@
 package it.polimi.ingsw.model;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CellTest {
 
-    @Ignore
+    @Disabled
     @Test
     public void isEmptyTest() {
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void getWorkerTest() {
     }
@@ -36,7 +36,7 @@ public class CellTest {
         assertEquals(BlockType.DOME, cell.getLevel());
     }
 
-    @Ignore  //because we haven't decided what to do in "dome case" (exception or not) yet
+    @Disabled  //because we haven't decided what to do in "dome case" (exception or not) yet
     @Test
     public void increaseLevelDomeTest() /*throws Exception*/ {
         Cell cell = new Cell(2,1);

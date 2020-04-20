@@ -1,13 +1,12 @@
 package it.polimi.ingsw.controller;
 
-import org.junit.Ignore;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class ControllerTest {
 
-    @Ignore
+    @Disabled
     @Test
     public void update() {
     }

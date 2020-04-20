@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -140,7 +140,7 @@ public class MatchTest {
         assertEquals(p2, match.getCurrentPlayer());
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void getMatchBoardTest() {
     }
