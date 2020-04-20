@@ -31,6 +31,7 @@ public class Hera extends GodStrategy {
      * @return true if the Cell is in the perimeter of the game Board, false otherwise.
      */
     private boolean isPerimeterCell(Cell cell) {
-        return cell.getColIdentifier() == Board.WIDTH_SIZE - 1 || cell.getRowIdentifier() == Board.HEIGHT_SIZE - 1;
+        return cell.getColIdentifier() == Board.WIDTH_SIZE - 1 || cell.getRowIdentifier() == Board.HEIGHT_SIZE - 1
+                || cell.getColIdentifier() == 0 || cell.getRowIdentifier() == 0;
     }
 }
