@@ -38,7 +38,10 @@ public class Prometheus extends GodStrategy {
             return worker.getPosition().isAdjacentTo(buildCell) && (buildCell.getLevel() != BlockType.DOME) && (buildCell.isEmpty());
         }
 
-        return multipleBuildDelegate.checkBuild(worker, buildCell, selectedWorker);
+
+        return builtBeforeMoving
+                ? multipleBuildDelegate.checkBuild(worker, buildCell, selectedWorker)
+                : super.checkBuild(worker, buildCell, buildCellBlockType);
     }
 
     /**
@@ -57,7 +60,7 @@ public class Prometheus extends GodStrategy {
             return super.checkMove(worker, moveCell);
         else
             return isUsingSelectedWorker(worker) && !worker.hasMoved() && worker.getPosition().isAdjacentTo(moveCell) && (moveCell.isEmpty()) && (moveCell.getLevel() != BlockType.DOME) && worker.getPosition().isLevelDifferenceOk(moveCell)
-                    && moveCell.getLevel().getLevelNumber() > worker.getPosition().getLevel().getLevelNumber();
+                    && moveCell.getLevel().getLevelNumber() <= worker.getPosition().getLevel().getLevelNumber();
     }
 
     /**
@@ -77,6 +80,7 @@ public class Prometheus extends GodStrategy {
             builtBeforeMoving = true;
 
         multipleBuildDelegate.increaseBuildCount();
+        this.selectedWorker = worker;
     }
 
     /**

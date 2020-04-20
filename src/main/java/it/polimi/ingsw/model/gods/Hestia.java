@@ -34,7 +34,19 @@ public class Hestia extends GodStrategy {
         if (!multipleBuildDelegate.checkBuild(worker, buildCell, selectedWorker))
             return false;
         return multipleBuildDelegate.getBuildCount() != HESTIA_MAX_BUILD_NUM - 1 || !isPerimeterCell(buildCell);
+    }
 
+    /**
+     * Decorates the standard executeBuild increasing the build count of {@link MultipleBuildDelegate}
+     *
+     * @see GodStrategy#executeBuild(Worker, Cell, BlockType)
+     * @param worker    the worker who want to build a new level.
+     * @param buildCell the cell in which the Player want to build a new level.
+     */
+    @Override
+    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+        super.executeBuild(worker, buildCell, buildCellBlockType);
+        multipleBuildDelegate.increaseBuildCount();
     }
 
     /**
@@ -44,6 +56,19 @@ public class Hestia extends GodStrategy {
      * @return true if the Cell is in the perimeter of the game Board, false otherwise.
      */
     private boolean isPerimeterCell(Cell cell) {
-        return cell.getColIdentifier() == Board.WIDTH_SIZE - 1 || cell.getRowIdentifier() == Board.HEIGHT_SIZE - 1;
+        return cell.getColIdentifier() == Board.WIDTH_SIZE - 1 || cell.getRowIdentifier() == Board.HEIGHT_SIZE - 1
+                || cell.getColIdentifier() == 0 || cell.getRowIdentifier() == 0;
+    }
+
+    /**
+     * This method calls superclass endTurn, then resets build count at the end of Player's turn.
+     *
+     * @see GodStrategy#endTurn(Player)
+     * @param player    Player corresponding to the current turn.
+     */
+    @Override
+    public void endTurn(Player player) {
+        super.endTurn(player);
+        multipleBuildDelegate.reinitializeBuildCount();
     }
 }

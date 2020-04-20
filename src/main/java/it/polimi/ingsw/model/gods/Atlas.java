@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.Worker;
 
 public class Atlas extends GodStrategy {
 
+    // TODO SHOULD CHECK ALSO THE LEVEL BEING BUILT?
     // NOT NECESSARY BECAUSE standardaCheckBuild doesn't care about the level being built, but it consider the next level,
     // that in case of Atlas can always be also a DOME, TODO REMOVE METHOD
     /**

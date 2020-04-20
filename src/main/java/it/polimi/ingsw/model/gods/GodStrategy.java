@@ -108,14 +108,14 @@ public abstract class GodStrategy {
      * It can be extended by Gods which alter the standard build action.
      *
      * Setting the selectedWorker is necessary for Gods, like Prometheus, that can build BEFORE moving.
-     * In that case the next move has to be performed with the same worker that built a level.
+     * In that case the next move has to be performed with the same worker that built a level. [NO]
      *
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
      */
     public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
         worker.build(buildCell);
-        this.selectedWorker = worker;
+        //this.selectedWorker = worker;
     }
 
     /**

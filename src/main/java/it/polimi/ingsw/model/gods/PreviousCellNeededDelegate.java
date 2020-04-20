@@ -26,5 +26,9 @@ class PreviousCellNeededDelegate {
         return this.previousCell;
     }
 
+    boolean hasPreviousCell() {
+        return this.previousCell != null;
+    }
+
     void reinitializeCell() {this.previousCell = null;}
 }
