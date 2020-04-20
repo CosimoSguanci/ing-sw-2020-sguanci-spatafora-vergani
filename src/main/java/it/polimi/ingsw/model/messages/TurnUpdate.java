@@ -3,13 +3,13 @@ package it.polimi.ingsw.model.messages;
 import it.polimi.ingsw.model.Player;
 
 public class TurnUpdate {
-    private Player player;
+    private String playerID;
 
-    public TurnUpdate(Player player) {
-        this.player = player;
+    public TurnUpdate(String playerID) {
+        this.playerID = playerID;
     }
 
-    public Player getCurrentPlayer() {
-        return this.player;
+    public String getCurrentPlayer() {
+        return this.playerID;
     }
 }

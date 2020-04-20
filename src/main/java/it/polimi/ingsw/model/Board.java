@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 
 /**
  * Board is the class that keeps information about the "Island Board" (mentioned in game
@@ -8,11 +11,28 @@ import java.util.ArrayList;
  * The class has also some methods to control some overview aspects of the game
  *
  * @author Andrea Mario Vergani
+ * @author Cosimo Sguanci
  */
 public class Board {
     public final static int WIDTH_SIZE = 5;
     public final static int HEIGHT_SIZE = 5;
+    private static final ConcurrentMap<String, Board> boardInstances = new ConcurrentHashMap<>();
     private Cell[][] board;
+    private final String id;
+
+    /**
+     * Implements Multiton Pattern: one instance for each thread representing a match that's being played.
+     *
+     * @param key Thread id
+     * @return a new instance of Board if the key was not already contained in boardInstances, otherwise the previous created instance.
+     */
+    public static Board getInstance(final String key) {
+        return boardInstances.computeIfAbsent(key, Board::new);
+    }
+
+    public static void clearInstances() {
+        boardInstances.clear();
+    }
 
     /**
      * The constructor creates the game board: in Santorini, it is a 5x5 space where
@@ -20,7 +40,9 @@ public class Board {
      * constructor, so the whole board will be at ground level and without workers before
      * starting the match
      */
-    public Board() {
+    private Board(String id) {
+        this.id = id;
+
         board = new Cell[WIDTH_SIZE][HEIGHT_SIZE];
         //initialization of a "empty" board at ground level (every cell with these starting configurations)
         for(int i=0; i<board.length; i++) {
@@ -28,63 +50,9 @@ public class Board {
                 board[i][j] = new Cell(i, j);
             }  //initialization of every cell in the board
         }
+
     }
 
-    /*
-    /**
-     * This private method helps in getting the coordinates (i,j) of a cell in the board.
-     * Knowing coordinates is, in fact, very useful in other (public) methods of this class:
-     * analyze possible movements, buildings and other things can be done only thanks to
-     * "localization" of cells in the board, since almost all the operations in Santorini
-     * involve adjacent cells
-     *
-     * @param cell  the considered cell, so the one you want to know coordinates
-     * @return (i,j) coordinates (in 5x5 board) of parameter-cell, in the form of ArrayList<Integer>
-     * @throws Exception    when cell is not in the board, so something went wrong
-     *
-     */
-    /*
-    private ArrayList<Integer> getCoordinates (Cell cell) throws Exception {
-        ArrayList<Integer> coordinates = new ArrayList<>();
-
-        for(int i=0; i<board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {  //consider every cell separately
-                if (board[i][j] == cell) {
-                    coordinates.add(0, i);
-                    coordinates.add(1, j);
-                }  //coordinates now contains (row,column) indication for 'cell' parameter
-            }
-        }  //end external cycle
-
-        if(coordinates.size()!=2) throw new Exception();
-        return coordinates;
-    }
-    */
-
-    /*
-    /**
-     * The method controls if two cells in the board are adjacent. Reading game rules,
-     * every cell has (up to) eight neighbouring spaces: so, two cells are adjacent
-     * when they have at least one point in common
-     *
-     * @param first  one of the considered cells
-     * @param second  the other cell
-     * @return true if the parameters are adjacent; otherwhise, false
-     * @throws Exception    if a method called inside throws Exception
-     *
-     */
-    /*
-    public boolean adjacent(Cell first, Cell second) throws Exception {
-        ArrayList<Integer> firstCoord = getCoordinates(first);
-        ArrayList<Integer> secondCoord = getCoordinates(second);
-        int iDiff = ((firstCoord.get(0))-(secondCoord.get(0)));  //iDiff contains difference between i values of (i,j) coordinates for 'first' and 'second' parameters
-        int jDiff = (firstCoord.get(1))-(secondCoord.get(1));  //jDiff contains difference between j values of (i,j) coordinates for 'first' and 'second' parameters
-        //case adjacent cells: absolute value of difference between cells' coordinates is <=1, so a cell "surrounds" the other one
-        //in other cases, cells are not adjacent
-        if(iDiff == 0 && jDiff == 0) return false;  //case 'first' and 'second' are the same cell, so they are not adjacent
-        else return (Math.abs(iDiff) <= 1 && Math.abs(jDiff) <= 1);
-    }
-    */
 
     /**
      * The method controls if a player won the match, with one of his/her two workers.

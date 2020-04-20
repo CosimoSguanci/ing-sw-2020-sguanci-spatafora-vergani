@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+
 /**
  *  This class contains information about the state of a single worker. Players in game
  *  have two different worker and every worker has the possibility to move and build on
@@ -8,12 +9,17 @@ package it.polimi.ingsw.model;
  *  board.
  *  The class include methods to control the movement and construction of workers.
  *
- * @author Roberto Spatafora *
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
  */
 public class Worker {
     public final Player player;
     private Cell position;
+    private BlockType previousPositionBlockType;
     public final Board board;
+
+    private boolean hasMoved;
+    private boolean hasBuilt;
 
     /**
      * Worker is the builder of the class. At the moment of a worker creation a player is
@@ -38,6 +44,10 @@ public class Worker {
         return this.position;
     }
 
+    public BlockType getPreviousPositionBlockType() {
+        return this.previousPositionBlockType;
+    }
+
     /**
      * This method sets the first cell of a worker
      *
@@ -52,14 +62,25 @@ public class Worker {
         else { throw new Exception(); } //cellAlreadyOccupiedException();
     }
 
+    /**
+     * This method implements the standard checks that have to be done if a Player wants to move a Worker,
+     * following the standard set of rules.
+     *
+     * @param moveCell the cell in which the Player want to move the worker.
+     * @return true if (AND conditions):
+     * - The Worker hasn't already performed a move or a build;
+     * - The new Cell is adjacent to the current Worker's position;
+     * - The new Cell is empty;
+     * - The new Cell level is not DOME.
+     */
     public boolean standardCheckMove(Cell moveCell) {
-        if (this.position.isAdjacentTo(moveCell) && (moveCell.isEmpty()) && (moveCell.getLevel() != BlockType.DOME)) {
-            if(this.player.match.getCanMove()) {
+        if (!this.hasMoved && !this.hasBuilt && this.position.isAdjacentTo(moveCell) && (moveCell.isEmpty()) && (moveCell.getLevel() != BlockType.DOME)) {
+
                 if (this.position.isLevelDifferenceOk(moveCell)) { // Moving into a DOME is not allowed.
                     return true;
                 }
                 //else {throw new Exception(); } //else { throw new InvalidMoveException(); }
-            }
+
             //else { throw new Exception(); } //else { throw new WorkerCannotMoveUpException(); }
         }
         //else {throw new Exception(); }
@@ -67,8 +88,20 @@ public class Worker {
         return false;
     }
 
+    /**
+     * This method implements the standard checks that have to be done if a Player wants to use a Worker to build a block,
+     * following the standard set of rules.
+     *
+     * @param buildCell the cell in which the Player want to build a new level.
+     * @return true if (AND conditions):
+     * - The Worker has already performed a move but NOT another build;
+     * - The build Cell is adjacent to the current Worker's position;
+     * - The build Cell is empty;
+     * - The build Cell level is not DOME.
+     */
     public boolean standardCheckBuild(Cell buildCell) {
-        if (this.position.isAdjacentTo(buildCell) && (buildCell.getLevel() != BlockType.DOME) && (buildCell.isEmpty())) {// Workers can build if the cell level is not the maximum and if the cell has not another Worker in it.
+
+        if (this.hasMoved && !this.hasBuilt && this.position.isAdjacentTo(buildCell) && (buildCell.getLevel() != BlockType.DOME) && (buildCell.isEmpty())) {// Workers can build if the cell level is not the maximum and if the cell has not another Worker in it.
             return true;
         }
         else {
@@ -93,8 +126,11 @@ public class Worker {
      */
     public void move(Cell moveCell) {
         this.position.setWorker(null);
+        this.previousPositionBlockType = position.getLevel();
         this.position = moveCell;
         moveCell.setWorker(this);
+
+        this.hasMoved = true;
     }
 
     /** This method allows worker to build into a cell that is specified as parameter.
@@ -111,6 +147,60 @@ public class Worker {
      */
     public void build(Cell buildCell) {
         buildCell.increaseLevel();
+
+        this.hasBuilt = true;
+    }
+
+    public boolean hasMoved() {
+        return this.hasMoved;
+    }
+
+    public boolean hasBuilt() {
+        return this.hasBuilt;
+    }
+
+    public void setHasBuilt() {
+        this.hasBuilt = true;
+    }
+
+    public void setHasMoved() {
+        this.hasMoved = true;
+    }
+
+    public void reinitializeBuiltMoved() {
+        this.hasMoved = false;
+        this.hasBuilt = false;
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+/*{
+        "board" : [
+        [{
+            "worker" : "w1",
+            "player" : "cbhvhfhvfehvhfvbhehvfeg"
+        }, {
+            "level" : 1
+        }, {
+
+        }, {
+
+        }, {
+
+        }]
+        [{}, {}, {}, {}, {}]
+        [{}, {}, {}, {}, {}]
+        [{}, {}, {}, {}, {}]
+        [{}, {}, {}, {}, {}]
+        ]
+}*/

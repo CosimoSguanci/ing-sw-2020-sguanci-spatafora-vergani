@@ -2,10 +2,15 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.gods.GodStrategy;
 
-/** This class contains general information about a single God.
- *  It consists of attributes that describe God and its rule.
- *  */
-public class God {
+
+/**
+ * This class contains general information about a single God.
+ * It consists of attributes that describe God and its rule.
+ *
+ * @author Roberto Spatafora
+ */
+
+public class God  {
     public final String name;
     public final String godDescription;
     public final String ruleDescription;

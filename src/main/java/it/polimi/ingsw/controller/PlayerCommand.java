@@ -7,23 +7,39 @@ import it.polimi.ingsw.model.*;
  * the current turn, the type of command requested from the player,
  * a reference to the worker the player wants it to move or build and
  * the cell in which the player wants the worker to move in or build in.
+ *
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
  */
+
 public class PlayerCommand {
 
+    /**
+     * Properties used by the Client to construct a PlayerCommand without the need to have the actual reference to Player and Worker instances.
+     */
+    final static String WORKER_FIRST = "w1";
+    final static String WORKER_SECOND = "w2";
+    final String playerID;
+    final String workerID;
+
     final CommandType commandType;
-    final Player player;
-    final Worker worker;
-    private Cell cell;
     final BlockType cellBlockType;
+
+    /**
+     * This properties must be reconstructed by server-side Controller
+     */
+    private Player player;
+    private Worker worker;
+    private Cell cell;
 
     /**
      * PlayerCommand is the builder of the class. Taken as parameters
      * the builder sets the class' attributes to the relatives values received.
      */
-    public PlayerCommand(Player player, CommandType commandType, Worker worker, Cell cell, BlockType cellBlockType) {
-        this.player = player;
+    public PlayerCommand(String playerID, CommandType commandType, String workerID, Cell cell, BlockType cellBlockType) {
+        this.playerID = playerID;
         this.commandType = commandType;
-        this.worker = worker;
+        this.workerID = workerID;
         this.cell = cell;
         this.cellBlockType = cellBlockType;
     }
@@ -36,11 +52,34 @@ public class PlayerCommand {
         return cell;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
 
-    public static PlayerCommand parseInput(Player player, String command) throws Exception {
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public Worker getWorker() {
+        return worker;
+    }
+
+    public void setWorker(Worker worker) {
+        this.worker = worker;
+    }
+
+
+    /**
+     * Static method used to parse a String command input by the user (CLI) into a PlayerCommand instance using String-rep for Workers.
+     *
+     * @param playerID  the ID of the Player who launched the command
+     * @param command   input String taken from Standard Input
+     * @return the corresponding PlayerCommand instance if the command was well formatted.
+     * @throws Exception if the command String isn't well formatted.
+     */
+    public static PlayerCommand parseInput(String playerID, String command) throws Exception {
 
         CommandType commandType;
-        Worker worker;
         Cell cell;
         BlockType blockType = null;
 
@@ -67,12 +106,15 @@ public class PlayerCommand {
         }
 
         if (type.toLowerCase().equals("end")) {
-            return new PlayerCommand(player, CommandType.END_TURN, null, null, null);
+            if(s.length == 1)
+                return new PlayerCommand(playerID, CommandType.END_TURN, null, null, null);
+            else
+                throw new Exception();
         }
 
-        String workerStr = s[1];
+        String worker = s[1];
 
-        if (!workerStr.toLowerCase().equals("w1") && !workerStr.toLowerCase().equals("w2")) {
+        if (!worker.toLowerCase().equals(WORKER_FIRST) && !worker.toLowerCase().equals(WORKER_SECOND)) {
             throw new Exception();
         }
 
@@ -107,12 +149,9 @@ public class PlayerCommand {
             }
         }
 
-        worker = workerStr.equals("w1") ? player.getWorkerFirst() : player.getWorkerSecond(); // JML
+
         cell = new Cell((int) rowChar - 'a', colNum - 1);
-
-        return new PlayerCommand(player, commandType, worker, cell, blockType);
-
-
+        return new PlayerCommand(playerID, commandType, worker, cell, blockType);
     }
 
     /*

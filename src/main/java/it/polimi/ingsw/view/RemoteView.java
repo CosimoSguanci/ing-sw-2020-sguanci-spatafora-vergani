@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.PlayerCommand;
 import it.polimi.ingsw.model.messages.ErrorUpdate;
 import it.polimi.ingsw.model.messages.ModelUpdate;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.messages.PlayerUpdate;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.server.ClientHandler;
 
@@ -51,6 +52,13 @@ public class RemoteView extends View {
                 ErrorUpdate errorUpdate = (ErrorUpdate) message;
 
                 if (getPlayer().equals(errorUpdate.getPlayer())) {
+                    clientHandler.sendObject(message);
+                }
+            }
+            else if(message instanceof PlayerUpdate) {
+                PlayerUpdate playerUpdate = (PlayerUpdate) message;
+
+                if (getPlayer().ID.equals(playerUpdate.getPlayerID())) {
                     clientHandler.sendObject(message);
                 }
             }

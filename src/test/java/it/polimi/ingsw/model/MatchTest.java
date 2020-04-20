@@ -1,15 +1,21 @@
 package it.polimi.ingsw.model;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 public class MatchTest {
 
     @Test
     public void addPlayerTest2() throws Exception {
-        Match match = new Match(3);
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
         Player p1 = new Player("Andrea", "and", match);
         Player p2 = new Player("Cosimo", "cosimo", match);
         Player p3 = new Player("Roberto", "rob", match);
@@ -21,7 +27,9 @@ public class MatchTest {
 
     @Test
     public void addPlayerTest1() throws Exception {
-        Match match = new Match(3);
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
         Player p1 = new Player("Andrea", "and", match);
         Player p2 = new Player("Cosimo", "cosimo", match);
         Player p3 = new Player("ValerioAndoni", "and", match);
@@ -32,7 +40,9 @@ public class MatchTest {
 
     @Test
     public void removePlayerTest() throws Exception {
-        Match match = new Match(3);
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
         Player p1 = new Player("Andrea", "and", match);
         Player p2 = new Player("Cosimo", "cosimo", match);
         Player p3 = new Player("Roberto", "rob", match);
@@ -73,46 +83,12 @@ public class MatchTest {
         assertEquals(p2, match.getCurrentPlayer());
     }
 
-    @Test
-    public void getCanMove() throws Exception {
-        Match match = new Match(3);
-        assertTrue(match.getCanMove());
-
-        match.setCanMove(true);
-        assertTrue(match.getCanMove());
-
-        match.setCanMove(false);
-        assertFalse(match.getCanMove());
-
-        match.setCanMove(true);
-        assertTrue(match.getCanMove());
-    }
-
-    @Test
-    public void setCanMove() throws Exception {
-        Match match = new Match(2);
-        Player p1 = new Player("Marco", "mc", match);
-        Player p2 = new Player("Alessandro", "ale", match);
-        try{
-            match.addPlayer(p1);
-            match.addPlayer(p2);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        match.setCanMove(false);
-        assertFalse(match.getCanMove());
-
-        match.setCanMove(false);
-        assertFalse(match.getCanMove());
-
-        match.setCanMove(true);
-        assertTrue(match.getCanMove());
-    }
 
     @Test
     public void nextTurnTest() throws Exception {
-        Match match = new Match(3);
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
         Player p1 = new Player("Andrea", "and", match);
         Player p2 = new Player("Cosimo", "cosimo", match);
         Player p3 = new Player("Roberto", "rob", match);
@@ -143,7 +119,9 @@ public class MatchTest {
 
     @Test
     public void getCurrentPlayerTest() throws Exception {
-        Match match = new Match(2);
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
         Player p1 = new Player("Marco", "mc", match);
         Player p2 = new Player("Alessandro", "ale", match);
         try{
@@ -162,7 +140,7 @@ public class MatchTest {
         assertEquals(p2, match.getCurrentPlayer());
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void getMatchBoardTest() {
     }

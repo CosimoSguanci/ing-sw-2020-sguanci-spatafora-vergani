@@ -9,7 +9,7 @@ import it.polimi.ingsw.observer.Observer;
 
 public class Controller implements Observer<Object> {
 
-    private Player clientPlayer;
+    private String clientPlayerID;
     private TurnUpdate turnUpdate;
     private Client client;
 
@@ -18,22 +18,24 @@ public class Controller implements Observer<Object> {
     }
 
     private void handleCommand(PlayerCommand playerCommand) throws Exception {
-        Player currentPlayer = turnUpdate.getCurrentPlayer();
-        if (!clientPlayer.equals(currentPlayer)) {
-            throw new Exception();
-        } else {
+        String currentPlayer = turnUpdate.getCurrentPlayer();
+        if (clientPlayerID.equals(currentPlayer)) {
             client.sendPlayerCommand(playerCommand);
+        } else {
+           throw new Exception();
         }
     }
 
     @Override
     public void update(Object message) {
         if (message instanceof PlayerUpdate) {
-            this.clientPlayer = ((PlayerUpdate) message).getPlayer();
+            this.clientPlayerID = ((PlayerUpdate) message).getPlayerID();
+
         } else if (message instanceof TurnUpdate) {
             this.turnUpdate = ((TurnUpdate) message);
         } else if (message instanceof PlayerCommand) {
-
+            //PlayerCommand playerCommand = (PlayerCommand) message;
+            //playerCommand.setPlayer(clientPlayer);
             try {
                 handleCommand((PlayerCommand) message);
             } catch (Exception e) {

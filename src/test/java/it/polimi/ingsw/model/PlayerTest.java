@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model;
 
-import static org.junit.Assert.*;
 
-import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PlayerTest {
 
@@ -12,7 +14,9 @@ public class PlayerTest {
     public void testGetSetColor() throws Exception {
         System.out.println("testing getColor() and setColor()...");
 
-        Match match = new Match(2);
+        int playersNum = 2;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
         Player instanceTest = new Player("Roberto", "RobS", match);
         String colorTest = "green";
         instanceTest.setColor(colorTest);
@@ -24,8 +28,10 @@ public class PlayerTest {
     public void testGetSetWorkerFirst() throws Exception {
         System.out.println("testing getWorkerFirst() and setWorkerFirst()...");
 
-        Match match = new Match(2);
-        Board board = new Board();
+        int playersNum = 2;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Board board = Board.getInstance(key);;
         Player instancePlayerTest = new Player("Roberto", "RobS", match);
         Worker instanceWorkerTest = new Worker(instancePlayerTest, board);
         instancePlayerTest.setWorkerFirst(instanceWorkerTest);
@@ -38,8 +44,10 @@ public class PlayerTest {
     public void testGetSetWorkerSecond() throws Exception {
         System.out.println("testing getWorkerSecond() and setWorkerSecond()...");
 
-        Match match = new Match(2);
-        Board board = new Board();
+        int playersNum = 2;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Board board = Board.getInstance(key);;
         Player instancePlayerTest = new Player("Roberto", "RobS", match);
         Worker instanceWorkerTest = new Worker(instancePlayerTest, board);
         instancePlayerTest.setWorkerSecond(instanceWorkerTest);
@@ -52,7 +60,9 @@ public class PlayerTest {
     public void testGetSetGod() throws Exception {
         System.out.println("testing getGod() and setGod()...");
 
-        Match match = new Match(2);
+        int playersNum = 2;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
         Apollo apollo = new Apollo();
         Player instancePlayerTest = new Player("Roberto", "RobS", match);
         God instanceGodTest = new God("Apollo", "God of Music", "Your Move: Your Worker may move into an opponent Worker's space by forcing their Worker to the space yours just vacated.", apollo);

@@ -3,12 +3,12 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.controller.PlayerCommand;
 import it.polimi.ingsw.observer.Observable;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 public class ClientHandler extends Observable<PlayerCommand> implements Runnable {
 
@@ -32,15 +32,17 @@ public class ClientHandler extends Observable<PlayerCommand> implements Runnable
 
     @Override
     public void run() {
-        Scanner inputScanner;
+        DataInputStream input;
         String nickname;
+        int playersNum;
         String command;
         try {
-            inputScanner = new Scanner(clientSocket.getInputStream());
-            nickname = inputScanner.nextLine();
-            server.lobby(this, nickname);
+            input = new DataInputStream(clientSocket.getInputStream());
+            nickname = input.readUTF();
+            playersNum = input.readInt();
+            server.lobby(this, nickname, playersNum);
             while (true) {
-                command = inputScanner.nextLine();
+                //command = inputScanner.nextLine();
                 //   notify(read);
             }
         } catch (IOException | NoSuchElementException e) {

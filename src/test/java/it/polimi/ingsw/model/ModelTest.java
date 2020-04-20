@@ -1,15 +1,20 @@
 package it.polimi.ingsw.model;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class ModelTest {
 
     @Test
     public void getCurrentPlayerTest() throws Exception {
-        Match match = new Match(2);
+        int playersNum = 2;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
         Model model = new Model(match);
         Player p1 = new Player("Marco", "mc", match);
         Player p2 = new Player("Alessandro", "ale", match);
@@ -29,14 +34,16 @@ public class ModelTest {
         assertEquals(p2, model.getCurrentPlayer());
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void getBoardTest() {
     }
 
     @Test
     public void endTurnTest() throws Exception {
-        Match match = new Match(3);
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
         Model model = new Model(match);
         Player p1 = new Player("Roberto", "robe", match);
         Player p2 = new Player("Cosimo", "cos", match);

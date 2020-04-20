@@ -2,10 +2,10 @@ package it.polimi.ingsw.model.messages;
 
 import it.polimi.ingsw.model.Board;
 
-public class ModelUpdate {
+public class MatchStartedUpdate {
     private Board board;
 
-    public ModelUpdate(Board board) {
+    public MatchStartedUpdate(Board board) {
         this.board = board;
     }
 

@@ -20,41 +20,44 @@ public class Server {
     private ExecutorService executor = Executors.newFixedThreadPool(128);
 
     private List<ClientHandler> connections = new ArrayList<ClientHandler>();
-    private Map<String, ClientHandler> waitingConnection = new HashMap<>();
+    private Map<String, ClientHandler> waitingConnectionTwoPlayers = new HashMap<>();
+    private Map<String, ClientHandler> waitingConnectionThreePlayers = new HashMap<>();
+
     private Map<String, ClientHandler> playingConnection = new HashMap<>();
 
 
-    public synchronized void lobby(ClientHandler c, String nickname) {
+    public synchronized void lobby(ClientHandler c, String nickname, int playersNum) {
+        Map<String, ClientHandler> waitingConnection = playersNum == 2 ? waitingConnectionTwoPlayers : waitingConnectionThreePlayers;
 
         waitingConnection.put(nickname, c);
 
-        if (waitingConnection.size() == 1) {
-            try {
-                c.sendRequest(Request.ASK_PLAYER_NUM);
-                return;
-            } catch(Exception e) {
-
-            }
-        }
-
-
-        if (waitingConnection.size() == 2) { // 3/4? Chiediamo all'inizio?
+        if (waitingConnection.size() == playersNum) {
 
             try {
-                List<String> keys = new ArrayList<>(waitingConnection.keySet());
-                ClientHandler c1 = waitingConnection.get(keys.get(0));
-                ClientHandler c2 = waitingConnection.get(keys.get(1));
-                Match match = new Match(2);
-                Player player1 = new Player(UUID.randomUUID().toString(), keys.get(0), match);
-                Player player2 = new Player(UUID.randomUUID().toString(), keys.get(1), match);
-                RemoteView remoteView1 = new RemoteView(player1, c1);
-                RemoteView remoteView2 = new RemoteView(player2, c2);
+
+                Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), playersNum);
                 Model model = new Model(match);
                 Controller controller = new Controller(model);
-                model.addObserver(remoteView1);
-                model.addObserver(remoteView2);
-                remoteView1.addObserver(controller);
-                remoteView2.addObserver(controller);
+
+                List<String> keys = new ArrayList<>(waitingConnection.keySet());
+
+
+                int i = 0;
+                for(String key : keys) {
+                    ClientHandler clientHandler = waitingConnection.get(key);
+                    Player player = new Player(UUID.randomUUID().toString(), keys.get(i++), match);
+                    match.addPlayer(player);
+                    RemoteView remoteView = new RemoteView(player, clientHandler);
+                    model.addObserver(remoteView);
+                    remoteView.addObserver(controller);
+
+                    model.playerUpdate(player);
+
+                }
+
+
+              //model.startMatch();
+
 
             } catch (Exception e) {
                 e.printStackTrace();

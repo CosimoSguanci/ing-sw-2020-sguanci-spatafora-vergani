@@ -7,6 +7,7 @@ package it.polimi.ingsw.model;
  * match; one worker can be on a cell, otherwise this one is "empty"
  *
  * @author Andrea Mario Vergani
+ * @author Cosimo Sguanci
  */
 public class Cell {
     private BlockType level;
