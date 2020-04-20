@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model;
 
-import static org.junit.Assert.*;
 
-import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PlayerTest {
 

@@ -18,12 +18,12 @@
   </properties>
 
   <dependencies>
-    <dependency>
+    <!--<dependency> Removed JUnit4
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13</version>
       <scope>test</scope>
-    </dependency>
+    </dependency>-->
       <dependency>
           <groupId>org.junit.jupiter</groupId>
           <artifactId>junit-jupiter</artifactId>

@@ -50,6 +50,7 @@ public abstract class GodStrategy {
      * It checks if the move which the player requested to do is allowed.
      * It can be extended by Gods which alter the standard movement rules.
      *
+     * @see Worker#standardCheckMove(Cell)
      * @param worker   the worker that the Player wants to move.
      * @param moveCell the cell in which the Player want to move the worker.
      * @return true if the move passed as parameter can be performed, false otherwise.
@@ -63,6 +64,7 @@ public abstract class GodStrategy {
      * It checks if the build action which the player requested to do is allowed.
      * It can be extended by Gods which alter the standard build rules.
      *
+     * @see Worker#standardCheckBuild(Cell)
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
      * @return true if the Build passed as parameter can be performed, false otherwise.
@@ -121,6 +123,7 @@ public abstract class GodStrategy {
      * At least it's necessary to reset all flags of the Player Workers that are used
      * to check if a Worker has moved or built a block.
      *
+     * @see Worker#reinitializeBuiltMoved()
      * @param player    Player corresponding to the current turn.
      */
     public void endTurn(Player player) {

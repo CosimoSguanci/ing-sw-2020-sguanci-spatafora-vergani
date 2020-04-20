@@ -1,11 +1,10 @@
 package it.polimi.ingsw.model;
 
-import static org.junit.Assert.*;
-
-import it.polimi.ingsw.model.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class WorkerTest {
