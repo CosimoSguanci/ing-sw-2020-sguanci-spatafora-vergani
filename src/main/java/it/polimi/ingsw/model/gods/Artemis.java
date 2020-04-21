@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class implements the Artemis strategy used by the Player who chose the powers of this God.
  * Specifically, Artemis allows the Worker to move one additional time using {@link MultipleMovementDelegate}, but not back to
@@ -12,12 +15,25 @@ import it.polimi.ingsw.model.*;
 
 public class Artemis extends GodStrategy {
 
+    public static final String NAME = "Artemis";
+    public static final String DESCRIPTION = "Description";
+    public static final String POWER_DESCRIPTION = "Power Description";
+
     /**
      * Constant representing the max number of times this God can move.
      */
     final int ARTEMIS_MAX_MOVE_NUM = 2;
     private MultipleMovementDelegate multipleMovementDelegate;
     private PreviousCellNeededDelegate previousCellNeededDelegate;
+
+    @Override
+    public Map<String, String> getGodInfo() {
+        HashMap<String, String> info = new HashMap<>();
+        info.put("name", NAME);
+        info.put("description", DESCRIPTION);
+        info.put("power_description", POWER_DESCRIPTION);
+        return info;
+    }
 
     public Artemis() {
         this.multipleMovementDelegate = new MultipleMovementDelegate(ARTEMIS_MAX_MOVE_NUM);

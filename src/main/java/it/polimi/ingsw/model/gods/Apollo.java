@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Worker;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * This class implements the Apollo strategy used by the Player who chose the powers of this God.
@@ -15,6 +18,10 @@ import it.polimi.ingsw.model.Worker;
 
 public class Apollo extends GodStrategy {
 
+    public static final String NAME = "Apollo";
+    public static final String DESCRIPTION = "Description";
+    public static final String POWER_DESCRIPTION = "Power Description";
+
     /**
      * Delegation pattern (composition over inheritance) is used to share common behaviours
      * between gods and to allow a single god to inherit multiple common properties.
@@ -22,6 +29,15 @@ public class Apollo extends GodStrategy {
      * {@link OpponentWorkerMoverDelegate} is used by Apollo to swap positions with an opponent worker, if necessary.
      */
     private final OpponentWorkerMoverDelegate opponentWorkerMoverDelegate;
+
+    @Override
+    public Map<String, String> getGodInfo() {
+        HashMap<String, String> info = new HashMap<>();
+        info.put("name", NAME);
+        info.put("description", DESCRIPTION);
+        info.put("power_description", POWER_DESCRIPTION);
+        return info;
+    }
 
     public Apollo() {
         this.opponentWorkerMoverDelegate = new OpponentWorkerMoverDelegate();

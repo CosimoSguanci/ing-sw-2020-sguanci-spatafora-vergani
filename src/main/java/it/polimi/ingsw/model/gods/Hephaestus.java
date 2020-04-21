@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class implements the Hephaestus strategy used by the Player who chose the powers of this God.
  * Specifically, Hephaestus allows the selected Worker to build on one additional block (not a dome)
@@ -13,6 +16,11 @@ import it.polimi.ingsw.model.*;
  */
 
 public class Hephaestus extends GodStrategy {
+
+    public static final String NAME = "Hephaestus";
+    public static final String DESCRIPTION = "Description";
+    public static final String POWER_DESCRIPTION = "Power Description";
+
     final int HEPHAESTUS_MAX_BUILD_NUM = 2;
     private MultipleBuildDelegate multipleBuildDelegate;
 
@@ -20,6 +28,15 @@ public class Hephaestus extends GodStrategy {
      * Used to save the previous cell where Hephaestus built a level.
      */
     private PreviousCellNeededDelegate previousCellNeededDelegate;
+
+    @Override
+    public Map<String, String> getGodInfo() {
+        HashMap<String, String> info = new HashMap<>();
+        info.put("name", NAME);
+        info.put("description", DESCRIPTION);
+        info.put("power_description", POWER_DESCRIPTION);
+        return info;
+    }
 
     public Hephaestus() {
         multipleBuildDelegate = new MultipleBuildDelegate(HEPHAESTUS_MAX_BUILD_NUM);

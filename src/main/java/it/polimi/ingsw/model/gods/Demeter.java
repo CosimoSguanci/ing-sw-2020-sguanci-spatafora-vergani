@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class implements the Demeter strategy used by the Player who chose the powers of this God.
  * Specifically, an Demeter Worker can build one additional time, but not at the same time.
@@ -12,9 +15,23 @@ import it.polimi.ingsw.model.*;
  */
 
 public class Demeter extends GodStrategy {
+
+    public static final String NAME = "Demeter";
+    public static final String DESCRIPTION = "Description";
+    public static final String POWER_DESCRIPTION = "Power Description";
+
     final int DEMETER_MAX_BUILD_NUM = 2;
     private MultipleBuildDelegate multipleBuildDelegate;
     private PreviousCellNeededDelegate previousCellNeededDelegate;
+
+    @Override
+    public Map<String, String> getGodInfo() {
+        HashMap<String, String> info = new HashMap<>();
+        info.put("name", NAME);
+        info.put("description", DESCRIPTION);
+        info.put("power_description", POWER_DESCRIPTION);
+        return info;
+    }
 
     public Demeter() {
         multipleBuildDelegate = new MultipleBuildDelegate(DEMETER_MAX_BUILD_NUM);

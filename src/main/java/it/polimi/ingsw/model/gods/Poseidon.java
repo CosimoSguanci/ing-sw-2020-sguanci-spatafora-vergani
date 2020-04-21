@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class implements the Poseidon strategy used by the Player who chose the powers of this God.
  * Specifically, at the end of the turn, if the Player's unmoved Worker is on the ground level, it can build
@@ -11,9 +14,23 @@ import it.polimi.ingsw.model.*;
  */
 
 public class Poseidon extends GodStrategy {
+
+    public static final String NAME = "Poseidon";
+    public static final String DESCRIPTION = "Description";
+    public static final String POWER_DESCRIPTION = "Power Description";
+
     final int POSEIDON_MAX_BUILD_NUM = 3;
     private MultipleBuildDelegate multipleBuildDelegate;
     private Worker unmovedWorker;
+
+    @Override
+    public Map<String, String> getGodInfo() {
+        HashMap<String, String> info = new HashMap<>();
+        info.put("name", NAME);
+        info.put("description", DESCRIPTION);
+        info.put("power_description", POWER_DESCRIPTION);
+        return info;
+    }
 
     public Poseidon() {
         multipleBuildDelegate = new MultipleBuildDelegate(POSEIDON_MAX_BUILD_NUM);

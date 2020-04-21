@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Worker;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class implements the Zeus strategy used by the Player who chose the powers of this God.
  * Specifically, the selected Worker is allowed to build a block under itself.
@@ -12,6 +15,20 @@ import it.polimi.ingsw.model.Worker;
  */
 
 public class Zeus extends GodStrategy {
+
+    public static final String NAME = "Zeus";
+    public static final String DESCRIPTION = "Description";
+    public static final String POWER_DESCRIPTION = "Power Description";
+
+    @Override
+    public Map<String, String> getGodInfo() {
+        HashMap<String, String> info = new HashMap<>();
+        info.put("name", NAME);
+        info.put("description", DESCRIPTION);
+        info.put("power_description", POWER_DESCRIPTION);
+        return info;
+    }
+
 
     /**
      * This method implements build check to also allow the construction of a block on the same position of the selected Worker.

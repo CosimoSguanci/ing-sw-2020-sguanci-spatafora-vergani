@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class implements the Minotaur strategy used by the Player who chose the powers of this God.
  * Specifically, Minotaur allows the selected worker to move to an opponent Worker's space, if the
@@ -12,8 +15,21 @@ import it.polimi.ingsw.model.*;
 
 public class Minotaur extends GodStrategy {
 
+    public static final String NAME = "Minotaur";
+    public static final String DESCRIPTION = "Description";
+    public static final String POWER_DESCRIPTION = "Power Description";
+
     private final OpponentWorkerMoverDelegate opponentWorkerMoverDelegate;
     private Cell backwardCell;
+
+    @Override
+    public Map<String, String> getGodInfo() {
+        HashMap<String, String> info = new HashMap<>();
+        info.put("name", NAME);
+        info.put("description", DESCRIPTION);
+        info.put("power_description", POWER_DESCRIPTION);
+        return info;
+    }
 
     public Minotaur() {
         this.opponentWorkerMoverDelegate = new OpponentWorkerMoverDelegate();

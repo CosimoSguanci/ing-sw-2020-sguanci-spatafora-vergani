@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class implements the Athena strategy used by the Player who chose the powers of this God.
  * Specifically, if Athena has moved up, she doesn't allow other Player's workers to move up in the current turn.
@@ -13,10 +16,23 @@ import it.polimi.ingsw.model.Worker;
 
 public class Athena extends GodStrategy {
 
+    public static final String NAME = "Athena";
+    public static final String DESCRIPTION = "Description";
+    public static final String POWER_DESCRIPTION = "Power Description";
+
     /**
      * Flag representing the fact that Athena should use or not her power.
      */
     private boolean shouldBlockLevelUp;
+
+    @Override
+    public Map<String, String> getGodInfo() {
+        HashMap<String, String> info = new HashMap<>();
+        info.put("name", NAME);
+        info.put("description", DESCRIPTION);
+        info.put("power_description", POWER_DESCRIPTION);
+        return info;
+    }
 
     /**
      * Implements movement execution by calling superclass standard executeMove,

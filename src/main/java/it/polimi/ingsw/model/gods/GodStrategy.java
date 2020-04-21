@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This is the abstract class all the gods must extend in order to be playable in the game.
  * This abstract class allows the use of Strategy Pattern, the God only knows it has a GodStrategy,
@@ -16,6 +19,8 @@ import it.polimi.ingsw.model.*;
  */
 
 public abstract class GodStrategy {
+
+    public abstract Map<String, String> getGodInfo(); // TODO FIX Duplicated GetGodInfo Impl
 
     /**
      * This property is useful for all Gods and it's used to keep track of the selected Worker
@@ -183,4 +188,16 @@ public abstract class GodStrategy {
     public boolean checkWinCondition(Worker worker) { // TODO hasMoved()?
         return worker.getPosition().getLevel() == BlockType.LEVEL_THREE && worker.getPreviousPositionBlockType() == BlockType.LEVEL_TWO; // TODO Win condition, if I go up two levels in a move?
     }
+
+
+    public static GodStrategy instantiateGod(String god) {
+        switch(god) {
+            case "apollo" :
+                return new Apollo();
+            default:
+                return new Demeter();
+        }
+    }
+
+
 }

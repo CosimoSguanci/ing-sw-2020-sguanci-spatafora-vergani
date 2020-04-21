@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Worker;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class implements the Pan strategy used by the Player who chose the powers of this God.
  * Specifically, Pan adds a Win Condition: the Player also win if the selected Worker moves
@@ -13,10 +16,24 @@ import it.polimi.ingsw.model.Worker;
 
 public class Pan extends GodStrategy {
 
+    public static final String NAME = "Pan";
+    public static final String DESCRIPTION = "Description";
+    public static final String POWER_DESCRIPTION = "Power Description";
+
+    @Override
+    public Map<String, String> getGodInfo() {
+        HashMap<String, String> info = new HashMap<>();
+        info.put("name", NAME);
+        info.put("description", DESCRIPTION);
+        info.put("power_description", POWER_DESCRIPTION);
+        return info;
+    }
+
     /**
      * Flag used to determine if the Worker went down two or more levels.
      */
     private boolean downTwoLevels;
+
 
     /**
      * Implements standard execute worker movement, but if the level difference between

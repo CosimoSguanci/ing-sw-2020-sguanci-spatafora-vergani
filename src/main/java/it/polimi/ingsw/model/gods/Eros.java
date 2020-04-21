@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class implements the Eros strategy used by the Player who chose the powers of this God.
  * Specifically, Eros imposes a Game Preparation constraints: the Player's worker must be placed
@@ -14,10 +17,23 @@ import it.polimi.ingsw.model.*;
 
 public class Eros extends GodStrategy {
 
+    public static final String NAME = "Eros";
+    public static final String DESCRIPTION = "Description";
+    public static final String POWER_DESCRIPTION = "Power Description";
+
     /**
      * Flag used to check the additional Win Condition.
      */
     private boolean neighboringOtherWorker;
+
+    @Override
+    public Map<String, String> getGodInfo() {
+        HashMap<String, String> info = new HashMap<>();
+        info.put("name", NAME);
+        info.put("description", DESCRIPTION);
+        info.put("power_description", POWER_DESCRIPTION);
+        return info;
+    }
 
     /**
      * This method checks that Eros Game Preparation constraints are satisfied.
@@ -57,17 +73,13 @@ public class Eros extends GodStrategy {
     @Override
     public void executeMove(Worker worker, Cell moveCell) {
         super.executeMove(worker, moveCell);
-        try {
-            Worker otherWorker = worker.player.getWorkerFirst().equals(worker) ? worker.player.getWorkerSecond() : worker.player.getWorkerFirst();
-            Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), null);
-
-            boolean levelCondition = match.getPlayersNumber() == 3 ? worker.getPosition().getLevel() == otherWorker.getPosition().getLevel()
+        Worker otherWorker = worker.player.getWorkerFirst().equals(worker) ? worker.player.getWorkerSecond() : worker.player.getWorkerFirst();
+        Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), null);
+        boolean levelCondition = match.getPlayersNumber() == 3 ? worker.getPosition().getLevel() == otherWorker.getPosition().getLevel()
                     : (worker.getPosition().getLevel() == otherWorker.getPosition().getLevel() && worker.getPosition().getLevel() == BlockType.LEVEL_ONE);
 
-            neighboringOtherWorker = worker.getPosition().isAdjacentTo(otherWorker.getPosition()) && levelCondition;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        neighboringOtherWorker = worker.getPosition().isAdjacentTo(otherWorker.getPosition()) && levelCondition;
+
     }
 
     /**

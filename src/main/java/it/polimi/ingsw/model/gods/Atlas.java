@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class implements the Atlas strategy used by the Player who chose the powers of this God.
  * Specifically, an Atlas Worker can build a dome at any level.
@@ -13,6 +16,19 @@ import it.polimi.ingsw.model.Worker;
  */
 
 public class Atlas extends GodStrategy {
+
+    public static final String NAME = "Atlas";
+    public static final String DESCRIPTION = "Description";
+    public static final String POWER_DESCRIPTION = "Power Description";
+
+    @Override
+    public Map<String, String> getGodInfo() {
+        HashMap<String, String> info = new HashMap<>();
+        info.put("name", NAME);
+        info.put("description", DESCRIPTION);
+        info.put("power_description", POWER_DESCRIPTION);
+        return info;
+    }
 
     // TODO SHOULD CHECK ALSO THE LEVEL BEING BUILT?
     // NOT NECESSARY BECAUSE standardaCheckBuild doesn't care about the level being built, but it consider the next level,
