@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.controller.GodChoiceCommand;
 import it.polimi.ingsw.controller.PlayerCommand;
 
 import java.io.*;
@@ -34,6 +35,11 @@ public class Client {
     }
 
     public void sendPlayerCommand(PlayerCommand command) throws Exception {
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        objectOutputStream.writeObject(command);
+    }
+
+    public void sendGodChoiceCommand(GodChoiceCommand command) throws Exception {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         objectOutputStream.writeObject(command);
     }

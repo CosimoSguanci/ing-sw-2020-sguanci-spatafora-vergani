@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.MessageListener;
 import it.polimi.ingsw.client.controller.Controller;
 import it.polimi.ingsw.view.cli.Cli;
-import it.polimi.ingsw.view.cli.GameManager;
 
 public class ClientApp
 {
@@ -13,11 +12,11 @@ public class ClientApp
         MessageListener messageListener = new MessageListener(client.getSocket());
         new Thread(messageListener).start();
         Controller controller = new Controller(client);
-        GameManager gameManager = new GameManager(client);
-        Cli cli = new Cli(client, gameManager);
+        //GameManager gameManager = new GameManager(client);
+        Cli cli = new Cli(client);
         messageListener.addObserver(cli);
         cli.addObserver(controller);
-        gameManager.addObserver(controller);
+        //gameManager.addObserver(controller);
         cli.start();
     }
 }

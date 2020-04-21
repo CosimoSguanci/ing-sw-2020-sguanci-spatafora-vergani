@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 
-public class ClientHandler extends Observable<PlayerCommand> implements Runnable {
+public class ClientHandler extends Observable<Object> implements Runnable {
 
     private Server server;
     private Socket clientSocket;
@@ -20,10 +20,7 @@ public class ClientHandler extends Observable<PlayerCommand> implements Runnable
         this.clientSocket = clientSocket;
     }
 
-    void sendRequest(Request req) throws IOException {
-        DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
-        out.writeInt(req.getRequestNumber());
-    }
+
 
     public void sendObject(Object object) throws IOException {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());

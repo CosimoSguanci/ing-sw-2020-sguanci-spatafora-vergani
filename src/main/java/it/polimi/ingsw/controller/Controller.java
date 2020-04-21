@@ -1,12 +1,15 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Model;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
+import it.polimi.ingsw.exceptions.WrongPlayerException;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.observer.Observer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+
 
 /**
  * This class represents the Controller in MVC design pattern. The whole
@@ -22,8 +25,11 @@ import java.util.List;
  * @author Andrea Mario Vergani
  * @author Cosimo Sguanci
  */
-public class Controller implements Observer<PlayerCommand> {
+public class Controller implements Observer<Object> {
     private Model model;
+    private Player godChooserPlayer;
+    private List<String> selectableGods;
+    private int initialTurn;
 
     /**
      * The constructor creates an instance of Controller class. This class
@@ -44,28 +50,71 @@ public class Controller implements Observer<PlayerCommand> {
      * @param message player move/build from View
      */
     @Override
-    public void update(PlayerCommand message) {
+    public void update(Object message) {
         try {
-            Cell correctCell = model.getBoard().getCell(message.getCell().getRowIdentifier(), message.getCell().getColIdentifier());
-            message.setCell(correctCell);
 
-            for(Player player : model.getPlayers()) {
-                if(player.ID.equals(message.playerID)) {
-                    message.setPlayer(player);
-                    break;
+            if(message instanceof PlayerCommand) {
+                PlayerCommand playerCommand = (PlayerCommand) message;
+
+                for(Player player : model.getPlayers()) {
+                    if(player.ID.equals(playerCommand.playerID)) {
+                        playerCommand.setPlayer(player);
+                        break;
+                    }
                 }
+
+                Cell correctCell = playerCommand.getCell() != null ? model.getBoard().getCell(playerCommand.getCell().getRowIdentifier(), playerCommand.getCell().getColIdentifier()) : null;
+                playerCommand.setCell(correctCell);
+
+                Worker worker = playerCommand.workerID != null ? playerCommand.workerID.equals(PlayerCommand.WORKER_FIRST) ? playerCommand.getPlayer().getWorkerFirst() : playerCommand.getPlayer().getWorkerSecond() : null;
+                playerCommand.setWorker(worker);
+
+                handlePlayerCommand(playerCommand);
+            }
+            else if(message instanceof GodChoiceCommand) {
+                GodChoiceCommand godChoiceCommand = (GodChoiceCommand) message;
+                handleGodChoiceCommand(godChoiceCommand);
+
             }
 
-            Worker worker = message.workerID.equals(PlayerCommand.WORKER_FIRST) ? message.getPlayer().getWorkerFirst() : message.getPlayer().getWorkerSecond();
-            message.setWorker(worker);
 
-            handleCommand(message);
-        } catch (Exception e) {  //must be understood what happens when this exception occurs
+        } catch (InvalidPlayerNumberException e) {  //must be understood what happens when this exception occurs
             //this exception occurs when a player is giving a command during a turn "owned" by another player
             e.printStackTrace();
         }
     }
 
+    private void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {
+       List<String> chosenGods = godChoiceCommand.getChosenGods();
+       boolean isGodChooser = godChoiceCommand.isGodChooser();
+
+       if(isGodChooser) {
+           model.setInitialTurn(initialTurn);
+           this.selectableGods = chosenGods;
+
+       } else {
+            String god = chosenGods.get(0);
+            model.getCurrentPlayer().setGod(new God("", "", "", GodStrategy.instantiateGod(god)));
+            this.selectableGods.remove(god);
+       }
+
+        model.nextTurn();
+
+       if(!model.getCurrentPlayer().equals(godChooserPlayer)) {
+            model.chooseGodsUpdate(model.getCurrentPlayer(), selectableGods);
+       }
+       else {
+           HashMap<String, String> selectedGods = new HashMap<>();
+
+           model.getPlayers().forEach((player) -> {
+               selectedGods.put(player.nickname, player.getGod().godStrategy.getGodInfo().get("name")); // TODO REMOVE GOD
+           });
+
+           model.selectedGodsUpdate(selectedGods);
+       }
+
+
+    }
 
     /**
      * This private method simply extends update's task. In fact, to handle
@@ -75,12 +124,12 @@ public class Controller implements Observer<PlayerCommand> {
      * player, as an invocation of one of model's methods.
      *
      * @param playerCommand player command from View
-     * @throws Exception when command's player is not current player
+     * @throws InvalidPlayerNumberException when command's player is not current player
      */
-    private void handleCommand(PlayerCommand playerCommand) throws Exception {
+    private void handlePlayerCommand(PlayerCommand playerCommand) throws WrongPlayerException {
         Player currentPlayer = model.getCurrentPlayer();
         if (!playerCommand.getPlayer().equals(currentPlayer)) {
-            throw new Exception();
+            throw new WrongPlayerException();
         } else {
             // TODO When Player Lose?
             // TODO When Game Prep?
@@ -171,5 +220,13 @@ public class Controller implements Observer<PlayerCommand> {
         }
 
         return true;
+    }
+
+    public void startMatch() {
+        List<Player> playerList = model.getPlayers();
+        initialTurn = new Random().nextInt((playerList.size()));
+        godChooserPlayer = playerList.get(initialTurn);
+        godChooserPlayer.setAsGodChooser();
+        model.chooseGodsUpdate(godChooserPlayer, null);
     }
 }

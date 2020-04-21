@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.controller.GodChoiceCommand;
 import it.polimi.ingsw.controller.PlayerCommand;
+import it.polimi.ingsw.model.messages.ChooseGodsUpdate;
 import it.polimi.ingsw.model.messages.ErrorUpdate;
 import it.polimi.ingsw.model.messages.ModelUpdate;
 import it.polimi.ingsw.model.Player;
@@ -11,19 +13,12 @@ import it.polimi.ingsw.server.ClientHandler;
 
 public class RemoteView extends View {
 
-    private class MessageReceiver implements Observer<PlayerCommand> {
+    private class MessageReceiver implements Observer<Object> {
 
         @Override
-        public void update(PlayerCommand playerCommand) {
-           /* System.out.println("Received: " + message);
-            try{
-                String[] inputs = message.split(",");
-                handleMove(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
-            }catch(IllegalArgumentException e){
-                clientHandler.asyncSend("Error!");
-            }*/
+        public void update(Object command) {
 
-           handleMove(playerCommand);
+           handleCommand(command);
         }
 
     }
@@ -59,6 +54,13 @@ public class RemoteView extends View {
                 PlayerUpdate playerUpdate = (PlayerUpdate) message;
 
                 if (getPlayer().ID.equals(playerUpdate.getPlayerID())) {
+                    clientHandler.sendObject(message);
+                }
+            }
+            else if(message instanceof ChooseGodsUpdate) {
+                ChooseGodsUpdate chooseGodsUpdate = (ChooseGodsUpdate) message;
+
+                if (getPlayer().ID.equals(chooseGodsUpdate.getPlayerID())) {
                     clientHandler.sendObject(message);
                 }
             }

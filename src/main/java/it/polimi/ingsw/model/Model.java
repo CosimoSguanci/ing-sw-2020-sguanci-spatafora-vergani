@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.messages.*;
 import it.polimi.ingsw.observer.Observable;
 
 import java.util.List;
+import java.util.Map;
 
 // TODO Javadoc Model
 public class Model extends Observable<Object> {
@@ -40,9 +41,17 @@ public class Model extends Observable<Object> {
      *
      */
     public void endTurn() {
-        match.nextTurn();
+        nextTurn();
         TurnUpdate turnUpdate = new TurnUpdate(match.getCurrentPlayer().ID);
         notify(turnUpdate);
+    }
+
+    public void nextTurn() {
+        match.nextTurn();
+    }
+
+    public void setInitialTurn(int initialTurn) {
+        match.setInitialTurn(initialTurn);
     }
 
     public void reportError(Player player, CommandType commandType) {
@@ -55,8 +64,18 @@ public class Model extends Observable<Object> {
         notify(playerUpdate);
     }
 
-    public void startMatch() {
+    public void chooseGodsUpdate(Player player, List<String> selectableGods) {
+        ChooseGodsUpdate chooseGodsUpdate = new ChooseGodsUpdate(player.ID, player.isGodChooser(), selectableGods);
+        notify(chooseGodsUpdate);
+    }
+
+    public void selectedGodsUpdate(Map<String, String> selectedGods) {
+        SelectedGodsUpdate selectedGodsUpdate = new SelectedGodsUpdate(selectedGods);
+        notify(selectedGods);
+    }
+
+    /*public void startMatch() {
         MatchStartedUpdate matchStartedUpdate = new MatchStartedUpdate(match.getMatchBoard());
         notify(matchStartedUpdate);
-    }
+    }*/
 }

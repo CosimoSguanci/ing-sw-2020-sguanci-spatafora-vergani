@@ -8,10 +8,10 @@ import java.net.Socket;
 public class MessageListener extends Observable<Object> implements Runnable {
     private Socket socket;
 
-
     public MessageListener(Socket socket) {
         this.socket = socket;
     }
+
     @Override
     public void run() {
 

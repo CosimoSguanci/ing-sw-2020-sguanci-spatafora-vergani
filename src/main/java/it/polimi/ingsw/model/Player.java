@@ -16,7 +16,7 @@ public class Player {
     private Worker workerFirst;
     private Worker workerSecond;
     private God god;
-    private Boolean isGodChooser;
+    private boolean isGodChooser;
     public final Match match;
 
     /**
@@ -46,6 +46,14 @@ public class Player {
      */
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public boolean isGodChooser() {
+        return this.isGodChooser;
+    }
+
+    public void setAsGodChooser() {
+        this.isGodChooser = true;
     }
 
     /**
