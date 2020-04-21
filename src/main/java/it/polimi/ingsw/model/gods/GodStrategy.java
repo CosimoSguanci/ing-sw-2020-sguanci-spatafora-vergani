@@ -42,7 +42,7 @@ public abstract class GodStrategy {
      * The gods that have a particular Game preparation behavior will override this method.
      */
     public boolean checkGamePreparation(Worker workerFirst, Cell workerFirstCell, Worker workerSecond, Cell workerSecondCell) {
-        return true;
+        return workerFirstCell.isEmpty() && workerSecondCell.isEmpty();
     }
 
     /**
