@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.CannotIncreaseLevelException;
+import it.polimi.ingsw.exceptions.CellNotEmptyException;
+
 /**
  * This class contains information about the state of a single cell. In the game, there
  * are 25 cells and the workers have the possibility to move adn build. Every cell has
@@ -80,7 +83,7 @@ public class Cell {
      * actual level is the highest one: a dome
      */
     //tested
-    public void increaseLevel() {
+    public void increaseLevel() throws CannotIncreaseLevelException {
 
         switch(this.level) {
             case GROUND:
@@ -95,8 +98,8 @@ public class Cell {
             case LEVEL_THREE:
                 this.level = BlockType.DOME;
                 break;
-            /*case DOME:
-                throw new Exception();*/
+            case DOME:
+                throw new CannotIncreaseLevelException();
 
         }
     }
@@ -107,7 +110,9 @@ public class Cell {
         if (this.isEmpty()) {
             this.level = level;
         }
-        else {  } //throws exception
+        else {
+            throw new CellNotEmptyException();
+        }
     }
 
 

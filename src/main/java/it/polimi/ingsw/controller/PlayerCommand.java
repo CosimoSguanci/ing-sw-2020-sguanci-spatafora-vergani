@@ -1,6 +1,10 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exceptions.BadPlayerCommandException;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.gods.Apollo;
+
+import java.io.Serializable;
 
 /**
  * In this class there are references to the player who has playing
@@ -12,7 +16,7 @@ import it.polimi.ingsw.model.*;
  * @author Cosimo Sguanci
  */
 
-public class PlayerCommand {
+public class PlayerCommand implements Serializable {
 
     /**
      * Properties used by the Client to construct a PlayerCommand without the need to have the actual reference to Player and Worker instances.
@@ -22,7 +26,7 @@ public class PlayerCommand {
     final String playerID;
     final String workerID;
 
-    final CommandType commandType;
+    public final CommandType commandType;
     final BlockType cellBlockType;
 
     /**
@@ -31,6 +35,7 @@ public class PlayerCommand {
     private Player player;
     private Worker worker;
     private Cell cell;
+
 
     /**
      * PlayerCommand is the builder of the class. Taken as parameters
@@ -75,86 +80,94 @@ public class PlayerCommand {
      * @param playerID  the ID of the Player who launched the command
      * @param command   input String taken from Standard Input
      * @return the corresponding PlayerCommand instance if the command was well formatted.
-     * @throws Exception if the command String isn't well formatted.
+     * @throws it.polimi.ingsw.exceptions.BadPlayerCommandException if the command String isn't well formatted.
      */
-    public static PlayerCommand parseInput(String playerID, String command) throws Exception {
+    public static PlayerCommand parseInput(String playerID, String command) throws BadPlayerCommandException {
 
-        CommandType commandType;
-        Cell cell;
-        BlockType blockType = null;
+        try {
+            CommandType commandType;
+            Cell cell;
+            BlockType blockType = null;
 
-        String[] s = command.split("\\s+");
+            String[] s = command.split("\\s+");
 
-        if (s.length > 4) {
-            throw new Exception();
-        }
-
-        String type = s[0];
-
-        switch (type.toLowerCase()) {
-            case "move":
-                commandType = CommandType.MOVE;
-                break;
-            case "build":
-                commandType = CommandType.BUILD;
-                break;
-            case "end":
-                commandType = CommandType.END_TURN;
-                break;
-            default:
-                throw new Exception();
-        }
-
-        if (type.toLowerCase().equals("end")) {
-            if(s.length == 1)
-                return new PlayerCommand(playerID, CommandType.END_TURN, null, null, null);
-            else
-                throw new Exception();
-        }
-
-        String worker = s[1];
-
-        if (!worker.toLowerCase().equals(WORKER_FIRST) && !worker.toLowerCase().equals(WORKER_SECOND)) {
-            throw new Exception();
-        }
-
-        String cellStr = s[2].toLowerCase();
-
-        char rowChar = cellStr.charAt(0);
-        int colNum = Integer.parseInt(cellStr.substring(1));
-
-        if (cellStr.length() != 2 || colNum < 1 || colNum > Board.WIDTH_SIZE || rowChar < 'a' || rowChar >= ('a' + Board.HEIGHT_SIZE)) {
-            throw new Exception();
-        }
-
-        String blockTypeStr;
-        if (s.length == 4) {
-            if (commandType == CommandType.BUILD) {
-                blockTypeStr = s[3];
-
-                switch (blockTypeStr.toLowerCase()) {
-                    case "one":
-                        blockType = BlockType.LEVEL_ONE;
-                        break;
-                    case "two":
-                        blockType = BlockType.LEVEL_TWO;
-                        break;
-                    case "three":
-                        blockType = BlockType.LEVEL_THREE;
-                        break;
-                    case "dome":
-                        blockType = BlockType.DOME;
-                        break;
-                    default:
-                        throw new Exception();
-                }
+            if (s.length > 4) {
+                throw new BadPlayerCommandException();
             }
-            else throw new Exception();
+
+            String type = s[0];
+
+            switch (type.toLowerCase()) {
+                case "move":
+                    commandType = CommandType.MOVE;
+                    break;
+                case "build":
+                    commandType = CommandType.BUILD;
+                    break;
+                case "end":
+                    commandType = CommandType.END_TURN;
+                    break;
+
+                default:
+                    throw new BadPlayerCommandException();
+            }
+
+            if (type.toLowerCase().equals("end")) {
+                if(s.length == 1)
+                    return new PlayerCommand(playerID, CommandType.END_TURN, null, null, null);
+                else
+                    throw new BadPlayerCommandException();
+            }
+
+            String worker = s[1];
+
+            if (!worker.toLowerCase().equals(WORKER_FIRST) && !worker.toLowerCase().equals(WORKER_SECOND)) {
+                throw new BadPlayerCommandException();
+            }
+
+            String cellStr = s[2].toLowerCase();
+
+            char rowChar = cellStr.charAt(0);
+            int colNum = Integer.parseInt(cellStr.substring(1));
+
+            if (cellStr.length() != 2 || colNum < 1 || colNum > Board.WIDTH_SIZE || rowChar < 'a' || rowChar >= ('a' + Board.HEIGHT_SIZE)) {
+                throw new BadPlayerCommandException();
+            }
+
+            String blockTypeStr;
+            if (s.length == 4) {
+                if (commandType == CommandType.BUILD) {
+                    blockTypeStr = s[3];
+
+                    switch (blockTypeStr.toLowerCase()) {
+                        case "one":
+                            blockType = BlockType.LEVEL_ONE;
+                            break;
+                        case "two":
+                            blockType = BlockType.LEVEL_TWO;
+                            break;
+                        case "three":
+                            blockType = BlockType.LEVEL_THREE;
+                            break;
+                        case "dome":
+                            blockType = BlockType.DOME;
+                            break;
+                        default:
+                            throw new BadPlayerCommandException();
+                    }
+                }
+                else throw new BadPlayerCommandException();
+            }
+
+
+            cell = new Cell((int) rowChar - 'a', colNum - 1);
+            return new PlayerCommand(playerID, commandType, worker, cell, blockType);
+        }
+        catch(Exception e) {
+            throw new BadPlayerCommandException();
         }
 
 
-        cell = new Cell((int) rowChar - 'a', colNum - 1);
-        return new PlayerCommand(playerID, commandType, worker, cell, blockType);
     }
 
     /*

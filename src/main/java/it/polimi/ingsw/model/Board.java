@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidCellException;
+
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -83,7 +85,7 @@ public class Board {
      * @return true if a movement in any direction from parameter-cell is possible; otherwise, false
      *
      */
-    private boolean movementPossibleFromCell(Cell cell) {  // throws Exception {
+    private boolean movementPossibleFromCell(Cell cell) {
         /*
         ArrayList<Integer> coord = getCoordinates(cell);
         int row = coord.get(0);  //i value for (i,j) coordinates of parameter
@@ -112,7 +114,7 @@ public class Board {
      * @return true if a movement in any direction by one of the workers of parameter-player is possible; otherwise, false
      *
      */
-    public boolean canMove(Player player) {  // throws Exception {
+    public boolean canMove(Player player) {
         Cell cellOne = player.getWorkerFirst().getPosition();  //actual cell of the first worker
         Cell cellTwo = player.getWorkerSecond().getPosition();  //actual cell of the second worker
         boolean possibleOne = movementPossibleFromCell(cellOne);  //true if movement from cellOne is possible, so first worker can move somewhere
@@ -130,7 +132,7 @@ public class Board {
      * @return true if a building in any direction by parameter-worker is possible; otherwise, false
      *
      */
-    public boolean canBuild(Worker worker) {  // throws Exception {
+    public boolean canBuild(Worker worker) {
         /*
         ArrayList<Integer> coord = getCoordinates(worker.getPosition());
         int row = coord.get(0);  //i value for (i,j) coordinates of parameter
@@ -157,13 +159,13 @@ public class Board {
      * @param col indicates the column of the Cell requested in the board
      *
      * @return a reference to the Cell requested if possible
-     * @throws Exception if the parameters are not valid for a Cell in the board.
+     * @throws InvalidCellException if the parameters are not valid for a Cell in the board.
      * */
-    public Cell getCell(int row, int col) throws Exception {
+    public Cell getCell(int row, int col) throws InvalidCellException {
         if((row >= 0) && (row < board.length) && (col >= 0) && (col < board[0].length)) {
             return board[row][col];
         }
-        throw new Exception(); // invalidCellRequestedException()
+        throw new InvalidCellException();
     }
 
 }

@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model;
 
 
+import it.polimi.ingsw.exceptions.CannotIncreaseLevelException;
+import it.polimi.ingsw.exceptions.CellNotEmptyException;
+
 /**
  *  This class contains information about the state of a single worker. Players in game
  *  have two different worker and every worker has the possibility to move and build on
@@ -54,16 +57,18 @@ public class Worker {
      * @param row indicates the row position associated to a single worker at the beginning of the match
      * @param col indicates the column position associated to a single worker at the beginning of the match
      */
-    public void setInitialPosition(int row, int col) throws Exception {
+    public void setInitialPosition(int row, int col) throws CellNotEmptyException {
         if(board.getCell(row, col).isEmpty()) {
             this.position = board.getCell(row, col);
             this.board.getCell(row, col).setWorker(this);
         }
-        else { throw new Exception(); } //cellAlreadyOccupiedException();
+        else {
+            throw new CellNotEmptyException();
+        }
     }
 
     /**
-     * This method implements the standard checks that have to be done if a Player wants to move a Worker,
+     * This method implements the standard checks that have to be done if a Player wants to move a Worker
      * following the standard set of rules.
      *
      * @param moveCell the cell in which the Player want to move the worker.
@@ -145,7 +150,7 @@ public class Worker {
      * @throws Exception either a worker tries to build in a non adjacent cell or if the cell
      * is already occupied or has reached its maximum level.
      */
-    public void build(Cell buildCell) {
+    public void build(Cell buildCell) throws CannotIncreaseLevelException {
         buildCell.increaseLevel();
 
         this.hasBuilt = true;

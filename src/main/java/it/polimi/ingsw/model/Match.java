@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.AlreadyInsidePlayerException;
+import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
+import it.polimi.ingsw.exceptions.NicknameAlreadyTakenException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,13 +38,13 @@ public class Match {  //tested with 100% coverage
      * and some other general things about moves (such as attributes 'turn' and 'canMove'
      *
      *-- @param number   number of total players who will join the match
-     * @throws Exception    when the number of players is not 2 or 3 (game option)
+     * @throws it.polimi.ingsw.exceptions.InvalidPlayerNumberException when the number of players is not 2 or 3 (game option)
      *
      */
-    private Match(String id, int playersNumber) throws Exception {
+    private Match(String id, int playersNumber) throws InvalidPlayerNumberException {
         this.id = id;
 
-        if(playersNumber != 2 && playersNumber != 3)  throw new Exception();
+        if(playersNumber != 2 && playersNumber != 3)  throw new InvalidPlayerNumberException();
         this.players = new ArrayList<>();
         this.matchBoard = Board.getInstance(String.valueOf(Thread.currentThread().getId()));
         this.turn = 0;
@@ -54,7 +58,7 @@ public class Match {  //tested with 100% coverage
      * @param key Thread id
      * @return a new instance of Match if the key was not already contained in matchInstances, otherwise the previous created instance.
      */
-    public static Match getInstance(final String key, Integer playersNumber) throws Exception {
+    public static Match getInstance(final String key, Integer playersNumber) {
         Match match = matchInstances.get(key);
 
         if (match == null)
@@ -90,10 +94,10 @@ public class Match {  //tested with 100% coverage
      * @throws Exception    if there is no possibility for the player to join, because the selected total number has already been reached
      *
      */
-    public void addPlayer(Player p) throws Exception {
-        if(players.size() >= playersNumber)  throw new Exception();
-        if(players.contains(p))  throw new Exception();  //rather than exception, notify through View
-        if(nicknameAlreadyInside(p))  throw new Exception();  //rather than exception, notify through View
+    public void addPlayer(Player p) throws InvalidPlayerNumberException, AlreadyInsidePlayerException, NicknameAlreadyTakenException {
+        if(players.size() >= playersNumber)  throw new InvalidPlayerNumberException();
+        if(players.contains(p))  throw new AlreadyInsidePlayerException();  //rather than exception, notify through View
+        if(nicknameAlreadyInside(p))  throw new NicknameAlreadyTakenException();  //rather than exception, notify through View
         players.add(p);
     }
 
@@ -136,6 +140,10 @@ public class Match {  //tested with 100% coverage
      */
     public void nextTurn() {
         this.turn = (this.turn + 1) % players.size();
+    }
+
+    public void setInitialTurn(int initialTurn) {
+        this.turn = initialTurn;
     }
 
 
