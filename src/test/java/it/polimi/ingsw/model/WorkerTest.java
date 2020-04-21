@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class WorkerTest {
 
     @Test
-    public void testGetPosition() throws Exception {
+    public void testGetPosition()  {
 
         System.out.println("testing getPosition() and setInitialPosition()...");
 
@@ -28,7 +28,7 @@ public class WorkerTest {
     }
 
     @Test
-    public void testMove() throws Exception {
+    public void testMove()  {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
@@ -51,7 +51,7 @@ public class WorkerTest {
 
 
     @Test
-    public void testCellNotAdjacentMove() throws Exception {
+    public void testCellNotAdjacentMove()  {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
@@ -72,7 +72,7 @@ public class WorkerTest {
 
 
     @Test
-    public void testCellNotEmptyMove() throws Exception {
+    public void testCellNotEmptyMove()  {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
@@ -96,7 +96,7 @@ public class WorkerTest {
 
 
     @Test
-    public void testDomeMove() throws Exception {
+    public void testDomeMove()  {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
@@ -119,7 +119,7 @@ public class WorkerTest {
 
 
     @Test
-    public void testCannotMove2LevelUp() throws Exception {
+    public void testCannotMove2LevelUp()  {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
@@ -141,7 +141,7 @@ public class WorkerTest {
 
 
     @Test
-    public void testBuild() throws Exception {
+    public void testBuild()  { // TODO Update test
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
@@ -153,7 +153,7 @@ public class WorkerTest {
         System.out.println("testing build() with a valid request...");
 
         testWorker.setInitialPosition(0,0);
-        //assertTrue(testWorker.standardCheckBuild(board.getCell(0,1))); -> NO, should return FALSE, build before move
+        //assertTrue(testWorker.standardCheckBuild(board.getCell(0,1))); -> NO, should return FALSE, build before move // TODO FIX build before move
         Cell previousPosition = testWorker.getPosition();
         testWorker.build(board.getCell(0,1));
         assertEquals(BlockType.LEVEL_ONE , board.getCell(0,1).getLevel());
@@ -187,7 +187,7 @@ public class WorkerTest {
 
 
     @Test
-    public void testCellNotAdjacentBuild() throws Exception {
+    public void testCellNotAdjacentBuild()  {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
@@ -209,7 +209,7 @@ public class WorkerTest {
 
 
     @Test
-    public void testCellNotEmptyBuild() throws Exception {
+    public void testCellNotEmptyBuild()  {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
@@ -232,7 +232,7 @@ public class WorkerTest {
 
 
     @Test
-    public void testDomeBuild() throws Exception {
+    public void testDomeBuild()  {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
@@ -253,7 +253,7 @@ public class WorkerTest {
 
 /* TESTS INVALID COMMAND TO BUILD
     @Test
-    public void testNotValidBuild() throws Exception {
+    public void testNotValidBuild()  {
 
         Match testMatch = new Match(2);
         Board testBoard = new Board();

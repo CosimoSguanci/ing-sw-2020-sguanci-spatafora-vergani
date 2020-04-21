@@ -18,7 +18,7 @@ public class BoardTest {
 
 
     @Test
-    public void canMoveTrueTest() throws Exception {
+    public void canMoveTrueTest()  {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -64,7 +64,7 @@ public class BoardTest {
 
 
     @Test
-    public void canMoveFalseTest() throws Exception {
+    public void canMoveFalseTest()  {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -108,7 +108,7 @@ public class BoardTest {
 
 
     @Test
-    public void canBuildTrueTest() throws Exception {
+    public void canBuildTrueTest()  {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -155,7 +155,7 @@ public class BoardTest {
 
 
     @Test
-    public void canBuildFalseTest() throws Exception {
+    public void canBuildFalseTest()  {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);

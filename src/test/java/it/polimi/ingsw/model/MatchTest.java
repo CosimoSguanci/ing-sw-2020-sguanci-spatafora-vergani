@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.AlreadyInsidePlayerException;
+import it.polimi.ingsw.exceptions.NicknameAlreadyTakenException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class MatchTest {
 
     @Test
-    public void addPlayerTest2() throws Exception {
+    public void addPlayerTest2() {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -21,12 +23,12 @@ public class MatchTest {
         Player p3 = new Player("Roberto", "rob", match);
         match.addPlayer(p1);
         match.addPlayer(p2);
-        assertThrows(Exception.class, () -> match.addPlayer(p2));
+        assertThrows(AlreadyInsidePlayerException.class, () -> match.addPlayer(p2));
         match.addPlayer(p3);
     }
 
     @Test
-    public void addPlayerTest1() throws Exception {
+    public void addPlayerTest1() {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -35,11 +37,11 @@ public class MatchTest {
         Player p3 = new Player("ValerioAndoni", "and", match);
         match.addPlayer(p1);
         match.addPlayer(p2);
-        assertThrows(Exception.class, () -> match.addPlayer(p3));
+        assertThrows(NicknameAlreadyTakenException.class, () -> match.addPlayer(p3));
     }
 
     @Test
-    public void removePlayerTest() throws Exception {
+    public void removePlayerTest() {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -85,7 +87,7 @@ public class MatchTest {
 
 
     @Test
-    public void nextTurnTest() throws Exception {
+    public void nextTurnTest()  {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -118,7 +120,7 @@ public class MatchTest {
     }
 
     @Test
-    public void getCurrentPlayerTest() throws Exception {
+    public void getCurrentPlayerTest()  {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);

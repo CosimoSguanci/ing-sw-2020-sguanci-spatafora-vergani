@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 
+import it.polimi.ingsw.exceptions.WrongPlayerException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.GodStrategy;
@@ -16,7 +17,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ControllerTest {
 
     @Test
-    public void updateNormalTest() throws Exception {
+    public void updateNormalTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -69,7 +74,7 @@ public class ControllerTest {
 
 
     @Test
-    public void updateGodPowerTest() throws Exception {
+    public void updateGodPowerTest()  {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -115,7 +120,10 @@ public class ControllerTest {
         match.nextTurn();  //Cosimo's turn
 
         playerCommand = PlayerCommand.parseInput("Andrea", "move w2 e1");
-        controller.update(playerCommand);  //move should not be performed
+
+
+        PlayerCommand finalPlayerCommand = playerCommand;
+        assertThrows(WrongPlayerException.class, () -> controller.update(finalPlayerCommand));
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
         assertEquals(match.getMatchBoard().getCell(3,1), w1B.getPosition());
@@ -136,7 +144,7 @@ public class ControllerTest {
 
 
     @Test
-    public void updateCompleteTest() throws Exception {
+    public void updateCompleteTest()  {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -223,8 +231,5 @@ public class ControllerTest {
         playerCommand = PlayerCommand.parseInput("Roberto", "end");
         controller.update(playerCommand);  //now it's p1's turn
         //assertEquals(p1, model.getCurrentPlayer());
-
-        Board.clearInstances();
-        Match.clearInstances();
     }
 }

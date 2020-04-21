@@ -9,7 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PanTest {
     @Test
-    public void panWinConditionTest() throws Exception {
+    public void panWinConditionTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Pan pan = new Pan();
 
         Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 3);
@@ -29,9 +33,6 @@ public class PanTest {
         pan.executeMove(worker, match.getMatchBoard().getCell(0, 3));
 
         assertTrue(pan.checkWinCondition(worker));
-
-        Board.clearInstances();
-        Match.clearInstances();
 
     }
 }

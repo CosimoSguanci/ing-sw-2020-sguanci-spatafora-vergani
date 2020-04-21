@@ -10,10 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 // TODO Game Preparation Test
 public class ErosTest {
     @Test
-    public void erosWinConditionThreePlayersTest() throws Exception {
+    public void erosWinConditionThreePlayersTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Eros eros = new Eros();
 
-        //Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
         Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 3);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
         Worker workerFirst = new Worker(player, match.getMatchBoard());
@@ -30,16 +33,16 @@ public class ErosTest {
 
         assertTrue(eros.checkWinCondition(workerFirst));
 
-        Board.clearInstances();
-        Match.clearInstances();
-
     }
 
     @Test
-    public void erosWinConditionTwoPlayersTest() throws Exception {
+    public void erosWinConditionTwoPlayersTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Eros eros = new Eros();
 
-        //Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
         Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 2);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
         Worker workerFirst = new Worker(player, match.getMatchBoard());
@@ -60,7 +63,5 @@ public class ErosTest {
 
         assertTrue(eros.checkWinCondition(workerFirst));
 
-        Board.clearInstances();
-        Match.clearInstances();
     }
 }

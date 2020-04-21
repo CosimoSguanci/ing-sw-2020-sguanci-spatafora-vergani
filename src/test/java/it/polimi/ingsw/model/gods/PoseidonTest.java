@@ -9,7 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PoseidonTest {
     @Test
-    public void poseidonCheckBuildGroundTest() throws Exception { // Unmoved worker is on ground at the end of the turn
+    public void poseidonCheckBuildGroundTest()  { // Unmoved worker is on ground at the end of the turn
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Poseidon poseidon = new Poseidon();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -24,6 +28,7 @@ public class PoseidonTest {
         unmovedWorker.setInitialPosition(4, 0);
 
         poseidon.executeMove(movedWorker, match.getMatchBoard().getCell(1, 1));
+        assertTrue(poseidon.checkBuild(movedWorker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE));
         poseidon.executeBuild(movedWorker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE);
 
         assertTrue(poseidon.checkBuild(unmovedWorker, match.getMatchBoard().getCell(4, 1), BlockType.LEVEL_ONE));
@@ -36,13 +41,14 @@ public class PoseidonTest {
         poseidon.executeBuild(unmovedWorker, match.getMatchBoard().getCell(4, 1), BlockType.LEVEL_THREE);
 
         assertFalse(poseidon.checkBuild(unmovedWorker, match.getMatchBoard().getCell(4, 1), BlockType.DOME));
-
-        Board.clearInstances();
-        Match.clearInstances();
     }
 
     @Test
-    public void poseidonCheckBuildNotGroundTest() throws Exception { // Unmoved worker is NOT on ground at the end of the turn
+    public void poseidonCheckBuildNotGroundTest()  { // Unmoved worker is NOT on ground at the end of the turn
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Poseidon poseidon = new Poseidon();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -63,8 +69,5 @@ public class PoseidonTest {
         poseidon.executeBuild(movedWorker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE);
 
         assertFalse(poseidon.checkBuild(unmovedWorker, match.getMatchBoard().getCell(4, 1), BlockType.LEVEL_TWO));
-
-        Board.clearInstances();
-        Match.clearInstances();
     }
 }

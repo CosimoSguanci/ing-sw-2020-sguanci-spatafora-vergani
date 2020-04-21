@@ -9,7 +9,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MinotaurTest {
     @Test
-    public void minotaurCheckMoveTest() throws Exception {
+    public void minotaurCheckMoveTest() {
+        Board.clearInstances();
+        Match.clearInstances();
+
         Minotaur minotaur = new Minotaur();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -32,7 +35,10 @@ public class MinotaurTest {
     }
 
     @Test
-    public void minotaurExecuteMoveTest() throws Exception {
+    public void minotaurExecuteMoveTest() {
+        Board.clearInstances();
+        Match.clearInstances();
+
         Minotaur minotaur = new Minotaur();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -57,8 +63,5 @@ public class MinotaurTest {
         minotaur.executeMove(worker1, match.getMatchBoard().getCell(1, 2));
         assertEquals(match.getMatchBoard().getCell(1, 2), worker1.getPosition());
         assertEquals(match.getMatchBoard().getCell(2, 3), worker2.getPosition()); // Forced one space straight backwards
-
-        Board.clearInstances();
-        Match.clearInstances();
     }
 }

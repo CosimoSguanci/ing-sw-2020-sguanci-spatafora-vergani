@@ -11,7 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ArtemisTest {
 
     @Test
-    public void artemisCheckMultipleMoveTest() throws Exception {
+    public void artemisCheckMultipleMoveTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Artemis artemis = new Artemis();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -27,13 +31,14 @@ public class ArtemisTest {
         artemis.executeMove(worker, match.getMatchBoard().getCell(0, 2));
 
         assertFalse(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 3)));
-
-        Board.clearInstances();
-        Match.clearInstances();
     }
 
     @Test
-    public void artemisCheckMultipleMoveInitialPositionTest() throws Exception {
+    public void artemisCheckMultipleMoveInitialPositionTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Artemis artemis = new Artemis();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -47,7 +52,5 @@ public class ArtemisTest {
 
         assertFalse(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 0)));
 
-        Board.clearInstances();
-        Match.clearInstances();
     }
 }

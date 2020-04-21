@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.CannotIncreaseLevelException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +25,7 @@ public class CellTest {
     }
 
     @Test
-    public void increaseLevelTest() /*throws Exception*/ {
+    public void increaseLevelTest() /**/ {
         Cell cell = new Cell(2,1);
         cell.increaseLevel();
         assertEquals(BlockType.LEVEL_ONE, cell.getLevel());
@@ -38,7 +39,7 @@ public class CellTest {
 
     @Disabled  //because we haven't decided what to do in "dome case" (exception or not) yet
     @Test
-    public void increaseLevelDomeTest() /*throws Exception*/ {
+    public void increaseLevelDomeTest() /**/ {
         Cell cell = new Cell(2,1);
         cell.increaseLevel();
         assertEquals(BlockType.LEVEL_ONE, cell.getLevel());
@@ -48,7 +49,7 @@ public class CellTest {
         assertEquals(BlockType.LEVEL_THREE, cell.getLevel());
         cell.increaseLevel();
         assertEquals(BlockType.DOME, cell.getLevel());
-        assertThrows(Exception.class, cell::increaseLevel);
+        assertThrows(CannotIncreaseLevelException.class, cell::increaseLevel);
     }
 
     @Test
@@ -59,7 +60,7 @@ public class CellTest {
     }
 
     @Test
-    public void isLevelDifferenceOkTest() /*throws Exception*/ {
+    public void isLevelDifferenceOkTest() /**/ {
         Cell cell = new Cell(4,2);
         cell.increaseLevel();
         cell.increaseLevel();  //cell is level two
@@ -83,7 +84,7 @@ public class CellTest {
 
 
     @Test
-    public void levelDifferenceTest() /*throws Exception*/ {
+    public void levelDifferenceTest() /**/ {
         Cell cell = new Cell(4,2);
         cell.increaseLevel();
         cell.increaseLevel();  //cell is level two

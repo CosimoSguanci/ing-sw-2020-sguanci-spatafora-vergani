@@ -11,7 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class HestiaTest {
 
     @Test
-    public void hestiaCheckMultipleBuildTest() throws Exception {
+    public void hestiaCheckMultipleBuildTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Hestia hestia = new Hestia();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -30,12 +34,14 @@ public class HestiaTest {
 
         assertFalse(hestia.checkBuild(worker, match.getMatchBoard().getCell(0, 0), BlockType.LEVEL_ONE));
 
-        Board.clearInstances();
-        Match.clearInstances();
     }
 
     @Test
-    public void demeterCheckMultipleBuildPerimeterSpaceTest() throws Exception {
+    public void demeterCheckMultipleBuildPerimeterSpaceTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Hestia hestia = new Hestia();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -51,7 +57,5 @@ public class HestiaTest {
 
         assertFalse(hestia.checkBuild(worker, match.getMatchBoard().getCell(0, 2), BlockType.LEVEL_TWO)); // 0,1
 
-        Board.clearInstances();
-        Match.clearInstances();
     }
 }

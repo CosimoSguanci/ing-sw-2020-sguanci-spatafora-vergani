@@ -11,7 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DemeterTest {
 
     @Test
-    public void demeterCheckMultipleBuildTest() throws Exception {
+    public void demeterCheckMultipleBuildTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Demeter demeter = new Demeter();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -30,12 +34,14 @@ public class DemeterTest {
 
         assertFalse(demeter.checkBuild(worker, match.getMatchBoard().getCell(0, 0), BlockType.LEVEL_ONE));
 
-        Board.clearInstances();
-        Match.clearInstances();
     }
 
     @Test
-    public void demeterCheckMultipleBuildSameSpaceTest() throws Exception {
+    public void demeterCheckMultipleBuildSameSpaceTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Demeter demeter = new Demeter();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -51,7 +57,5 @@ public class DemeterTest {
 
         assertFalse(demeter.checkBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_TWO));
 
-        Board.clearInstances();
-        Match.clearInstances();
     }
 }

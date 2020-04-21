@@ -10,7 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PrometheusTest {
 
     @Test
-    public void prometheusBuildThenMoveTest() throws Exception {
+    public void prometheusBuildThenMoveTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Prometheus prometheus = new Prometheus();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -24,13 +28,14 @@ public class PrometheusTest {
 
         assertTrue(prometheus.checkMove(worker, match.getMatchBoard().getCell(1, 1)));
         prometheus.executeMove(worker, match.getMatchBoard().getCell(1, 1));
-
-        Board.clearInstances();
-        Match.clearInstances();
     }
 
     @Test
-    public void prometheusCannotMoveUpIfBuiltBeforeMovingTest() throws Exception {
+    public void prometheusCannotMoveUpIfBuiltBeforeMovingTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Prometheus prometheus = new Prometheus();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -44,12 +49,14 @@ public class PrometheusTest {
 
         assertFalse(prometheus.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
 
-        Board.clearInstances();
-        Match.clearInstances();
     }
 
     @Test
-    public void prometheusCannotMultipleBuildIfMoveBeforeBuildTest() throws Exception {
+    public void prometheusCannotMultipleBuildIfMoveBeforeBuildTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Prometheus prometheus = new Prometheus();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -65,8 +72,5 @@ public class PrometheusTest {
         prometheus.executeBuild(worker, match.getMatchBoard().getCell(1, 1), BlockType.LEVEL_ONE);
 
         assertFalse(prometheus.checkBuild(worker, match.getMatchBoard().getCell(1, 1), BlockType.LEVEL_TWO));
-
-        Board.clearInstances();
-        Match.clearInstances();
     }
 }

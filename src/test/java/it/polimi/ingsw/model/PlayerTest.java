@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PlayerTest {
 
     @Test
-    public void testGetSetColor() throws Exception {
+    public void testGetSetColor()  {
         System.out.println("testing getColor() and setColor()...");
 
         int playersNum = 2;
@@ -25,7 +25,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void testGetSetWorkerFirst() throws Exception {
+    public void testGetSetWorkerFirst()  {
         System.out.println("testing getWorkerFirst() and setWorkerFirst()...");
 
         int playersNum = 2;
@@ -41,7 +41,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void testGetSetWorkerSecond() throws Exception {
+    public void testGetSetWorkerSecond()  {
         System.out.println("testing getWorkerSecond() and setWorkerSecond()...");
 
         int playersNum = 2;
@@ -57,7 +57,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void testGetSetGod() throws Exception {
+    public void testGetSetGod()  {
         System.out.println("testing getGod() and setGod()...");
 
         int playersNum = 2;

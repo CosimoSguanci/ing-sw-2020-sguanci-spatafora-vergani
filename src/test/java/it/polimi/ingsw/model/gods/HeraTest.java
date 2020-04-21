@@ -10,7 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class HeraTest {
 
     @Test
-    public void heraWinConstraintsTest() throws Exception {
+    public void heraWinConstraintsTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Hera hera = new Hera();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -34,8 +38,5 @@ public class HeraTest {
         // Win constraints should NOT be satisfied.
         assertFalse(apollo.checkWinCondition(opponentWorker) && hera.checkWinConstraints(opponentWorker, match.getMatchBoard().getCell(0, 2)));
 
-
-        Board.clearInstances();
-        Match.clearInstances();
     }
 }

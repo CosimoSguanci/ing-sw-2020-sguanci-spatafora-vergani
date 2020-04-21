@@ -10,7 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AthenaTest {
     @Test
-    public void athenaCheckMoveConstraintsTest() throws Exception {
+    public void athenaCheckMoveConstraintsTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Athena athena = new Athena();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -31,7 +35,5 @@ public class AthenaTest {
 
         assertTrue(athena.checkMoveConstraints(oppositeWorker, match.getMatchBoard().getCell(1, 2))); // Should constraints be checked inside move/executeMove?
 
-        Board.clearInstances();
-        Match.clearInstances();
     }
 }

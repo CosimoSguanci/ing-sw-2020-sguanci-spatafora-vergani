@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ModelTest {
 
     @Test
-    public void getCurrentPlayerTest() throws Exception {
+    public void getCurrentPlayerTest()  {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -40,7 +40,7 @@ public class ModelTest {
     }
 
     @Test
-    public void endTurnTest() throws Exception {
+    public void endTurnTest()  {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);

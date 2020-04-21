@@ -9,7 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HephaestusTest {
     @Test
-    public void hephaestusCheckMultipleBuildTest() throws Exception {
+    public void hephaestusCheckMultipleBuildTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Hephaestus hephaestus = new Hephaestus();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -30,12 +34,14 @@ public class HephaestusTest {
 
         assertFalse(hephaestus.checkBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_THREE));
 
-        Board.clearInstances();
-        Match.clearInstances();
     }
 
     @Test
-    public void hephaestusCheckMultipleBuildAnotherCellTest() throws Exception { // check multiple build on different positions, should always fail
+    public void hephaestusCheckMultipleBuildAnotherCellTest()  { // check multiple build on different positions, should always fail
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Hephaestus hephaestus = new Hephaestus();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -52,12 +58,14 @@ public class HephaestusTest {
 
         assertFalse(hephaestus.checkBuild(worker, match.getMatchBoard().getCell(1, 0), BlockType.LEVEL_TWO));
 
-        Board.clearInstances();
-        Match.clearInstances();
     }
 
     @Test
-    public void hephaestusCheckMultipleBuildDomeTest() throws Exception { // check multiple build on same position but with a dome, should fail
+    public void hephaestusCheckMultipleBuildDomeTest()  { // check multiple build on same position but with a dome, should fail
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         Hephaestus hephaestus = new Hephaestus();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
@@ -76,7 +84,5 @@ public class HephaestusTest {
 
         assertFalse(hephaestus.checkBuild(worker, match.getMatchBoard().getCell(1, 0), BlockType.DOME));
 
-        Board.clearInstances();
-        Match.clearInstances();
     }
 }

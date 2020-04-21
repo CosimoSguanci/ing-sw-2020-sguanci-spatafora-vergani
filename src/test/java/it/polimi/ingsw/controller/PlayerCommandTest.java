@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exceptions.BadPlayerCommandException;
 import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Cell;
 import org.junit.jupiter.api.Disabled;
@@ -42,13 +43,13 @@ class PlayerCommandTest {
     }
 
     @Test
-    void parseInputEndTest() throws Exception {
+    void parseInputEndTest()  {
         PlayerCommand playerCommand = PlayerCommand.parseInput("Player1", "end");
         assertEquals(CommandType.END_TURN, playerCommand.commandType);
     }
 
     @Test
-    void parseInputMoveTest() throws Exception {
+    void parseInputMoveTest()  {
         PlayerCommand playerCommand = PlayerCommand.parseInput("Player1", "move w2 c4");
         assertEquals("Player1", playerCommand.playerID);
         assertEquals(CommandType.MOVE, playerCommand.commandType);
@@ -58,7 +59,7 @@ class PlayerCommandTest {
     }
 
     @Test
-    void parseInputBuildTest() throws Exception {
+    void parseInputBuildTest()  {
         PlayerCommand playerCommand = PlayerCommand.parseInput("Player1", "buiLD   w1  B2 domE");
         assertEquals("Player1", playerCommand.playerID);
         assertEquals(CommandType.BUILD, playerCommand.commandType);
@@ -73,12 +74,12 @@ class PlayerCommandTest {
         assertEquals("w1", playerCommand.workerID);
         assertEquals(1, playerCommand.getCell().getRowIdentifier());
         assertEquals(3, playerCommand.getCell().getColIdentifier());
-        assertEquals(null, playerCommand.cellBlockType);
+        assertNull(playerCommand.cellBlockType);
     }
 
     @Disabled
     @Test
-    void parseInputStartWithBackSpaceTest() throws Exception {
+    void parseInputStartWithBackSpaceTest()  {
         PlayerCommand playerCommand = PlayerCommand.parseInput("Player1", " buiLD   w1  B2 domE");
         assertEquals("Player1", playerCommand.playerID);
         assertEquals(CommandType.BUILD, playerCommand.commandType);
@@ -89,7 +90,7 @@ class PlayerCommandTest {
     }
 
     @Test
-    void parseInputEndWithBackSpaceTest() throws Exception {
+    void parseInputEndWithBackSpaceTest()  {
         PlayerCommand playerCommand = PlayerCommand.parseInput("Player1", "buiLD   w1  B2 domE ");
         assertEquals("Player1", playerCommand.playerID);
         assertEquals(CommandType.BUILD, playerCommand.commandType);
@@ -100,26 +101,26 @@ class PlayerCommandTest {
     }
 
     @Test
-    void parseInputInvalidCommandTest() throws Exception {
-        assertThrows(Exception.class,
+    void parseInputInvalidCommandTest()  {
+        assertThrows(BadPlayerCommandException.class,
                     () -> PlayerCommand.parseInput("Player1", "buiLD   w3  B2 domE "));
-        assertThrows(Exception.class,
+        assertThrows(BadPlayerCommandException.class,
                 () -> PlayerCommand.parseInput("Player1", "builw w1 B2 dome"));
-        assertThrows(Exception.class,
+        assertThrows(BadPlayerCommandException.class,
                 () -> PlayerCommand.parseInput("Player1", "build w1 dome "));
-        assertThrows(Exception.class,
+        assertThrows(BadPlayerCommandException.class,
                 () -> PlayerCommand.parseInput("Player1", "build w1 A1 dome stop"));
-        assertThrows(Exception.class,
+        assertThrows(BadPlayerCommandException.class,
                 () -> PlayerCommand.parseInput("Player1", "build w1 F1 dome "));
-        assertThrows(Exception.class,
+        assertThrows(BadPlayerCommandException.class,
                 () -> PlayerCommand.parseInput("Player1", "build w1 f1 dome "));
-        assertThrows(Exception.class,
+        assertThrows(BadPlayerCommandException.class,
                 () -> PlayerCommand.parseInput("Player1", "build w1 e6 dome "));
-        assertThrows(Exception.class,
+        assertThrows(BadPlayerCommandException.class,
                 () -> PlayerCommand.parseInput("Player1", "build w1 e0 dome "));
-        assertThrows(Exception.class,
+        assertThrows(BadPlayerCommandException.class,
                 () -> PlayerCommand.parseInput("Player1", "move w2 B2 domE"));
-        assertThrows(Exception.class,
+        assertThrows(BadPlayerCommandException.class,
                 () -> PlayerCommand.parseInput("Player1", "end turn"));
     }
 }
