@@ -123,30 +123,33 @@ public class PlayerCommand {
         char rowChar = cellStr.charAt(0);
         int colNum = Integer.parseInt(cellStr.substring(1));
 
-        if (cellStr.length() != 2 || colNum < 1 || colNum > Board.WIDTH_SIZE || rowChar < 'a' || rowChar > ('a' + Board.HEIGHT_SIZE)) {
+        if (cellStr.length() != 2 || colNum < 1 || colNum > Board.WIDTH_SIZE || rowChar < 'a' || rowChar >= ('a' + Board.HEIGHT_SIZE)) {
             throw new Exception();
         }
 
         String blockTypeStr;
         if (s.length == 4) {
-            blockTypeStr = s[3];
+            if (commandType == CommandType.BUILD) {
+                blockTypeStr = s[3];
 
-            switch (blockTypeStr) {
-                case "one":
-                    blockType = BlockType.LEVEL_ONE;
-                    break;
-                case "two":
-                    blockType = BlockType.LEVEL_TWO;
-                    break;
-                case "three":
-                    blockType = BlockType.LEVEL_THREE;
-                    break;
-                case "dome":
-                    blockType = BlockType.DOME;
-                    break;
-                default:
-                    throw new Exception();
+                switch (blockTypeStr.toLowerCase()) {
+                    case "one":
+                        blockType = BlockType.LEVEL_ONE;
+                        break;
+                    case "two":
+                        blockType = BlockType.LEVEL_TWO;
+                        break;
+                    case "three":
+                        blockType = BlockType.LEVEL_THREE;
+                        break;
+                    case "dome":
+                        blockType = BlockType.DOME;
+                        break;
+                    default:
+                        throw new Exception();
+                }
             }
+            else throw new Exception();
         }
 
 
