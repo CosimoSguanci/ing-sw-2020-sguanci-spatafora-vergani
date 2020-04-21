@@ -35,7 +35,7 @@ public class Artemis extends GodStrategy {
      */
     @Override
     public boolean checkMove(Worker worker, Cell moveCell) {
-        return multipleMovementDelegate.checkMove(worker, moveCell, selectedWorker) && !(moveCell.equals(previousCellNeededDelegate.getPreviousCell()));
+        return multipleMovementDelegate.checkMove(worker, moveCell, selectedWorker) && !(moveCell.equals(previousCellNeededDelegate.getPreviousCell())); // TODO: Uniform previousCellNeeded Use with Demeter
     }
 
     /**
