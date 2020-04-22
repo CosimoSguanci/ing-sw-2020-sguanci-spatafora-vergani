@@ -134,7 +134,7 @@ public abstract class GodStrategy {
     public void endTurn(Player player) {
         player.getWorkerFirst().reinitializeBuiltMoved();
         player.getWorkerSecond().reinitializeBuiltMoved();
-    };
+    }
 
     /**
      * This is the method used to check if there are movement constraints imposed by other Players
@@ -194,8 +194,34 @@ public abstract class GodStrategy {
         switch(god) {
             case "apollo" :
                 return new Apollo();
-            default:
+            case "artemis" :
+                return new Artemis();
+            case "athena" :
+                return new Athena();
+            case "atlas" :
+                return new Atlas();
+            case "demeter" :
                 return new Demeter();
+            case "eros" :
+                return new Eros();
+            case "hephaestus" :
+                return new Hephaestus();
+            case "hera" :
+                return new Hera();
+            case "hestia" :
+                return new Hestia();
+            case "minotaur" :
+                return new Minotaur();
+            case "pan" :
+                return new Pan();
+            case "poseidon" :
+                return new Poseidon();
+            case "prometheus" :
+                return new Prometheus();
+            /*case "zeus" :
+                return new Zeus();*/
+            default:
+                return new Zeus();  //TODO is this an exception? Client-side controls could not be all
         }
     }
 

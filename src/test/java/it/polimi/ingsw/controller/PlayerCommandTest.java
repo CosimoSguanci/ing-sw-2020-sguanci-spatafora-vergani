@@ -146,5 +146,7 @@ class PlayerCommandTest {
                 () -> PlayerCommand.parseInput("Player1", "move w2 B2 domE"));
         assertThrows(BadPlayerCommandException.class,
                 () -> PlayerCommand.parseInput("Player1", "end turn"));
+        assertThrows(BadPlayerCommandException.class,
+                () -> PlayerCommand.parseInput("Player1", "move w2 B2 tree"));
     }
 }

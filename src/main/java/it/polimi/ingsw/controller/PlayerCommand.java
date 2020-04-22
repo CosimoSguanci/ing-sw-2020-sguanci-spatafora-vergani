@@ -93,7 +93,7 @@ public class PlayerCommand implements Serializable {
 
             String[] initialString = command.split("\\s+");
 
-            if(initialString[0].length() == 0) {  //case command starting with backspace
+            if(initialString[0].length() == 0) {  //case command starting with space
                 s = Arrays.copyOfRange(initialString, 1, initialString.length);
             }
             else{
