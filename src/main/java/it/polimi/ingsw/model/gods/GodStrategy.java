@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gods;
 
+import it.polimi.ingsw.exceptions.BadPlayerCommandException;
 import it.polimi.ingsw.model.*;
 
 import java.util.HashMap;
