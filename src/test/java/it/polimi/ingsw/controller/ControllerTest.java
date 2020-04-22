@@ -46,10 +46,9 @@ public class ControllerTest {
         p3.setWorkerSecond(w3B);
 
         GodStrategy divinity = new Apollo();
-        God god = new God("Apollo", "God of music", "move in non-empty cell", divinity);
-        p1.setGod(god);
-        p2.setGod(god);
-        p3.setGod(god);
+        p1.setGodStrategy(divinity);
+        p2.setGodStrategy(divinity);
+        p3.setGodStrategy(divinity);
 
         w1A.setInitialPosition(1,2);
         w1B.setInitialPosition(0,4);
@@ -93,9 +92,8 @@ public class ControllerTest {
         p2.setWorkerSecond(w2B);
 
         GodStrategy divinity = new Apollo();
-        God god = new God("Apollo", "God of music", "move in non-empty cell", divinity);
-        p1.setGod(god);
-        p2.setGod(god);
+        p1.setGodStrategy(divinity);
+        p2.setGodStrategy(divinity);
 
         w1A.setInitialPosition(1,3);
         w1B.setInitialPosition(3,1);
@@ -169,10 +167,9 @@ public class ControllerTest {
         p3.setWorkerSecond(w3B);
 
         GodStrategy divinity = new Apollo();
-        God god = new God("Apollo", "God of music", "move in non-empty cell", divinity);
-        p1.setGod(god);
-        p2.setGod(god);
-        p3.setGod(god);
+        p1.setGodStrategy(divinity);
+        p2.setGodStrategy(divinity);
+        p3.setGodStrategy(divinity);
 
         w1A.setInitialPosition(1,2);
         w1B.setInitialPosition(0,4);

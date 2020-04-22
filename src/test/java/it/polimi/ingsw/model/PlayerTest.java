@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 
 import it.polimi.ingsw.model.gods.Apollo;
+import it.polimi.ingsw.model.gods.GodStrategy;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -57,7 +58,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void testGetSetGod()  {
+    public void testGetSetGodStrategy()  {
         System.out.println("testing getGod() and setGod()...");
 
         int playersNum = 2;
@@ -65,9 +66,13 @@ public class PlayerTest {
         Match match = Match.getInstance(key, playersNum);
         Apollo apollo = new Apollo();
         Player instancePlayerTest = new Player("Roberto", "RobS", match);
-        God instanceGodTest = new God("Apollo", "God of Music", "Your Move: Your Worker may move into an opponent Worker's space by forcing their Worker to the space yours just vacated.", apollo);
+        /*God instanceGodTest = new God("Apollo", "God of Music", "Your Move: Your Worker may move into an opponent Worker's space by forcing their Worker to the space yours just vacated.", apollo);
         instancePlayerTest.setGod(instanceGodTest);
-        assertEquals(instanceGodTest, instancePlayerTest.getGod());
+        assertEquals(instanceGodTest, instancePlayerTest.getGod());*/
+
+        GodStrategy instanceGodTest = new Apollo();
+        instancePlayerTest.setGodStrategy(instanceGodTest);
+        assertEquals(instanceGodTest, instancePlayerTest.getGodStrategy());
 
         System.out.println("Test successfully completed.");
     }
