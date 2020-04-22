@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.GodChoiceCommand;
 import it.polimi.ingsw.controller.PlayerCommand;
 import it.polimi.ingsw.exceptions.BadPlayerCommandException;
 import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.gods.Apollo;
+import it.polimi.ingsw.model.gods.*;
 import it.polimi.ingsw.model.messages.*;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
@@ -205,14 +205,90 @@ public class Cli extends Observable<Object> implements Observer<Object> {
     private void printGodInfo(String god) {
         switch(god) {
             case "apollo":
-               System.out.println("Name: " + Apollo.NAME);
-               System.out.println("Description: " + Apollo.DESCRIPTION);
-               System.out.println("Power: " + Apollo.POWER_DESCRIPTION);
-
-
-
+                System.out.println("Name: " + Apollo.NAME);
+                System.out.println("Description: " + Apollo.DESCRIPTION);
+                System.out.println("Power: " + Apollo.POWER_DESCRIPTION);
                 break;
-            // todo add other gods
+
+            case "artemis":
+                System.out.println("Name: " + Artemis.NAME);
+                System.out.println("Description: " + Artemis.DESCRIPTION);
+                System.out.println("Power: " + Artemis.POWER_DESCRIPTION);
+                break;
+
+            case "athena":
+                System.out.println("Name: " + Athena.NAME);
+                System.out.println("Description: " + Athena.DESCRIPTION);
+                System.out.println("Power: " + Athena.POWER_DESCRIPTION);
+                break;
+
+            case "atlas":
+                System.out.println("Name: " + Atlas.NAME);
+                System.out.println("Description: " + Atlas.DESCRIPTION);
+                System.out.println("Power: " + Atlas.POWER_DESCRIPTION);
+                break;
+
+            case "demeter":
+                System.out.println("Name: " + Demeter.NAME);
+                System.out.println("Description: " + Demeter.DESCRIPTION);
+                System.out.println("Power: " + Demeter.POWER_DESCRIPTION);
+                break;
+
+            case "eros":
+                System.out.println("Name: " + Eros.NAME);
+                System.out.println("Description: " + Eros.DESCRIPTION);
+                System.out.println("Power: " + Eros.POWER_DESCRIPTION);
+                break;
+
+            case "hephaestus":
+                System.out.println("Name: " + Hephaestus.NAME);
+                System.out.println("Description: " + Hephaestus.DESCRIPTION);
+                System.out.println("Power: " + Hephaestus.POWER_DESCRIPTION);
+                break;
+
+            case "hera":
+                System.out.println("Name: " + Hera.NAME);
+                System.out.println("Description: " + Hera.DESCRIPTION);
+                System.out.println("Power: " + Hera.POWER_DESCRIPTION);
+                break;
+
+            case "hestia":
+                System.out.println("Name: " + Hestia.NAME);
+                System.out.println("Description: " + Hestia.DESCRIPTION);
+                System.out.println("Power: " + Hestia.POWER_DESCRIPTION);
+                break;
+
+            case "minotaur":
+                System.out.println("Name: " + Minotaur.NAME);
+                System.out.println("Description: " + Minotaur.DESCRIPTION);
+                System.out.println("Power: " + Minotaur.POWER_DESCRIPTION);
+                break;
+
+            case "pan":
+                System.out.println("Name: " + Pan.NAME);
+                System.out.println("Description: " + Pan.DESCRIPTION);
+                System.out.println("Power: " + Pan.POWER_DESCRIPTION);
+                break;
+
+            case "poseidon":
+                System.out.println("Name: " + Poseidon.NAME);
+                System.out.println("Description: " + Poseidon.DESCRIPTION);
+                System.out.println("Power: " + Poseidon.POWER_DESCRIPTION);
+                break;
+
+            case "prometheus":
+                System.out.println("Name: " + Prometheus.NAME);
+                System.out.println("Description: " + Prometheus.DESCRIPTION);
+                System.out.println("Power: " + Prometheus.POWER_DESCRIPTION);
+                break;
+
+            case "zeus":
+                System.out.println("Name: " + Zeus.NAME);
+                System.out.println("Description: " + Zeus.DESCRIPTION);
+                System.out.println("Power: " + Zeus.POWER_DESCRIPTION);
+                break;
+
+            default: throw new BadPlayerCommandException();
         }
     }
 
