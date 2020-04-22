@@ -141,7 +141,7 @@ public class WorkerTest {
 
 
     @Test
-    public void testBuild()  { // TODO Update test
+    public void testBuild()  {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
@@ -153,33 +153,51 @@ public class WorkerTest {
         System.out.println("testing build() with a valid request...");
 
         testWorker.setInitialPosition(0,0);
-        //assertTrue(testWorker.standardCheckBuild(board.getCell(0,1))); -> NO, should return FALSE, build before move // TODO FIX build before move
+
+        testWorker.move(board.getCell(0,1));
+        assertTrue(testWorker.standardCheckBuild(board.getCell(0,2)));
+        Cell previousPosition = testWorker.getPosition();
+        testWorker.build(board.getCell(0,2));
+        assertEquals(BlockType.LEVEL_ONE , board.getCell(0,2).getLevel());
+        assertNull(board.getCell(0,2).getWorker());
+        assertSame(testWorker.getPosition(), previousPosition);
+
+        testWorker.reinitializeBuiltMoved();
+        testWorker.setHasMoved();
+        assertTrue(testWorker.standardCheckBuild(board.getCell(0,2)));
+        previousPosition = testWorker.getPosition();
+        testWorker.build(board.getCell(0,2));
+        assertEquals(BlockType.LEVEL_TWO, board.getCell(0,2).getLevel());
+        assertNull(board.getCell(0,2).getWorker());
+        assertSame(testWorker.getPosition(), previousPosition);
+
+        testWorker.reinitializeBuiltMoved();
+        testWorker.setHasMoved();
+        assertTrue(testWorker.standardCheckBuild(board.getCell(0,2)));
+        previousPosition = testWorker.getPosition();
+        testWorker.build(board.getCell(0,2));
+        assertEquals(BlockType.LEVEL_THREE, board.getCell(0,2).getLevel());
+        assertNull(board.getCell(0,2).getWorker());
+        assertSame(testWorker.getPosition(), previousPosition);
+
+        testWorker.reinitializeBuiltMoved();
+        testWorker.setHasMoved();
+        assertTrue(testWorker.standardCheckBuild(board.getCell(0,2)));
+        previousPosition = testWorker.getPosition();
+        testWorker.build(board.getCell(0,2));
+        assertEquals(BlockType.DOME, board.getCell(0,2).getLevel());
+        assertNull(board.getCell(0,2).getWorker());
+        assertSame(testWorker.getPosition(), previousPosition);
+
+        /*
+        testWorker.setHasMoved(); //without if and move
+        assertTrue(testWorker.standardCheckBuild(board.getCell(0,1)));
         Cell previousPosition = testWorker.getPosition();
         testWorker.build(board.getCell(0,1));
         assertEquals(BlockType.LEVEL_ONE , board.getCell(0,1).getLevel());
         assertNull(board.getCell(0,1).getWorker());
         assertSame(testWorker.getPosition(), previousPosition);
-
-        //assertTrue(testWorker.standardCheckBuild(board.getCell(0,1)));
-        previousPosition = testWorker.getPosition();
-        testWorker.build(board.getCell(0,1));
-        assertEquals(BlockType.LEVEL_TWO, board.getCell(0,1).getLevel());
-        assertNull(board.getCell(0,1).getWorker());
-        assertSame(testWorker.getPosition(), previousPosition);
-
-        //assertTrue(testWorker.standardCheckBuild(board.getCell(0,1)));
-        previousPosition = testWorker.getPosition();
-        testWorker.build(board.getCell(0,1));
-        assertEquals(BlockType.LEVEL_THREE, board.getCell(0,1).getLevel());
-        assertNull(board.getCell(0,1).getWorker());
-        assertSame(testWorker.getPosition(), previousPosition);
-
-        //assertTrue(testWorker.standardCheckBuild(board.getCell(0,1)));
-        previousPosition = testWorker.getPosition();
-        testWorker.build(board.getCell(0,1));
-        assertEquals(BlockType.DOME, board.getCell(0,1).getLevel());
-        assertNull(board.getCell(0,1).getWorker());
-        assertSame(testWorker.getPosition(), previousPosition);
+        */
 
         System.out.println("Test successfully completed.");
     }
