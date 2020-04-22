@@ -17,8 +17,8 @@ import java.util.Map;
 public class Athena extends GodStrategy {
 
     public static final String NAME = "Athena";
-    public static final String DESCRIPTION = "Description";
-    public static final String POWER_DESCRIPTION = "Power Description";
+    public static final String DESCRIPTION = "Godness of Wisdom";
+    public static final String POWER_DESCRIPTION = "Opponent’s Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.";
 
     /**
      * Flag representing the fact that Athena should use or not her power.

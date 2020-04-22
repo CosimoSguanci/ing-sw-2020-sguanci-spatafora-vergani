@@ -17,8 +17,8 @@ import java.util.Map;
 public class Pan extends GodStrategy {
 
     public static final String NAME = "Pan";
-    public static final String DESCRIPTION = "Description";
-    public static final String POWER_DESCRIPTION = "Power Description";
+    public static final String DESCRIPTION = "God of the Wild";
+    public static final String POWER_DESCRIPTION = "Win Condition: You also win if your Worker moves down two or more levels.";
 
     @Override
     public Map<String, String> getGodInfo() {

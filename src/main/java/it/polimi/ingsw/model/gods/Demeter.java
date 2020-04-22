@@ -17,8 +17,8 @@ import java.util.Map;
 public class Demeter extends GodStrategy {
 
     public static final String NAME = "Demeter";
-    public static final String DESCRIPTION = "Description";
-    public static final String POWER_DESCRIPTION = "Power Description";
+    public static final String DESCRIPTION = "Goddess of the Harvest";
+    public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build one additional time, but not on the same space";
 
     final int DEMETER_MAX_BUILD_NUM = 2;
     private MultipleBuildDelegate multipleBuildDelegate;

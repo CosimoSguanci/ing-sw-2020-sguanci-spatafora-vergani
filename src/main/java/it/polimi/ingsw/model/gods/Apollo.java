@@ -19,8 +19,8 @@ import java.util.Map;
 public class Apollo extends GodStrategy {
 
     public static final String NAME = "Apollo";
-    public static final String DESCRIPTION = "Description";
-    public static final String POWER_DESCRIPTION = "Power Description";
+    public static final String DESCRIPTION = "God Of Music";
+    public static final String POWER_DESCRIPTION = "Your Move: Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated";
 
     /**
      * Delegation pattern (composition over inheritance) is used to share common behaviours

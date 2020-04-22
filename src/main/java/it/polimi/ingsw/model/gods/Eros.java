@@ -18,8 +18,9 @@ import java.util.Map;
 public class Eros extends GodStrategy {
 
     public static final String NAME = "Eros";
-    public static final String DESCRIPTION = "Description";
-    public static final String POWER_DESCRIPTION = "Power Description";
+    public static final String DESCRIPTION = "God of Desire";
+    public static final String POWER_DESCRIPTION = "Setup: Place your Workers anywhere along opposite edges of the board.\n" +
+            "Win Condition: You also win if one of your Workers moves to a space neighboring your other Worker and both are on the first level (or the same level in a 3-player game).";
 
     /**
      * Flag used to check the additional Win Condition.

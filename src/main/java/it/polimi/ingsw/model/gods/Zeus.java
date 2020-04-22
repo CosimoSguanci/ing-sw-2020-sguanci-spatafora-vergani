@@ -17,8 +17,8 @@ import java.util.Map;
 public class Zeus extends GodStrategy {
 
     public static final String NAME = "Zeus";
-    public static final String DESCRIPTION = "Description";
-    public static final String POWER_DESCRIPTION = "Power Description";
+    public static final String DESCRIPTION = "God of the Sky";
+    public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build a block under itself.";
 
     @Override
     public Map<String, String> getGodInfo() {
