@@ -97,7 +97,6 @@ public class Controller implements Observer<Object> {
 
        } else {
             String god = chosenGods.get(0);
-            //model.getCurrentPlayer().setGod(new God("", "", "", GodStrategy.instantiateGod(god)));
             model.getCurrentPlayer().setGodStrategy(GodStrategy.instantiateGod(god));
             this.selectableGods.remove(god);
        }
@@ -114,11 +113,10 @@ public class Controller implements Observer<Object> {
                    god = available;
                }
            }
-           model.getCurrentPlayer().setGod(new God("", "", "", GodStrategy.instantiateGod(god)));
+           model.getCurrentPlayer().setGodStrategy(GodStrategy.instantiateGod(god));
            HashMap<String, String> selectedGods = new HashMap<>();
 
            model.getPlayers().forEach((player) -> {
-               //selectedGods.put(player.nickname, player.getGod().godStrategy.getGodInfo().get("name")); // TODO REMOVE GOD
                selectedGods.put(player.nickname, player.getGodStrategy().getGodInfo().get("name"));
            });
 
@@ -147,31 +145,24 @@ public class Controller implements Observer<Object> {
             // TODO When Game Prep?
             switch (playerCommand.commandType) {
                 case MOVE:
-                    if (checkAllMoveConstraints(playerCommand) &&
-                            //currentPlayer.getGod().godStrategy.checkMove(playerCommand.getWorker(), playerCommand.getCell())) {
-                            currentPlayer.getGodStrategy().checkMove(playerCommand.getWorker(), playerCommand.getCell())) {
+                    if (checkAllMoveConstraints(playerCommand) && currentPlayer.getGodStrategy().checkMove(playerCommand.getWorker(), playerCommand.getCell())) {
 
-                        //currentPlayer.getGod().godStrategy.executeMove(playerCommand.getWorker(), playerCommand.getCell());
                         currentPlayer.getGodStrategy().executeMove(playerCommand.getWorker(), playerCommand.getCell());
 
                         boolean hasWon = checkAllWinConstraints(playerCommand) && // TODO first checkWinCond?
-                                //currentPlayer.getGod().godStrategy.checkWinCondition(playerCommand.getWorker());
                                 currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker());
                     } else {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
                     }
                     break;
                 case BUILD:
-                    //if (checkAllBuildConstraints(playerCommand) && currentPlayer.getGod().godStrategy.checkBuild(playerCommand.getWorker(), playerCommand.getCell(), playerCommand.cellBlockType)) {
                     if (checkAllBuildConstraints(playerCommand) && currentPlayer.getGodStrategy().checkBuild(playerCommand.getWorker(), playerCommand.getCell(), playerCommand.cellBlockType)) {
-                        //currentPlayer.getGod().godStrategy.executeBuild(playerCommand.getWorker(), playerCommand.getCell(), playerCommand.cellBlockType);
                         currentPlayer.getGodStrategy().executeBuild(playerCommand.getWorker(), playerCommand.getCell(), playerCommand.cellBlockType);
 
                         /*
                          *  Necessary to cover the possibility that a Gods could have a Win Conditions that triggers when it builds a block under certain conditions.
                          *  Example: "If XXX built a Dome and it's adjacent to another Worker, it wins"
                          */
-                        //boolean hasWon = checkAllWinConstraints(playerCommand) && currentPlayer.getGod().godStrategy.checkWinCondition(playerCommand.getWorker());
                         boolean hasWon = checkAllWinConstraints(playerCommand) && currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker());
 
                     } else {
@@ -196,7 +187,6 @@ public class Controller implements Observer<Object> {
     private boolean checkAllWinConstraints(PlayerCommand playerCommand) {
 
         for (Player p : model.getPlayers()) {
-            //if (!p.equals(playerCommand.getPlayer()) && !p.getGod().godStrategy.checkWinConstraints(playerCommand.getWorker(), playerCommand.getCell())) {
             if (!p.equals(playerCommand.getPlayer()) && !p.getGodStrategy().checkWinConstraints(playerCommand.getWorker(), playerCommand.getCell())) {
                 return false;
             }
@@ -215,7 +205,6 @@ public class Controller implements Observer<Object> {
     private boolean checkAllMoveConstraints(PlayerCommand playerCommand) {
 
         for (Player p : model.getPlayers()) {
-            //if (!p.equals(playerCommand.getPlayer()) && !p.getGod().godStrategy.checkMoveConstraints(playerCommand.getWorker(), playerCommand.getCell())) {
             if (!p.equals(playerCommand.getPlayer()) && !p.getGodStrategy().checkMoveConstraints(playerCommand.getWorker(), playerCommand.getCell())) {
                 return false;
             }
@@ -234,7 +223,6 @@ public class Controller implements Observer<Object> {
     private boolean checkAllBuildConstraints(PlayerCommand playerCommand) {
 
         for (Player p : model.getPlayers()) {
-            //if (!p.equals(playerCommand.getPlayer()) && !p.getGod().godStrategy.checkBuildConstraints(playerCommand.getWorker(), playerCommand.getCell(), playerCommand.cellBlockType)) {
             if (!p.equals(playerCommand.getPlayer()) && !p.getGodStrategy().checkBuildConstraints(playerCommand.getWorker(), playerCommand.getCell(), playerCommand.cellBlockType)) {
                 return false;
             }

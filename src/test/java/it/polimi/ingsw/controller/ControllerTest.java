@@ -288,18 +288,18 @@ public class ControllerTest {
         godChoiceCommand = new GodChoiceCommand(godPlayer, false);
         controller.update(godChoiceCommand);
 
-        assertTrue(p2.getGod().godStrategy instanceof Hestia);
+        assertTrue(p2.getGodStrategy() instanceof Hestia);
 
         godPlayer= new ArrayList();
         godPlayer.add("apollo");
         godChoiceCommand = new GodChoiceCommand(godPlayer, false);
         controller.update(godChoiceCommand);
 
-        assertTrue(p3.getGod().godStrategy instanceof Apollo);
+        assertTrue(p3.getGodStrategy() instanceof Apollo);
 
-        assertTrue(p1.getGod().godStrategy instanceof Athena);
-        assertTrue(p2.getGod().godStrategy instanceof Hestia);
-        assertTrue(p3.getGod().godStrategy instanceof Apollo);
+        assertTrue(p1.getGodStrategy() instanceof Athena);
+        assertTrue(p2.getGodStrategy() instanceof Hestia);
+        assertTrue(p3.getGodStrategy() instanceof Apollo);
 
 
         Board.clearInstances();

@@ -19,7 +19,6 @@ public class Player {
     private Worker workerSecond;
     private boolean isGodChooser;
     public final Match match;
-    //private God god;
     private GodStrategy godStrategy;
 
     /**
@@ -95,35 +94,20 @@ public class Player {
         this.workerSecond = secondWorker;
     }
 
-    //TODO remove God
     /**
-     * This getter method returns a reference to the God the player has chosen.
+     * This setter method allows players to set the GodStrategy associated to them.
      *
-     * @return the God associated to the player, it returns null if the God has not been set yet
+     * @param godStrategy is the God chosen from a Player at the beginning of the match
      */
-    /*
-        public God getGod() {
-
-        return this.god;
-    }
-    */
-
-    //TODO remove God
-    /**
-     * This setter method allows players to set the God associated to them.
-     *
-     * @param //god is the God chosen from a Player at the beginning of the match
-     */
-    /*
-    public void setGod(God god) {
-        this.god = god;
-    }
-    */
-
     public void setGodStrategy(GodStrategy godStrategy) {
         this.godStrategy = godStrategy;
     }
 
+    /**
+     * This getter method returns a reference to the GodStrategy the player has chosen.
+     *
+     * @return the GodStrategy associated to the player, it returns null if the God has not been set yet
+     */
     public GodStrategy getGodStrategy() {
         return this.godStrategy;
     }
