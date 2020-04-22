@@ -5,11 +5,14 @@ import it.polimi.ingsw.exceptions.WrongPlayerException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.GodStrategy;
+import it.polimi.ingsw.model.gods.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ControllerTest {
 
     @Test
-    public void updateNormalTest()  {
+    public void updatePlayerCommandNormalTest()  {
 
         Board.clearInstances();
         Match.clearInstances();
@@ -73,7 +76,10 @@ public class ControllerTest {
 
 
     @Test
-    public void updateGodPowerTest()  {
+    public void updatePlayerCommandGodPowerTest()  {
+        Board.clearInstances();
+        Match.clearInstances();
+
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -142,7 +148,10 @@ public class ControllerTest {
 
 
     @Test
-    public void updateCompleteTest()  {
+    public void updatePlayerCommandCompleteTest()  {
+        Board.clearInstances();
+        Match.clearInstances();
+
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -227,6 +236,74 @@ public class ControllerTest {
 
         playerCommand = PlayerCommand.parseInput("Roberto", "end");
         controller.update(playerCommand);  //now it's p1's turn
-        //assertEquals(p1, model.getCurrentPlayer());
+        assertEquals(p1, model.getCurrentPlayer());
+
+        Board.clearInstances();
+        Match.clearInstances();
     }
+
+
+    @Test
+    public void updateGodChoiceCommandNormalTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Player p1 = new Player("Andrea", "and", match);
+        Player p2 = new Player("Cosimo", "cosimo", match);
+        Player p3 = new Player("Roberto", "rob", match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Worker w1A = new Worker(p1, match.getMatchBoard());
+        Worker w1B = new Worker(p1, match.getMatchBoard());
+        p1.setWorkerFirst(w1A);
+        p1.setWorkerSecond(w1B);
+        Worker w2A = new Worker(p2, match.getMatchBoard());
+        Worker w2B = new Worker(p2, match.getMatchBoard());
+        p2.setWorkerFirst(w2A);
+        p2.setWorkerSecond(w2B);
+        Worker w3A = new Worker(p3, match.getMatchBoard());
+        Worker w3B = new Worker(p3, match.getMatchBoard());
+        p3.setWorkerFirst(w3A);
+        p3.setWorkerSecond(w3B);
+
+        Model model = new Model(match);
+        Controller controller = new Controller(model);
+
+        List chosenGods = new ArrayList();
+        chosenGods.add("apollo");
+        chosenGods.add("athena");
+        chosenGods.add("hestia");
+        p1.setAsGodChooser();
+        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
+        controller.update(godChoiceCommand);
+
+        List godPlayer = new ArrayList();
+        godPlayer.add("hestia");
+        godChoiceCommand = new GodChoiceCommand(godPlayer, false);
+        controller.update(godChoiceCommand);
+
+        assertTrue(p2.getGod().godStrategy instanceof Hestia);
+
+        godPlayer= new ArrayList();
+        godPlayer.add("apollo");
+        godChoiceCommand = new GodChoiceCommand(godPlayer, false);
+        controller.update(godChoiceCommand);
+
+        assertTrue(p3.getGod().godStrategy instanceof Apollo);
+
+        assertTrue(p1.getGod().godStrategy instanceof Athena);
+        assertTrue(p2.getGod().godStrategy instanceof Hestia);
+        assertTrue(p3.getGod().godStrategy instanceof Apollo);
+
+
+        Board.clearInstances();
+        Match.clearInstances();
+    }
+
 }

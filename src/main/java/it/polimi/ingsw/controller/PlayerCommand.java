@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * In this class there are references to the player who has playing
@@ -88,8 +89,16 @@ public class PlayerCommand implements Serializable {
             CommandType commandType;
             Cell cell;
             BlockType blockType = null;
+            String[] s;
 
-            String[] s = command.split("\\s+");
+            String[] initialString = command.split("\\s+");
+
+            if(initialString[0].length() == 0) {  //case command starting with space
+                s = Arrays.copyOfRange(initialString, 1, initialString.length);
+            }
+            else{
+                s = Arrays.copyOf(initialString, initialString.length);
+            }
 
             if (s.length > 4) {
                 throw new BadPlayerCommandException();
