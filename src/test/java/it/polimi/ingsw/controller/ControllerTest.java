@@ -75,6 +75,9 @@ public class ControllerTest {
 
     @Test
     public void updateGodPowerTest()  {
+        Board.clearInstances();
+        Match.clearInstances();
+
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -145,6 +148,9 @@ public class ControllerTest {
 
     @Test
     public void updateCompleteTest()  {
+        Board.clearInstances();
+        Match.clearInstances();
+
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
@@ -230,6 +236,9 @@ public class ControllerTest {
 
         playerCommand = PlayerCommand.parseInput("Roberto", "end");
         controller.update(playerCommand);  //now it's p1's turn
-        //assertEquals(p1, model.getCurrentPlayer());
+        assertEquals(p1, model.getCurrentPlayer());
+
+        Board.clearInstances();
+        Match.clearInstances();
     }
 }
