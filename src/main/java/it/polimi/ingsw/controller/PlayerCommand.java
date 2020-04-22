@@ -26,7 +26,7 @@ public class PlayerCommand implements Serializable {
     final String playerID;
     final String workerID;
 
-    public final CommandType commandType;
+    final CommandType commandType;
     final BlockType cellBlockType;
 
     /**
