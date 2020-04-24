@@ -1,0 +1,51 @@
+package it.polimi.ingsw.view.cli;
+
+import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.exceptions.BadPlayerCommandException;
+import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Match;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.messages.ChooseGodsUpdate;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class CliTest {
+
+    @Disabled
+    @Test
+    void startTest() {
+        Match.clearInstances();
+        Board.clearInstances();
+
+        int playersNum = 2;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Player p = new Player("Andrea", "and", match);
+        match.addPlayer(p);
+        Client client = null;
+        try {
+            client = new Client();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        Cli cli = new Cli(client);
+
+        boolean isGodChooser = true;
+        ChooseGodsUpdate chooseGodsUpdate = new ChooseGodsUpdate(p.ID, isGodChooser,null);
+        cli.update(chooseGodsUpdate);
+        assertThrows(BadPlayerCommandException.class, ()-> {
+            new Scanner("select apollo");
+        });
+    }
+
+    @Disabled
+    @Test
+    void update() {
+    }
+}

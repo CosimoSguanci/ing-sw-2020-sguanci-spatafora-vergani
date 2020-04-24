@@ -134,6 +134,14 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(4,4), w2A.getPosition());
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
+        playerCommand = PlayerCommand.parseInput("Cosimo", "move w2 e4");
+        controller.update(playerCommand);  //impossible move should not be allowed
+
+        assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
+        assertEquals(match.getMatchBoard().getCell(3,1), w1B.getPosition());
+        assertEquals(match.getMatchBoard().getCell(4,4), w2A.getPosition());
+        assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
+
         playerCommand = PlayerCommand.parseInput("Cosimo", "move w1 e4");
         controller.update(playerCommand);
 
@@ -146,6 +154,86 @@ public class ControllerTest {
         Match.clearInstances();
     }
 
+    @Test
+    public void updatePlayerCommandImpossibleMoveAndBuildTest()  {
+        Board.clearInstances();
+        Match.clearInstances();
+
+        int playersNum = 2;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Player p1 = new Player("Andrea", "and", match);
+        Player p2 = new Player("Cosimo", "cosimo", match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+
+        Worker w1A = new Worker(p1, match.getMatchBoard());
+        Worker w1B = new Worker(p1, match.getMatchBoard());
+        p1.setWorkerFirst(w1A);
+        p1.setWorkerSecond(w1B);
+        Worker w2A = new Worker(p2, match.getMatchBoard());
+        Worker w2B = new Worker(p2, match.getMatchBoard());
+        p2.setWorkerFirst(w2A);
+        p2.setWorkerSecond(w2B);
+
+        GodStrategy divinity = new Apollo();
+        GodStrategy divine = new Minotaur();
+        p1.setGodStrategy(divinity);
+        p2.setGodStrategy(divine);
+
+        w1A.setInitialPosition(1,3);
+        w1B.setInitialPosition(3,1);
+        w2A.setInitialPosition(4,4);
+        w2B.setInitialPosition(2,3);
+
+        assertEquals(match.getMatchBoard().getCell(1,3), w1A.getPosition());
+        assertEquals(match.getMatchBoard().getCell(3,1), w1B.getPosition());
+        assertEquals(match.getMatchBoard().getCell(4,4), w2A.getPosition());
+        assertEquals(match.getMatchBoard().getCell(2,3), w2B.getPosition());
+
+        Model model = new Model(match);
+        Controller controller = new Controller(model);
+        PlayerCommand playerCommand = PlayerCommand.parseInput("Andrea", "move w1 C4");
+        controller.update(playerCommand);  //Apollo's power must be invoked
+
+        assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
+        assertEquals(match.getMatchBoard().getCell(3,1), w1B.getPosition());
+        assertEquals(match.getMatchBoard().getCell(4,4), w2A.getPosition());
+        assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
+
+        playerCommand = PlayerCommand.parseInput("Andrea", "build w1 b2");
+        controller.update(playerCommand);  //impossible build should not be allowed
+
+        assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
+        assertEquals(match.getMatchBoard().getCell(3,1), w1B.getPosition());
+        assertEquals(match.getMatchBoard().getCell(4,4), w2A.getPosition());
+        assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
+        assertEquals(BlockType.GROUND, match.getMatchBoard().getCell(1,1).getLevel());
+
+        match.nextTurn();  //Cosimo's turn
+
+        playerCommand = PlayerCommand.parseInput("Andrea", "move w2 e1");
+
+
+        PlayerCommand finalPlayerCommand = playerCommand;
+        assertThrows(WrongPlayerException.class, () -> controller.update(finalPlayerCommand));
+
+        assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
+        assertEquals(match.getMatchBoard().getCell(3,1), w1B.getPosition());
+        assertEquals(match.getMatchBoard().getCell(4,4), w2A.getPosition());
+        assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
+
+        playerCommand = PlayerCommand.parseInput("Cosimo", "move w1 e4");
+        controller.update(playerCommand);
+
+        assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
+        assertEquals(match.getMatchBoard().getCell(3,1), w1B.getPosition());
+        assertEquals(match.getMatchBoard().getCell(4,3), w2A.getPosition());
+        assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
+
+        Board.clearInstances();
+        Match.clearInstances();
+    }
 
     @Test
     public void updatePlayerCommandCompleteTest()  {
