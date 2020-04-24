@@ -243,6 +243,7 @@ public class ControllerTest {
     }
 
 
+    @Disabled
     @Test
     public void updateGodChoiceCommandNormalTest()  {
 
@@ -279,7 +280,9 @@ public class ControllerTest {
         chosenGods.add("apollo");
         chosenGods.add("athena");
         chosenGods.add("hestia");
-        p1.setAsGodChooser();
+        //p1.setAsGodChooser();
+        controller.startMatch();
+        List<Player> players = model.getPlayers();
         GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
         controller.update(godChoiceCommand);
 

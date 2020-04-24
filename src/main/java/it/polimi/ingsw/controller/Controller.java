@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.observer.Observer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -92,7 +91,7 @@ public class Controller implements Observer<Object> {
 
        if(isGodChooser) {
            model.setInitialTurn(initialTurn);
-           godChooserPlayer = model.getCurrentPlayer();
+           //godChooserPlayer = model.getCurrentPlayer();
            this.selectableGods = chosenGods;
 
        } else {
