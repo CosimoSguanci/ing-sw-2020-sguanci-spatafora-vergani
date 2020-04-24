@@ -243,7 +243,6 @@ public class ControllerTest {
     }
 
 
-    @Disabled
     @Test
     public void updateGodChoiceCommandNormalTest()  {
 
@@ -280,9 +279,8 @@ public class ControllerTest {
         chosenGods.add("apollo");
         chosenGods.add("athena");
         chosenGods.add("hestia");
-        //p1.setAsGodChooser();
         controller.startMatch();
-        List<Player> players = model.getPlayers();
+        ArrayList<Player> players = new ArrayList<>(model.getPlayers());
         GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
         controller.update(godChoiceCommand);
 
@@ -291,18 +289,72 @@ public class ControllerTest {
         godChoiceCommand = new GodChoiceCommand(godPlayer, false);
         controller.update(godChoiceCommand);
 
-        assertTrue(p2.getGodStrategy() instanceof Hestia);
-
         godPlayer= new ArrayList();
         godPlayer.add("apollo");
         godChoiceCommand = new GodChoiceCommand(godPlayer, false);
         controller.update(godChoiceCommand);
 
-        assertTrue(p3.getGodStrategy() instanceof Apollo);
+        int apollo=0, hestia=0, athena=0;
+        for(Player p : players) {
+            if(p.getGodStrategy() instanceof Apollo && !p.isGodChooser())  apollo++;
+            else if(p.getGodStrategy() instanceof Hestia && !p.isGodChooser())  hestia++;
+            else if(p.getGodStrategy() instanceof Athena && p.isGodChooser())  athena++;
+        }
+        assertTrue(hestia==1);
+        assertTrue(apollo==1);
+        assertTrue(athena==1);
 
-        assertTrue(p1.getGodStrategy() instanceof Athena);
-        assertTrue(p2.getGodStrategy() instanceof Hestia);
-        assertTrue(p3.getGodStrategy() instanceof Apollo);
+        Board.clearInstances();
+        Match.clearInstances();
+    }
+
+
+    @Test
+    public void updateGodChoiceCommand2PlayersTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Player p1 = new Player("Andrea", "and", match);
+        Player p2 = new Player("Marco", "mc", match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+
+        Worker w1A = new Worker(p1, match.getMatchBoard());
+        Worker w1B = new Worker(p1, match.getMatchBoard());
+        p1.setWorkerFirst(w1A);
+        p1.setWorkerSecond(w1B);
+        Worker w2A = new Worker(p2, match.getMatchBoard());
+        Worker w2B = new Worker(p2, match.getMatchBoard());
+        p2.setWorkerFirst(w2A);
+        p2.setWorkerSecond(w2B);
+
+        Model model = new Model(match);
+        Controller controller = new Controller(model);
+
+        List chosenGods = new ArrayList();
+        chosenGods.add("eros");
+        chosenGods.add("minotaur");
+        controller.startMatch();
+        ArrayList<Player> players = new ArrayList<>(model.getPlayers());
+        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
+        controller.update(godChoiceCommand);
+
+        List godPlayer = new ArrayList();
+        godPlayer.add("eros");
+        godChoiceCommand = new GodChoiceCommand(godPlayer, false);
+        controller.update(godChoiceCommand);
+
+        int eros=0, minotaur=0;
+        for(Player p : players) {
+            if(p.getGodStrategy() instanceof Eros && !p.isGodChooser())  eros++;
+            else if(p.getGodStrategy() instanceof Minotaur && p.isGodChooser())  minotaur++;
+        }
+        assertTrue(eros==1);
+        assertTrue(minotaur==1);
 
 
         Board.clearInstances();
