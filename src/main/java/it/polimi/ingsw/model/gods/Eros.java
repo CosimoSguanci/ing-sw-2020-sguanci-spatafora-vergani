@@ -48,7 +48,7 @@ public class Eros extends GodStrategy {
      */
     @Override
     public boolean checkGamePreparation(Worker workerFirst, Cell workerFirstCell, Worker workerSecond, Cell workerSecondCell) {
-        return checkOppositeBorder(workerFirstCell, workerSecondCell);
+        return super.checkGamePreparation(workerFirst, workerFirstCell, workerSecond, workerSecondCell) && checkOppositeBorder(workerFirstCell, workerSecondCell);
     }
 
     /**

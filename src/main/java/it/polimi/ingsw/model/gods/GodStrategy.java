@@ -93,7 +93,14 @@ public abstract class GodStrategy {
      * the game preparation phase and respect the god's constraints.
      * The gods that have a particular Game preparation behavior will override this method.
      */
-    public void prepareGame() {} // TODO USEFUL?
+    public void executeGamePreparation(Worker workerFirst, Cell workerFirstCell, Worker workerSecond, Cell workerSecondCell) {
+        workerFirst.setInitialPosition(workerFirstCell.getRowIdentifier(), workerSecondCell.getColIdentifier());
+        workerSecond.setInitialPosition(workerSecondCell.getRowIdentifier(), workerSecondCell.getColIdentifier());
+
+        workerFirst.board.getCell(workerFirstCell.getRowIdentifier(), workerFirstCell.getColIdentifier()).setWorker(workerFirst);
+        workerSecond.board.getCell(workerSecondCell.getRowIdentifier(), workerSecondCell.getColIdentifier()).setWorker(workerSecond);
+    }
+
 
     /**
      * This is the methods used to execute a movement action (change a worker's position).
