@@ -33,9 +33,9 @@ public class PlayerCommand implements Serializable {
     /**
      * This properties must be reconstructed by server-side Controller
      */
-    private Player player;
-    private Worker worker;
-    private Cell cell;
+    private transient Player player;
+    private transient Worker worker;
+    private transient Cell cell;
 
 
     /**

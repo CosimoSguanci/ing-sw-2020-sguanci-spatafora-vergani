@@ -17,12 +17,12 @@ import it.polimi.ingsw.exceptions.CellNotEmptyException;
  */
 public class Worker {
     public final Player player;
-    private Cell position;
-    private BlockType previousPositionBlockType;
-    public final Board board;
+    private transient Cell position;
+    private transient BlockType previousPositionBlockType;
+    public final transient Board board;
 
-    private boolean hasMoved;
-    private boolean hasBuilt;
+    private transient boolean hasMoved;
+    private transient boolean hasBuilt;
 
     /**
      * Worker is the builder of the class. At the moment of a worker creation a player is

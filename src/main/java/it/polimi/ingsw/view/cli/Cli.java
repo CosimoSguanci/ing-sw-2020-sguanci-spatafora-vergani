@@ -1,6 +1,9 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.client.Client;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.controller.GamePreparationCommand;
 import it.polimi.ingsw.controller.GodChoiceCommand;
 import it.polimi.ingsw.controller.PlayerCommand;
 import it.polimi.ingsw.exceptions.BadPlayerCommandException;
@@ -14,19 +17,19 @@ import java.util.*;
 
 public class Cli extends Observable<Object> implements Observer<Object> {
     private Client client;
-    //private GameManager gameManager;
     private String nickname;
     private int playersNum;
     private Scanner stdin;
     private boolean enableGodChoose = false;
     private boolean isInitialGodChooser = false;
+    private boolean enableGamePreparation = false;
     private boolean enableGameCommands = false;
+
     private List<String> selectableGods;
     private Map<String, String> playersGods;
 
     public Cli(Client client) {
         this.client = client;
-        //this.gameManager = gameManager;
     }
 
     public void start() {
@@ -61,7 +64,7 @@ public class Cli extends Observable<Object> implements Observer<Object> {
 
         String command;
 
-        while(true) {
+        while(true) { // TODO handle bad command
             command = stdin.nextLine().toLowerCase();
 
             if (command.toLowerCase().equals("help")) {
@@ -129,10 +132,16 @@ public class Cli extends Observable<Object> implements Observer<Object> {
                     GodChoiceCommand godChoiceCommand = new GodChoiceCommand(selected, false);
                     notify(godChoiceCommand);
                 }
+                else if(enableGamePreparation) {
+                     // TODO toLowerCase EVERYWHERE
+
+                    GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput(command);
+                    notify(gamePreparationCommand);
+                }
 
 
 
-            else {
+            else if(enableGameCommands){
                 try {
                     PlayerCommand playerCommand = PlayerCommand.parseInput(null, command);
 
@@ -142,6 +151,9 @@ public class Cli extends Observable<Object> implements Observer<Object> {
                 } catch(BadPlayerCommandException e) {
                     System.out.println("Bad command");
                 }
+            }
+            else if (!command.equals("")){ // TODO FIX
+                System.out.println("Wrong Command");
             }
         }
     }
@@ -155,7 +167,9 @@ public class Cli extends Observable<Object> implements Observer<Object> {
         if(message instanceof MatchStartedUpdate) {
             MatchStartedUpdate matchStartedUpdate = (MatchStartedUpdate) message;
             System.out.println("Match Started");
-            printBoard(matchStartedUpdate.getBoard());
+            printBoard(matchStartedUpdate.board);
+            enableGamePreparation = false;
+            enableGameCommands = true;
         }
         else if (message instanceof ChooseGodsUpdate) {
             ChooseGodsUpdate chooseGodsUpdate = (ChooseGodsUpdate) message;
@@ -170,7 +184,7 @@ public class Cli extends Observable<Object> implements Observer<Object> {
                 selectableGods = chooseGodsUpdate.getSelectableGods();
                 System.out.println("Choose your god. Available choices are: ");
 
-                selectableGods.forEach(System.out::println); // TOP!
+                selectableGods.forEach(System.out::println);
             }
 
         }
@@ -179,12 +193,19 @@ public class Cli extends Observable<Object> implements Observer<Object> {
             this.playersGods = selectedGodsUpdate.getSelectedGods();
             printPlayerGods();
         }
-        else if (message instanceof ModelUpdate) {
-            ModelUpdate modelUpdate = (ModelUpdate) message;
-            printBoard(modelUpdate.getBoard());
+        else if (message instanceof GamePreparationUpdate) {
+            //GamePreparationUpdate gamePreparationUpdate = (GamePreparationUpdate) message;
+            enableGodChoose = false;
+            enableGamePreparation = true;
+            System.out.println("Game Preparation: place your workers ");
+
+        }
+        else if (message instanceof BoardUpdate) {
+            BoardUpdate boardUpdate = (BoardUpdate) message;
+            printBoard(boardUpdate.board);
         } else if (message instanceof ErrorUpdate) {
             ErrorUpdate errorUpdate = (ErrorUpdate) message;
-            switch (errorUpdate.getCommand()) {
+            switch (errorUpdate.command) {
                 case MOVE:
                     System.out.println("Move Error");
                     break;
@@ -198,8 +219,13 @@ public class Cli extends Observable<Object> implements Observer<Object> {
     }
 
 
-    private void printBoard(Board board) {
-        ///
+    private void printBoard(String board) {
+        GsonBuilder builder = new GsonBuilder();
+
+        Gson gson = builder.create();
+        Board gameBoard = gson.fromJson(board, Board.class);
+
+        //
     }
 
     private void printGodInfo(String god) {
@@ -325,3 +351,8 @@ public class Cli extends Observable<Object> implements Observer<Object> {
 
 
 }
+
+
+/*
+{"board":[[{"level":"GROUND","rowIdentifier":0,"colIdentifier":0},{"level":"GROUND","rowIdentifier":0,"colIdentifier":1},{"level":"GROUND","rowIdentifier":0,"colIdentifier":2},{"level":"GROUND","rowIdentifier":0,"colIdentifier":3},{"level":"GROUND","rowIdentifier":0,"colIdentifier":4}],[{"level":"GROUND","rowIdentifier":1,"colIdentifier":0},{"level":"GROUND","rowIdentifier":1,"colIdentifier":1},{"level":"GROUND","rowIdentifier":1,"colIdentifier":2},{"level":"GROUND","rowIdentifier":1,"colIdentifier":3},{"level":"GROUND","rowIdentifier":1,"colIdentifier":4}],[{"level":"GROUND","rowIdentifier":2,"colIdentifier":0},{"level":"GROUND","rowIdentifier":2,"colIdentifier":1},{"level":"GROUND","rowIdentifier":2,"colIdentifier":2},{"level":"GROUND","rowIdentifier":2,"colIdentifier":3},{"level":"GROUND","rowIdentifier":2,"colIdentifier":4}],[{"level":"GROUND","rowIdentifier":3,"colIdentifier":0},{"level":"GROUND","rowIdentifier":3,"colIdentifier":1},{"level":"GROUND","rowIdentifier":3,"colIdentifier":2},{"level":"GROUND","rowIdentifier":3,"colIdentifier":3},{"level":"GROUND","rowIdentifier":3,"colIdentifier":4}],[{"level":"GROUND","rowIdentifier":4,"colIdentifier":0},{"level":"GROUND","rowIdentifier":4,"colIdentifier":1},{"level":"GROUND","rowIdentifier":4,"colIdentifier":2},{"level":"GROUND","rowIdentifier":4,"colIdentifier":3},{"level":"GROUND","rowIdentifier":4,"colIdentifier":4}]],"id":"15"}
+ */

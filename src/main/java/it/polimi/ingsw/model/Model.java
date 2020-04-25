@@ -55,7 +55,7 @@ public class Model extends Observable<Object> {
     }
 
     public void reportError(Player player, CommandType commandType) {
-        ErrorUpdate errorUpdate = new ErrorUpdate(player, commandType);
+        ErrorUpdate errorUpdate = new ErrorUpdate(player.ID, commandType);
         notify(errorUpdate);
     }
 
@@ -71,11 +71,21 @@ public class Model extends Observable<Object> {
 
     public void selectedGodsUpdate(Map<String, String> selectedGods) {
         SelectedGodsUpdate selectedGodsUpdate = new SelectedGodsUpdate(selectedGods);
-        notify(selectedGods);
+        notify(selectedGodsUpdate);
     }
 
-    /*public void startMatch() {
-        MatchStartedUpdate matchStartedUpdate = new MatchStartedUpdate(match.getMatchBoard());
+    public void gamePreparationUpdate(Player player) {
+        GamePreparationUpdate gamePreparationUpdate = new GamePreparationUpdate(player.ID, match.getMatchBoard().toString());
+        notify(gamePreparationUpdate);
+    }
+
+    public void boardUpdate() {
+        BoardUpdate boardUpdate = new BoardUpdate(match.getMatchBoard().toString());
+        notify(boardUpdate);
+    }
+
+    public void matchStartedUpdate() {
+        MatchStartedUpdate matchStartedUpdate = new MatchStartedUpdate(match.getMatchBoard().toString());
         notify(matchStartedUpdate);
-    }*/
+    }
 }

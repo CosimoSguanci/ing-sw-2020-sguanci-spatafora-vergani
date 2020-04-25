@@ -15,11 +15,11 @@ public class Player {
     public final String ID;
     public final String nickname;
     private String color;
-    private Worker workerFirst;
-    private Worker workerSecond;
-    private boolean isGodChooser;
-    public final Match match;
-    private GodStrategy godStrategy;
+    private transient Worker workerFirst; // circular dependency
+    private transient Worker workerSecond;
+    private transient boolean isGodChooser;
+    public final transient Match match;
+    private transient GodStrategy godStrategy;
 
     /**
      * This is the builder of the class. When a Player is created its id, nickname and
@@ -29,6 +29,9 @@ public class Player {
         this.ID = id;
         this.nickname = nickname;
         this.match = match;
+
+        this.workerFirst = new Worker(this, match.getMatchBoard());
+        this.workerSecond = new Worker(this, match.getMatchBoard());
     }
 
     /**

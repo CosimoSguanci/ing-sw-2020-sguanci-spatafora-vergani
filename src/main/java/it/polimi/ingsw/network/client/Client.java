@@ -1,5 +1,6 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.network.client;
 
+import it.polimi.ingsw.controller.GamePreparationCommand;
 import it.polimi.ingsw.controller.GodChoiceCommand;
 import it.polimi.ingsw.controller.PlayerCommand;
 
@@ -14,6 +15,7 @@ public class Client {
 
     private Socket socket;
     DataOutputStream socketOut;
+    private ObjectOutputStream objectOutputStream;
 
     public Client() throws IOException{
         initConnection();
@@ -35,12 +37,20 @@ public class Client {
     }
 
     public void sendPlayerCommand(PlayerCommand command) throws Exception {
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        if(objectOutputStream == null)
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         objectOutputStream.writeObject(command);
     }
 
     public void sendGodChoiceCommand(GodChoiceCommand command) throws Exception {
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        if(objectOutputStream == null)
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        objectOutputStream.writeObject(command);
+    }
+
+    public void sendGamePreparationCommand(GamePreparationCommand command) throws Exception {
+        if(objectOutputStream == null)
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         objectOutputStream.writeObject(command);
     }
 

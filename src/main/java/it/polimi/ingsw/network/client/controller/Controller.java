@@ -1,10 +1,10 @@
-package it.polimi.ingsw.client.controller;
+package it.polimi.ingsw.network.client.controller;
 
-import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.controller.GamePreparationCommand;
 import it.polimi.ingsw.controller.GodChoiceCommand;
 import it.polimi.ingsw.controller.PlayerCommand;
 import it.polimi.ingsw.exceptions.WrongPlayerException;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.messages.PlayerUpdate;
 import it.polimi.ingsw.model.messages.TurnUpdate;
 import it.polimi.ingsw.observer.Observer;
@@ -20,7 +20,7 @@ public class Controller implements Observer<Object> {
     }
 
     private void handleCommand(PlayerCommand playerCommand) throws WrongPlayerException, Exception { // TODO remove Exception
-        String currentPlayer = turnUpdate.getCurrentPlayer();
+        String currentPlayer = turnUpdate.playerID;
         if (clientPlayerID.equals(currentPlayer)) {
             client.sendPlayerCommand(playerCommand);
         } else {
@@ -45,6 +45,14 @@ public class Controller implements Observer<Object> {
         } else if (message instanceof GodChoiceCommand) {
             try {
                 client.sendGodChoiceCommand((GodChoiceCommand) message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (message instanceof GamePreparationCommand) {
+            try {
+                GamePreparationCommand gamePreparationCommand = (GamePreparationCommand) message;
+                gamePreparationCommand.setPlayerID(clientPlayerID);
+                client.sendGamePreparationCommand(gamePreparationCommand);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.observer.Observable;
 
@@ -23,6 +23,7 @@ public class MessageListener extends Observable<Object> implements Runnable {
             }
         } catch (Exception e){
             //setActive(false);
+            e.printStackTrace();
         }
     }
 }

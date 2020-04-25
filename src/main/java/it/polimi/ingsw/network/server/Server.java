@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Match;
@@ -56,7 +56,7 @@ public class Server {
                 }
 
 
-              //model.startMatch();
+              controller.startMatch();
 
 
             } catch (Exception e) {
@@ -73,11 +73,18 @@ public class Server {
     }
 
     public void run() {
+        System.out.println("Waiting for incoming connections...");
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
+                System.out.println("Player connected " + socket.getInetAddress() + " : " + socket.getPort());
                 ClientHandler connection = new ClientHandler(this, socket);
                 executor.submit(connection);
+
+                /*MessageListener messageListener = new MessageListener(socket);
+                executor.submit(messageListener);
+                messageListener.addObserver(connection);*/
+
             } catch (IOException e) {
                 System.err.println("Connection error");
             }

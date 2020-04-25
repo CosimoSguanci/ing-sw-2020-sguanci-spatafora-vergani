@@ -75,6 +75,23 @@ public class Controller implements Observer<Object> {
             else if(message instanceof GodChoiceCommand) {
                 GodChoiceCommand godChoiceCommand = (GodChoiceCommand) message;
                 handleGodChoiceCommand(godChoiceCommand);
+            }
+            else if(message instanceof GamePreparationCommand) {
+                GamePreparationCommand gamePreparationCommand = (GamePreparationCommand) message;
+
+                for(Player player : model.getPlayers()) {
+                    if(player.ID.equals(gamePreparationCommand.getPlayerID())) {
+                        gamePreparationCommand.setPlayer(player);
+                        break;
+                    }
+                }
+
+                Cell workerFirstCell = model.getBoard().getCell(gamePreparationCommand.workerFirstRow, gamePreparationCommand.workerFirstCol);
+                Cell workerSecondCell = model.getBoard().getCell(gamePreparationCommand.workerSecondRow, gamePreparationCommand.workerSecondCol);
+                gamePreparationCommand.setWorkerFirstCell(workerFirstCell);
+                gamePreparationCommand.setWorkerSecondCell(workerSecondCell);
+
+                handleGamePreparationCommand(gamePreparationCommand);
 
             }
 
@@ -120,9 +137,35 @@ public class Controller implements Observer<Object> {
            });
 
            model.selectedGodsUpdate(selectedGods);
+           model.nextTurn();
+
+           gamePreparation();
+
        }
 
+    }
 
+    private void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) { // TODO Handle Exceptions, different catch etc...
+        Player currentPlayer = model.getCurrentPlayer();
+        if (!gamePreparationCommand.getPlayer().equals(currentPlayer)) {
+            throw new WrongPlayerException();
+        } else {
+
+            if(currentPlayer.getGodStrategy().checkGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell())) {
+                currentPlayer.getGodStrategy().executeGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell());
+            }
+
+            if(currentPlayer.equals(godChooserPlayer)) { // Giro di game preparation fatto
+                //model.boardUpdate();
+                model.nextTurn();
+                startActualMatch();
+            } else {
+                model.nextTurn();
+                gamePreparation();
+            }
+
+
+        }
     }
 
     /**
@@ -141,7 +184,7 @@ public class Controller implements Observer<Object> {
             throw new WrongPlayerException();
         } else {
             // TODO When Player Lose?
-            // TODO When Game Prep?
+            // TODO When Game Prep? DONE
             switch (playerCommand.commandType) {
                 case MOVE:
                     if (checkAllMoveConstraints(playerCommand) && currentPlayer.getGodStrategy().checkMove(playerCommand.getWorker(), playerCommand.getCell())) {
@@ -236,5 +279,14 @@ public class Controller implements Observer<Object> {
         godChooserPlayer = playerList.get(initialTurn);
         godChooserPlayer.setAsGodChooser();
         model.chooseGodsUpdate(godChooserPlayer, null);
+    }
+
+    private void gamePreparation() {
+        model.boardUpdate();
+        model.gamePreparationUpdate(model.getCurrentPlayer());
+    }
+
+    private void startActualMatch() {
+        model.matchStartedUpdate();
     }
 }
