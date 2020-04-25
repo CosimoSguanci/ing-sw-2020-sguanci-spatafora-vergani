@@ -1,8 +1,11 @@
 package it.polimi.ingsw.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.exceptions.InvalidCellException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -168,4 +171,10 @@ public class Board {
         throw new InvalidCellException();
     }
 
+    @Override
+    public String toString() {
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        return gson.toJson(this);
+    }
 }

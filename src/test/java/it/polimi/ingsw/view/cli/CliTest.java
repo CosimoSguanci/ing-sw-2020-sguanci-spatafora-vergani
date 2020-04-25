@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.exceptions.BadPlayerCommandException;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Match;
