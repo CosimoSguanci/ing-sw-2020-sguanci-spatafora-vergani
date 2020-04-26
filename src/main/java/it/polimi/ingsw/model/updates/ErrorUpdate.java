@@ -1,15 +1,14 @@
-package it.polimi.ingsw.model.messages;
+package it.polimi.ingsw.model.updates;
 
 import it.polimi.ingsw.controller.commands.CommandType;
 
 import java.io.Serializable;
 
-public class ErrorUpdate implements Serializable {
-    public final String playerID; // TODO remove Player
+public class ErrorUpdate extends PlayerSpecificUpdate {
     public final CommandType command;
 
     public ErrorUpdate(String playerID, CommandType command) {
-        this.playerID = playerID;
+        super(playerID);
         this.command = command;
     }
 }

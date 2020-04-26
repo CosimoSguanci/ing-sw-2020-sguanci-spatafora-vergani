@@ -1,10 +1,10 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.messages.ChooseGodsUpdate;
-import it.polimi.ingsw.model.messages.ErrorUpdate;
+import it.polimi.ingsw.model.updates.ChooseGodsUpdate;
+import it.polimi.ingsw.model.updates.ErrorUpdate;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.messages.GamePreparationUpdate;
-import it.polimi.ingsw.model.messages.PlayerUpdate;
+import it.polimi.ingsw.model.updates.GamePreparationUpdate;
+import it.polimi.ingsw.model.updates.PlayerUpdate;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.network.server.ClientHandler;
 
@@ -50,21 +50,21 @@ public class RemoteView extends View {
             else if(message instanceof PlayerUpdate) {
                 PlayerUpdate playerUpdate = (PlayerUpdate) message;
 
-                if (getPlayer().ID.equals(playerUpdate.getPlayerID())) {
+                if (getPlayer().ID.equals(playerUpdate.playerID)) {
                     clientHandler.sendObject(message);
                 }
             }
             else if(message instanceof ChooseGodsUpdate) {
                 ChooseGodsUpdate chooseGodsUpdate = (ChooseGodsUpdate) message;
 
-                if (getPlayer().ID.equals(chooseGodsUpdate.getPlayerID())) {
+                if (getPlayer().ID.equals(chooseGodsUpdate.playerID)) {
                     clientHandler.sendObject(message);
                 }
             }
             else if(message instanceof GamePreparationUpdate) {
                 GamePreparationUpdate gamePreparationUpdate = (GamePreparationUpdate) message;
 
-                if (getPlayer().ID.equals(gamePreparationUpdate.player)) {
+                if (getPlayer().ID.equals(gamePreparationUpdate.playerID)) {
                     clientHandler.sendObject(message);
                 }
             }

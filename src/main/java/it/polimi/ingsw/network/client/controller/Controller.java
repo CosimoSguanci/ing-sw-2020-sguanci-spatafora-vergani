@@ -5,8 +5,8 @@ import it.polimi.ingsw.controller.commands.GamePreparationCommand;
 import it.polimi.ingsw.controller.commands.GodChoiceCommand;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
 import it.polimi.ingsw.exceptions.WrongPlayerException;
-import it.polimi.ingsw.model.messages.PlayerUpdate;
-import it.polimi.ingsw.model.messages.TurnUpdate;
+import it.polimi.ingsw.model.updates.PlayerUpdate;
+import it.polimi.ingsw.model.updates.TurnUpdate;
 import it.polimi.ingsw.observer.Observer;
 
 public class Controller implements Observer<Object> {
@@ -32,7 +32,7 @@ public class Controller implements Observer<Object> {
     @Override
     public void update(Object message) {
         if (message instanceof PlayerUpdate) {
-            this.clientPlayerID = ((PlayerUpdate) message).getPlayerID();
+            this.clientPlayerID = ((PlayerUpdate) message).playerID;
         } else if (message instanceof TurnUpdate) {
             this.turnUpdate = ((TurnUpdate) message);
         } else if (message instanceof PlayerCommand) {

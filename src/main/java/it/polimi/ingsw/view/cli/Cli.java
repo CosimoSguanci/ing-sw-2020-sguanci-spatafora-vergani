@@ -9,7 +9,7 @@ import it.polimi.ingsw.controller.commands.PlayerCommand;
 import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.gods.*;
-import it.polimi.ingsw.model.messages.*;
+import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
@@ -175,13 +175,13 @@ public class Cli extends Observable<Object> implements Observer<Object> {
             ChooseGodsUpdate chooseGodsUpdate = (ChooseGodsUpdate) message;
             enableGodChoose = true;
 
-            if(chooseGodsUpdate.isGodChooser()) {
+            if(chooseGodsUpdate.isGodChooser) {
                 isInitialGodChooser = true;
                 System.out.println("Choose " + playersNum + " gods...");
             }
             else {
                 isInitialGodChooser = false;
-                selectableGods = chooseGodsUpdate.getSelectableGods();
+                selectableGods = chooseGodsUpdate.selectableGods;
                 System.out.println("Choose your god. Available choices are: ");
 
                 selectableGods.forEach(System.out::println);
@@ -190,7 +190,7 @@ public class Cli extends Observable<Object> implements Observer<Object> {
         }
         else if (message instanceof SelectedGodsUpdate) {
             SelectedGodsUpdate selectedGodsUpdate = (SelectedGodsUpdate) message;
-            this.playersGods = selectedGodsUpdate.getSelectedGods();
+            this.playersGods = selectedGodsUpdate.selectedGods;
             printPlayerGods();
         }
         else if (message instanceof GamePreparationUpdate) {

@@ -5,7 +5,7 @@ import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.messages.ChooseGodsUpdate;
+import it.polimi.ingsw.model.updates.ChooseGodsUpdate;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
