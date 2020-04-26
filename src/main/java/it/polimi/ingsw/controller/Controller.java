@@ -61,14 +61,19 @@ public class Controller implements Observer<Object> {
                     PlayerCommand playerCommand = (PlayerCommand) message;
 
                     for (Player player : model.getPlayers()) {
-                        if (player.ID.equals(playerCommand.playerID)) {
+                        if (player.ID.equals(playerCommand.getPlayerID())) {
                             playerCommand.setPlayer(player);
                             break;
                         }
                     }
 
-                    Cell correctCell = playerCommand.getCell() != null ? model.getBoard().getCell(playerCommand.getCell().getRowIdentifier(), playerCommand.getCell().getColIdentifier()) : null;
-                    playerCommand.setCell(correctCell);
+                    //Cell correctCell = playerCommand.getCell() != null ? model.getBoard().getCell(playerCommand.getCell().getRowIdentifier(), playerCommand.getCell().getColIdentifier()) : null;
+
+                    if(playerCommand.row != -1 && playerCommand.col != -1) {
+                        Cell correctCell = model.getBoard().getCell(playerCommand.row, playerCommand.col);
+                        playerCommand.setCell(correctCell);
+                    }
+
 
                     Worker worker = playerCommand.workerID != null ? playerCommand.workerID.equals(PlayerCommand.WORKER_FIRST) ? playerCommand.getPlayer().getWorkerFirst() : playerCommand.getPlayer().getWorkerSecond() : null;
                     playerCommand.setWorker(worker);
@@ -124,7 +129,6 @@ public class Controller implements Observer<Object> {
        }
 
        if(isGodChooser) {
-           model.setInitialTurn(initialTurn);
            //godChooserPlayer = model.getCurrentPlayer();
            this.selectableGods = chosenGods;
 
@@ -171,13 +175,13 @@ public class Controller implements Observer<Object> {
             if(currentPlayer.getGodStrategy().checkGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell())) {
                 currentPlayer.getGodStrategy().executeGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell());
             }
+            // todo else
+
+            model.nextTurn();
 
             if(currentPlayer.equals(godChooserPlayer)) { // Giro di game preparation fatto
-                //model.boardUpdate();
-                model.nextTurn();
                 startActualMatch();
             } else {
-                model.nextTurn();
                 gamePreparation();
             }
 
@@ -201,7 +205,6 @@ public class Controller implements Observer<Object> {
             throw new WrongPlayerException();
         } else {
             // TODO When Player Lose?
-            // TODO When Game Prep? DONE
             switch (playerCommand.commandType) {
                 case MOVE:
                     if (checkAllMoveConstraints(playerCommand) && currentPlayer.getGodStrategy().checkMove(playerCommand.getWorker(), playerCommand.getCell())) {
@@ -210,6 +213,13 @@ public class Controller implements Observer<Object> {
 
                         boolean hasWon = checkAllWinConstraints(playerCommand) && // TODO first checkWinCond?
                                 currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker());
+
+
+                        // if !hasWon check if the new currentPlayer can build
+                        if(!currentPlayerCanBuild(playerCommand.getWorker())) {
+                            // lose
+                        }
+
                     } else {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
                     }
@@ -232,12 +242,19 @@ public class Controller implements Observer<Object> {
 
                     if(currentPlayer.getGodStrategy().checkEndTurn()) {
                         model.endTurn();
+
+                        // check if the new currentPlayer can move
+                        if(!currentPlayerCanMove()) {
+                            // lose -> TODO Remove player from list and workers from board
+                        }
                     } else {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
                     }
 
                     break;
             }
+
+            model.boardUpdate();
         }
     }
 
@@ -295,12 +312,21 @@ public class Controller implements Observer<Object> {
         return true;
     }
 
+    private boolean currentPlayerCanMove() {
+        return model.getBoard().canMove(model.getCurrentPlayer());
+    }
+
+    private boolean currentPlayerCanBuild(Worker movedWorker) {
+        return model.getBoard().canBuild(movedWorker);
+    }
+
     public void startMatch() {
         List<Player> playerList = model.getPlayers();
         initialTurn = new Random().nextInt((playerList.size()));
         currentGamePhase = GamePhase.CHOOSE_GODS;
         godChooserPlayer = playerList.get(initialTurn);
         godChooserPlayer.setAsGodChooser();
+        model.setInitialTurn(initialTurn);
         model.chooseGodsUpdate(godChooserPlayer, null);
     }
 

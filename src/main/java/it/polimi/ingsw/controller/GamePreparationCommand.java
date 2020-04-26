@@ -127,6 +127,8 @@ public class GamePreparationCommand implements Serializable {
             int rowNumW1 = (int) rowCharW1 - 'a';
             int rowNumW2 = (int) rowCharW2 - 'a'; // TODO col - 1
 
+            colNumW1--;
+            colNumW2--;
             return new GamePreparationCommand(rowNumW1, colNumW1, rowNumW2, colNumW2);
         }
         catch(Exception e) {

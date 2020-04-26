@@ -22,6 +22,7 @@ public class Controller implements Observer<Object> {
     private void handleCommand(PlayerCommand playerCommand) throws WrongPlayerException, Exception { // TODO remove Exception
         String currentPlayer = turnUpdate.playerID;
         if (clientPlayerID.equals(currentPlayer)) {
+            playerCommand.setPlayerID(clientPlayerID);
             client.sendPlayerCommand(playerCommand);
         } else {
            throw new WrongPlayerException();
