@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,5 +64,16 @@ public class MinotaurTest {
         minotaur.executeMove(worker1, match.getMatchBoard().getCell(1, 2));
         assertEquals(match.getMatchBoard().getCell(1, 2), worker1.getPosition());
         assertEquals(match.getMatchBoard().getCell(2, 3), worker2.getPosition()); // Forced one space straight backwards
+    }
+
+    @Test
+    public void getGodInfoTest() {
+        Minotaur minotaur = new Minotaur();
+
+        Map<String, String> info = minotaur.getGodInfo();
+
+        assertEquals(info.get("name"), Minotaur.NAME);
+        assertEquals(info.get("description"), Minotaur.DESCRIPTION);
+        assertEquals(info.get("power_description"), Minotaur.POWER_DESCRIPTION);
     }
 }

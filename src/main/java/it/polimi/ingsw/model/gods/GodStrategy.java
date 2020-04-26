@@ -20,7 +20,7 @@ import java.util.Map;
  */
 
 public abstract class GodStrategy {
-
+     // TODO consider checkGamePrepConstraints?
     public abstract Map<String, String> getGodInfo(); // TODO FIX Duplicated GetGodInfo Impl
 
     /**

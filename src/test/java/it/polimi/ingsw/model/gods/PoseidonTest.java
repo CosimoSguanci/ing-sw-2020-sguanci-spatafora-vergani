@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,5 +70,16 @@ public class PoseidonTest {
         poseidon.executeBuild(movedWorker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE);
 
         assertFalse(poseidon.checkBuild(unmovedWorker, match.getMatchBoard().getCell(4, 1), BlockType.LEVEL_TWO));
+    }
+
+    @Test
+    public void getGodInfoTest() {
+        Poseidon poseidon = new Poseidon();
+
+        Map<String, String> info = poseidon.getGodInfo();
+
+        assertEquals(info.get("name"), Poseidon.NAME);
+        assertEquals(info.get("description"), Poseidon.DESCRIPTION);
+        assertEquals(info.get("power_description"), Poseidon.POWER_DESCRIPTION);
     }
 }

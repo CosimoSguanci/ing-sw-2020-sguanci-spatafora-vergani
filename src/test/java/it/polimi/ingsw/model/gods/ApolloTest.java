@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,6 +53,17 @@ public class ApolloTest {
         assertEquals(match.getMatchBoard().getCell(0, 1), worker1.getPosition());
         assertEquals(match.getMatchBoard().getCell(0, 0), worker2.getPosition());
 
+    }
+
+    @Test
+    public void getGodInfoTest() {
+        Apollo apollo = new Apollo();
+
+        Map<String, String> info = apollo.getGodInfo();
+
+        assertEquals(info.get("name"), Apollo.NAME);
+        assertEquals(info.get("description"), Apollo.DESCRIPTION);
+        assertEquals(info.get("power_description"), Apollo.POWER_DESCRIPTION);
     }
 
 }

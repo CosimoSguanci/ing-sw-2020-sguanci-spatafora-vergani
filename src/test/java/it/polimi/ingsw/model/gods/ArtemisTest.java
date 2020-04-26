@@ -3,15 +3,15 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ArtemisTest {
 
     @Test
-    public void artemisCheckMultipleMoveTest()  {
+    public void artemisCheckMultipleMoveTest() {
 
         Board.clearInstances();
         Match.clearInstances();
@@ -34,7 +34,7 @@ public class ArtemisTest {
     }
 
     @Test
-    public void artemisCheckMultipleMoveInitialPositionTest()  {
+    public void artemisCheckMultipleMoveInitialPositionTest() {
 
         Board.clearInstances();
         Match.clearInstances();
@@ -53,4 +53,17 @@ public class ArtemisTest {
         assertFalse(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 0)));
 
     }
+
+    @Test
+    public void getGodInfoTest() {
+        Artemis artemis = new Artemis();
+
+        Map<String, String> info = artemis.getGodInfo();
+
+        assertEquals(info.get("name"), Artemis.NAME);
+        assertEquals(info.get("description"), Artemis.DESCRIPTION);
+        assertEquals(info.get("power_description"), Artemis.POWER_DESCRIPTION);
+    }
+
+
 }

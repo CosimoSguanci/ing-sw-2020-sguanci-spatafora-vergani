@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,5 +39,16 @@ public class HeraTest {
         // Win constraints should NOT be satisfied.
         assertFalse(apollo.checkWinCondition(opponentWorker) && hera.checkWinConstraints(opponentWorker, match.getMatchBoard().getCell(0, 2)));
 
+    }
+
+    @Test
+    public void getGodInfoTest() {
+        Hera hera = new Hera();
+
+        Map<String, String> info = hera.getGodInfo();
+
+        assertEquals(info.get("name"), Hera.NAME);
+        assertEquals(info.get("description"), Hera.DESCRIPTION);
+        assertEquals(info.get("power_description"), Hera.POWER_DESCRIPTION);
     }
 }

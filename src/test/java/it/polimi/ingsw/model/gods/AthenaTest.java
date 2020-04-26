@@ -3,10 +3,11 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AthenaTest {
     @Test
@@ -35,5 +36,16 @@ public class AthenaTest {
 
         assertTrue(athena.checkMoveConstraints(oppositeWorker, match.getMatchBoard().getCell(1, 2))); // Should constraints be checked inside move/executeMove?
 
+    }
+
+    @Test
+    public void getGodInfoTest() {
+        Athena athena = new Athena();
+
+        Map<String, String> info = athena.getGodInfo();
+
+        assertEquals(info.get("name"), Athena.NAME);
+        assertEquals(info.get("description"), Athena.DESCRIPTION);
+        assertEquals(info.get("power_description"), Athena.POWER_DESCRIPTION);
     }
 }
