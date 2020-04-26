@@ -124,11 +124,11 @@ public class PlayerCommand extends Command {
 
             String worker = s[1];
 
-            if (!worker.toLowerCase().equals(WORKER_FIRST) && !worker.toLowerCase().equals(WORKER_SECOND)) {
+            if (!worker.equals(WORKER_FIRST) && !worker.equals(WORKER_SECOND)) {
                 throw new BadCommandException();
             }
 
-            Map<String, Integer> cellIdentifiers = Command.parseCellIdentifiers(s[2].toLowerCase());
+            Map<String, Integer> cellIdentifiers = Command.parseCellIdentifiers(s[2]);
 
             String blockTypeStr;
             if (s.length == 4) {
