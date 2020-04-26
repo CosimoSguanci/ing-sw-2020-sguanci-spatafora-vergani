@@ -3,10 +3,10 @@ package it.polimi.ingsw.view.cli;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.controller.GamePreparationCommand;
-import it.polimi.ingsw.controller.GodChoiceCommand;
-import it.polimi.ingsw.controller.PlayerCommand;
-import it.polimi.ingsw.exceptions.BadPlayerCommandException;
+import it.polimi.ingsw.controller.commands.GamePreparationCommand;
+import it.polimi.ingsw.controller.commands.GodChoiceCommand;
+import it.polimi.ingsw.controller.commands.PlayerCommand;
+import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.gods.*;
 import it.polimi.ingsw.model.messages.*;
@@ -81,7 +81,7 @@ public class Cli extends Observable<Object> implements Observer<Object> {
                 String[] s = command.split("\\s+");
 
                 if(!s[0].toLowerCase().equals("info") || s.length > 2)
-                    throw new BadPlayerCommandException();
+                    throw new BadCommandException();
 
                 String god = s[1];
 
@@ -93,7 +93,7 @@ public class Cli extends Observable<Object> implements Observer<Object> {
                     String[] s = command.split("\\s+");
 
                     if(!s[0].equals("select") || s.length > playersNum + 1) {
-                        throw new BadPlayerCommandException();
+                        throw new BadCommandException();
                     }
 
                     ArrayList<String> chosenGods = new ArrayList<>();
@@ -102,7 +102,7 @@ public class Cli extends Observable<Object> implements Observer<Object> {
                         String god = s[i+1].toLowerCase();
 
                         if(!isValidGod(god, chosenGods)) {
-                            throw new BadPlayerCommandException();
+                            throw new BadCommandException();
                         }
 
                         chosenGods.add(god);
@@ -118,13 +118,13 @@ public class Cli extends Observable<Object> implements Observer<Object> {
                     String[] s = command.split("\\s+");
 
                     if(!s[0].equals("select") || s.length > 2) {
-                        throw new BadPlayerCommandException();
+                        throw new BadCommandException();
                     }
 
                     String god = s[1];
 
                     if(!selectableGods.contains(god)) {
-                        throw new BadPlayerCommandException();
+                        throw new BadCommandException();
                     }
 
                     ArrayList<String> selected = new ArrayList<>();
@@ -143,12 +143,12 @@ public class Cli extends Observable<Object> implements Observer<Object> {
 
             else if(enableGameCommands){
                 try {
-                    PlayerCommand playerCommand = PlayerCommand.parseInput(null, command);
+                    PlayerCommand playerCommand = PlayerCommand.parseInput(command);
 
                     notify(playerCommand);
 
 
-                } catch(BadPlayerCommandException e) {
+                } catch(BadCommandException e) {
                     System.out.println("Bad command");
                 }
             }
@@ -314,7 +314,7 @@ public class Cli extends Observable<Object> implements Observer<Object> {
                 System.out.println("Power: " + Zeus.POWER_DESCRIPTION);
                 break;
 
-            default: throw new BadPlayerCommandException();
+            default: throw new BadCommandException();
         }
     }
 

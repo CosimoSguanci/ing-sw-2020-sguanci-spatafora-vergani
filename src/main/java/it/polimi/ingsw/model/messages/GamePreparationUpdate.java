@@ -1,8 +1,5 @@
 package it.polimi.ingsw.model.messages;
 
-import it.polimi.ingsw.controller.CommandType;
-import it.polimi.ingsw.model.Player;
-
 import java.io.Serializable;
 
 public class GamePreparationUpdate implements Serializable {

@@ -1,9 +1,8 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.commands;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class GodChoiceCommand implements Serializable {
+public class GodChoiceCommand extends Command {
     private List<String> chosenGods;
     private boolean isGodChooser;
     private String playerID;

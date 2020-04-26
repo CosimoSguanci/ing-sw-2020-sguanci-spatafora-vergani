@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.messages;
 
-import it.polimi.ingsw.controller.CommandType;
+import it.polimi.ingsw.controller.commands.CommandType;
 
 import java.io.Serializable;
 

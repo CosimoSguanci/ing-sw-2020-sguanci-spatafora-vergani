@@ -1,8 +1,8 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.controller.GamePreparationCommand;
-import it.polimi.ingsw.controller.GodChoiceCommand;
-import it.polimi.ingsw.controller.PlayerCommand;
+import it.polimi.ingsw.controller.commands.GamePreparationCommand;
+import it.polimi.ingsw.controller.commands.GodChoiceCommand;
+import it.polimi.ingsw.controller.commands.PlayerCommand;
 
 import java.io.*;
 import java.net.Socket;

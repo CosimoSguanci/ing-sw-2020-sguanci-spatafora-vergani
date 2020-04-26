@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.controller.PlayerCommand;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;

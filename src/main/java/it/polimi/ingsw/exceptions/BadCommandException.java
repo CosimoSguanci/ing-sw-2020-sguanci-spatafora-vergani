@@ -1,9 +1,9 @@
 package it.polimi.ingsw.exceptions;
 
-public class BadPlayerCommandException extends RuntimeException {
+public class BadCommandException extends RuntimeException {
     private final static String ERROR_MESSAGE = "Bad Player Command";
 
-    public BadPlayerCommandException() {
+    public BadCommandException() {
         super(ERROR_MESSAGE);
     }
 }

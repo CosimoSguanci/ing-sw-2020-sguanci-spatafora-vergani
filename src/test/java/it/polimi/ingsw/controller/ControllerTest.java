@@ -1,13 +1,13 @@
 package it.polimi.ingsw.controller;
 
 
+import it.polimi.ingsw.controller.commands.GodChoiceCommand;
+import it.polimi.ingsw.controller.commands.PlayerCommand;
 import it.polimi.ingsw.exceptions.WrongPlayerException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.model.gods.*;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -65,7 +65,8 @@ public class ControllerTest {
 
         Model model = new Model(match);
         Controller controller = new Controller(model);
-        PlayerCommand playerCommand = PlayerCommand.parseInput("Andrea", "move w1 C4");
+        PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 C4");
+        playerCommand.setPlayerID("Andrea");
         controller.update(playerCommand);
 
         assertEquals(p1, model.getCurrentPlayer());
@@ -115,7 +116,8 @@ public class ControllerTest {
 
         Model model = new Model(match);
         Controller controller = new Controller(model);
-        PlayerCommand playerCommand = PlayerCommand.parseInput("Andrea", "move w1 C4");
+        PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 C4");
+        playerCommand.setPlayerID("Andrea");
         controller.update(playerCommand);  //Apollo's power must be invoked
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
@@ -125,7 +127,8 @@ public class ControllerTest {
 
         match.nextTurn();  //Cosimo's turn
 
-        playerCommand = PlayerCommand.parseInput("Andrea", "move w2 e1");
+        playerCommand = PlayerCommand.parseInput("move w2 e1");
+        playerCommand.setPlayerID("Andrea");
 
 
         PlayerCommand finalPlayerCommand = playerCommand;
@@ -136,7 +139,8 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(4,4), w2A.getPosition());
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
-        playerCommand = PlayerCommand.parseInput("Cosimo", "move w2 e4");
+        playerCommand = PlayerCommand.parseInput("move w2 e4");
+        playerCommand.setPlayerID("Cosimo");
         controller.update(playerCommand);  //impossible move should not be allowed
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
@@ -144,7 +148,8 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(4,4), w2A.getPosition());
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
-        playerCommand = PlayerCommand.parseInput("Cosimo", "move w1 e4");
+        playerCommand = PlayerCommand.parseInput("move w1 e4");
+        playerCommand.setPlayerID("Cosimo");
         controller.update(playerCommand);
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
@@ -196,7 +201,8 @@ public class ControllerTest {
 
         Model model = new Model(match);
         Controller controller = new Controller(model);
-        PlayerCommand playerCommand = PlayerCommand.parseInput("Andrea", "move w1 C4");
+        PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 C4");
+        playerCommand.setPlayerID("Andrea");
         controller.update(playerCommand);  //Apollo's power must be invoked
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
@@ -204,7 +210,8 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(4,4), w2A.getPosition());
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
-        playerCommand = PlayerCommand.parseInput("Andrea", "build w1 b2");
+        playerCommand = PlayerCommand.parseInput("build w1 b2");
+        playerCommand.setPlayerID("Andrea");
         controller.update(playerCommand);  //impossible build should not be allowed
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
@@ -215,7 +222,8 @@ public class ControllerTest {
 
         match.nextTurn();  //Cosimo's turn
 
-        playerCommand = PlayerCommand.parseInput("Andrea", "move w2 e1");
+        playerCommand = PlayerCommand.parseInput("move w2 e1");
+        playerCommand.setPlayerID("Andrea");
 
 
         PlayerCommand finalPlayerCommand = playerCommand;
@@ -226,7 +234,8 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(4,4), w2A.getPosition());
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
-        playerCommand = PlayerCommand.parseInput("Cosimo", "move w1 e4");
+        playerCommand = PlayerCommand.parseInput("move w1 e4");
+        playerCommand.setPlayerID("Cosimo");
         controller.update(playerCommand);
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
@@ -285,7 +294,8 @@ public class ControllerTest {
         match.nextTurn();
         assertEquals(p3, model.getCurrentPlayer());  //Roberto's turn
 
-        PlayerCommand playerCommand = PlayerCommand.parseInput("Roberto", "move w1 e3");
+        PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 e3");
+        playerCommand.setPlayerID("Roberto");
         controller.update(playerCommand);  //impossible move should not be allowed
 
         assertEquals(match.getMatchBoard().getCell(1,2), w1A.getPosition());
@@ -295,7 +305,8 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(0,1), w3A.getPosition());
         assertEquals(match.getMatchBoard().getCell(3,1), w3B.getPosition());
 
-        playerCommand = PlayerCommand.parseInput("Roberto", "move w2 C1");
+        playerCommand = PlayerCommand.parseInput("move w2 C1");
+        playerCommand.setPlayerID("Roberto");
         controller.update(playerCommand);  //possible move should be allowed
 
         assertEquals(match.getMatchBoard().getCell(1,2), w1A.getPosition());
@@ -305,7 +316,8 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(0,1), w3A.getPosition());
         assertEquals(match.getMatchBoard().getCell(2,0), w3B.getPosition());
 
-        playerCommand = PlayerCommand.parseInput("Roberto", "build w2 E1");
+        playerCommand = PlayerCommand.parseInput("build w2 E1");
+        playerCommand.setPlayerID("Roberto");
         controller.update(playerCommand);  //impossible build should not be allowed
 
         assertEquals(match.getMatchBoard().getCell(1,2), w1A.getPosition());
@@ -315,7 +327,8 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(0,1), w3A.getPosition());
         assertEquals(match.getMatchBoard().getCell(2,0), w3B.getPosition());
 
-        playerCommand = PlayerCommand.parseInput("Roberto", "build w2 b2");
+        playerCommand = PlayerCommand.parseInput("build w2 b2");
+        playerCommand.setPlayerID("Roberto");
         controller.update(playerCommand);  //possible build should be allowed
 
         assertEquals(match.getMatchBoard().getCell(1,2), w1A.getPosition());
@@ -326,7 +339,8 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(2,0), w3B.getPosition());
         assertEquals(BlockType.LEVEL_ONE, match.getMatchBoard().getCell(1,1).getLevel());
 
-        playerCommand = PlayerCommand.parseInput("Roberto", "end");
+        playerCommand = PlayerCommand.parseInput("end");
+        playerCommand.setPlayerID("Roberto");
         controller.update(playerCommand);  //now it's p1's turn
         assertEquals(p1, model.getCurrentPlayer());
 

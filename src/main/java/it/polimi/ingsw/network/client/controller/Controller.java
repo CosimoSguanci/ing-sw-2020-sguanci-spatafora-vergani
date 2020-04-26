@@ -1,9 +1,9 @@
 package it.polimi.ingsw.network.client.controller;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.controller.GamePreparationCommand;
-import it.polimi.ingsw.controller.GodChoiceCommand;
-import it.polimi.ingsw.controller.PlayerCommand;
+import it.polimi.ingsw.controller.commands.GamePreparationCommand;
+import it.polimi.ingsw.controller.commands.GodChoiceCommand;
+import it.polimi.ingsw.controller.commands.PlayerCommand;
 import it.polimi.ingsw.exceptions.WrongPlayerException;
 import it.polimi.ingsw.model.messages.PlayerUpdate;
 import it.polimi.ingsw.model.messages.TurnUpdate;
