@@ -97,4 +97,40 @@ public class HephaestusTest {
         assertEquals(info.get("description"), Hephaestus.DESCRIPTION);
         assertEquals(info.get("power_description"), Hephaestus.POWER_DESCRIPTION);
     }
+
+    @Test
+    public void hephaestusEndTurnTest() { // TODO Add tests to check previousCell was reset?
+        Board.clearInstances();
+        Match.clearInstances();
+
+        Hephaestus hephaestus = new Hephaestus();
+
+        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
+        Worker worker = player.getWorkerFirst();
+
+        worker.setInitialPosition(0, 0);
+
+        assertTrue(hephaestus.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
+        hephaestus.executeMove(worker, match.getMatchBoard().getCell(0, 1));
+
+        // cannot move again because the limit number of movements was reached
+        assertFalse(hephaestus.checkMove(worker, match.getMatchBoard().getCell(0, 2)));
+
+        assertTrue(hephaestus.checkBuild(worker, match.getMatchBoard().getCell(0, 2), BlockType.LEVEL_ONE));
+        hephaestus.executeBuild(worker, match.getMatchBoard().getCell(0, 2), BlockType.LEVEL_ONE);
+
+        assertTrue(hephaestus.checkBuild(worker, match.getMatchBoard().getCell(0, 2), BlockType.LEVEL_TWO));
+        hephaestus.executeBuild(worker, match.getMatchBoard().getCell(0, 2), BlockType.LEVEL_TWO);
+
+        assertTrue(hephaestus.checkEndTurn());
+        hephaestus.endTurn(player);
+
+        //Now I check that I can move/build again (so the values are correctly reinitialized
+        assertTrue(hephaestus.checkMove(worker, match.getMatchBoard().getCell(1, 1)));
+        hephaestus.executeMove(worker, match.getMatchBoard().getCell(1, 1));
+
+        assertTrue(hephaestus.checkBuild(worker, match.getMatchBoard().getCell(1, 2), BlockType.LEVEL_ONE));
+        hephaestus.executeBuild(worker, match.getMatchBoard().getCell(1, 2), BlockType.LEVEL_ONE);
+    }
 }

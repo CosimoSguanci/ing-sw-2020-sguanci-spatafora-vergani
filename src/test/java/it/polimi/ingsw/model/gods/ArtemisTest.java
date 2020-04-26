@@ -65,5 +65,38 @@ public class ArtemisTest {
         assertEquals(info.get("power_description"), Artemis.POWER_DESCRIPTION);
     }
 
+    @Test
+    public void artemisEndTurnTest() {
+        Board.clearInstances();
+        Match.clearInstances();
 
+        Artemis artemis = new Artemis();
+
+        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
+        Worker worker = player.getWorkerFirst();
+
+        worker.setInitialPosition(0, 0);
+
+        assertTrue(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
+        artemis.executeMove(worker, match.getMatchBoard().getCell(0, 1));
+
+        assertTrue(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 2)));
+        artemis.executeMove(worker, match.getMatchBoard().getCell(0, 2));
+
+        // cannot move again because the limit number of movements was reached
+        assertFalse(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 3)));
+
+        assertTrue(artemis.checkBuild(worker, match.getMatchBoard().getCell(0, 3), BlockType.LEVEL_ONE));
+        artemis.executeBuild(worker, match.getMatchBoard().getCell(0, 3), BlockType.LEVEL_ONE);
+
+        // cannot move again because the worker already built a level in this turn
+        assertFalse(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 3)));
+
+        assertTrue(artemis.checkEndTurn());
+        artemis.endTurn(player);
+
+        //Now I check that I can move again (so the values are correctly reinitialized
+        assertTrue(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 3)));
+    }
 }

@@ -70,4 +70,40 @@ public class DemeterTest {
         assertEquals(info.get("description"), Demeter.DESCRIPTION);
         assertEquals(info.get("power_description"), Demeter.POWER_DESCRIPTION);
     }
+
+    @Test
+    public void demeterEndTurnTest() {
+        Board.clearInstances();
+        Match.clearInstances();
+
+        Demeter demeter = new Demeter();
+
+        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
+        Worker worker = player.getWorkerFirst();
+
+        worker.setInitialPosition(0, 0);
+
+        assertTrue(demeter.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
+        demeter.executeMove(worker, match.getMatchBoard().getCell(0, 1));
+
+        // cannot move again because the limit number of movements was reached
+        assertFalse(demeter.checkMove(worker, match.getMatchBoard().getCell(0, 2)));
+
+        assertTrue(demeter.checkBuild(worker, match.getMatchBoard().getCell(0, 2), BlockType.LEVEL_ONE));
+        demeter.executeBuild(worker, match.getMatchBoard().getCell(0, 2), BlockType.LEVEL_ONE);
+
+        assertTrue(demeter.checkBuild(worker, match.getMatchBoard().getCell(1, 1), BlockType.LEVEL_ONE));
+        demeter.executeBuild(worker, match.getMatchBoard().getCell(1, 1), BlockType.LEVEL_ONE);
+
+        assertTrue(demeter.checkEndTurn());
+        demeter.endTurn(player);
+
+        //Now I check that I can move/build again (so the values are correctly reinitialized
+        assertTrue(demeter.checkMove(worker, match.getMatchBoard().getCell(1, 1)));
+        demeter.executeMove(worker, match.getMatchBoard().getCell(1, 1));
+
+        assertTrue(demeter.checkBuild(worker, match.getMatchBoard().getCell(1, 2), BlockType.LEVEL_ONE));
+        demeter.executeBuild(worker, match.getMatchBoard().getCell(1, 2), BlockType.LEVEL_ONE);
+    }
 }

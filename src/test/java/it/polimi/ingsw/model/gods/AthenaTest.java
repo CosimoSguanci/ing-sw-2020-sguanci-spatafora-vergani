@@ -48,4 +48,36 @@ public class AthenaTest {
         assertEquals(info.get("description"), Athena.DESCRIPTION);
         assertEquals(info.get("power_description"), Athena.POWER_DESCRIPTION);
     }
+
+    @Test
+    public void athenaEndTurnTest() {
+        Board.clearInstances();
+        Match.clearInstances();
+
+        Athena athena = new Athena();
+
+        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
+        Worker worker = player.getWorkerFirst();
+
+        worker.setInitialPosition(0, 0);
+
+        assertTrue(athena.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
+        athena.executeMove(worker, match.getMatchBoard().getCell(0, 1));
+
+        // cannot move again because the worker already moved
+        assertFalse(athena.checkMove(worker, match.getMatchBoard().getCell(0, 2)));
+
+        assertTrue(athena.checkBuild(worker, match.getMatchBoard().getCell(0, 2), BlockType.LEVEL_ONE));
+        athena.executeBuild(worker, match.getMatchBoard().getCell(0, 2), BlockType.LEVEL_ONE);
+
+        // cannot move again because the worker already built a level in this turn
+        assertFalse(athena.checkMove(worker, match.getMatchBoard().getCell(0, 2)));
+
+        assertTrue(athena.checkEndTurn());
+        athena.endTurn(player);
+
+        //Now I check that I can move again (so the values are correctly reinitialized
+        assertTrue(athena.checkMove(worker, match.getMatchBoard().getCell(0, 2)));
+    }
 }
