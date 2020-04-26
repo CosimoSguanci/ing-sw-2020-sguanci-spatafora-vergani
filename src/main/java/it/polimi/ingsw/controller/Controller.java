@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.controller.commands.GamePreparationCommand;
 import it.polimi.ingsw.controller.commands.GodChoiceCommand;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
@@ -30,7 +31,7 @@ import java.util.Random;
  * @author Cosimo Sguanci
  * @author Roberto Spatafora
  */
-public class Controller implements Observer<Object> {
+public class Controller implements Observer<Object> { // Todo Cannot observe only Command or Update. 2 different messageListeners?
     private Model model;
     private Player godChooserPlayer;
     private List<String> selectableGods;
@@ -53,15 +54,15 @@ public class Controller implements Observer<Object> {
      * This method is an overriding method of "update" in Observer interface.
      * Its task is to handle player command coming from View.
      *
-     * @param message player move/build from View
+     * @param command player move/build from View
      */
     @Override
-    public void update(Object message) {  //TODO handle exceptions
+    public void update(Object command) {  //TODO handle exceptions
         try {
 
-            if(message instanceof PlayerCommand) {
+            if(command instanceof PlayerCommand) {
                 if(currentGamePhase == GamePhase.REAL_GAME) {
-                    PlayerCommand playerCommand = (PlayerCommand) message;
+                    PlayerCommand playerCommand = (PlayerCommand) command;
 
                     for (Player player : model.getPlayers()) {
                         if (player.ID.equals(playerCommand.getPlayerID())) {
@@ -86,17 +87,17 @@ public class Controller implements Observer<Object> {
                     throw new WrongGamePhaseException();
                 }
             }
-            else if(message instanceof GodChoiceCommand) {
+            else if(command instanceof GodChoiceCommand) {
                 if(currentGamePhase == GamePhase.CHOOSE_GODS) {
-                    GodChoiceCommand godChoiceCommand = (GodChoiceCommand) message;
+                    GodChoiceCommand godChoiceCommand = (GodChoiceCommand) command;
                     handleGodChoiceCommand(godChoiceCommand);
                 } else{
                     throw new WrongGamePhaseException();
                 }
             }
-            else if(message instanceof GamePreparationCommand) {
+            else if(command instanceof GamePreparationCommand) {
                 if(currentGamePhase == GamePhase.GAME_PREPARATION) {
-                    GamePreparationCommand gamePreparationCommand = (GamePreparationCommand) message;
+                    GamePreparationCommand gamePreparationCommand = (GamePreparationCommand) command;
 
                     for (Player player : model.getPlayers()) {
                         if (player.ID.equals(gamePreparationCommand.getPlayerID())) {

@@ -50,32 +50,14 @@ public class Board {
 
         board = new Cell[WIDTH_SIZE][HEIGHT_SIZE];
         //initialization of a "empty" board at ground level (every cell with these starting configurations)
-        for(int i=0; i<board.length; i++) {
-            for(int j=0; j<board[i].length; j++) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
                 board[i][j] = new Cell(i, j);
             }  //initialization of every cell in the board
         }
 
     }
 
-
-    /**
-     * The method controls if a player won the match, with one of his/her two workers.
-     * Santorini rules explain that (in normal situations) a player wins when, during his
-     * turn, one of his workers moves up on top of level three. This methods just controls
-     * if one of the two workers of the parameter-player is on top of third level; so,
-     * it is caller problem when to call this method, since here there is no control about
-     * last move
-     *
-     * @param player is the considered player of the match
-     * @return true if one of player's workers are on top of third level
-     *
-     */
-    public boolean hasWinnerWorker(Player player) {
-        Cell cellOne = player.getWorkerFirst().getPosition();  //actual cell of the first worker
-        Cell cellTwo = player.getWorkerSecond().getPosition();  //actual cell of the second worker
-        return cellOne.getLevel() == BlockType.LEVEL_THREE || cellTwo.getLevel() == BlockType.LEVEL_THREE;
-    }
 
     /**
      * The method controls if a movement is possible from a considered cell. Santorini
@@ -86,25 +68,20 @@ public class Board {
      *
      * @param cell is the starting cell, from which possible movements must be considered
      * @return true if a movement in any direction from parameter-cell is possible; otherwise, false
-     *
      */
     private boolean movementPossibleFromCell(Cell cell) {
-        /*
-        ArrayList<Integer> coord = getCoordinates(cell);
-        int row = coord.get(0);  //i value for (i,j) coordinates of parameter
-        int column = coord.get(1);  //j value for (i,j) coordinates of parameter
-        */
+
         int row = cell.getRowIdentifier();  //i value for (i,j) coordinates of parameter
         int column = cell.getColIdentifier();  //j value for (i,j) coordinates of parameter
-        for(int i = Math.max(row-1, 0); i <= Math.min(row+1, board.length-1); i++) {
-            for(int j = Math.max(column-1, 0); j<= Math.min(column+1, board[i].length-1); j++) {
-                if(i!=row && j!=column) {  //explore all adjacent cells
+        for (int i = Math.max(row - 1, 0); i <= Math.min(row + 1, board.length - 1); i++) {
+            for (int j = Math.max(column - 1, 0); j <= Math.min(column + 1, board[i].length - 1); j++) {
+                if (i != row && j != column) {  //explore all adjacent cells
                     if (cell.isLevelDifferenceOk(board[i][j]) && board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()) {
                         return true;  //movement is possible if an adjacent cell is at lower, same or (+1) level, it is empty and not a dome
                     }
                 }
-            }  //end internal cycle
-        }  //end external cycle
+            }
+        }
         return false;
     }
 
@@ -115,7 +92,6 @@ public class Board {
      *
      * @param player is the considered player, so the one you want to study possible movements
      * @return true if a movement in any direction by one of the workers of parameter-player is possible; otherwise, false
-     *
      */
     public boolean canMove(Player player) {
         Cell cellOne = player.getWorkerFirst().getPosition();  //actual cell of the first worker
@@ -133,25 +109,20 @@ public class Board {
      *
      * @param worker is the considered worker, so the one you want to study possible buildings
      * @return true if a building in any direction by parameter-worker is possible; otherwise, false
-     *
      */
     public boolean canBuild(Worker worker) {
-        /*
-        ArrayList<Integer> coord = getCoordinates(worker.getPosition());
-        int row = coord.get(0);  //i value for (i,j) coordinates of parameter
-        int column = coord.get(1);  //j value for (i,j) coordinates of parameter
-        */
+
         int row = worker.getPosition().getRowIdentifier();  //i value for (i,j) coordinates of worker's cell
         int column = worker.getPosition().getColIdentifier();  //j value for (i,j) coordinates of worker's cell
-        for(int i = Math.max(row-1, 0); i <= Math.min(row+1, board.length-1); i++) {
-            for(int j = Math.max(column-1, 0); j<= Math.min(column+1, board[i].length-1); j++) {
-                if(i!=row && j!=column) {  //explore all adjacent cells
+        for (int i = Math.max(row - 1, 0); i <= Math.min(row + 1, board.length - 1); i++) {
+            for (int j = Math.max(column - 1, 0); j <= Math.min(column + 1, board[i].length - 1); j++) {
+                if (i != row && j != column) {  //explore all adjacent cells
                     if (board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()) {
                         return true;  //building is possible if an adjacent cell is not a dome and it is empty (there is no worker on it)
                     }
                 }
-            }  //end internal cycle
-        }  //end external cycle
+            }
+        }
         return false;
     }
 
@@ -160,15 +131,13 @@ public class Board {
      *
      * @param row indicates the row of the Cell requested in the board
      * @param col indicates the column of the Cell requested in the board
-     *
      * @return a reference to the Cell requested if possible
      * @throws InvalidCellException if the parameters are not valid for a Cell in the board.
-     * */
+     */
     public Cell getCell(int row, int col) throws InvalidCellException {
-        if((row >= 0) && (row < board.length) && (col >= 0) && (col < board[0].length)) {
+        if ((row >= 0) && (row < board.length) && (col >= 0) && (col < board[0].length)) {
             return board[row][col];
-        }
-        throw new InvalidCellException();
+        } else throw new InvalidCellException();
     }
 
     @Override

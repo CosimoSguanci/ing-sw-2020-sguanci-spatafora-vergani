@@ -29,14 +29,6 @@ public class GamePreparationCommand extends Command {
         this.workerSecondCol = workerSecondCol;
     }
 
-    public void setPlayerID(String playerID) {
-        this.playerID = playerID;
-    }
-
-    public String getPlayerID() {
-        return playerID;
-    }
-
     public void setWorkerFirstCell(Cell workerFirstCell) {
         this.workerFirstCell = workerFirstCell;
     }
@@ -53,13 +45,6 @@ public class GamePreparationCommand extends Command {
         return workerSecondCell;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Player getPlayer() {
-        return this.player;
-    }
 
     public static GamePreparationCommand parseInput(String command) throws BadCommandException {
         // place w1 c1 w2 a2

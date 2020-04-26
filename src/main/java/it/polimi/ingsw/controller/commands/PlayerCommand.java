@@ -33,7 +33,6 @@ public class PlayerCommand extends Command {
     /**
      * This properties must be reconstructed by server-side Controller
      */
-    private transient Player player;
     private transient Worker worker;
     private transient Cell cell;
 
@@ -58,14 +57,6 @@ public class PlayerCommand extends Command {
         return this.cell;
     }
 
-    public Player getPlayer() {
-        return this.player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
     public Worker getWorker() {
         return this.worker;
     }
@@ -73,15 +64,6 @@ public class PlayerCommand extends Command {
     public void setWorker(Worker worker) {
         this.worker = worker;
     }
-
-    public void setPlayerID(String playerID) {
-        this.playerID = playerID;
-    }
-
-    public String getPlayerID() {
-        return this.playerID;
-    }
-
 
     /**
      * Static method used to parse a String command input by the user (CLI) into a PlayerCommand instance using String-rep for Workers.

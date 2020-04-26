@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Cosimo Sguanci
  */
 
-public class Minotaur extends GodStrategy {
+public class Minotaur extends GodStrategy { // TODO Test EndTurn
 
     public static final String NAME = "Minotaur";
     public static final String DESCRIPTION = "Bull-headed Monster";

@@ -1,10 +1,8 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.updates.ChooseGodsUpdate;
-import it.polimi.ingsw.model.updates.ErrorUpdate;
+import it.polimi.ingsw.controller.commands.Command;
+import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.updates.GamePreparationUpdate;
-import it.polimi.ingsw.model.updates.PlayerUpdate;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.network.server.ClientHandler;
 
@@ -22,25 +20,32 @@ public class RemoteView extends View {
 
     private ClientHandler clientHandler;
 
-    public RemoteView(Player player, ClientHandler c) {
+    public RemoteView(Player player, ClientHandler clientHandler) {
         super(player);
-        this.clientHandler = c;
-        c.addObserver(new MessageReceiver());
-     //   c.asyncSend("Your opponent is: " + opponent);
-
+        this.clientHandler = clientHandler;
+        clientHandler.addObserver(new MessageReceiver());
     }
 
-    @Override
-    protected void showMessage(Object message) {
-      //  clientConnection.asyncSend(message);
-    }
+
 
     @Override
-    public void update(Object message)
+    public void update(Object update)
     {
         try {
 
-            if(message instanceof ErrorUpdate) {
+            if(update instanceof PlayerSpecificUpdate) {
+                PlayerSpecificUpdate playerSpecificUpdate = (PlayerSpecificUpdate) update;
+
+                if (getPlayer().ID.equals(playerSpecificUpdate.playerID)) {
+                    clientHandler.sendObject(update);
+                }
+            }
+
+            else if (update instanceof BroadcastUpdate) {
+                clientHandler.sendObject(update);
+            }
+
+            /*if(message instanceof ErrorUpdate) {
                 ErrorUpdate errorUpdate = (ErrorUpdate) message;
 
                 if (getPlayer().ID.equals(errorUpdate.playerID)) {
@@ -69,35 +74,10 @@ public class RemoteView extends View {
                 }
             }
             else
-                clientHandler.sendObject(message);
+                clientHandler.sendObject(message);*/
         } catch(Exception e) {
             e.printStackTrace();
         }
-
-       /* showMessage(message.getBoard());
-        String resultMsg = "";
-        boolean gameOver = message.getBoard().isGameOver(message.getPlayer().getMarker());
-        boolean draw = message.getBoard().isFull();
-        if (gameOver) {
-            if (message.getPlayer() == getPlayer()) {
-                resultMsg = gameMessage.winMessage + "\n";
-            } else {
-                resultMsg = gameMessage.loseMessage + "\n";
-            }
-        }
-        else {
-            if (draw) {
-                resultMsg = gameMessage.drawMessage + "\n";
-            }
-        }
-        if(message.getPlayer() == getPlayer()){
-            resultMsg += gameMessage.waitMessage;
-        }
-        else{
-            resultMsg += gameMessage.moveMessage;
-        }
-
-        showMessage(resultMsg);*/
     }
 
 }

@@ -23,12 +23,12 @@ public class Model extends Observable<Object> {
      *
      */
     public Player getCurrentPlayer() {
-        return match.getCurrentPlayer();
+        return this.match.getCurrentPlayer();
     }
 
 
     public Board getBoard() {
-        return match.getMatchBoard();
+        return this.match.getMatchBoard();
     }
 
     public List<Player> getPlayers() {

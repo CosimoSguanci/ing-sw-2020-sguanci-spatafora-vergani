@@ -63,7 +63,7 @@ public class Worker {
             this.board.getCell(row, col).setWorker(this);
         }
         else {
-            throw new CellNotEmptyException(); // todo assertThrows
+            throw new CellNotEmptyException(); // todo test: assertThrows
         }
     }
 
@@ -80,16 +80,8 @@ public class Worker {
      */
     public boolean standardCheckMove(Cell moveCell) {
         if (!this.hasMoved && !this.hasBuilt && this.position.isAdjacentTo(moveCell) && (moveCell.isEmpty()) && (moveCell.getLevel() != BlockType.DOME)) {
-
-                if (this.position.isLevelDifferenceOk(moveCell)) { // Moving into a DOME is not allowed.
-                    return true;
-                }
-                //else {throw new Exception(); } //else { throw new InvalidMoveException(); }
-
-            //else { throw new Exception(); } //else { throw new WorkerCannotMoveUpException(); }
+            return this.position.isLevelDifferenceOk(moveCell);
         }
-        //else {throw new Exception(); }
-
         return false;
     }
 
@@ -111,8 +103,7 @@ public class Worker {
         }
         else {
             return false;
-            //throw new Exception();
-        } //{ throw new InvalidCellException(); } // TOO MUCH EXCEPTIONS
+        }
     }
 
     /**
@@ -178,34 +169,3 @@ public class Worker {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-/*{
-        "board" : [
-        [{
-            "worker" : "w1",
-            "player" : "cbhvhfhvfehvhfvbhehvfeg"
-        }, {
-            "level" : 1
-        }, {
-
-        }, {
-
-        }, {
-
-        }]
-        [{}, {}, {}, {}, {}]
-        [{}, {}, {}, {}, {}]
-        [{}, {}, {}, {}, {}]
-        [{}, {}, {}, {}, {}]
-        ]
-}*/

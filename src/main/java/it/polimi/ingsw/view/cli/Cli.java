@@ -162,7 +162,7 @@ public class Cli extends Observable<Object> implements Observer<Object> {
 
 
     @Override
-    public void update(Object message) {
+    public void update(Object message) { // TODO Strategy insteadmof instanceof?
 
         if(message instanceof MatchStartedUpdate) {
             MatchStartedUpdate matchStartedUpdate = (MatchStartedUpdate) message;

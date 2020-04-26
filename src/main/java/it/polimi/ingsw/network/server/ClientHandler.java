@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.server;
 
+import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.network.MessageListener;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
@@ -30,8 +31,8 @@ public class ClientHandler extends Observable<Object> implements Runnable, Obser
     }
 
     @Override
-    public void update(Object message) {
-        notify(message);
+    public void update(Object command) {
+        notify(command);
     }
 
     @Override

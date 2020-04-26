@@ -81,7 +81,7 @@ public class Match {  //tested with 100% coverage
             if (player.nickname.equals(nick)) {  //nickname already present
                 return true;
             }
-        }  //end cycle
+        }
         return false;  //case nickname not found in players list
     }
 
@@ -116,17 +116,17 @@ public class Match {  //tested with 100% coverage
             players.trimToSize();
             //when current player is removed, turn goes directly to the next player, without calling nextTurn()
             if(position == players.size()) {
-                turn=0;
+                turn = 0;
             }
         }
     }
 
     public List<Player> getPlayers() {
-        return players;
+        return this.players;
     }
 
     public int getPlayersNumber() {
-        return playersNumber;
+        return this.playersNumber;
     }
 
 
@@ -154,7 +154,7 @@ public class Match {  //tested with 100% coverage
      *
      */
     public Player getCurrentPlayer() {
-        return players.get(turn);
+        return this.players.get(turn);
     }
 
 
@@ -165,6 +165,6 @@ public class Match {  //tested with 100% coverage
      *
      */
     public Board getMatchBoard() {
-        return matchBoard;
+        return this.matchBoard;
     }
 }
