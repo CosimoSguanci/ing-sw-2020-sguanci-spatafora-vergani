@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
+import it.polimi.ingsw.exceptions.WrongGamePhaseException;
 import it.polimi.ingsw.exceptions.WrongPlayerException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.GodStrategy;
@@ -31,6 +32,7 @@ public class Controller implements Observer<Object> {
     private Player godChooserPlayer;
     private List<String> selectableGods;
     private int initialTurn;
+    private GamePhase currentGamePhase;
 
     /**
      * The constructor creates an instance of Controller class. This class
@@ -51,47 +53,59 @@ public class Controller implements Observer<Object> {
      * @param message player move/build from View
      */
     @Override
-    public void update(Object message) {
+    public void update(Object message) {  //TODO handle exceptions
         try {
 
             if(message instanceof PlayerCommand) {
-                PlayerCommand playerCommand = (PlayerCommand) message;
+                if(currentGamePhase == GamePhase.REAL_GAME) {
+                    PlayerCommand playerCommand = (PlayerCommand) message;
 
-                for(Player player : model.getPlayers()) {
-                    if(player.ID.equals(playerCommand.playerID)) {
-                        playerCommand.setPlayer(player);
-                        break;
+                    for (Player player : model.getPlayers()) {
+                        if (player.ID.equals(playerCommand.playerID)) {
+                            playerCommand.setPlayer(player);
+                            break;
+                        }
                     }
+
+                    Cell correctCell = playerCommand.getCell() != null ? model.getBoard().getCell(playerCommand.getCell().getRowIdentifier(), playerCommand.getCell().getColIdentifier()) : null;
+                    playerCommand.setCell(correctCell);
+
+                    Worker worker = playerCommand.workerID != null ? playerCommand.workerID.equals(PlayerCommand.WORKER_FIRST) ? playerCommand.getPlayer().getWorkerFirst() : playerCommand.getPlayer().getWorkerSecond() : null;
+                    playerCommand.setWorker(worker);
+
+                    handlePlayerCommand(playerCommand);
+                } else{
+                    throw new WrongGamePhaseException();
                 }
-
-                Cell correctCell = playerCommand.getCell() != null ? model.getBoard().getCell(playerCommand.getCell().getRowIdentifier(), playerCommand.getCell().getColIdentifier()) : null;
-                playerCommand.setCell(correctCell);
-
-                Worker worker = playerCommand.workerID != null ? playerCommand.workerID.equals(PlayerCommand.WORKER_FIRST) ? playerCommand.getPlayer().getWorkerFirst() : playerCommand.getPlayer().getWorkerSecond() : null;
-                playerCommand.setWorker(worker);
-
-                handlePlayerCommand(playerCommand);
             }
             else if(message instanceof GodChoiceCommand) {
-                GodChoiceCommand godChoiceCommand = (GodChoiceCommand) message;
-                handleGodChoiceCommand(godChoiceCommand);
+                if(currentGamePhase == GamePhase.CHOOSE_GODS) {
+                    GodChoiceCommand godChoiceCommand = (GodChoiceCommand) message;
+                    handleGodChoiceCommand(godChoiceCommand);
+                } else{
+                    throw new WrongGamePhaseException();
+                }
             }
             else if(message instanceof GamePreparationCommand) {
-                GamePreparationCommand gamePreparationCommand = (GamePreparationCommand) message;
+                if(currentGamePhase == GamePhase.GAME_PREPARATION) {
+                    GamePreparationCommand gamePreparationCommand = (GamePreparationCommand) message;
 
-                for(Player player : model.getPlayers()) {
-                    if(player.ID.equals(gamePreparationCommand.getPlayerID())) {
-                        gamePreparationCommand.setPlayer(player);
-                        break;
+                    for (Player player : model.getPlayers()) {
+                        if (player.ID.equals(gamePreparationCommand.getPlayerID())) {
+                            gamePreparationCommand.setPlayer(player);
+                            break;
+                        }
                     }
+
+                    Cell workerFirstCell = model.getBoard().getCell(gamePreparationCommand.workerFirstRow, gamePreparationCommand.workerFirstCol);
+                    Cell workerSecondCell = model.getBoard().getCell(gamePreparationCommand.workerSecondRow, gamePreparationCommand.workerSecondCol);
+                    gamePreparationCommand.setWorkerFirstCell(workerFirstCell);
+                    gamePreparationCommand.setWorkerSecondCell(workerSecondCell);
+
+                    handleGamePreparationCommand(gamePreparationCommand);
+                } else{
+                    throw new WrongGamePhaseException();
                 }
-
-                Cell workerFirstCell = model.getBoard().getCell(gamePreparationCommand.workerFirstRow, gamePreparationCommand.workerFirstCol);
-                Cell workerSecondCell = model.getBoard().getCell(gamePreparationCommand.workerSecondRow, gamePreparationCommand.workerSecondCol);
-                gamePreparationCommand.setWorkerFirstCell(workerFirstCell);
-                gamePreparationCommand.setWorkerSecondCell(workerSecondCell);
-
-                handleGamePreparationCommand(gamePreparationCommand);
 
             }
 
@@ -102,9 +116,12 @@ public class Controller implements Observer<Object> {
         }
     }
 
-    private void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {
+    private void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {  // TODO Handle Exceptions
        List<String> chosenGods = godChoiceCommand.getChosenGods();
        boolean isGodChooser = godChoiceCommand.isGodChooser();
+       if(!godChoiceCommand.getPlayerID().equals(model.getCurrentPlayer().ID)) {  //received command from a player not owning the turn
+           throw new WrongPlayerException();
+       }
 
        if(isGodChooser) {
            model.setInitialTurn(initialTurn);
@@ -281,17 +298,20 @@ public class Controller implements Observer<Object> {
     public void startMatch() {
         List<Player> playerList = model.getPlayers();
         initialTurn = new Random().nextInt((playerList.size()));
+        currentGamePhase = GamePhase.CHOOSE_GODS;
         godChooserPlayer = playerList.get(initialTurn);
         godChooserPlayer.setAsGodChooser();
         model.chooseGodsUpdate(godChooserPlayer, null);
     }
 
     private void gamePreparation() {
+        currentGamePhase = GamePhase.GAME_PREPARATION;
         model.boardUpdate();
         model.gamePreparationUpdate(model.getCurrentPlayer());
     }
 
     private void startActualMatch() {
+        currentGamePhase = GamePhase.REAL_GAME;
         model.matchStartedUpdate();
     }
 }

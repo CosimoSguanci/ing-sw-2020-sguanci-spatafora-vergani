@@ -44,7 +44,9 @@ public class Controller implements Observer<Object> {
             }
         } else if (message instanceof GodChoiceCommand) {
             try {
-                client.sendGodChoiceCommand((GodChoiceCommand) message);
+                GodChoiceCommand godChoiceCommand = (GodChoiceCommand) message;
+                godChoiceCommand.setPlayerID(clientPlayerID);
+                client.sendGodChoiceCommand(godChoiceCommand);
             } catch (Exception e) {
                 e.printStackTrace();
             }
