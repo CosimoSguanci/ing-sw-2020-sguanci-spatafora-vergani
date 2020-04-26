@@ -70,14 +70,14 @@ public class Cli extends Observable<Object> implements Observer<Object> {
             if (command.toLowerCase().equals("help")) {
                 System.out.println(
                         "help -> print command format\n" +
-                                "        build w1/w2 [lettera, numero] [optional: blockType {one, two, three, dome} \n" +
-                                "        move  w1/w2 [lettera, numero]\n" +
-                                "        end turn"
+                                "build w1/w2 [letter, number] [optional: blockType {one, two, three, dome} \n" +
+                                "move  w1/w2 [letter, number]\n" +
+                                "end turn"
                 );
             }
 
             else if(command.toLowerCase().contains("info")) {
-                // provo a parsare info
+                // trying parsing info
                 String[] s = command.split("\\s+");
 
                 if(!s[0].toLowerCase().equals("info") || s.length > 2)

@@ -36,8 +36,7 @@ public class RemoteView extends View {
     }
 
     @Override
-    public void update(Object message)
-    {
+    public void update(Object message) {
         try {
 
             if(message instanceof ErrorUpdate) {
