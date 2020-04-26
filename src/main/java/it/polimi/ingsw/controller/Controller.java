@@ -212,9 +212,14 @@ public class Controller implements Observer<Object> {
                     }
                     break;
                 case END_TURN:
-                    model.endTurn();
-                    break;
 
+                    if(currentPlayer.getGodStrategy().checkEndTurn()) {
+                        model.endTurn();
+                    } else {
+                        model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
+                    }
+
+                    break;
             }
         }
     }
