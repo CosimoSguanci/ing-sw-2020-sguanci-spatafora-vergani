@@ -85,6 +85,8 @@ public class Model extends Observable<Object> {
     }
 
     public void matchStartedUpdate() {
+        TurnUpdate turnUpdate = new TurnUpdate(match.getCurrentPlayer().ID);
+        notify(turnUpdate);
         MatchStartedUpdate matchStartedUpdate = new MatchStartedUpdate(match.getMatchBoard().toString());
         notify(matchStartedUpdate);
     }

@@ -24,8 +24,11 @@ public class PlayerCommand implements Serializable {
      */
     final static String WORKER_FIRST = "w1";
     final static String WORKER_SECOND = "w2";
-    final String playerID;
+
+    private String playerID;
     final String workerID;
+    final int row;
+    final int col;
 
     final CommandType commandType;
     final BlockType cellBlockType;
@@ -42,11 +45,12 @@ public class PlayerCommand implements Serializable {
      * PlayerCommand is the builder of the class. Taken as parameters
      * the builder sets the class' attributes to the relatives values received.
      */
-    public PlayerCommand(String playerID, CommandType commandType, String workerID, Cell cell, BlockType cellBlockType) {
+    public PlayerCommand(String playerID, CommandType commandType, String workerID, int row, int col, BlockType cellBlockType) {
         this.playerID = playerID;
         this.commandType = commandType;
         this.workerID = workerID;
-        this.cell = cell;
+        this.row = row;
+        this.col = col;
         this.cellBlockType = cellBlockType;
     }
 
@@ -72,6 +76,14 @@ public class PlayerCommand implements Serializable {
 
     public void setWorker(Worker worker) {
         this.worker = worker;
+    }
+
+    public void setPlayerID(String playerID) {
+        this.playerID = playerID;
+    }
+
+    public String getPlayerID() {
+        return playerID;
     }
 
 
@@ -123,7 +135,7 @@ public class PlayerCommand implements Serializable {
 
             if (type.toLowerCase().equals("end")) {
                 if(s.length == 1)
-                    return new PlayerCommand(playerID, CommandType.END_TURN, null, null, null);
+                    return new PlayerCommand(playerID, CommandType.END_TURN, null, -1, -1, null);
                 else
                     throw new BadPlayerCommandException();
             }
@@ -169,8 +181,11 @@ public class PlayerCommand implements Serializable {
             }
 
 
-            cell = new Cell((int) rowChar - 'a', colNum - 1);
-            return new PlayerCommand(playerID, commandType, worker, cell, blockType);
+            //cell = new Cell((int) rowChar - 'a', colNum - 1);
+            int row = (int) rowChar - 'a';
+            int col = colNum - 1;
+
+            return new PlayerCommand(playerID, commandType, worker, row, col, blockType);
         }
         catch(Exception e) {
             throw new BadPlayerCommandException();

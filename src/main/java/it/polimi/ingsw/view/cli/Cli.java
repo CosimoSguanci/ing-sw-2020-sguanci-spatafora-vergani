@@ -225,7 +225,7 @@ public class Cli extends Observable<Object> implements Observer<Object> {
         Gson gson = builder.create();
         Board gameBoard = gson.fromJson(board, Board.class);
 
-        //
+        System.out.println(board);
     }
 
     private void printGodInfo(String god) {

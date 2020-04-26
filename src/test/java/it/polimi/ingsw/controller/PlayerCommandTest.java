@@ -51,7 +51,7 @@ class PlayerCommandTest {
     @Test
     void parseInputMoveTest()  {
         PlayerCommand playerCommand = PlayerCommand.parseInput("Player1", "move w2 c4");
-        assertEquals("Player1", playerCommand.playerID);
+        assertEquals("Player1", playerCommand.getPlayerID());
         assertEquals(CommandType.MOVE, playerCommand.commandType);
         assertEquals("w2", playerCommand.workerID);
         assertEquals(2, playerCommand.getCell().getRowIdentifier());
@@ -61,7 +61,7 @@ class PlayerCommandTest {
     @Test
     void parseInputBuildTest()  {
         PlayerCommand playerCommand = PlayerCommand.parseInput("Player1", "buiLD   w1  B2 domE");
-        assertEquals("Player1", playerCommand.playerID);
+        assertEquals("Player1", playerCommand.getPlayerID());
         assertEquals(CommandType.BUILD, playerCommand.commandType);
         assertEquals("w1", playerCommand.workerID);
         assertEquals(1, playerCommand.getCell().getRowIdentifier());
@@ -69,7 +69,7 @@ class PlayerCommandTest {
         assertEquals(BlockType.DOME, playerCommand.cellBlockType);
 
         playerCommand = PlayerCommand.parseInput("Player2", "build w1 B4 ");
-        assertEquals("Player2", playerCommand.playerID);
+        assertEquals("Player2", playerCommand.getPlayerID());
         assertEquals(CommandType.BUILD, playerCommand.commandType);
         assertEquals("w1", playerCommand.workerID);
         assertEquals(1, playerCommand.getCell().getRowIdentifier());
@@ -77,7 +77,7 @@ class PlayerCommandTest {
         assertNull(playerCommand.cellBlockType);
 
         playerCommand = PlayerCommand.parseInput("Player1", "buiLD   w1  B2 onE");
-        assertEquals("Player1", playerCommand.playerID);
+        assertEquals("Player1", playerCommand.getPlayerID());
         assertEquals(CommandType.BUILD, playerCommand.commandType);
         assertEquals("w1", playerCommand.workerID);
         assertEquals(1, playerCommand.getCell().getRowIdentifier());
@@ -85,7 +85,7 @@ class PlayerCommandTest {
         assertEquals(BlockType.LEVEL_ONE, playerCommand.cellBlockType);
 
         playerCommand = PlayerCommand.parseInput("Player1", "buiLD   w1  B2  three");
-        assertEquals("Player1", playerCommand.playerID);
+        assertEquals("Player1", playerCommand.getPlayerID());
         assertEquals(CommandType.BUILD, playerCommand.commandType);
         assertEquals("w1", playerCommand.workerID);
         assertEquals(1, playerCommand.getCell().getRowIdentifier());
@@ -97,7 +97,7 @@ class PlayerCommandTest {
     @Test
     void parseInputStartWithSpaceBarTest()  {
         PlayerCommand playerCommand = PlayerCommand.parseInput("Player1", " buiLD   w1  B2 domE");
-        assertEquals("Player1", playerCommand.playerID);
+        assertEquals("Player1", playerCommand.getPlayerID());
         assertEquals(CommandType.BUILD, playerCommand.commandType);
         assertEquals("w1", playerCommand.workerID);
         assertEquals(1, playerCommand.getCell().getRowIdentifier());
@@ -105,7 +105,7 @@ class PlayerCommandTest {
         assertEquals(BlockType.DOME, playerCommand.cellBlockType);
 
         playerCommand = PlayerCommand.parseInput("Player5", "    buiLD   w2  A5  ONE");
-        assertEquals("Player5", playerCommand.playerID);
+        assertEquals("Player5", playerCommand.getPlayerID());
         assertEquals(CommandType.BUILD, playerCommand.commandType);
         assertEquals("w2", playerCommand.workerID);
         assertEquals(0, playerCommand.getCell().getRowIdentifier());
@@ -116,7 +116,7 @@ class PlayerCommandTest {
     @Test
     void parseInputEndWithSpaceBarTest()  {
         PlayerCommand playerCommand = PlayerCommand.parseInput("Player1", "buiLD   w1  B2 TwO ");
-        assertEquals("Player1", playerCommand.playerID);
+        assertEquals("Player1", playerCommand.getPlayerID());
         assertEquals(CommandType.BUILD, playerCommand.commandType);
         assertEquals("w1", playerCommand.workerID);
         assertEquals(1, playerCommand.getCell().getRowIdentifier());
