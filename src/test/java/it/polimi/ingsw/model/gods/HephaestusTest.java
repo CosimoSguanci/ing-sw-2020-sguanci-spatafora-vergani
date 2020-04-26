@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -84,5 +85,16 @@ public class HephaestusTest {
 
         assertFalse(hephaestus.checkBuild(worker, match.getMatchBoard().getCell(1, 0), BlockType.DOME));
 
+    }
+
+    @Test
+    public void getGodInfoTest() {
+        Hephaestus hephaestus = new Hephaestus();
+
+        Map<String, String> info = hephaestus.getGodInfo();
+
+        assertEquals(info.get("name"), Hephaestus.NAME);
+        assertEquals(info.get("description"), Hephaestus.DESCRIPTION);
+        assertEquals(info.get("power_description"), Hephaestus.POWER_DESCRIPTION);
     }
 }

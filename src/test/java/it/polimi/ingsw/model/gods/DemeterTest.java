@@ -3,10 +3,11 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DemeterTest {
 
@@ -57,5 +58,16 @@ public class DemeterTest {
 
         assertFalse(demeter.checkBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_TWO));
 
+    }
+
+    @Test
+    public void getGodInfoTest() {
+        Demeter demeter = new Demeter();
+
+        Map<String, String> info = demeter.getGodInfo();
+
+        assertEquals(info.get("name"), Demeter.NAME);
+        assertEquals(info.get("description"), Demeter.DESCRIPTION);
+        assertEquals(info.get("power_description"), Demeter.POWER_DESCRIPTION);
     }
 }

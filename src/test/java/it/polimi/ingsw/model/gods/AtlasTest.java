@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,5 +26,16 @@ public class AtlasTest {
         atlas.executeBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.DOME);
 
         assertSame(BlockType.DOME, match.getMatchBoard().getCell(0, 1).getLevel());
+    }
+
+    @Test
+    public void getGodInfoTest() {
+        Atlas atlas = new Atlas();
+
+        Map<String, String> info = atlas.getGodInfo();
+
+        assertEquals(info.get("name"), Atlas.NAME);
+        assertEquals(info.get("description"), Atlas.DESCRIPTION);
+        assertEquals(info.get("power_description"), Atlas.POWER_DESCRIPTION);
     }
 }

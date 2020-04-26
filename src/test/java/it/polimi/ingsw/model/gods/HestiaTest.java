@@ -3,10 +3,11 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HestiaTest {
 
@@ -57,5 +58,16 @@ public class HestiaTest {
 
         assertFalse(hestia.checkBuild(worker, match.getMatchBoard().getCell(0, 2), BlockType.LEVEL_TWO)); // 0,1
 
+    }
+
+    @Test
+    public void getGodInfoTest() {
+        Hestia hestia = new Hestia();
+
+        Map<String, String> info = hestia.getGodInfo();
+
+        assertEquals(info.get("name"), Hestia.NAME);
+        assertEquals(info.get("description"), Hestia.DESCRIPTION);
+        assertEquals(info.get("power_description"), Hestia.POWER_DESCRIPTION);
     }
 }
