@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.cli;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.controller.commands.GamePreparationCommand;
 import it.polimi.ingsw.controller.commands.GodChoiceCommand;
@@ -47,17 +48,24 @@ public class Cli extends Observable<Object> implements Observer<Update> {
             client.sendString(nickname);
 
             System.out.println("How many players do you want to play with? ");
-            playersNum = stdin.nextInt();
+            String playersNumString = stdin.nextLine();
+            do {
+                if (playersNumString.equals("2")) {
+                    playersNum = 2;
+                }
+                else if (playersNumString.equals("3")) {
+                    playersNum = 3;
+                }
+                else {
+                    System.out.println("Invalid Player number: 2 or 3 players marches are available.");
+                }
+            } while(playersNum != 2 && playersNum != 3);
             client.sendInt(playersNum);
-
-
-            //gameManager.run();
 
             gameLoop();
 
-
-
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Network error");
         }
 
@@ -71,39 +79,45 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         while(true) { // TODO handle bad command
             command = stdin.nextLine().toLowerCase();
 
-            if (command.toLowerCase().equals("help")) {
-                System.out.println(
-                        "help -> print command format\n" +
-                                "        build w1/w2 [lettera, numero] [optional: blockType {one, two, three, dome} \n" +
-                                "        move  w1/w2 [lettera, numero]\n" +
-                                "        end turn"
-                );
+            String[] splitCommand = command.split("\\s+");
+
+            if ((splitCommand.length == 0) || (splitCommand[0].equals("") && splitCommand.length == 1)) {
+                continue;
             }
 
-            else if(command.toLowerCase().contains("info")) {
-                // provo a parsare info
-                String[] s = command.split("\\s+");
-
-                if(!s[0].toLowerCase().equals("info") || s.length > 2)
-                    throw new BadCommandException();
-
-                String god = s[1];
-
-                printGodInfo(god);
-
+            if (splitCommand[0].length() == 0) {  // command starting with space
+                splitCommand = Arrays.copyOfRange(splitCommand, 1, splitCommand.length);
             }
-            else
-                if(enableGodChoose && isInitialGodChooser) {
-                    String[] s = command.split("\\s+");
 
-                    if(!s[0].equals("select") || s.length > playersNum + 1) {
+            try {
+                if (splitCommand[0].equals("help") && (splitCommand.length == 1)) {
+                    System.out.println(
+                            "help -> print command format\n" +
+                                    "build w1/w2 [letter, number] [optional: blockType {one, two, three, dome} \n" +
+                                    "move  w1/w2 [letter, number]\n" +
+                                    "end turn"
+                    );
+                }
+
+                else if(splitCommand[0].equals("info")) {
+                    if(splitCommand.length > 2) {
+                        throw new BadCommandException();
+                    }
+                    String god = splitCommand[1];
+
+                    printGodInfo(god);
+                }
+
+                else if(enableGodChoose && isInitialGodChooser) {
+
+                    if(!splitCommand[0].equals("select") || splitCommand.length > playersNum + 1) {
                         throw new BadCommandException();
                     }
 
                     ArrayList<String> chosenGods = new ArrayList<>();
 
                     for(int i = 0; i < playersNum; i++) {
-                        String god = s[i+1].toLowerCase();
+                        String god = splitCommand[i+1];
 
                         if(!isValidGod(god, chosenGods)) {
                             throw new BadCommandException();
@@ -116,16 +130,15 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
                     GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
                     notify(godChoiceCommand);
-
                 }
-                else if(enableGodChoose) { // not initial god chooser
-                    String[] s = command.split("\\s+");
 
-                    if(!s[0].equals("select") || s.length > 2) {
+                else if(enableGodChoose) { // not initial god chooser
+
+                    if(!splitCommand[0].equals("select") || splitCommand.length > 2) {
                         throw new BadCommandException();
                     }
 
-                    String god = s[1];
+                    String god = splitCommand[1];
 
                     if(!selectableGods.contains(god)) {
                         throw new BadCommandException();
@@ -136,29 +149,29 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     GodChoiceCommand godChoiceCommand = new GodChoiceCommand(selected, false);
                     notify(godChoiceCommand);
                 }
-                else if(enableGamePreparation) {
-                     // TODO toLowerCase EVERYWHERE
 
+                else if(enableGamePreparation) {
                     GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput(command);
                     notify(gamePreparationCommand);
                 }
 
+                else if(enableGameCommands){
+                    try {
+                        PlayerCommand playerCommand = PlayerCommand.parseInput(command);
+
+                        notify(playerCommand);
 
 
-            else if(enableGameCommands){
-                try {
-                    PlayerCommand playerCommand = PlayerCommand.parseInput(command);
+                    } catch(BadCommandException e) {
+                        System.out.println("Bad command");
+                    }
+                }
 
-                    notify(playerCommand);
-
-
-                } catch(BadCommandException e) {
-                    System.out.println("Bad command");
+                else {
+                    System.out.println("Wrong Command");
                 }
             }
-            else if (!command.equals("")){ // TODO FIX
-                System.out.println("Wrong Command");
-            }
+            catch (BadCommandException e) {System.out.println("Bad command generated. Give your command.");}
         }
     }
 

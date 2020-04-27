@@ -63,7 +63,7 @@ public class Worker {
             this.board.getCell(row, col).setWorker(this);
         }
         else {
-            throw new CellNotEmptyException(); // todo test: assertThrows
+            throw new CellNotEmptyException();
         }
     }
 

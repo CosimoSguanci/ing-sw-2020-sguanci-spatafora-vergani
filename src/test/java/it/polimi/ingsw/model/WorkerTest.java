@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.CellNotEmptyException;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -19,12 +20,15 @@ public class WorkerTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player testPlayer = new Player("Roberto", "RobS", match);
-        Worker testWorker = new Worker(testPlayer, board);
+        Worker testFirstWorker = new Worker(testPlayer, board);
+        Worker testSecondWorker = new Worker(testPlayer, board);
 
-        testWorker.setInitialPosition(0,0);
-        assertEquals(board.getCell(0,0), testWorker.getPosition());
+        testFirstWorker.setInitialPosition(0,0);
+        assertEquals(board.getCell(0,0), testFirstWorker.getPosition());
 
         System.out.println("Test successfully completed.");
+
+        assertThrows(CellNotEmptyException.class, () -> testSecondWorker.setInitialPosition(0,0));
     }
 
     @Test
