@@ -67,7 +67,7 @@ public class GamePreparationCommand extends Command {
             }
 
             if (s.length != 5) {
-                throw new BadCommandException(); // TODO BadCommand
+                throw new BadCommandException();
             }
 
             s = Arrays.stream(s).map(String::toLowerCase).toArray(String[]::new); // TODO Test
@@ -77,7 +77,7 @@ public class GamePreparationCommand extends Command {
             CommandType commandType = CommandType.parseCommandType(type);
 
             if (commandType != CommandType.PLACE) {
-                throw new BadCommandException(); // TODO BadCommand
+                throw new BadCommandException();
             }
 
 

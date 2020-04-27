@@ -11,7 +11,7 @@ package it.polimi.ingsw.model;
  *
  * @author Andrea Mario Vergani
  */
-public enum BlockType {  //100% covered with tests
+public enum BlockType {
     GROUND(0), LEVEL_ONE(1), LEVEL_TWO(2), LEVEL_THREE(3), DOME(4);
     private int levelNumber;
 
@@ -29,7 +29,6 @@ public enum BlockType {  //100% covered with tests
      *
      * @return the value of attribute called 'levelNumber', associated one-by-one with BlockType level
      */
-    //tested
     public int getLevelNumber() {
         return this.levelNumber;
     }

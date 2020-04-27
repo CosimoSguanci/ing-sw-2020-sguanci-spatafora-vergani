@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.commands.GamePreparationCommand;
 import it.polimi.ingsw.controller.commands.GodChoiceCommand;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
 import it.polimi.ingsw.exceptions.WrongGamePhaseException;
+import it.polimi.ingsw.exceptions.WrongPlayerException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
@@ -21,12 +22,10 @@ class CommandHandlerImpl implements CommandHandler {
 
             setCommandPlayerInstance(command);
 
-
             if (command.row != -1 && command.col != -1) {
                 Cell correctCell = controllerInstance.getBoard().getCell(command.row, command.col);
                 command.setCell(correctCell);
             }
-
 
             Worker worker = command.workerID != null ? command.workerID.equals(PlayerCommand.WORKER_FIRST) ? command.getPlayer().getWorkerFirst() : command.getPlayer().getWorkerSecond() : null;
             command.setWorker(worker);
@@ -39,7 +38,7 @@ class CommandHandlerImpl implements CommandHandler {
 
     public void handle(GodChoiceCommand command) {
         if (controllerInstance.getCurrentGamePhase() == GamePhase.CHOOSE_GODS) {
-            // todo add player
+            setCommandPlayerInstance(command);
             controllerInstance.handleGodChoiceCommand(command);
         } else {
             throw new WrongGamePhaseException();

@@ -39,7 +39,7 @@ public class CliUpdateHandler implements UpdateHandler {
 
     public void handle(GamePreparationUpdate update) {
         cliInstance.setEnableGodChoose(false);
-        cliInstance.setEnableGamePreparation(false);
+        cliInstance.setEnableGamePreparation(true);
         cliInstance.print("Game Preparation: place your workers ");
     }
 

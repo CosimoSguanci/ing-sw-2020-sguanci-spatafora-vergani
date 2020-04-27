@@ -221,10 +221,10 @@ public abstract class GodStrategy {
                 return new Poseidon();
             case "prometheus" :
                 return new Prometheus();
-            /*case "zeus" :
-                return new Zeus();*/
+            case "zeus" :
+                return new Zeus();
             default:
-                return new Zeus();  //TODO is this an exception? Client-side controls could not be all
+                return new Zeus();  //TODO is this an exception? Client-side controls could not be all -> UnknownGodException
         }
     }
 

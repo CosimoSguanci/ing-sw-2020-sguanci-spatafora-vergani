@@ -10,8 +10,8 @@ import java.net.Socket;
 
 public class Client {
 
-    private final String IP = "127.0.0.1";
-    private final int PORT = 12345;
+    private final static String IP = "127.0.0.1";
+    private final static int PORT = 12345;
 
     private Socket socket;
     DataOutputStream socketOut;
@@ -26,32 +26,35 @@ public class Client {
         this.socketOut = new DataOutputStream(socket.getOutputStream());
     }
 
-    public void sendString(String message) throws Exception {
+    public void sendString(String message) throws IOException {
         socketOut.writeUTF(message);
         socketOut.flush();
     }
 
-    public void sendInt(int message) throws Exception {
+    public void sendInt(int message) throws IOException {
         socketOut.writeInt(message);
         socketOut.flush();
     }
 
-    public void sendPlayerCommand(PlayerCommand command) throws Exception {
+    public void sendPlayerCommand(PlayerCommand command) throws IOException {
         if(objectOutputStream == null)
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         objectOutputStream.writeObject(command);
+        objectOutputStream.flush();
     }
 
-    public void sendGodChoiceCommand(GodChoiceCommand command) throws Exception {
+    public void sendGodChoiceCommand(GodChoiceCommand command) throws IOException {
         if(objectOutputStream == null)
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         objectOutputStream.writeObject(command);
+        objectOutputStream.flush();
     }
 
-    public void sendGamePreparationCommand(GamePreparationCommand command) throws Exception {
+    public void sendGamePreparationCommand(GamePreparationCommand command) throws IOException {
         if(objectOutputStream == null)
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         objectOutputStream.writeObject(command);
+        objectOutputStream.flush();
     }
 
     public Socket getSocket() {

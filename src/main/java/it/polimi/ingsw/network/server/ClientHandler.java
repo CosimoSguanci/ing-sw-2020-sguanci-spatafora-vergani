@@ -1,8 +1,6 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.commands.Command;
-import it.polimi.ingsw.network.ObjectListenerDelegate;
-import it.polimi.ingsw.network.client.UpdateListener;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
@@ -26,7 +24,7 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
     public void sendObject(Object object) throws IOException {
         if(objectOutputStream == null)
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
-        //ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+
         objectOutputStream.writeObject(object);
         objectOutputStream.flush();
     }
@@ -42,10 +40,6 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
         String nickname;
         int playersNum;
         try {
-
-            /*MessageListener messageListener = new MessageListener(clientSocket);
-            new Thread(messageListener).start();
-            messageListener.addObserver(this);*/
 
             input = new DataInputStream(clientSocket.getInputStream());
             nickname = input.readUTF();

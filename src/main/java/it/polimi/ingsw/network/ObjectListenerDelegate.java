@@ -13,12 +13,12 @@ public class ObjectListenerDelegate {
     public void listen(ObjectListener objectListener) {
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-            while (true) { // isActive
+            while (objectListener.isActive()) { // todo use Client.isActive() and Server.isActive() ?
                 Object inputObject = objectInputStream.readObject();
-                objectListener.forwardNotify(inputObject); // input Object could be an Update or a Command
+                objectListener.forwardNotify(inputObject);
             }
         } catch (Exception e){
-            //setActive(false);
+            objectListener.setIsActive(false);
             e.printStackTrace();
         }
     }

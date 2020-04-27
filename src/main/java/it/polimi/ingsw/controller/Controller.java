@@ -31,11 +31,10 @@ import java.util.Random;
  * @author Cosimo Sguanci
  * @author Roberto Spatafora
  */
-public class Controller implements Observer<Command> { // Todo Cannot observe only Command or Update. 2 different messageListeners?
-    private Model model;
+public class Controller implements Observer<Command> {
+    private Model model; // todo handle attribute visibility and immutability
     private Player godChooserPlayer;
     private List<String> selectableGods;
-    private int initialTurn;
     private GamePhase currentGamePhase;
     private CommandHandler commandHandler;
 
@@ -71,27 +70,25 @@ public class Controller implements Observer<Command> { // Todo Cannot observe on
      * @param command player move/build from View
      */
     @Override
-    public void update(Command command) {  //TODO handle exceptions
+    public void update(Command command) {
         try {
-
             command.handleCommand(this.commandHandler);
-
-
-        } catch (InvalidPlayerNumberException e) {  //must be understood what happens when this exception occurs
-            //this exception occurs when a player is giving a command during a turn "owned" by another player
-            e.printStackTrace();
+        } catch(WrongGamePhaseException e) {
+            // todo handle
+        } catch(WrongPlayerException e) {
+            // todo handle
         }
     }
 
-    void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {  // TODO Handle Exceptions
+    void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {
        List<String> chosenGods = godChoiceCommand.getChosenGods();
        boolean isGodChooser = godChoiceCommand.isGodChooser();
-       if(!godChoiceCommand.getPlayerID().equals(model.getCurrentPlayer().ID)) {  //received command from a player not owning the turn
+
+       if(!godChoiceCommand.getPlayer().equals(model.getCurrentPlayer())) {
            throw new WrongPlayerException();
        }
 
        if(isGodChooser) {
-           //godChooserPlayer = model.getCurrentPlayer();
            this.selectableGods = chosenGods;
 
        } else {
@@ -106,12 +103,8 @@ public class Controller implements Observer<Command> { // Todo Cannot observe on
             model.chooseGodsUpdate(model.getCurrentPlayer(), selectableGods);
        }
        else {
-           String god = null;
-           for(String available : selectableGods) {
-               if(available != null) {
-                   god = available;
-               }
-           }
+           // The God Chooser picks the last gods
+           String god = selectableGods.get(0);
            model.getCurrentPlayer().setGodStrategy(GodStrategy.instantiateGod(god));
            HashMap<String, String> selectedGods = new HashMap<>();
 
@@ -129,7 +122,7 @@ public class Controller implements Observer<Command> { // Todo Cannot observe on
     }
 
 
-    void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) { // TODO Handle Exceptions, different catch etc...
+    void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) {
         Player currentPlayer = model.getCurrentPlayer();
         if (!gamePreparationCommand.getPlayer().equals(currentPlayer)) {
             throw new WrongPlayerException();
@@ -142,12 +135,11 @@ public class Controller implements Observer<Command> { // Todo Cannot observe on
 
             model.nextTurn();
 
-            if(currentPlayer.equals(godChooserPlayer)) { // Giro di game preparation fatto
-                startActualMatch();
+            if(currentPlayer.equals(godChooserPlayer)) { // Game Preparation Done
+                startMatch();
             } else {
                 gamePreparation();
             }
-
 
         }
     }
@@ -283,9 +275,9 @@ public class Controller implements Observer<Command> { // Todo Cannot observe on
         return model.getBoard().canBuild(movedWorker);
     }
 
-    public void startMatch() {
+    public void prepareMatch() {
         List<Player> playerList = model.getPlayers();
-        initialTurn = new Random().nextInt((playerList.size()));
+        int initialTurn = new Random().nextInt((playerList.size()));
         currentGamePhase = GamePhase.CHOOSE_GODS;
         godChooserPlayer = playerList.get(initialTurn);
         godChooserPlayer.setAsGodChooser();
@@ -299,7 +291,7 @@ public class Controller implements Observer<Command> { // Todo Cannot observe on
         model.gamePreparationUpdate(model.getCurrentPlayer());
     }
 
-    private void startActualMatch() {
+    private void startMatch() {
         currentGamePhase = GamePhase.REAL_GAME;
         model.matchStartedUpdate();
     }

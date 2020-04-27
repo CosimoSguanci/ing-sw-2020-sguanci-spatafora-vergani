@@ -44,36 +44,6 @@ public class RemoteView extends View {
                 clientHandler.sendObject(update);
             }
 
-            /*if(message instanceof ErrorUpdate) {
-                ErrorUpdate errorUpdate = (ErrorUpdate) message;
-
-                if (getPlayer().ID.equals(errorUpdate.playerID)) {
-                    clientHandler.sendObject(message);
-                }
-            }
-            else if(message instanceof PlayerUpdate) {
-                PlayerUpdate playerUpdate = (PlayerUpdate) message;
-
-                if (getPlayer().ID.equals(playerUpdate.playerID)) {
-                    clientHandler.sendObject(message);
-                }
-            }
-            else if(message instanceof ChooseGodsUpdate) {
-                ChooseGodsUpdate chooseGodsUpdate = (ChooseGodsUpdate) message;
-
-                if (getPlayer().ID.equals(chooseGodsUpdate.playerID)) {
-                    clientHandler.sendObject(message);
-                }
-            }
-            else if(message instanceof GamePreparationUpdate) {
-                GamePreparationUpdate gamePreparationUpdate = (GamePreparationUpdate) message;
-
-                if (getPlayer().ID.equals(gamePreparationUpdate.playerID)) {
-                    clientHandler.sendObject(message);
-                }
-            }
-            else
-                clientHandler.sendObject(message);*/
         } catch(Exception e) {
             e.printStackTrace();
         }

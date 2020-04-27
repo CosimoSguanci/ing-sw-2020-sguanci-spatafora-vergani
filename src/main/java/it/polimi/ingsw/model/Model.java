@@ -35,7 +35,6 @@ public class Model extends Observable<Update> {
         return match.getPlayers();
     }
 
-
     /**
      * The method calls for the end of turn of current player.
      *

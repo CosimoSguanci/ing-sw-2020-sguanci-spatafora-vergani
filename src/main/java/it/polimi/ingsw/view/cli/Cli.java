@@ -160,14 +160,15 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     GodChoiceCommand godChoiceCommand = new GodChoiceCommand(selected, false);
                     notify(godChoiceCommand);
                 } else if (enableGamePreparation) {
+
                     GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput(command);
                     notify(gamePreparationCommand);
+
                 } else if (enableGameCommands) {
 
-
                     PlayerCommand playerCommand = PlayerCommand.parseInput(command);
-
                     notify(playerCommand);
+
                 } else {
                     print("Unknown Command");
                 }

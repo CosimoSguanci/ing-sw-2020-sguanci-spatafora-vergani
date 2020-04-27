@@ -10,12 +10,23 @@ import java.net.Socket;
 public class CommandListener extends Observable<Command> implements ObjectListener, Runnable {
     private ObjectListenerDelegate objectListenerDelegate;
 
+    private boolean isActive;
+
+    public boolean isActive() {
+        return this.isActive;
+    }
+
+    public void setIsActive(boolean active) {
+        this.isActive = active;
+    }
+
     public CommandListener(Socket socket) {
         objectListenerDelegate = new ObjectListenerDelegate(socket);
     }
 
     @Override
     public void run() {
+        this.isActive = true;
         objectListenerDelegate.listen(this);
     }
 
@@ -24,7 +35,6 @@ public class CommandListener extends Observable<Command> implements ObjectListen
         try {
             notify((Command) update);
         } catch (Exception e){
-            //setActive(false);
             e.printStackTrace();
         }
     }

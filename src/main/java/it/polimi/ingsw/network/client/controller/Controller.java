@@ -9,6 +9,8 @@ import it.polimi.ingsw.model.updates.PlayerUpdate;
 import it.polimi.ingsw.model.updates.TurnUpdate;
 import it.polimi.ingsw.observer.Observer;
 
+import java.io.IOException;
+
 public class Controller implements Observer<Object> {
 
     private String clientPlayerID;
@@ -19,7 +21,7 @@ public class Controller implements Observer<Object> {
         this.client = client;
     }
 
-    private void handleCommand(PlayerCommand playerCommand) throws WrongPlayerException, Exception { // TODO remove Exception
+    private void handleCommand(PlayerCommand playerCommand) throws WrongPlayerException, IOException { // TODO remove Exception
         String currentPlayer = turnUpdate.playerID;
         if (clientPlayerID.equals(currentPlayer)) {
             playerCommand.setPlayerID(clientPlayerID);
@@ -30,7 +32,7 @@ public class Controller implements Observer<Object> {
     }
 
     @Override
-    public void update(Object message) {
+    public void update(Object message) { // todo Visitor?
         if (message instanceof PlayerUpdate) {
             this.clientPlayerID = ((PlayerUpdate) message).playerID;
         } else if (message instanceof TurnUpdate) {
@@ -39,8 +41,8 @@ public class Controller implements Observer<Object> {
             try {
                 handleCommand((PlayerCommand) message);
             } catch (WrongPlayerException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
+                e.printStackTrace(); // todo notify user
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         } else if (message instanceof GodChoiceCommand) {
