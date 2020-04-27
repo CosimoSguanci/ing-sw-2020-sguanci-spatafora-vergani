@@ -41,15 +41,16 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         stdin = new Scanner(System.in);
 
         try {
-           // client.initConnection();
 
             System.out.println("Type a nickname: ");
             nickname = stdin.nextLine();
             client.sendString(nickname);
 
-            System.out.println("How many players do you want to play with? ");
-            String playersNumString = stdin.nextLine();
             do {
+
+                System.out.println("How many players do you want in you match? ");
+                String playersNumString = stdin.nextLine();
+
                 if (playersNumString.equals("2")) {
                     playersNum = 2;
                 }
@@ -57,16 +58,17 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     playersNum = 3;
                 }
                 else {
-                    System.out.println("Invalid Player number: 2 or 3 players marches are available.");
+                    System.out.println("Invalid Player number: 2 or 3 players matches are available.");
                 }
+
             } while(playersNum != 2 && playersNum != 3);
+
             client.sendInt(playersNum);
 
             gameLoop();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Network error");
+            System.out.println("Unknown Error: " + e.getMessage());
         }
 
     }
@@ -76,7 +78,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
         String command;
 
-        while(true) { // TODO handle bad command
+        while(true) {
             command = stdin.nextLine().toLowerCase();
 
             String[] splitCommand = command.split("\\s+");
@@ -171,7 +173,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     System.out.println("Wrong Command");
                 }
             }
-            catch (BadCommandException e) {System.out.println("Bad command generated. Give your command.");}
+            catch (BadCommandException e) {System.out.println("Bad command generated. Repeat command.");}
         }
     }
 
@@ -182,13 +184,14 @@ public class Cli extends Observable<Object> implements Observer<Update> {
     }
 
 
-
     @Override
-    public void update(Update update) { // TODO Strategy instead of instanceof?
+    public void update(Update update) {
 
 
 
         update.handleUpdate(this.cliUpdateHandler);
+
+        //this.cliUpdateHandler.handle(update); -> won't work, need to have PRECISE type
 
         /*if(message instanceof MatchStartedUpdate) {
             MatchStartedUpdate matchStartedUpdate = (MatchStartedUpdate) message;
