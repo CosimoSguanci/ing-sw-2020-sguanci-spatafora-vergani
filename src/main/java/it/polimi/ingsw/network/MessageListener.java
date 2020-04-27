@@ -19,7 +19,7 @@ public class MessageListener extends Observable<Object> implements Runnable {
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             while (true) { // isActive
                 Object inputObject = objectInputStream.readObject();
-                notify(inputObject);
+                notify(inputObject); // input Object could be an Update or a Command
             }
         } catch (Exception e){
             //setActive(false);

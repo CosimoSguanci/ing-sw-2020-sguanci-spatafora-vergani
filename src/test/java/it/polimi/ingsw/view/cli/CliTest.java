@@ -1,11 +1,11 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.exceptions.BadPlayerCommandException;
+import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.messages.ChooseGodsUpdate;
+import it.polimi.ingsw.model.updates.ChooseGodsUpdate;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +39,7 @@ class CliTest {
         boolean isGodChooser = true;
         ChooseGodsUpdate chooseGodsUpdate = new ChooseGodsUpdate(p.ID, isGodChooser,null);
         cli.update(chooseGodsUpdate);
-        assertThrows(BadPlayerCommandException.class, ()-> {
+        assertThrows(BadCommandException.class, ()-> {
             new Scanner("select apollo");
         });
     }

@@ -1,12 +1,10 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.commands;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class GodChoiceCommand implements Serializable {
+public class GodChoiceCommand extends Command {
     private List<String> chosenGods;
     private boolean isGodChooser;
-    private String playerID;
 
     public GodChoiceCommand(List<String> chosenGods, boolean isGodChooser) {
         this.chosenGods = chosenGods;
@@ -19,13 +17,5 @@ public class GodChoiceCommand implements Serializable {
 
     public boolean isGodChooser() {
         return isGodChooser;
-    }
-
-    public void setPlayerID(String playerID) {
-        this.playerID = playerID;
-    }
-
-    public String getPlayerID() {
-        return this.playerID;
     }
 }

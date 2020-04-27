@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.CommandType;
-import it.polimi.ingsw.model.messages.*;
+import it.polimi.ingsw.controller.commands.CommandType;
+import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.observer.Observable;
 
 import java.util.List;
@@ -23,12 +23,12 @@ public class Model extends Observable<Object> {
      *
      */
     public Player getCurrentPlayer() {
-        return match.getCurrentPlayer();
+        return this.match.getCurrentPlayer();
     }
 
 
     public Board getBoard() {
-        return match.getMatchBoard();
+        return this.match.getMatchBoard();
     }
 
     public List<Player> getPlayers() {

@@ -31,7 +31,7 @@ public enum BlockType {  //100% covered with tests
      */
     //tested
     public int getLevelNumber() {
-        return levelNumber;
+        return this.levelNumber;
     }
 
 }

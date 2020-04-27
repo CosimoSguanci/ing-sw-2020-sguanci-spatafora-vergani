@@ -1,4 +1,4 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.commands;
 
 /**
  * CommandType is the enumeration for the type of command a player can do.
@@ -8,12 +8,23 @@ package it.polimi.ingsw.controller;
  * of the turn and then the turn pass to another player.
  *
  * @author Roberto Spatafora
+ * @author Cosimo Sguanci
  */
 public enum CommandType {
 
-    MOVE, BUILD, END_TURN;
+    MOVE, BUILD, END_TURN, PLACE;
 
     public static CommandType parseCommandType(String input) {
-        return Enum.valueOf(CommandType.class, input.toUpperCase());
+        try {
+            return Enum.valueOf(CommandType.class, input.toUpperCase());
+        } catch(IllegalArgumentException e) {
+           if(input.toUpperCase().equals("END")) {
+               return END_TURN;
+           }
+           else {
+               throw new IllegalArgumentException();
+           }
+        }
+
     }
 }

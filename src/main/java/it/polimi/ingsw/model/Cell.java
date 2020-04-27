@@ -49,7 +49,7 @@ public class Cell {
      * @return the worker on the cell, if there is one (otherwise returns 'null')
      */
     public Worker getWorker() {
-        return worker;
+        return this.worker;
     }
 
     /**
@@ -69,7 +69,7 @@ public class Cell {
      */
     //tested
     public BlockType getLevel() {
-        return level;
+        return this.level;
     }
 
 

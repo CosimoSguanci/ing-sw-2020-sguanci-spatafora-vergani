@@ -13,7 +13,7 @@ public class ApolloTest {
     @Test
     public void apolloCheckMoveTest()  {
 
-        Board.clearInstances();
+        Board.clearInstances(); // TODO Use @BeforeEach
         Match.clearInstances();
 
         Apollo apollo = new Apollo();
