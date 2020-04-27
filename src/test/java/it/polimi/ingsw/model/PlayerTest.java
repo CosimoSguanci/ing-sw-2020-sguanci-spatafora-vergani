@@ -8,11 +8,12 @@ import org.junit.jupiter.api.Test;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PlayerTest {
 
     @Test
-    public void testGetSetColor()  {
+    public void testGetSetColor() {
         System.out.println("testing getColor() and setColor()...");
 
         int playersNum = 2;
@@ -22,6 +23,19 @@ public class PlayerTest {
         String colorTest = "green";
         instanceTest.setColor(colorTest);
         assertEquals("green", instanceTest.getColor());
+        System.out.println("Test successfully completed.");
+    }
+
+    @Test
+    public void testGetGodChooser() {
+        System.out.println("testing setAsGodChooser() and isGodChooser()...");
+
+        int playersNum = 2;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Player instanceTest = new Player("Roberto", "RobS", match);
+        instanceTest.setAsGodChooser();
+        assertTrue(instanceTest.isGodChooser());
         System.out.println("Test successfully completed.");
     }
 
