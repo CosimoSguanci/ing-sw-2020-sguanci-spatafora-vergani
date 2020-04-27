@@ -2,11 +2,8 @@ package it.polimi.ingsw.view.cli;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
+import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.controller.commands.GamePreparationCommand;
-import it.polimi.ingsw.controller.commands.GodChoiceCommand;
-import it.polimi.ingsw.controller.commands.PlayerCommand;
 import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.gods.*;
@@ -15,6 +12,7 @@ import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.UpdateHandler;
 
+import java.io.PrintStream;
 import java.util.*;
 
 public class Cli extends Observable<Object> implements Observer<Update> {
@@ -22,6 +20,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
     private String nickname;
     private int playersNum;
     private Scanner stdin;
+    private PrintStream stdout;
     private boolean enableGodChoose = false;
     private boolean isInitialGodChooser = false;
     private boolean enableGamePreparation = false;
@@ -37,48 +36,56 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         this.cliUpdateHandler = new CliUpdateHandler(this);
     }
 
-    public void start() {
+    void print(String string) {
+        if (stdout == null)
+            return;
+        stdout.println(string);
+    }
+
+
+    public void start() { // todo Command Pattern?
+
         stdin = new Scanner(System.in);
+        stdout = System.out;
 
         try {
 
-            System.out.println("Type a nickname: ");
+            print("Type a nickname: ");
             nickname = stdin.nextLine();
             client.sendString(nickname);
 
             do {
 
-                System.out.println("How many players do you want in you match? ");
+                print("How many players do you want in you match? ");
                 String playersNumString = stdin.nextLine();
 
                 if (playersNumString.equals("2")) {
                     playersNum = 2;
-                }
-                else if (playersNumString.equals("3")) {
+                } else if (playersNumString.equals("3")) {
                     playersNum = 3;
-                }
-                else {
-                    System.out.println("Invalid Player number: 2 or 3 players matches are available.");
+                } else {
+                    print("Invalid Players number: 2 or 3 players matches are available.");
                 }
 
-            } while(playersNum != 2 && playersNum != 3);
+            } while (playersNum != 2 && playersNum != 3);
 
             client.sendInt(playersNum);
 
             gameLoop();
 
         } catch (Exception e) {
-            System.out.println("Unknown Error: " + e.getMessage());
+            print("Unknown Error: " + e.getMessage());
+            System.exit(0);
         }
 
     }
 
     private void gameLoop() {
-        System.out.println("Waiting for a match...");
+        print("Waiting for a match...");
 
         String command;
 
-        while(true) {
+        while (true) {
             command = stdin.nextLine().toLowerCase();
 
             String[] splitCommand = command.split("\\s+");
@@ -92,57 +99,59 @@ public class Cli extends Observable<Object> implements Observer<Update> {
             }
 
             try {
-                if (splitCommand[0].equals("help") && (splitCommand.length == 1)) {
-                    System.out.println(
-                            "help -> print command format\n" +
-                                    "build w1/w2 [letter, number] [optional: blockType {one, two, three, dome} \n" +
-                                    "move  w1/w2 [letter, number]\n" +
-                                    "end turn"
-                    );
-                }
-
-                else if(splitCommand[0].equals("info")) {
-                    if(splitCommand.length > 2) {
+                if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 1)) {
+                    print("help -> print command list and tutorial");
+                    print("info <god> -> get info about a god");
+                    print("build w1/w2 [letter, number] [optional: blockType {one, two, three, dome}] -> tries to build with the chosen Worker in the specified position");
+                    print("move  w1/w2 [letter, number] -> tries to move with the chosen Worker to the specified position\"");
+                    print("end -> tries to end the current turn");
+                    print("Info Example : info Apollo");
+                    print("Move Example : move w1 a1");
+                    print("Build Example: build w1 a2 dome");
+                } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.INFO) {
+                    if (splitCommand.length != 2) {
                         throw new BadCommandException();
                     }
                     String god = splitCommand[1];
 
                     printGodInfo(god);
-                }
+                } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.QUIT) {
+                    if (splitCommand.length > 1) {
+                        throw new BadCommandException();
+                    }
+                    print("Quitting...");
+                    System.exit(0);
+                } else if (enableGodChoose && isInitialGodChooser) {
 
-                else if(enableGodChoose && isInitialGodChooser) {
-
-                    if(!splitCommand[0].equals("select") || splitCommand.length > playersNum + 1) {
+                    if (CommandType.parseCommandType(splitCommand[0]) != CommandType.SELECT || splitCommand.length > playersNum + 1) {
                         throw new BadCommandException();
                     }
 
                     ArrayList<String> chosenGods = new ArrayList<>();
 
-                    for(int i = 0; i < playersNum; i++) {
-                        String god = splitCommand[i+1];
+                    for (int i = 0; i < playersNum; i++) {
+                        String god = splitCommand[i + 1];
 
-                        if(!isValidGod(god, chosenGods)) {
+                        if (!isValidGod(god, chosenGods)) {
                             throw new BadCommandException();
                         }
 
                         chosenGods.add(god);
                     }
 
-                    enableGodChoose =  false;
+                    enableGodChoose = false;
 
                     GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
                     notify(godChoiceCommand);
-                }
+                } else if (enableGodChoose) { // not initial god chooser
 
-                else if(enableGodChoose) { // not initial god chooser
-
-                    if(!splitCommand[0].equals("select") || splitCommand.length > 2) {
+                    if (CommandType.parseCommandType(splitCommand[0]) != CommandType.SELECT || splitCommand.length > 2) {
                         throw new BadCommandException();
                     }
 
                     String god = splitCommand[1];
 
-                    if(!selectableGods.contains(god)) {
+                    if (!selectableGods.contains(god)) {
                         throw new BadCommandException();
                     }
 
@@ -150,200 +159,164 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     selected.add(god);
                     GodChoiceCommand godChoiceCommand = new GodChoiceCommand(selected, false);
                     notify(godChoiceCommand);
-                }
-
-                else if(enableGamePreparation) {
+                } else if (enableGamePreparation) {
                     GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput(command);
                     notify(gamePreparationCommand);
+                } else if (enableGameCommands) {
+
+
+                    PlayerCommand playerCommand = PlayerCommand.parseInput(command);
+
+                    notify(playerCommand);
+                } else {
+                    print("Unknown Command");
                 }
-
-                else if(enableGameCommands){
-                    try {
-                        PlayerCommand playerCommand = PlayerCommand.parseInput(command);
-
-                        notify(playerCommand);
-
-
-                    } catch(BadCommandException e) {
-                        System.out.println("Bad command");
-                    }
-                }
-
-                else {
-                    System.out.println("Wrong Command");
-                }
+            } catch (BadCommandException e) {
+                print("Bad command generated, please repeat it.");
             }
-            catch (BadCommandException e) {System.out.println("Bad command generated. Repeat command.");}
         }
     }
-
 
 
     void forwardNotify(Update update) { // forwards update to client-side Controller
         notify(update);
     }
 
+    void setEnableGamePreparation(boolean value) {
+        this.enableGamePreparation = value;
+    }
+
+    void setEnableGameCommands(boolean value) {
+        this.enableGameCommands = value;
+    }
+
+    void setEnableGodChoose(boolean value) {
+        this.enableGodChoose = value;
+    }
+
+    void setInitialGodChooser(boolean value) {
+        this.isInitialGodChooser = value;
+    }
+
+    void setSelectableGods(List<String> selectableGods) {
+        this.selectableGods = selectableGods;
+    }
+
+    List<String> getSelectableGods() {
+        return this.selectableGods;
+    }
+
+    int getPlayersNum() {
+        return this.playersNum;
+    }
+
+    void setPlayersGods(Map<String, String> playersGods) {
+        this.playersGods = playersGods;
+    }
+
 
     @Override
     public void update(Update update) {
-
-
-
         update.handleUpdate(this.cliUpdateHandler);
-
-        //this.cliUpdateHandler.handle(update); -> won't work, need to have PRECISE type
-
-        /*if(message instanceof MatchStartedUpdate) {
-            MatchStartedUpdate matchStartedUpdate = (MatchStartedUpdate) message;
-            System.out.println("Match Started");
-            printBoard(matchStartedUpdate.board);
-            enableGamePreparation = false;
-            enableGameCommands = true;
-        }
-        else if (message instanceof ChooseGodsUpdate) {
-            ChooseGodsUpdate chooseGodsUpdate = (ChooseGodsUpdate) message;
-            enableGodChoose = true;
-
-            if(chooseGodsUpdate.isGodChooser) {
-                isInitialGodChooser = true;
-                System.out.println("Choose " + playersNum + " gods...");
-            }
-            else {
-                isInitialGodChooser = false;
-                selectableGods = chooseGodsUpdate.selectableGods;
-                System.out.println("Choose your god. Available choices are: ");
-
-                selectableGods.forEach(System.out::println);
-            }
-
-        }
-        else if (message instanceof SelectedGodsUpdate) {
-            SelectedGodsUpdate selectedGodsUpdate = (SelectedGodsUpdate) message;
-            this.playersGods = selectedGodsUpdate.selectedGods;
-            printPlayerGods();
-        }
-        else if (message instanceof GamePreparationUpdate) {
-            //GamePreparationUpdate gamePreparationUpdate = (GamePreparationUpdate) message;
-            enableGodChoose = false;
-            enableGamePreparation = true;
-            System.out.println("Game Preparation: place your workers ");
-
-        }
-        else if (message instanceof BoardUpdate) {
-            BoardUpdate boardUpdate = (BoardUpdate) message;
-            printBoard(boardUpdate.board);
-        } else if (message instanceof ErrorUpdate) {
-            ErrorUpdate errorUpdate = (ErrorUpdate) message;
-            switch (errorUpdate.command) {
-                case MOVE:
-                    System.out.println("Move Error");
-                    break;
-
-                case BUILD:
-                    System.out.println("Build Error");
-                    break;
-            }
-        } else
-            notify(message);*/
     }
 
-
-    private void printBoard(String board) {
+    void printBoard(String board) {
         GsonBuilder builder = new GsonBuilder();
 
         Gson gson = builder.create();
-        Board gameBoard = gson.fromJson(board, Board.class);
+        Board gameBoard = gson.fromJson(board, Board.class); // TODO Board Drawing in CLI
 
-        System.out.println(board);
+        print(board);
     }
 
     private void printGodInfo(String god) {
-        switch(god) {
+        switch (god) {
             case "apollo":
-                System.out.println("Name: " + Apollo.NAME);
-                System.out.println("Description: " + Apollo.DESCRIPTION);
-                System.out.println("Power: " + Apollo.POWER_DESCRIPTION);
+                print("Name: " + Apollo.NAME);
+                print("Description: " + Apollo.DESCRIPTION);
+                print("Power: " + Apollo.POWER_DESCRIPTION);
                 break;
 
             case "artemis":
-                System.out.println("Name: " + Artemis.NAME);
-                System.out.println("Description: " + Artemis.DESCRIPTION);
-                System.out.println("Power: " + Artemis.POWER_DESCRIPTION);
+                print("Name: " + Artemis.NAME);
+                print("Description: " + Artemis.DESCRIPTION);
+                print("Power: " + Artemis.POWER_DESCRIPTION);
                 break;
 
             case "athena":
-                System.out.println("Name: " + Athena.NAME);
-                System.out.println("Description: " + Athena.DESCRIPTION);
-                System.out.println("Power: " + Athena.POWER_DESCRIPTION);
+                print("Name: " + Athena.NAME);
+                print("Description: " + Athena.DESCRIPTION);
+                print("Power: " + Athena.POWER_DESCRIPTION);
                 break;
 
             case "atlas":
-                System.out.println("Name: " + Atlas.NAME);
-                System.out.println("Description: " + Atlas.DESCRIPTION);
-                System.out.println("Power: " + Atlas.POWER_DESCRIPTION);
+                print("Name: " + Atlas.NAME);
+                print("Description: " + Atlas.DESCRIPTION);
+                print("Power: " + Atlas.POWER_DESCRIPTION);
                 break;
 
             case "demeter":
-                System.out.println("Name: " + Demeter.NAME);
-                System.out.println("Description: " + Demeter.DESCRIPTION);
-                System.out.println("Power: " + Demeter.POWER_DESCRIPTION);
+                print("Name: " + Demeter.NAME);
+                print("Description: " + Demeter.DESCRIPTION);
+                print("Power: " + Demeter.POWER_DESCRIPTION);
                 break;
 
             case "eros":
-                System.out.println("Name: " + Eros.NAME);
-                System.out.println("Description: " + Eros.DESCRIPTION);
-                System.out.println("Power: " + Eros.POWER_DESCRIPTION);
+                print("Name: " + Eros.NAME);
+                print("Description: " + Eros.DESCRIPTION);
+                print("Power: " + Eros.POWER_DESCRIPTION);
                 break;
 
             case "hephaestus":
-                System.out.println("Name: " + Hephaestus.NAME);
-                System.out.println("Description: " + Hephaestus.DESCRIPTION);
-                System.out.println("Power: " + Hephaestus.POWER_DESCRIPTION);
+                print("Name: " + Hephaestus.NAME);
+                print("Description: " + Hephaestus.DESCRIPTION);
+                print("Power: " + Hephaestus.POWER_DESCRIPTION);
                 break;
 
             case "hera":
-                System.out.println("Name: " + Hera.NAME);
-                System.out.println("Description: " + Hera.DESCRIPTION);
-                System.out.println("Power: " + Hera.POWER_DESCRIPTION);
+                print("Name: " + Hera.NAME);
+                print("Description: " + Hera.DESCRIPTION);
+                print("Power: " + Hera.POWER_DESCRIPTION);
                 break;
 
             case "hestia":
-                System.out.println("Name: " + Hestia.NAME);
-                System.out.println("Description: " + Hestia.DESCRIPTION);
-                System.out.println("Power: " + Hestia.POWER_DESCRIPTION);
+                print("Name: " + Hestia.NAME);
+                print("Description: " + Hestia.DESCRIPTION);
+                print("Power: " + Hestia.POWER_DESCRIPTION);
                 break;
 
             case "minotaur":
-                System.out.println("Name: " + Minotaur.NAME);
-                System.out.println("Description: " + Minotaur.DESCRIPTION);
-                System.out.println("Power: " + Minotaur.POWER_DESCRIPTION);
+                print("Name: " + Minotaur.NAME);
+                print("Description: " + Minotaur.DESCRIPTION);
+                print("Power: " + Minotaur.POWER_DESCRIPTION);
                 break;
 
             case "pan":
-                System.out.println("Name: " + Pan.NAME);
-                System.out.println("Description: " + Pan.DESCRIPTION);
-                System.out.println("Power: " + Pan.POWER_DESCRIPTION);
+                print("Name: " + Pan.NAME);
+                print("Description: " + Pan.DESCRIPTION);
+                print("Power: " + Pan.POWER_DESCRIPTION);
                 break;
 
             case "poseidon":
-                System.out.println("Name: " + Poseidon.NAME);
-                System.out.println("Description: " + Poseidon.DESCRIPTION);
-                System.out.println("Power: " + Poseidon.POWER_DESCRIPTION);
+                print("Name: " + Poseidon.NAME);
+                print("Description: " + Poseidon.DESCRIPTION);
+                print("Power: " + Poseidon.POWER_DESCRIPTION);
                 break;
 
             case "prometheus":
-                System.out.println("Name: " + Prometheus.NAME);
-                System.out.println("Description: " + Prometheus.DESCRIPTION);
-                System.out.println("Power: " + Prometheus.POWER_DESCRIPTION);
+                print("Name: " + Prometheus.NAME);
+                print("Description: " + Prometheus.DESCRIPTION);
+                print("Power: " + Prometheus.POWER_DESCRIPTION);
                 break;
 
             case "zeus":
-                System.out.println("Name: " + Zeus.NAME);
-                System.out.println("Description: " + Zeus.DESCRIPTION);
-                System.out.println("Power: " + Zeus.POWER_DESCRIPTION);
+                print("Name: " + Zeus.NAME);
+                print("Description: " + Zeus.DESCRIPTION);
+                print("Power: " + Zeus.POWER_DESCRIPTION);
                 break;
 
-            default: throw new BadCommandException();
+            default:
+                throw new BadCommandException();
         }
     }
 
@@ -372,16 +345,12 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         return validGods.contains(god) && (chosenGods == null || !chosenGods.contains(god));
     }
 
-    private void printPlayerGods() {
+    void printPlayerGods() {
         this.playersGods.keySet().forEach((key) -> {
-            System.out.println(key + " has " + playersGods.get(key));
+            print(key + " has " + playersGods.get(key));
         });
     }
 
 
 }
 
-
-/*
-{"board":[[{"level":"GROUND","rowIdentifier":0,"colIdentifier":0},{"level":"GROUND","rowIdentifier":0,"colIdentifier":1},{"level":"GROUND","rowIdentifier":0,"colIdentifier":2},{"level":"GROUND","rowIdentifier":0,"colIdentifier":3},{"level":"GROUND","rowIdentifier":0,"colIdentifier":4}],[{"level":"GROUND","rowIdentifier":1,"colIdentifier":0},{"level":"GROUND","rowIdentifier":1,"colIdentifier":1},{"level":"GROUND","rowIdentifier":1,"colIdentifier":2},{"level":"GROUND","rowIdentifier":1,"colIdentifier":3},{"level":"GROUND","rowIdentifier":1,"colIdentifier":4}],[{"level":"GROUND","rowIdentifier":2,"colIdentifier":0},{"level":"GROUND","rowIdentifier":2,"colIdentifier":1},{"level":"GROUND","rowIdentifier":2,"colIdentifier":2},{"level":"GROUND","rowIdentifier":2,"colIdentifier":3},{"level":"GROUND","rowIdentifier":2,"colIdentifier":4}],[{"level":"GROUND","rowIdentifier":3,"colIdentifier":0},{"level":"GROUND","rowIdentifier":3,"colIdentifier":1},{"level":"GROUND","rowIdentifier":3,"colIdentifier":2},{"level":"GROUND","rowIdentifier":3,"colIdentifier":3},{"level":"GROUND","rowIdentifier":3,"colIdentifier":4}],[{"level":"GROUND","rowIdentifier":4,"colIdentifier":0},{"level":"GROUND","rowIdentifier":4,"colIdentifier":1},{"level":"GROUND","rowIdentifier":4,"colIdentifier":2},{"level":"GROUND","rowIdentifier":4,"colIdentifier":3},{"level":"GROUND","rowIdentifier":4,"colIdentifier":4}]],"id":"15"}
- */

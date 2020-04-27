@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller.commands;
 
+import it.polimi.ingsw.exceptions.BadCommandException;
+
 /**
  * CommandType is the enumeration for the type of command a player can do.
  * In Santorini there are three type of possible commands: MOVE used to
@@ -12,7 +14,7 @@ package it.polimi.ingsw.controller.commands;
  */
 public enum CommandType {
 
-    MOVE, BUILD, END_TURN, PLACE;
+    MOVE, BUILD, END_TURN, SELECT, PLACE, HELP, INFO, QUIT;
 
     public static CommandType parseCommandType(String input) {
         try {
@@ -22,7 +24,7 @@ public enum CommandType {
                return END_TURN;
            }
            else {
-               throw new IllegalArgumentException();
+               throw new BadCommandException();
            }
         }
 

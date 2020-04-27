@@ -17,7 +17,7 @@ public class Client {
     DataOutputStream socketOut;
     private ObjectOutputStream objectOutputStream;
 
-    public Client() throws IOException{
+    public Client() throws IOException {
         initConnection();
     }
 
