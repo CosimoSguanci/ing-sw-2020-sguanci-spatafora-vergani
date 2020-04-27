@@ -1,8 +1,10 @@
 package it.polimi.ingsw.controller.commands;
 
+import it.polimi.ingsw.controller.CommandHandler;
 import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.view.UpdateHandler;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -40,6 +42,8 @@ public abstract class Command implements Serializable {
     public String getPlayerID() {
         return this.playerID;
     }
+
+    public abstract void handleCommand(CommandHandler handler);
 
     protected static Map<String, Integer> parseCellIdentifiers(String partialCommand) {
 

@@ -1,7 +1,8 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.commands.Command;
-import it.polimi.ingsw.network.MessageListener;
+import it.polimi.ingsw.network.ObjectListenerDelegate;
+import it.polimi.ingsw.network.client.UpdateListener;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
@@ -11,7 +12,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 
-public class ClientHandler extends Observable<Object> implements Runnable, Observer<Object> {
+public class ClientHandler extends Observable<Command> implements Runnable, Observer<Command> {
 
     private Server server;
     private Socket clientSocket;
@@ -31,7 +32,7 @@ public class ClientHandler extends Observable<Object> implements Runnable, Obser
     }
 
     @Override
-    public void update(Object command) {
+    public void update(Command command) {
         notify(command);
     }
 
@@ -50,9 +51,9 @@ public class ClientHandler extends Observable<Object> implements Runnable, Obser
             nickname = input.readUTF();
             playersNum = input.readInt();
 
-            MessageListener messageListener = new MessageListener(clientSocket);
-            new Thread(messageListener).start();
-            messageListener.addObserver(this);
+            CommandListener commandListener = new CommandListener(clientSocket);
+            new Thread(commandListener).start();
+            commandListener.addObserver(this);
 
             server.lobby(this, nickname, playersNum);
 

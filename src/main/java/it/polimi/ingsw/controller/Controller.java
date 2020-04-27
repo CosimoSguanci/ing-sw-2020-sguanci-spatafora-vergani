@@ -31,12 +31,13 @@ import java.util.Random;
  * @author Cosimo Sguanci
  * @author Roberto Spatafora
  */
-public class Controller implements Observer<Object> { // Todo Cannot observe only Command or Update. 2 different messageListeners?
+public class Controller implements Observer<Command> { // Todo Cannot observe only Command or Update. 2 different messageListeners?
     private Model model;
     private Player godChooserPlayer;
     private List<String> selectableGods;
     private int initialTurn;
     private GamePhase currentGamePhase;
+    private CommandHandler commandHandler;
 
     /**
      * The constructor creates an instance of Controller class. This class
@@ -47,6 +48,19 @@ public class Controller implements Observer<Object> { // Todo Cannot observe onl
      */
     public Controller(Model model) {
         this.model = model;
+        this.commandHandler = new CommandHandlerImpl(this);
+    }
+
+    GamePhase getCurrentGamePhase() {
+        return this.currentGamePhase;
+    }
+
+    List<Player> getPlayers() {
+        return this.model.getPlayers();
+    }
+
+    Board getBoard() {
+        return this.model.getBoard();
     }
 
 
@@ -57,66 +71,10 @@ public class Controller implements Observer<Object> { // Todo Cannot observe onl
      * @param command player move/build from View
      */
     @Override
-    public void update(Object command) {  //TODO handle exceptions
+    public void update(Command command) {  //TODO handle exceptions
         try {
 
-            if(command instanceof PlayerCommand) {
-                if(currentGamePhase == GamePhase.REAL_GAME) {
-                    PlayerCommand playerCommand = (PlayerCommand) command;
-
-                    for (Player player : model.getPlayers()) {
-                        if (player.ID.equals(playerCommand.getPlayerID())) {
-                            playerCommand.setPlayer(player);
-                            break;
-                        }
-                    }
-
-                    //Cell correctCell = playerCommand.getCell() != null ? model.getBoard().getCell(playerCommand.getCell().getRowIdentifier(), playerCommand.getCell().getColIdentifier()) : null;
-
-                    if(playerCommand.row != -1 && playerCommand.col != -1) {
-                        Cell correctCell = model.getBoard().getCell(playerCommand.row, playerCommand.col);
-                        playerCommand.setCell(correctCell);
-                    }
-
-
-                    Worker worker = playerCommand.workerID != null ? playerCommand.workerID.equals(PlayerCommand.WORKER_FIRST) ? playerCommand.getPlayer().getWorkerFirst() : playerCommand.getPlayer().getWorkerSecond() : null;
-                    playerCommand.setWorker(worker);
-
-                    handlePlayerCommand(playerCommand);
-                } else{
-                    throw new WrongGamePhaseException();
-                }
-            }
-            else if(command instanceof GodChoiceCommand) {
-                if(currentGamePhase == GamePhase.CHOOSE_GODS) {
-                    GodChoiceCommand godChoiceCommand = (GodChoiceCommand) command;
-                    handleGodChoiceCommand(godChoiceCommand);
-                } else{
-                    throw new WrongGamePhaseException();
-                }
-            }
-            else if(command instanceof GamePreparationCommand) {
-                if(currentGamePhase == GamePhase.GAME_PREPARATION) {
-                    GamePreparationCommand gamePreparationCommand = (GamePreparationCommand) command;
-
-                    for (Player player : model.getPlayers()) {
-                        if (player.ID.equals(gamePreparationCommand.getPlayerID())) {
-                            gamePreparationCommand.setPlayer(player);
-                            break;
-                        }
-                    }
-
-                    Cell workerFirstCell = model.getBoard().getCell(gamePreparationCommand.workerFirstRow, gamePreparationCommand.workerFirstCol);
-                    Cell workerSecondCell = model.getBoard().getCell(gamePreparationCommand.workerSecondRow, gamePreparationCommand.workerSecondCol);
-                    gamePreparationCommand.setWorkerFirstCell(workerFirstCell);
-                    gamePreparationCommand.setWorkerSecondCell(workerSecondCell);
-
-                    handleGamePreparationCommand(gamePreparationCommand);
-                } else{
-                    throw new WrongGamePhaseException();
-                }
-
-            }
+            command.handleCommand(this.commandHandler);
 
 
         } catch (InvalidPlayerNumberException e) {  //must be understood what happens when this exception occurs
@@ -125,7 +83,7 @@ public class Controller implements Observer<Object> { // Todo Cannot observe onl
         }
     }
 
-    private void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {  // TODO Handle Exceptions
+    void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {  // TODO Handle Exceptions
        List<String> chosenGods = godChoiceCommand.getChosenGods();
        boolean isGodChooser = godChoiceCommand.isGodChooser();
        if(!godChoiceCommand.getPlayerID().equals(model.getCurrentPlayer().ID)) {  //received command from a player not owning the turn
@@ -170,7 +128,8 @@ public class Controller implements Observer<Object> { // Todo Cannot observe onl
 
     }
 
-    private void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) { // TODO Handle Exceptions, different catch etc...
+
+    void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) { // TODO Handle Exceptions, different catch etc...
         Player currentPlayer = model.getCurrentPlayer();
         if (!gamePreparationCommand.getPlayer().equals(currentPlayer)) {
             throw new WrongPlayerException();
@@ -203,7 +162,7 @@ public class Controller implements Observer<Object> { // Todo Cannot observe onl
      * @param playerCommand player command from View
      * @throws InvalidPlayerNumberException when command's player is not current player
      */
-    private void handlePlayerCommand(PlayerCommand playerCommand) throws WrongPlayerException {
+    void handlePlayerCommand(PlayerCommand playerCommand) throws WrongPlayerException {
         Player currentPlayer = model.getCurrentPlayer();
         if (!playerCommand.getPlayer().equals(currentPlayer)) {
             throw new WrongPlayerException();

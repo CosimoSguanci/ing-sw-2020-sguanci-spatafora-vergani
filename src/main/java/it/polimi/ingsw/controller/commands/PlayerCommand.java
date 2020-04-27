@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.commands;
 
+import it.polimi.ingsw.controller.CommandHandler;
 import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.*;
 
@@ -63,6 +64,11 @@ public class PlayerCommand extends Command {
 
     public void setWorker(Worker worker) {
         this.worker = worker;
+    }
+
+    @Override
+    public void handleCommand(CommandHandler handler) {
+        handler.handle(this);
     }
 
     /**

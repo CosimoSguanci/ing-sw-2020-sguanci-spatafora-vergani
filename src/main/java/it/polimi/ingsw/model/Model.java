@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 // TODO Javadoc Model
-public class Model extends Observable<Object> {
+public class Model extends Observable<Update> {
     private Match match;
 
     public Model(Match match) {

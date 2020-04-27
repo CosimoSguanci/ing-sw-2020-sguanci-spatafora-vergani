@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller.commands;
 
+import it.polimi.ingsw.controller.CommandHandler;
+
 import java.util.List;
 
 public class GodChoiceCommand extends Command {
@@ -17,5 +19,10 @@ public class GodChoiceCommand extends Command {
 
     public boolean isGodChooser() {
         return isGodChooser;
+    }
+
+    @Override
+    public void handleCommand(CommandHandler handler) {
+        handler.handle(this);
     }
 }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.updates;
 
+import it.polimi.ingsw.view.UpdateHandler;
+
 import java.util.List;
 
 public class ChooseGodsUpdate extends PlayerSpecificUpdate {
@@ -11,5 +13,10 @@ public class ChooseGodsUpdate extends PlayerSpecificUpdate {
         super(playerID);
         this.isGodChooser = isGodChooser;
         this.selectableGods = !isGodChooser ? selectableGods : null;
+    }
+
+    @Override
+    public void handleUpdate(UpdateHandler handler) {
+        handler.handle(this);
     }
 }

@@ -9,10 +9,10 @@ import it.polimi.ingsw.network.server.ClientHandler;
 
 public class RemoteView extends View {
 
-    private class MessageReceiver implements Observer<Object> {
+    private class MessageReceiver implements Observer<Command> {
 
         @Override
-        public void update(Object command) {
+        public void update(Command command) {
            handleCommand(command);
         }
 
@@ -27,9 +27,8 @@ public class RemoteView extends View {
     }
 
 
-
     @Override
-    public void update(Object update)
+    public void update(Update update)
     {
         try {
 

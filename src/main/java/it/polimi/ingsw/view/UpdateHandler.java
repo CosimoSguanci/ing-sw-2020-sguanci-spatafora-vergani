@@ -1,0 +1,14 @@
+package it.polimi.ingsw.view;
+
+import it.polimi.ingsw.model.updates.*;
+
+public interface UpdateHandler { // Implements Visitor Pattern
+    void handle(MatchStartedUpdate update);
+    void handle(ChooseGodsUpdate update);
+    void handle(SelectedGodsUpdate update);
+    void handle(GamePreparationUpdate update);
+    void handle(BoardUpdate update);
+    void handle(ErrorUpdate update);
+    void handle(PlayerUpdate update);
+    void handle(TurnUpdate update);
+}

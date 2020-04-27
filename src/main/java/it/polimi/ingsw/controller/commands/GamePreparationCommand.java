@@ -1,9 +1,11 @@
 package it.polimi.ingsw.controller.commands;
 
+import it.polimi.ingsw.controller.CommandHandler;
 import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.view.UpdateHandler;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -45,6 +47,10 @@ public class GamePreparationCommand extends Command {
         return workerSecondCell;
     }
 
+    @Override
+    public void handleCommand(CommandHandler handler) {
+        handler.handle(this);
+    }
 
     public static GamePreparationCommand parseInput(String command) throws BadCommandException {
         // place w1 c1 w2 a2

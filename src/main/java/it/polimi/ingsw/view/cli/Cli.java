@@ -12,10 +12,11 @@ import it.polimi.ingsw.model.gods.*;
 import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.view.UpdateHandler;
 
 import java.util.*;
 
-public class Cli extends Observable<Object> implements Observer<Object> {
+public class Cli extends Observable<Object> implements Observer<Update> {
     private Client client;
     private String nickname;
     private int playersNum;
@@ -28,8 +29,11 @@ public class Cli extends Observable<Object> implements Observer<Object> {
     private List<String> selectableGods;
     private Map<String, String> playersGods;
 
+    private UpdateHandler cliUpdateHandler; //CliUpdateHandler
+
     public Cli(Client client) {
         this.client = client;
+        this.cliUpdateHandler = new CliUpdateHandler(this);
     }
 
     public void start() {
@@ -160,11 +164,20 @@ public class Cli extends Observable<Object> implements Observer<Object> {
 
 
 
+    void forwardNotify(Update update) { // forwards update to client-side Controller
+        notify(update);
+    }
+
+
 
     @Override
-    public void update(Object message) { // TODO Strategy insteadmof instanceof?
+    public void update(Update update) { // TODO Strategy instead of instanceof?
 
-        if(message instanceof MatchStartedUpdate) {
+
+
+        update.handleUpdate(this.cliUpdateHandler);
+
+        /*if(message instanceof MatchStartedUpdate) {
             MatchStartedUpdate matchStartedUpdate = (MatchStartedUpdate) message;
             System.out.println("Match Started");
             printBoard(matchStartedUpdate.board);
@@ -215,7 +228,7 @@ public class Cli extends Observable<Object> implements Observer<Object> {
                     break;
             }
         } else
-            notify(message);
+            notify(message);*/
     }
 
 
