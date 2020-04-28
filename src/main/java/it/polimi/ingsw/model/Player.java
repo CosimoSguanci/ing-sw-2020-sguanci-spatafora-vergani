@@ -75,9 +75,9 @@ public class Player {
      *
      * @param firstWorker is the first worker chosen from a Player at the beginning of the match
      */
-    public void setWorkerFirst(Worker firstWorker) {
+   /* public void setWorkerFirst(Worker firstWorker) {
         this.workerFirst = firstWorker;
-    }
+    }*/
 
     /**
      * This getter method returns a reference to the second worker the player has chosen.
@@ -93,9 +93,9 @@ public class Player {
      *
      * @param secondWorker is the second worker chosen from a Player at the beginning of the match
      */
-    public void setWorkerSecond(Worker secondWorker) {
+    /*public void setWorkerSecond(Worker secondWorker) {
         this.workerSecond = secondWorker;
-    }
+    }*/
 
     /**
      * This setter method allows players to set the GodStrategy associated to them.

@@ -19,13 +19,32 @@ public class AtlasTest {
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker worker = new Worker(player, match.getMatchBoard());
+        Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
 
         atlas.executeBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.DOME);
 
         assertSame(BlockType.DOME, match.getMatchBoard().getCell(0, 1).getLevel());
+    }
+
+    @Test
+    public void atlasStandardBuild()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
+        Atlas atlas = new Atlas();
+
+        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
+        Worker worker = player.getWorkerFirst();
+
+        worker.setInitialPosition(0, 0);
+
+        atlas.executeBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE);
+
+        assertSame(BlockType.LEVEL_ONE, match.getMatchBoard().getCell(0, 1).getLevel());
     }
 
     @Test

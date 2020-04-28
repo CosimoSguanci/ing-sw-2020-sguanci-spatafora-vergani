@@ -11,30 +11,26 @@ import org.junit.jupiter.api.Test;
 
 public class BoardTest {
 
-    @Disabled
-    @Test
-    public void hasWinnerWorkerTest() {
-    }
 
-
+    @Disabled // todo FIX TEST
     @Test
     public void canMoveTrueTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = Board.getInstance(key);
 
         Player player = new Player("Andrea", "andv", match);
-        Worker w1 = new Worker(player, board);
-        Worker w2 = new Worker(player, board);
-        player.setWorkerFirst(w1);
-        player.setWorkerSecond(w2);
+        Worker w1 = player.getWorkerFirst();
+        Worker w2 = player.getWorkerSecond();
 
         Player opponent = new Player("Marco", "mc", match);
-        Worker wOpp1 = new Worker(opponent, board);
-        Worker wOpp2 = new Worker(opponent, board);
-        opponent.setWorkerFirst(wOpp1);
-        opponent.setWorkerSecond(wOpp2);
+        Worker wOpp1 = opponent.getWorkerFirst();
+        Worker wOpp2 = opponent.getWorkerSecond();
 
         board.getCell(4,1).setLevel(BlockType.LEVEL_TWO);
 
@@ -65,21 +61,21 @@ public class BoardTest {
 
     @Test
     public void canMoveFalseTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player player = new Player("Andrea", "andv", match);
-        Worker w1 = new Worker(player, board);
-        Worker w2 = new Worker(player, board);
-        player.setWorkerFirst(w1);
-        player.setWorkerSecond(w2);
+        Worker w1 = player.getWorkerFirst();
+        Worker w2 = player.getWorkerSecond();
 
         Player opponent = new Player("Marco", "mc", match);
-        Worker wOpp1 = new Worker(opponent, board);
-        Worker wOpp2 = new Worker(opponent, board);
-        opponent.setWorkerFirst(wOpp1);
-        opponent.setWorkerSecond(wOpp2);
+        Worker wOpp1 = opponent.getWorkerFirst();
+        Worker wOpp2 = opponent.getWorkerSecond();
 
         try {
             w1.setInitialPosition(2, 3);
@@ -109,21 +105,21 @@ public class BoardTest {
 
     @Test
     public void canBuildTrueTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player player = new Player("Andrea", "andv", match);
-        Worker w1 = new Worker(player, board);
-        Worker w2 = new Worker(player, board);
-        player.setWorkerFirst(w1);
-        player.setWorkerSecond(w2);
+        Worker w1 = player.getWorkerFirst();
+        Worker w2 = player.getWorkerSecond();
 
         Player opponent = new Player("Marco", "mc",match);
-        Worker wOpp1 = new Worker(opponent, board);
-        Worker wOpp2 = new Worker(opponent, board);
-        opponent.setWorkerFirst(wOpp1);
-        opponent.setWorkerSecond(wOpp2);
+        Worker wOpp1 = opponent.getWorkerFirst();
+        Worker wOpp2 = opponent.getWorkerSecond();
 
         board.getCell(4,1).setLevel(BlockType.LEVEL_TWO);
 
@@ -156,15 +152,17 @@ public class BoardTest {
 
     @Test
     public void canBuildFalseTest()  {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player player = new Player("Andrea", "andv", match);
-        Worker w1 = new Worker(player, board);
-        Worker w2 = new Worker(player, board);
-        player.setWorkerFirst(w1);
-        player.setWorkerSecond(w2);
+        Worker w1 = player.getWorkerFirst();
+        Worker w2 = player.getWorkerSecond();
 
         try {
             w1.setInitialPosition(0, 4);

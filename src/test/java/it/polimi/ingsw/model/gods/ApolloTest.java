@@ -19,16 +19,16 @@ public class ApolloTest {
         Apollo apollo = new Apollo();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
-        Player player1 = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker worker1 = new Worker(player1, match.getMatchBoard());
-        Player player2 = new Player(UUID.randomUUID().toString(), "nickname2", match);
-        Worker worker2 = new Worker(player2, match.getMatchBoard());
+        Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
+        Worker worker = player.getWorkerFirst();
+        Player oppositePlayer = new Player(UUID.randomUUID().toString(), "nickname2", match);
+        Worker oppositeWorker = oppositePlayer.getWorkerFirst();
 
-        worker1.setInitialPosition(0, 0);
-        worker2.setInitialPosition(0, 1);
+        worker.setInitialPosition(0, 0);
+        oppositeWorker.setInitialPosition(0, 1);
 
-        assertTrue(apollo.checkMove(worker1, match.getMatchBoard().getCell(0, 1)));
-        assertFalse(apollo.checkMove(worker1, match.getMatchBoard().getCell(0, 2)));
+        assertTrue(apollo.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
+        assertFalse(apollo.checkMove(worker, match.getMatchBoard().getCell(0, 2)));
     }
 
     @Test
@@ -40,18 +40,18 @@ public class ApolloTest {
         Apollo apollo = new Apollo();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
-        Player player1 = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker worker1 = new Worker(player1, match.getMatchBoard());
-        Player player2 = new Player(UUID.randomUUID().toString(), "nickname2", match);
-        Worker worker2 = new Worker(player2, match.getMatchBoard());
+        Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
+        Worker worker = player.getWorkerFirst();
+        Player oppositePlayer = new Player(UUID.randomUUID().toString(), "nickname2", match);
+        Worker oppositeWorker = oppositePlayer.getWorkerFirst();
 
-        worker1.setInitialPosition(0, 0);
-        worker2.setInitialPosition(0, 1);
+        worker.setInitialPosition(0, 0);
+        oppositeWorker.setInitialPosition(0, 1);
 
-        apollo.executeMove(worker1, match.getMatchBoard().getCell(0, 1));
+        apollo.executeMove(worker, match.getMatchBoard().getCell(0, 1));
 
-        assertEquals(match.getMatchBoard().getCell(0, 1), worker1.getPosition());
-        assertEquals(match.getMatchBoard().getCell(0, 0), worker2.getPosition());
+        assertEquals(match.getMatchBoard().getCell(0, 1), worker.getPosition());
+        assertEquals(match.getMatchBoard().getCell(0, 0), oppositeWorker.getPosition());
 
     }
 

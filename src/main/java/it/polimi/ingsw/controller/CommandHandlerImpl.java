@@ -5,7 +5,6 @@ import it.polimi.ingsw.controller.commands.GamePreparationCommand;
 import it.polimi.ingsw.controller.commands.GodChoiceCommand;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
 import it.polimi.ingsw.exceptions.WrongGamePhaseException;
-import it.polimi.ingsw.exceptions.WrongPlayerException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;

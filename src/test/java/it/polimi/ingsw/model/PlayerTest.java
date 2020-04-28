@@ -48,8 +48,7 @@ public class PlayerTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player instancePlayerTest = new Player("Roberto", "RobS", match);
-        Worker instanceWorkerTest = new Worker(instancePlayerTest, board);
-        instancePlayerTest.setWorkerFirst(instanceWorkerTest);
+        Worker instanceWorkerTest = instancePlayerTest.getWorkerFirst();
         assertEquals(instanceWorkerTest, instancePlayerTest.getWorkerFirst());
 
         System.out.println("Test successfully completed.");
@@ -64,8 +63,7 @@ public class PlayerTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player instancePlayerTest = new Player("Roberto", "RobS", match);
-        Worker instanceWorkerTest = new Worker(instancePlayerTest, board);
-        instancePlayerTest.setWorkerSecond(instanceWorkerTest);
+        Worker instanceWorkerTest = instancePlayerTest.getWorkerSecond();
         assertEquals(instanceWorkerTest, instancePlayerTest.getWorkerSecond());
 
         System.out.println("Test successfully completed.");
@@ -78,11 +76,7 @@ public class PlayerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Apollo apollo = new Apollo();
         Player instancePlayerTest = new Player("Roberto", "RobS", match);
-        /*God instanceGodTest = new God("Apollo", "God of Music", "Your Move: Your Worker may move into an opponent Worker's space by forcing their Worker to the space yours just vacated.", apollo);
-        instancePlayerTest.setGod(instanceGodTest);
-        assertEquals(instanceGodTest, instancePlayerTest.getGod());*/
 
         GodStrategy instanceGodTest = new Apollo();
         instancePlayerTest.setGodStrategy(instanceGodTest);

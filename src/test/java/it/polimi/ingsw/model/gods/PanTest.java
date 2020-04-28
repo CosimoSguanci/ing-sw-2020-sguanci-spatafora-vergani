@@ -19,7 +19,7 @@ public class PanTest {
 
         Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 3);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker worker = new Worker(player, match.getMatchBoard());
+        Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
 

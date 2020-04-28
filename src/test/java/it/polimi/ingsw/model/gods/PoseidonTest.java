@@ -19,11 +19,8 @@ public class PoseidonTest {
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker movedWorker = new Worker(player, match.getMatchBoard());
-        Worker unmovedWorker = new Worker(player, match.getMatchBoard());
-
-        player.setWorkerFirst(movedWorker);
-        player.setWorkerSecond(unmovedWorker);
+        Worker movedWorker = player.getWorkerFirst();
+        Worker unmovedWorker = player.getWorkerSecond();
 
         movedWorker.setInitialPosition(0, 0);
         unmovedWorker.setInitialPosition(4, 0);
@@ -54,11 +51,8 @@ public class PoseidonTest {
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker movedWorker = new Worker(player, match.getMatchBoard());
-        Worker unmovedWorker = new Worker(player, match.getMatchBoard());
-
-        player.setWorkerFirst(movedWorker);
-        player.setWorkerSecond(unmovedWorker);
+        Worker movedWorker = player.getWorkerFirst();
+        Worker unmovedWorker = player.getWorkerSecond();
 
         movedWorker.setInitialPosition(0, 0);
 

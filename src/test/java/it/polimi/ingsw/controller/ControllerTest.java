@@ -36,18 +36,14 @@ public class ControllerTest {
         match.addPlayer(p2);
         match.addPlayer(p3);
 
-        Worker w1A = new Worker(p1, match.getMatchBoard());
-        Worker w1B = new Worker(p1, match.getMatchBoard());
-        p1.setWorkerFirst(w1A);
-        p1.setWorkerSecond(w1B);
-        Worker w2A = new Worker(p2, match.getMatchBoard());
-        Worker w2B = new Worker(p2, match.getMatchBoard());
-        p2.setWorkerFirst(w2A);
-        p2.setWorkerSecond(w2B);
-        Worker w3A = new Worker(p3, match.getMatchBoard());
-        Worker w3B = new Worker(p3, match.getMatchBoard());
-        p3.setWorkerFirst(w3A);
-        p3.setWorkerSecond(w3B);
+        Worker w1A = p1.getWorkerFirst();
+        Worker w1B = p1.getWorkerSecond();
+
+        Worker w2A = p2.getWorkerFirst();
+        Worker w2B = p2.getWorkerSecond();
+
+        Worker w3A = p3.getWorkerFirst();
+        Worker w3B = p3.getWorkerSecond();
 
         GodStrategy divinity = new Apollo();
         p1.setGodStrategy(divinity);
@@ -91,14 +87,11 @@ public class ControllerTest {
         match.addPlayer(p1);
         match.addPlayer(p2);
 
-        Worker w1A = new Worker(p1, match.getMatchBoard());
-        Worker w1B = new Worker(p1, match.getMatchBoard());
-        p1.setWorkerFirst(w1A);
-        p1.setWorkerSecond(w1B);
-        Worker w2A = new Worker(p2, match.getMatchBoard());
-        Worker w2B = new Worker(p2, match.getMatchBoard());
-        p2.setWorkerFirst(w2A);
-        p2.setWorkerSecond(w2B);
+        Worker w1A = p1.getWorkerFirst();
+        Worker w1B = p1.getWorkerSecond();
+
+        Worker w2A = p2.getWorkerFirst();
+        Worker w2B = p2.getWorkerSecond();
 
         GodStrategy divinity = new Apollo();
         p1.setGodStrategy(divinity);
@@ -175,14 +168,11 @@ public class ControllerTest {
         match.addPlayer(p1);
         match.addPlayer(p2);
 
-        Worker w1A = new Worker(p1, match.getMatchBoard());
-        Worker w1B = new Worker(p1, match.getMatchBoard());
-        p1.setWorkerFirst(w1A);
-        p1.setWorkerSecond(w1B);
-        Worker w2A = new Worker(p2, match.getMatchBoard());
-        Worker w2B = new Worker(p2, match.getMatchBoard());
-        p2.setWorkerFirst(w2A);
-        p2.setWorkerSecond(w2B);
+        Worker w1A = p1.getWorkerFirst();
+        Worker w1B = p1.getWorkerSecond();
+
+        Worker w2A = p2.getWorkerFirst();
+        Worker w2B = p2.getWorkerSecond();
 
         GodStrategy divinity = new Apollo();
         GodStrategy divine = new Minotaur();
@@ -263,18 +253,15 @@ public class ControllerTest {
         match.addPlayer(p2);
         match.addPlayer(p3);
 
-        Worker w1A = new Worker(p1, match.getMatchBoard());
-        Worker w1B = new Worker(p1, match.getMatchBoard());
-        p1.setWorkerFirst(w1A);
-        p1.setWorkerSecond(w1B);
-        Worker w2A = new Worker(p2, match.getMatchBoard());
-        Worker w2B = new Worker(p2, match.getMatchBoard());
-        p2.setWorkerFirst(w2A);
-        p2.setWorkerSecond(w2B);
-        Worker w3A = new Worker(p3, match.getMatchBoard());
-        Worker w3B = new Worker(p3, match.getMatchBoard());
-        p3.setWorkerFirst(w3A);
-        p3.setWorkerSecond(w3B);
+        Worker w1A = p1.getWorkerFirst();
+        Worker w1B = p1.getWorkerSecond();
+
+        Worker w2A = p2.getWorkerFirst();
+        Worker w2B = p2.getWorkerSecond();
+
+        Worker w3A = p3.getWorkerFirst();
+        Worker w3B = p3.getWorkerSecond();
+
 
         GodStrategy divinity = new Apollo();
         p1.setGodStrategy(divinity);
@@ -343,9 +330,6 @@ public class ControllerTest {
         playerCommand.setPlayerID("Roberto");
         controller.update(playerCommand);  //now it's p1's turn
         assertEquals(p1, model.getCurrentPlayer());
-
-        Board.clearInstances();
-        Match.clearInstances();
     }
 
 
@@ -366,53 +350,40 @@ public class ControllerTest {
         match.addPlayer(p2);
         match.addPlayer(p3);
 
-        Worker w1A = new Worker(p1, match.getMatchBoard());
-        Worker w1B = new Worker(p1, match.getMatchBoard());
-        p1.setWorkerFirst(w1A);
-        p1.setWorkerSecond(w1B);
-        Worker w2A = new Worker(p2, match.getMatchBoard());
-        Worker w2B = new Worker(p2, match.getMatchBoard());
-        p2.setWorkerFirst(w2A);
-        p2.setWorkerSecond(w2B);
-        Worker w3A = new Worker(p3, match.getMatchBoard());
-        Worker w3B = new Worker(p3, match.getMatchBoard());
-        p3.setWorkerFirst(w3A);
-        p3.setWorkerSecond(w3B);
-
         Model model = new Model(match);
         Controller controller = new Controller(model);
 
-        List chosenGods = new ArrayList();
+        List<String> chosenGods = new ArrayList<>();
         chosenGods.add("apollo");
         chosenGods.add("athena");
         chosenGods.add("hestia");
-        controller.startMatch();
+        controller.prepareMatch();
         ArrayList<Player> players = new ArrayList<>(model.getPlayers());
         GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
         godChoiceCommand.setPlayerID(model.getCurrentPlayer().ID);
         controller.update(godChoiceCommand);
 
-        List godPlayer = new ArrayList();
+        List<String> godPlayer = new ArrayList<>();
         godPlayer.add("hestia");
         godChoiceCommand = new GodChoiceCommand(godPlayer, false);
         godChoiceCommand.setPlayerID(model.getCurrentPlayer().ID);
         controller.update(godChoiceCommand);
 
-        godPlayer= new ArrayList();
+        godPlayer= new ArrayList<>();
         godPlayer.add("apollo");
         godChoiceCommand = new GodChoiceCommand(godPlayer, false);
         godChoiceCommand.setPlayerID(model.getCurrentPlayer().ID);
         controller.update(godChoiceCommand);
 
-        int apollo=0, hestia=0, athena=0;
+        int apollo = 0, hestia = 0, athena = 0;
         for(Player p : players) {
             if(p.getGodStrategy() instanceof Apollo && !p.isGodChooser())  apollo++;
             else if(p.getGodStrategy() instanceof Hestia && !p.isGodChooser())  hestia++;
             else if(p.getGodStrategy() instanceof Athena && p.isGodChooser())  athena++;
         }
-        assertTrue(hestia==1);
-        assertTrue(apollo==1);
-        assertTrue(athena==1);
+        assertEquals(1, hestia);
+        assertEquals(1, apollo);
+        assertEquals(1, athena);
 
         Board.clearInstances();
         Match.clearInstances();
@@ -434,28 +405,19 @@ public class ControllerTest {
         match.addPlayer(p1);
         match.addPlayer(p2);
 
-        Worker w1A = new Worker(p1, match.getMatchBoard());
-        Worker w1B = new Worker(p1, match.getMatchBoard());
-        p1.setWorkerFirst(w1A);
-        p1.setWorkerSecond(w1B);
-        Worker w2A = new Worker(p2, match.getMatchBoard());
-        Worker w2B = new Worker(p2, match.getMatchBoard());
-        p2.setWorkerFirst(w2A);
-        p2.setWorkerSecond(w2B);
-
         Model model = new Model(match);
         Controller controller = new Controller(model);
 
-        List chosenGods = new ArrayList();
+        List<String> chosenGods = new ArrayList<>();
         chosenGods.add("eros");
         chosenGods.add("minotaur");
-        controller.startMatch();
+        controller.prepareMatch();
         ArrayList<Player> players = new ArrayList<>(model.getPlayers());
         GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
         godChoiceCommand.setPlayerID(model.getCurrentPlayer().ID);
         controller.update(godChoiceCommand);
 
-        List godPlayer = new ArrayList();
+        List<String> godPlayer = new ArrayList<>();
         godPlayer.add("eros");
         godChoiceCommand = new GodChoiceCommand(godPlayer, false);
         godChoiceCommand.setPlayerID(model.getCurrentPlayer().ID);
@@ -466,12 +428,9 @@ public class ControllerTest {
             if(p.getGodStrategy() instanceof Eros && !p.isGodChooser())  eros++;
             else if(p.getGodStrategy() instanceof Minotaur && p.isGodChooser())  minotaur++;
         }
-        assertTrue(eros==1);
-        assertTrue(minotaur==1);
+        assertEquals(1, eros);
+        assertEquals(1, minotaur);
 
-
-        Board.clearInstances();
-        Match.clearInstances();
     }
 
 }

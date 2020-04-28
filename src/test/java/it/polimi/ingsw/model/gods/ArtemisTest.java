@@ -20,12 +20,16 @@ public class ArtemisTest {
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker worker = new Worker(player, match.getMatchBoard());
+        Worker worker = player.getWorkerFirst();
+        Worker otherWorker = player.getWorkerSecond();
 
         worker.setInitialPosition(0, 0);
+        otherWorker.setInitialPosition(3, 2);
 
         assertTrue(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
         artemis.executeMove(worker, match.getMatchBoard().getCell(0, 1));
+
+        assertFalse(artemis.checkMove(otherWorker, match.getMatchBoard().getCell(3, 3)));
 
         assertTrue(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 2)));
         artemis.executeMove(worker, match.getMatchBoard().getCell(0, 2));
@@ -43,7 +47,7 @@ public class ArtemisTest {
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker worker = new Worker(player, match.getMatchBoard());
+        Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
 

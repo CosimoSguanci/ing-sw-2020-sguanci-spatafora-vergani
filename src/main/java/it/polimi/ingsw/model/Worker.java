@@ -31,7 +31,7 @@ public class Worker {
      * @param player indicates the player who has the control on the worker being created.
      * @param board indicates the board table in which the player is involved in.
      */
-    public Worker(Player player, Board board) { //Alternatively, we can give as parameter to constructor the firstPosition
+    Worker(Player player, Board board) {
         this.player = player;
         this.board = board;
     }

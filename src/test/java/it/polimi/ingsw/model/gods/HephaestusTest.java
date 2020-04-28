@@ -19,7 +19,7 @@ public class HephaestusTest {
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker worker = new Worker(player, match.getMatchBoard());
+        Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
 
@@ -47,7 +47,7 @@ public class HephaestusTest {
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker worker = new Worker(player, match.getMatchBoard());
+        Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
 
@@ -71,7 +71,7 @@ public class HephaestusTest {
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker worker = new Worker(player, match.getMatchBoard());
+        Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
 

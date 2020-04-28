@@ -20,10 +20,8 @@ public class ErosTest {
 
         Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 3);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker workerFirst = new Worker(player, match.getMatchBoard());
-        Worker workerSecond = new Worker(player, match.getMatchBoard());
-        player.setWorkerFirst(workerFirst);
-        player.setWorkerSecond(workerSecond);
+        Worker workerFirst = player.getWorkerFirst();
+        Worker workerSecond = player.getWorkerSecond();
 
         workerFirst.setInitialPosition(0, 0);
         workerSecond.setInitialPosition(0, 2);
@@ -46,10 +44,8 @@ public class ErosTest {
 
         Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 2);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker workerFirst = new Worker(player, match.getMatchBoard());
-        Worker workerSecond = new Worker(player, match.getMatchBoard());
-        player.setWorkerFirst(workerFirst);
-        player.setWorkerSecond(workerSecond);
+        Worker workerFirst = player.getWorkerFirst();
+        Worker workerSecond = player.getWorkerSecond();
 
         workerFirst.setInitialPosition(0, 0);
         workerSecond.setInitialPosition(0, 2);
@@ -75,10 +71,8 @@ public class ErosTest {
 
         Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 2);
         Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
-        Worker workerFirst = new Worker(player, match.getMatchBoard());
-        Worker workerSecond = new Worker(player, match.getMatchBoard());
-        player.setWorkerFirst(workerFirst);
-        player.setWorkerSecond(workerSecond); // TODO Change tests, because now Workers are instantiated inside Player's constructor
+        Worker workerFirst = player.getWorkerFirst();
+        Worker workerSecond = player.getWorkerFirst();
 
         // not opposite borders -> not ok with Eros constraints
         assertFalse(eros.checkGamePreparation(workerFirst, match.getMatchBoard().getCell(0, 1), workerSecond, match.getMatchBoard().getCell(0,2)));
