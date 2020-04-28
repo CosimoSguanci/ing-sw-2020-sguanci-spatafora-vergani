@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 public class BoardTest {
 
 
-    @Disabled // todo FIX TEST
     @Test
     public void canMoveTrueTest()  {
 
@@ -22,7 +21,7 @@ public class BoardTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);
+        Board board = match.getMatchBoard();
 
         Player player = new Player("Andrea", "andv", match);
         Worker w1 = player.getWorkerFirst();
