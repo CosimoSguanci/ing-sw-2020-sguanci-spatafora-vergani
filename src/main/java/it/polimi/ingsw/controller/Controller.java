@@ -278,7 +278,11 @@ public class Controller implements Observer<Command> {
     public void prepareMatch() {
         List<Player> playerList = model.getPlayers();
         int initialTurn = new Random().nextInt((playerList.size()));
-        currentGamePhase = GamePhase.CHOOSE_GODS;
+        try {
+            currentGamePhase = currentGamePhase.nextPhase();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         godChooserPlayer = playerList.get(initialTurn);
         godChooserPlayer.setAsGodChooser();
         model.setInitialTurn(initialTurn);
@@ -286,13 +290,17 @@ public class Controller implements Observer<Command> {
     }
 
     private void gamePreparation() {
-        currentGamePhase = GamePhase.GAME_PREPARATION;
+        try {
+            currentGamePhase = currentGamePhase.nextPhase();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         model.boardUpdate();
         model.gamePreparationUpdate(model.getCurrentPlayer());
     }
 
     private void startMatch() {
-        currentGamePhase = GamePhase.REAL_GAME;
+        currentGamePhase = GamePhase.firstPhase();
         model.matchStartedUpdate();
     }
 }
