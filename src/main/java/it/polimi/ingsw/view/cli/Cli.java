@@ -3,6 +3,9 @@ package it.polimi.ingsw.view.cli;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.controller.commands.*;
+import it.polimi.ingsw.model.BlockType;
+import it.polimi.ingsw.model.PrintableColour;
+import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.Board;
@@ -225,9 +228,64 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         GsonBuilder builder = new GsonBuilder();
 
         Gson gson = builder.create();
-        Board gameBoard = gson.fromJson(board, Board.class); // TODO Board Drawing in CLI
+        Board gameBoard = gson.fromJson(board, Board.class);
 
-        print(board);
+        for(int i = 0; i < 5; i++) {    //Single cell printed as 5x5: +---+ board; " "/"1"/"2" if worker is inside; BlockType specified.
+            System.out.println("+ - - - + + - - - + + - - - + + - - - + + - - - +");
+            System.out.println("|     " + convertBlockTypeToUnicode(gameBoard.getCell(i, 0).getLevel()) + " | " +
+                               "|     " + convertBlockTypeToUnicode(gameBoard.getCell(i, 1).getLevel()) + " | " +
+                               "|     " + convertBlockTypeToUnicode(gameBoard.getCell(i, 2).getLevel()) + " | " +
+                               "|     " + convertBlockTypeToUnicode(gameBoard.getCell(i, 3).getLevel()) + " | " +
+                               "|     " + convertBlockTypeToUnicode(gameBoard.getCell(i, 4).getLevel()) + " |");
+
+            for(int j = 0; j < 5; j++) {
+                System.out.print("|   " );
+                if(!gameBoard.getCell(i, j).isEmpty()) {
+                    Worker printableWorker = gameBoard.getCell(i, j).getWorker();
+                    if(printableWorker.equals(printableWorker.player.getWorkerFirst())) {
+                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + "\uD83C\uDFC3\u2081\t" + PrintableColour.RESET);
+                    } else {System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + "\uD83C\uDFC3\u2082\t" + PrintableColour.RESET);}
+                }
+                else {System.out.print("    ");}
+                System.out.print("| " );
+            }
+
+            System.out.println();
+            System.out.println("|       | |       | |       | |       | |       |");
+            System.out.println("+ - - - + + - - - + + - - - + + - - - + + - - - +");
+
+        }
+        //print(board);
+    }
+
+    private String convertBlockTypeToUnicode(BlockType level) {
+        switch (level) {
+            case GROUND:
+                return "\u2070";
+            case LEVEL_ONE:
+                return "\u00B9";
+            case LEVEL_TWO:
+                return "\u00B2";
+            case LEVEL_THREE:
+                return "\u00B3";
+            case DOME:
+                return "\u2074";
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    private String convertColorToAnsi (PrintableColour color) {
+        switch (color) {
+            case RED:
+                return "\u001B[31m";
+            case BLUE:
+                return "\u001B[32m";
+            case GREEN:
+                return "\u001B[34m";
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
     private void printGodInfo(String god) {

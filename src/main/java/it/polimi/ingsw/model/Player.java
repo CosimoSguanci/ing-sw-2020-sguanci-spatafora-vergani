@@ -14,7 +14,7 @@ import it.polimi.ingsw.model.gods.GodStrategy;
 public class Player {
     public final String ID;
     public final String nickname;
-    private String color;
+    private PrintableColour color;
     private transient Worker workerFirst; // circular dependency
     private transient Worker workerSecond;
     private transient boolean isGodChooser;
@@ -40,7 +40,7 @@ public class Player {
      *
      * @return the chosen color of worker, it returns null if the color has not been set yet
      */
-    public String getColor() {
+    public PrintableColour getColor() {
         return this.color;
     }
 
@@ -49,7 +49,7 @@ public class Player {
      *
      * @param color is the String that indicates the color chosen from a Player at the beginning of the match
      */
-    public void setColor(String color) {
+    public void setColor(PrintableColour color) {
         this.color = color;
     }
 
