@@ -12,18 +12,4 @@ class GamePhaseTest {
         gamePhase = GamePhase.firstPhase();
         assertEquals(GamePhase.CHOOSE_GODS, gamePhase);
     }
-
-    @Test
-    void nextPhase() {
-        GamePhase gamePhase;
-        gamePhase = GamePhase.firstPhase();
-        assertEquals(GamePhase.CHOOSE_GODS, gamePhase);
-
-        try {
-            gamePhase = gamePhase.nextPhase();
-            assertEquals(gamePhase, GamePhase.GAME_PREPARATION);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
