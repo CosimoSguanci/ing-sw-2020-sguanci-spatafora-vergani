@@ -278,7 +278,7 @@ public class Controller implements Observer<Command> {
     public void prepareMatch() {
         List<Player> playerList = model.getPlayers();
         int initialTurn = new Random().nextInt((playerList.size()));
-        currentGamePhase = GamePhase.firstPhase();
+        preparationPhase();
         godChooserPlayer = playerList.get(initialTurn);
         godChooserPlayer.setAsGodChooser();
         model.setInitialTurn(initialTurn);
@@ -314,5 +314,9 @@ public class Controller implements Observer<Command> {
         else{
             throw new Exception();  //TODO decide what to do with this exception
         }
+    }
+
+    private void preparationPhase() {
+        currentGamePhase = GamePhase.firstPhase();
     }
 }

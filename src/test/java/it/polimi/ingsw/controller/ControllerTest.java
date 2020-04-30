@@ -8,10 +8,10 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.model.gods.*;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.ReflectionUtils;
+import org.junit.platform.commons.support.ReflectionSupport;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,9 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ControllerTest {
 
-    @Disabled
     @Test
-    public void updatePlayerCommandNormalTest()  {
+    public void updatePlayerCommandNormalTest() throws NoSuchMethodException {
 
         Board.clearInstances();
         Match.clearInstances();
@@ -62,8 +61,23 @@ public class ControllerTest {
 
         Model model = new Model(match);
         Controller controller = new Controller(model);
+        Method preparationPhase = Controller.class.getDeclaredMethod("preparationPhase");
+        preparationPhase.setAccessible(true);
+
+        ReflectionSupport.invokeMethod(preparationPhase, controller);
+        //Choose_Gods phase
+        preparationPhase.setAccessible(false);
+
+        Method nextPhase = Controller.class.getDeclaredMethod("nextPhase");
+        nextPhase.setAccessible(true);
+
+        ReflectionSupport.invokeMethod(nextPhase, controller);
+        ReflectionSupport.invokeMethod(nextPhase, controller);
+        //Real_Game phase
+        nextPhase.setAccessible(false);
+
         PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 C4");
-        playerCommand.setPlayerID("Andrea");
+        playerCommand.setPlayer(p1);
         controller.update(playerCommand);
 
         assertEquals(p1, model.getCurrentPlayer());
@@ -74,9 +88,8 @@ public class ControllerTest {
     }
 
 
-    @Disabled
     @Test
-    public void updatePlayerCommandGodPowerTest()  {
+    public void updatePlayerCommandGodPowerTest() throws NoSuchMethodException {
         Board.clearInstances();
         Match.clearInstances();
 
@@ -110,23 +123,40 @@ public class ControllerTest {
 
         Model model = new Model(match);
         Controller controller = new Controller(model);
+
+        Method preparationPhase = Controller.class.getDeclaredMethod("preparationPhase");
+        preparationPhase.setAccessible(true);
+
+        ReflectionSupport.invokeMethod(preparationPhase, controller);
+        //Choose_Gods phase
+        preparationPhase.setAccessible(false);
+
+        Method nextPhase = Controller.class.getDeclaredMethod("nextPhase");
+        nextPhase.setAccessible(true);
+
+        ReflectionSupport.invokeMethod(nextPhase, controller);
+        ReflectionSupport.invokeMethod(nextPhase, controller);
+        //Real_Game phase
+        nextPhase.setAccessible(false);
+
         PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 C4");
-        playerCommand.setPlayerID("Andrea");
+        playerCommand.setPlayer(p1);
         controller.update(playerCommand);  //Apollo's power must be invoked
 
+        assertEquals(p1, model.getCurrentPlayer());
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
         assertEquals(match.getMatchBoard().getCell(3,1), w1B.getPosition());
         assertEquals(match.getMatchBoard().getCell(4,4), w2A.getPosition());
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
         match.nextTurn();  //Cosimo's turn
+        assertEquals(p2, model.getCurrentPlayer());
 
         playerCommand = PlayerCommand.parseInput("move w2 e1");
-        playerCommand.setPlayerID("Andrea");
-
+        playerCommand.setPlayer(p1);
 
         PlayerCommand finalPlayerCommand = playerCommand;
-        assertThrows(WrongPlayerException.class, () -> controller.update(finalPlayerCommand));
+        assertThrows(WrongPlayerException.class, () -> controller.handlePlayerCommand(finalPlayerCommand));
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
         assertEquals(match.getMatchBoard().getCell(3,1), w1B.getPosition());
@@ -134,7 +164,7 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
         playerCommand = PlayerCommand.parseInput("move w2 e4");
-        playerCommand.setPlayerID("Cosimo");
+        playerCommand.setPlayer(p2);
         controller.update(playerCommand);  //impossible move should not be allowed
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
@@ -143,7 +173,7 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
         playerCommand = PlayerCommand.parseInput("move w1 e4");
-        playerCommand.setPlayerID("Cosimo");
+        playerCommand.setPlayer(p2);
         controller.update(playerCommand);
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
@@ -155,9 +185,9 @@ public class ControllerTest {
         Match.clearInstances();
     }
 
-    @Disabled
+
     @Test
-    public void updatePlayerCommandImpossibleMoveAndBuildTest()  {
+    public void updatePlayerCommandImpossibleMoveAndBuildTest() throws NoSuchMethodException {
         Board.clearInstances();
         Match.clearInstances();
 
@@ -192,8 +222,24 @@ public class ControllerTest {
 
         Model model = new Model(match);
         Controller controller = new Controller(model);
+
+        Method preparationPhase = Controller.class.getDeclaredMethod("preparationPhase");
+        preparationPhase.setAccessible(true);
+
+        ReflectionSupport.invokeMethod(preparationPhase, controller);
+        //Choose_Gods phase
+        preparationPhase.setAccessible(false);
+
+        Method nextPhase = Controller.class.getDeclaredMethod("nextPhase");
+        nextPhase.setAccessible(true);
+
+        ReflectionSupport.invokeMethod(nextPhase, controller);
+        ReflectionSupport.invokeMethod(nextPhase, controller);
+        //Real_Game phase
+        nextPhase.setAccessible(false);
+
         PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 C4");
-        playerCommand.setPlayerID("Andrea");
+        playerCommand.setPlayer(p1);
         controller.update(playerCommand);  //Apollo's power must be invoked
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
@@ -202,7 +248,7 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
         playerCommand = PlayerCommand.parseInput("build w1 b2");
-        playerCommand.setPlayerID("Andrea");
+        playerCommand.setPlayer(p1);
         controller.update(playerCommand);  //impossible build should not be allowed
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
@@ -214,11 +260,11 @@ public class ControllerTest {
         match.nextTurn();  //Cosimo's turn
 
         playerCommand = PlayerCommand.parseInput("move w2 e1");
-        playerCommand.setPlayerID("Andrea");
+        playerCommand.setPlayer(p1);
 
 
         PlayerCommand finalPlayerCommand = playerCommand;
-        assertThrows(WrongPlayerException.class, () -> controller.update(finalPlayerCommand));
+        assertThrows(WrongPlayerException.class, () -> controller.handlePlayerCommand(finalPlayerCommand));
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
         assertEquals(match.getMatchBoard().getCell(3,1), w1B.getPosition());
@@ -226,7 +272,7 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
         playerCommand = PlayerCommand.parseInput("move w1 e4");
-        playerCommand.setPlayerID("Cosimo");
+        playerCommand.setPlayer(p2);
         controller.update(playerCommand);
 
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
@@ -238,9 +284,9 @@ public class ControllerTest {
         Match.clearInstances();
     }
 
-    @Disabled
+
     @Test
-    public void updatePlayerCommandCompleteTest()  {
+    public void updatePlayerCommandCompleteTest() throws NoSuchMethodException {
         Board.clearInstances();
         Match.clearInstances();
 
@@ -282,8 +328,23 @@ public class ControllerTest {
         match.nextTurn();
         assertEquals(p3, model.getCurrentPlayer());  //Roberto's turn
 
+        Method preparationPhase = Controller.class.getDeclaredMethod("preparationPhase");
+        preparationPhase.setAccessible(true);
+
+        ReflectionSupport.invokeMethod(preparationPhase, controller);
+        //Choose_Gods phase
+        preparationPhase.setAccessible(false);
+
+        Method nextPhase = Controller.class.getDeclaredMethod("nextPhase");
+        nextPhase.setAccessible(true);
+
+        ReflectionSupport.invokeMethod(nextPhase, controller);
+        ReflectionSupport.invokeMethod(nextPhase, controller);
+        //Real_Game phase
+        nextPhase.setAccessible(false);
+
         PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 e3");
-        playerCommand.setPlayerID("Roberto");
+        playerCommand.setPlayer(p3);
         controller.update(playerCommand);  //impossible move should not be allowed
 
         assertEquals(match.getMatchBoard().getCell(1,2), w1A.getPosition());
@@ -294,7 +355,7 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(3,1), w3B.getPosition());
 
         playerCommand = PlayerCommand.parseInput("move w2 C1");
-        playerCommand.setPlayerID("Roberto");
+        playerCommand.setPlayer(p3);
         controller.update(playerCommand);  //possible move should be allowed
 
         assertEquals(match.getMatchBoard().getCell(1,2), w1A.getPosition());
@@ -305,7 +366,7 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(2,0), w3B.getPosition());
 
         playerCommand = PlayerCommand.parseInput("build w2 E1");
-        playerCommand.setPlayerID("Roberto");
+        playerCommand.setPlayer(p3);
         controller.update(playerCommand);  //impossible build should not be allowed
 
         assertEquals(match.getMatchBoard().getCell(1,2), w1A.getPosition());
@@ -316,7 +377,7 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(2,0), w3B.getPosition());
 
         playerCommand = PlayerCommand.parseInput("build w2 b2");
-        playerCommand.setPlayerID("Roberto");
+        playerCommand.setPlayer(p3);
         controller.update(playerCommand);  //possible build should be allowed
 
         assertEquals(match.getMatchBoard().getCell(1,2), w1A.getPosition());
@@ -328,15 +389,14 @@ public class ControllerTest {
         assertEquals(BlockType.LEVEL_ONE, match.getMatchBoard().getCell(1,1).getLevel());
 
         playerCommand = PlayerCommand.parseInput("end");
-        playerCommand.setPlayerID("Roberto");
+        playerCommand.setPlayer(p3);
         controller.update(playerCommand);  //now it's p1's turn
         assertEquals(p1, model.getCurrentPlayer());
     }
 
 
-    @Disabled
     @Test
-    public void updateGodChoiceCommandNormalTest()  {
+    public void updateGodChoiceCommandNormalTest() throws NoSuchMethodException {
 
         Board.clearInstances();
         Match.clearInstances();
@@ -354,6 +414,13 @@ public class ControllerTest {
         Model model = new Model(match);
         Controller controller = new Controller(model);
 
+        Method preparationPhase = Controller.class.getDeclaredMethod("preparationPhase");
+        preparationPhase.setAccessible(true);
+
+        ReflectionSupport.invokeMethod(preparationPhase, controller);
+        //Choose_Gods phase
+        preparationPhase.setAccessible(false);
+
         List<String> chosenGods = new ArrayList<>();
         chosenGods.add("apollo");
         chosenGods.add("athena");
@@ -361,19 +428,19 @@ public class ControllerTest {
         controller.prepareMatch();
         ArrayList<Player> players = new ArrayList<>(model.getPlayers());
         GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
-        godChoiceCommand.setPlayerID(model.getCurrentPlayer().ID);
+        godChoiceCommand.setPlayer(model.getCurrentPlayer());
         controller.update(godChoiceCommand);
 
         List<String> godPlayer = new ArrayList<>();
         godPlayer.add("hestia");
         godChoiceCommand = new GodChoiceCommand(godPlayer, false);
-        godChoiceCommand.setPlayerID(model.getCurrentPlayer().ID);
+        godChoiceCommand.setPlayer(model.getCurrentPlayer());
         controller.update(godChoiceCommand);
 
         godPlayer= new ArrayList<>();
         godPlayer.add("apollo");
         godChoiceCommand = new GodChoiceCommand(godPlayer, false);
-        godChoiceCommand.setPlayerID(model.getCurrentPlayer().ID);
+        godChoiceCommand.setPlayer(model.getCurrentPlayer());
         controller.update(godChoiceCommand);
 
         int apollo = 0, hestia = 0, athena = 0;
@@ -391,9 +458,8 @@ public class ControllerTest {
     }
 
 
-    @Disabled
     @Test
-    public void updateGodChoiceCommand2PlayersTest()  {
+    public void updateGodChoiceCommand2PlayersTest() throws NoSuchMethodException {
 
         Board.clearInstances();
         Match.clearInstances();
@@ -409,19 +475,26 @@ public class ControllerTest {
         Model model = new Model(match);
         Controller controller = new Controller(model);
 
+        Method preparationPhase = Controller.class.getDeclaredMethod("preparationPhase");
+        preparationPhase.setAccessible(true);
+
+        ReflectionSupport.invokeMethod(preparationPhase, controller);
+        //Choose_Gods phase
+        preparationPhase.setAccessible(false);
+
         List<String> chosenGods = new ArrayList<>();
         chosenGods.add("eros");
         chosenGods.add("minotaur");
         controller.prepareMatch();
         ArrayList<Player> players = new ArrayList<>(model.getPlayers());
         GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
-        godChoiceCommand.setPlayerID(model.getCurrentPlayer().ID);
+        godChoiceCommand.setPlayer(model.getCurrentPlayer());
         controller.update(godChoiceCommand);
 
         List<String> godPlayer = new ArrayList<>();
         godPlayer.add("eros");
         godChoiceCommand = new GodChoiceCommand(godPlayer, false);
-        godChoiceCommand.setPlayerID(model.getCurrentPlayer().ID);
+        godChoiceCommand.setPlayer(model.getCurrentPlayer());
         controller.update(godChoiceCommand);
 
         int eros=0, minotaur=0;
