@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 public enum PrintableColour {
-    RED, GREEN, BLUE;
+    RED, GREEN, BLUE, YELLOW, PURPLE;
 
     public static final String RESET = "\u001B[0m";
 

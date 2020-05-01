@@ -42,7 +42,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
     private Map<String, String> playersGods;
     private Map<String, PrintableColour> playersColors;
 
-    private UpdateHandler cliUpdateHandler; //CliUpdateHandler
+    private final UpdateHandler cliUpdateHandler; //CliUpdateHandler
 
     public Cli(Client client) {
         this.client = client;
@@ -343,9 +343,13 @@ public class Cli extends Observable<Object> implements Observer<Update> {
             case RED:
                 return "\u001B[31m";
             case BLUE:
-                return "\u001B[32m";
-            case GREEN:
                 return "\u001B[34m";
+            case GREEN:
+                return "\u001B[32m";
+            case YELLOW:
+                return "\u001B[43m";
+            case PURPLE:
+                return "\u001B[35m";
             default:
                 throw new IllegalArgumentException();
         }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.ObjectListenerDelegate;
 import it.polimi.ingsw.network.client.UpdateListener;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.cli.Cli;
@@ -24,6 +23,5 @@ public class ClientApp {
         } catch(IOException e) {
             System.err.println("The Game couldn't start, maybe there was some network error or the server isn't available.");
         }
-
     }
 }
