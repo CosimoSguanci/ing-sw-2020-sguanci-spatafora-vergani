@@ -25,6 +25,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
     private int playersNum;
     private Scanner stdin;
     private PrintStream stdout;
+    private Map<String, String> playerSymbol;
 
     // TODO Put currentGamePhase in common superclass with GUI
 
@@ -297,19 +298,24 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         Gson gson = builder.create();
         Board gameBoard = gson.fromJson(board, Board.class);
 
-        //print("");
-        //print("");
-        //print("");
 
         char rowIdentifier = 'A';
-        System.out.println("\t      1              2              3              4              5    ");
+
+        if(playerSymbol == null) {
+            playerSymbol = mapPlayerIdToSymbol(gameBoard);
+        }
+
+        print("");
+        print("");
+        print("");
+
         for (int i = 0; i < 5; i++) {    //Single cell printed as 5x5: +---+ board; " "/"1"/"2" if worker is inside; BlockType specified.
             System.out.println("\t+  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +");
-            System.out.println("\t|        " + convertBlockTypeToUnicode(gameBoard.getCell(i, 0).getLevel()) + "  | "+
-                    " |        " + convertBlockTypeToUnicode(gameBoard.getCell(i, 1).getLevel()) + "  | " +
-                    " |        " + convertBlockTypeToUnicode(gameBoard.getCell(i, 2).getLevel()) + "  | " +
-                    " |        " + convertBlockTypeToUnicode(gameBoard.getCell(i, 3).getLevel()) + "  | " +
-                    " |        " + convertBlockTypeToUnicode(gameBoard.getCell(i, 4).getLevel()) + "  |");
+            System.out.println("\t|         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 0).getLevel()) + " | " +
+                    " |         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 1).getLevel()) + " | " +
+                    " |         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 2).getLevel()) + " | " +
+                    " |         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 3).getLevel()) + " | " +
+                    " |         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 4).getLevel()) + " | ");
 
             System.out.print(rowIdentifier + "\t");
             rowIdentifier++;
@@ -317,16 +323,21 @@ public class Cli extends Observable<Object> implements Observer<Update> {
             for (int j = 0; j < 5; j++) {
                 System.out.print("|    ");
                 if (!gameBoard.getCell(i, j).isEmpty()) {
+
                     Worker printableWorker = gameBoard.getCell(i, j).getWorker();
                     if (printableWorker.equals(printableWorker.player.getWorkerFirst())) {
-                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + " W1" + PrintableColour.RESET);
+                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + playerSymbol.get(printableWorker.player.ID) + " 1" + PrintableColour.RESET);
                     } else {
-                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + " W2" + PrintableColour.RESET);
+                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + playerSymbol.get(printableWorker.player.ID) + " 2" + PrintableColour.RESET);
                     }
                 } else {
                     System.out.print("   ");
                 }
+
+
+
                 System.out.print("    |  ");
+
             }
 
             System.out.println();
@@ -335,9 +346,45 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
         }
 
-        //print("");
-        //print("");
-        //print("");
+
+        System.out.println("\t      1              2              3              4              5    ");
+
+
+        print("");
+        print("");
+        print("");
+    }
+
+    private static Map<String, String> mapPlayerIdToSymbol(Board board) {
+        Map<String, String> symbolMap = new HashMap<>();
+        String symbol = "";
+
+
+        for(int i = 0; i < Board.HEIGHT_SIZE; i++) {
+            for(int j = 0; j < Board.WIDTH_SIZE; j++) {
+                if(!board.getCell(i, j).isEmpty()) {
+                    if(!symbolMap.containsKey(board.getCell(i, j).getWorker().player.ID)) {
+                        symbol = nextSymbol(symbol);
+                        symbolMap.put(board.getCell(i, j).getWorker().player.ID, symbol);
+                    }
+                }
+            }
+        }
+
+        return symbolMap;
+    }
+
+    private static String nextSymbol(String symbol) {
+        switch(symbol) {
+            case "":
+                return "\u265C";
+            case "\u265C":
+                return "\u265E";
+            case "\u265E":
+                return("\u265F");
+            default:
+                return "";
+        }
     }
 
     static String convertBlockTypeToUnicode(BlockType level) { // todo move to BlockType

@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.model.gods.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.support.ReflectionSupport;
 
@@ -87,7 +88,7 @@ public class ControllerTest {
         Match.clearInstances();
     }
 
-
+    @Disabled
     @Test
     public void updatePlayerCommandGodPowerTest() throws NoSuchMethodException {
         Board.clearInstances();
