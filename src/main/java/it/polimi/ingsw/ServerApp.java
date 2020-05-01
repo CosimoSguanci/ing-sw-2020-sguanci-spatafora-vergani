@@ -33,6 +33,8 @@ public class ServerApp {
 
         char rowIdentifier = 'A';
 
+        System.out.println("\t      1              2              3              4              5    ");
+
         for (int i = 0; i < 5; i++) {    //Single cell printed as 5x5: +---+ board; " "/"1"/"2" if worker is inside; BlockType specified.
             System.out.println("\t+  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +");
             System.out.println("\t|         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 0).getLevel()) + " | " +
