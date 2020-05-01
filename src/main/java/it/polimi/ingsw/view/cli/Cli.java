@@ -111,6 +111,8 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
             try {
                 if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 1)) { // todo extend help
+                    print("If you want information about a specific game-phase: help <game-phase>");
+                    print("Game phases are: " + GamePhase.toStringBuilder());
                     print("help -> print command list and tutorial");
                     print("info <god> -> get info about a god");
                     print("build w1/w2 [letter, number] [optional: blockType {one, two, three, dome}] -> tries to build with the chosen Worker in the specified position");
@@ -119,7 +121,40 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     print("Info Example : info Apollo");
                     print("Move Example : move w1 a1");
                     print("Build Example: build w1 a2 dome");
-                } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.INFO) {
+                }
+                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 2)) {
+                    if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.INITIAL_INFO) {
+                        print("In this phase, you decide your nickname and your workers' colour");
+                        print("Command format: pick <nickname> <colour>");
+                        print("Command example: pick Mike green");
+                    }
+                    else if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.CHOOSE_GODS) {
+                        print("In this phase, you select your god");
+                        print("Command format: select <god>");
+                        print("Command example: select Apollo");
+                    }
+                    else if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.GAME_PREPARATION) {
+                        print("In this phase, you place your workers over the board");
+                        print("Command format: place w1 [letter, number] w2 [letter, number]");
+                        print("Command example: place w1 A1 w2 B2");
+                    }
+                    else if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.REAL_GAME) {
+                        print("In this phase, you play!");
+                        print("Move format: move w1/w2 [letter, number] -> tries to move with the chosen Worker to the specified position");
+                        print("Move example: move w1 A1");
+                        print("Build format: build w1/w2 [letter, number] [optional: blockType {one, two, three, dome}] -> tries to build with the chosen Worker in the specified position");
+                        print("Build example: build w1 A2");
+                        print("Build example: build w1 A2 dome");
+                        print("End format: end -> tries to end the current turn");
+                        print("End example: end");
+                    }
+                    else{
+                        throw new BadCommandException();
+                    }
+                }
+
+
+                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.INFO) {
                     if (splitCommand.length != 2) {
                         throw new BadCommandException();
                     }
