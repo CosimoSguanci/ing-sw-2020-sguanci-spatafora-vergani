@@ -106,4 +106,12 @@ public class Model extends Observable<Update> {
         TurnUpdate turnUpdate = new TurnUpdate(currentPlayer.ID);
         notify(turnUpdate);
     }
+
+    public GamePhase getCurrentGamePhase() {
+        return match.getCurrentGamePhase();
+    }
+
+    public void nextGamePhase() {
+        match.nextGamePhase();
+    }
 }

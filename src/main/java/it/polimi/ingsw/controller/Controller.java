@@ -32,7 +32,6 @@ public class Controller implements Observer<Command> {
     private List<String> selectableGods;
     private List<String> selectedNicknames;
     private List<PrintableColour> selectableColors;
-    private GamePhase currentGamePhase;
     private final CommandHandler commandHandler;
 
     /**
@@ -48,7 +47,7 @@ public class Controller implements Observer<Command> {
     }
 
     GamePhase getCurrentGamePhase() {
-        return this.currentGamePhase;
+        return this.model.getCurrentGamePhase();
     }
 
     List<Player> getPlayers() {
@@ -324,9 +323,7 @@ public class Controller implements Observer<Command> {
 
     // Entry point from Server class
     public void initialPhase() {
-
-        currentGamePhase = GamePhase.firstPhase();
-        model.gamePhaseChangedUpdate(currentGamePhase);
+        model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
 
         List<Player> playerList = model.getPlayers();
         int initialTurn = new Random().nextInt((playerList.size()));
@@ -343,8 +340,8 @@ public class Controller implements Observer<Command> {
     }
 
     private void godChoosePhase() {
-        currentGamePhase = GamePhase.nextGamePhase(currentGamePhase);
-        model.gamePhaseChangedUpdate(currentGamePhase);
+        model.nextGamePhase();
+        model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
         model.chooseGodsUpdate(godChooserPlayer, null);
     }
 
@@ -354,8 +351,8 @@ public class Controller implements Observer<Command> {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
-        currentGamePhase = GamePhase.nextGamePhase(currentGamePhase);
-        model.gamePhaseChangedUpdate(currentGamePhase);
+        model.nextGamePhase();
+        model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
         model.boardUpdate();
         model.gamePreparationUpdate(model.getCurrentPlayer());
     }
@@ -366,8 +363,8 @@ public class Controller implements Observer<Command> {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
-        currentGamePhase = GamePhase.nextGamePhase(currentGamePhase);
-        model.gamePhaseChangedUpdate(currentGamePhase);
+        model.nextGamePhase();
+        model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
         model.matchStartedUpdate();
     }
 

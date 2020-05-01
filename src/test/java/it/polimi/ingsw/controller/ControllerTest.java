@@ -10,9 +10,8 @@ import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.model.gods.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.support.ReflectionSupport;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ControllerTest {
 
     @Test
-    public void updatePlayerCommandNormalTest() throws NoSuchMethodException {
+    public void updatePlayerCommandNormalTest() {
 
         Board.clearInstances();
         Match.clearInstances();
@@ -62,20 +61,10 @@ public class ControllerTest {
 
         Model model = new Model(match);
         Controller controller = new Controller(model);
-        Method preparationPhase = Controller.class.getDeclaredMethod("preparationPhase");
-        preparationPhase.setAccessible(true);
 
-        ReflectionSupport.invokeMethod(preparationPhase, controller);
-        //Choose_Gods phase
-        preparationPhase.setAccessible(false);
-
-        Method nextPhase = Controller.class.getDeclaredMethod("nextPhase");
-        nextPhase.setAccessible(true);
-
-        ReflectionSupport.invokeMethod(nextPhase, controller);
-        ReflectionSupport.invokeMethod(nextPhase, controller);
-        //Real_Game phase
-        nextPhase.setAccessible(false);
+        model.nextGamePhase();  //Choose_Gods phase
+        model.nextGamePhase();  //Game_Preparation phase
+        model.nextGamePhase();  //Real_Game phase
 
         PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 C4");
         playerCommand.setPlayer(p1);
@@ -88,9 +77,9 @@ public class ControllerTest {
         Match.clearInstances();
     }
 
-    @Disabled
+
     @Test
-    public void updatePlayerCommandGodPowerTest() throws NoSuchMethodException {
+    public void updatePlayerCommandGodPowerTest() {
         Board.clearInstances();
         Match.clearInstances();
 
@@ -125,20 +114,9 @@ public class ControllerTest {
         Model model = new Model(match);
         Controller controller = new Controller(model);
 
-        Method preparationPhase = Controller.class.getDeclaredMethod("preparationPhase");
-        preparationPhase.setAccessible(true);
-
-        ReflectionSupport.invokeMethod(preparationPhase, controller);
-        //Choose_Gods phase
-        preparationPhase.setAccessible(false);
-
-        Method nextPhase = Controller.class.getDeclaredMethod("nextPhase");
-        nextPhase.setAccessible(true);
-
-        ReflectionSupport.invokeMethod(nextPhase, controller);
-        ReflectionSupport.invokeMethod(nextPhase, controller);
-        //Real_Game phase
-        nextPhase.setAccessible(false);
+        model.nextGamePhase();  //Choose_Gods phase
+        model.nextGamePhase();  //Game_Preparation phase
+        model.nextGamePhase();  //Real_Game phase
 
         PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 C4");
         playerCommand.setPlayer(p1);
@@ -188,7 +166,7 @@ public class ControllerTest {
 
 
     @Test
-    public void updatePlayerCommandImpossibleMoveAndBuildTest() throws NoSuchMethodException {
+    public void updatePlayerCommandImpossibleMoveAndBuildTest() {
         Board.clearInstances();
         Match.clearInstances();
 
@@ -224,20 +202,9 @@ public class ControllerTest {
         Model model = new Model(match);
         Controller controller = new Controller(model);
 
-        Method preparationPhase = Controller.class.getDeclaredMethod("preparationPhase");
-        preparationPhase.setAccessible(true);
-
-        ReflectionSupport.invokeMethod(preparationPhase, controller);
-        //Choose_Gods phase
-        preparationPhase.setAccessible(false);
-
-        Method nextPhase = Controller.class.getDeclaredMethod("nextPhase");
-        nextPhase.setAccessible(true);
-
-        ReflectionSupport.invokeMethod(nextPhase, controller);
-        ReflectionSupport.invokeMethod(nextPhase, controller);
-        //Real_Game phase
-        nextPhase.setAccessible(false);
+        model.nextGamePhase();  //Choose_Gods phase
+        model.nextGamePhase();  //Game_Preparation phase
+        model.nextGamePhase();  //Real_Game phase
 
         PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 C4");
         playerCommand.setPlayer(p1);
@@ -287,7 +254,7 @@ public class ControllerTest {
 
 
     @Test
-    public void updatePlayerCommandCompleteTest() throws NoSuchMethodException {
+    public void updatePlayerCommandCompleteTest() {
         Board.clearInstances();
         Match.clearInstances();
 
@@ -329,20 +296,9 @@ public class ControllerTest {
         match.nextTurn();
         assertEquals(p3, model.getCurrentPlayer());  //Roberto's turn
 
-        Method preparationPhase = Controller.class.getDeclaredMethod("preparationPhase");
-        preparationPhase.setAccessible(true);
-
-        ReflectionSupport.invokeMethod(preparationPhase, controller);
-        //Choose_Gods phase
-        preparationPhase.setAccessible(false);
-
-        Method nextPhase = Controller.class.getDeclaredMethod("nextPhase");
-        nextPhase.setAccessible(true);
-
-        ReflectionSupport.invokeMethod(nextPhase, controller);
-        ReflectionSupport.invokeMethod(nextPhase, controller);
-        //Real_Game phase
-        nextPhase.setAccessible(false);
+        model.nextGamePhase();  //Choose_Gods phase
+        model.nextGamePhase();  //Game_Preparation phase
+        model.nextGamePhase();  //Real_Game phase
 
         PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 e3");
         playerCommand.setPlayer(p3);
@@ -397,7 +353,7 @@ public class ControllerTest {
 
 
     @Test
-    public void updateGodChoiceCommandNormalTest() throws NoSuchMethodException {
+    public void updateGodChoiceCommandNormalTest() throws NoSuchFieldException, IllegalAccessException {
 
         Board.clearInstances();
         Match.clearInstances();
@@ -415,21 +371,23 @@ public class ControllerTest {
         Model model = new Model(match);
         Controller controller = new Controller(model);
 
-        Method preparationPhase = Controller.class.getDeclaredMethod("preparationPhase");
-        preparationPhase.setAccessible(true);
-
-        ReflectionSupport.invokeMethod(preparationPhase, controller);
-        //Choose_Gods phase
-        preparationPhase.setAccessible(false);
+        model.nextGamePhase();  //Choose_Gods phase
 
         List<String> chosenGods = new ArrayList<>();
         chosenGods.add("apollo");
         chosenGods.add("athena");
         chosenGods.add("hestia");
-        /*controller.prepareMatch(); // todo FIX Test with new InitialPhase
+        //controller.prepareMatch(); // todo FIX Test with new InitialPhase
         ArrayList<Player> players = new ArrayList<>(model.getPlayers());
         GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
         godChoiceCommand.setPlayer(model.getCurrentPlayer());
+        model.getCurrentPlayer().setAsGodChooser();
+
+        Field godChooserPlayer = Controller.class.getDeclaredField("godChooserPlayer");
+        godChooserPlayer.setAccessible(true);
+        godChooserPlayer.set(controller, model.getCurrentPlayer());
+        godChooserPlayer.setAccessible(false);
+
         controller.update(godChoiceCommand);
 
         List<String> godPlayer = new ArrayList<>();
@@ -452,7 +410,7 @@ public class ControllerTest {
         }
         assertEquals(1, hestia);
         assertEquals(1, apollo);
-        assertEquals(1, athena);*/
+        assertEquals(1, athena);
 
         Board.clearInstances();
         Match.clearInstances();
@@ -460,7 +418,7 @@ public class ControllerTest {
 
 
     @Test
-    public void updateGodChoiceCommand2PlayersTest() throws NoSuchMethodException {
+    public void updateGodChoiceCommand2PlayersTest() throws NoSuchFieldException, IllegalAccessException {
 
         Board.clearInstances();
         Match.clearInstances();
@@ -476,20 +434,22 @@ public class ControllerTest {
         Model model = new Model(match);
         Controller controller = new Controller(model);
 
-        Method preparationPhase = Controller.class.getDeclaredMethod("preparationPhase");
-        preparationPhase.setAccessible(true);
-
-        ReflectionSupport.invokeMethod(preparationPhase, controller);
-        //Choose_Gods phase
-        preparationPhase.setAccessible(false);
+        model.nextGamePhase();  //Choose_Gods phase
 
         List<String> chosenGods = new ArrayList<>();
         chosenGods.add("eros");
         chosenGods.add("minotaur");
-        /*controller.prepareMatch(); // todo FIX Test with new InitialPhase
+        //controller.prepareMatch(); // todo FIX Test with new InitialPhase
         ArrayList<Player> players = new ArrayList<>(model.getPlayers());
         GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
         godChoiceCommand.setPlayer(model.getCurrentPlayer());
+        model.getCurrentPlayer().setAsGodChooser();
+
+        Field godChooserPlayer = Controller.class.getDeclaredField("godChooserPlayer");
+        godChooserPlayer.setAccessible(true);
+        godChooserPlayer.set(controller, model.getCurrentPlayer());
+        godChooserPlayer.setAccessible(false);
+
         controller.update(godChoiceCommand);
 
         List<String> godPlayer = new ArrayList<>();
@@ -504,7 +464,7 @@ public class ControllerTest {
             else if(p.getGodStrategy() instanceof Minotaur && p.isGodChooser())  minotaur++;
         }
         assertEquals(1, eros);
-        assertEquals(1, minotaur);*/
+        assertEquals(1, minotaur);
 
     }
 

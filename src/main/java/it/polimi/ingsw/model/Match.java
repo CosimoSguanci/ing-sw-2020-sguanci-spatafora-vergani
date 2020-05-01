@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.exceptions.AlreadyInsidePlayerException;
 import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
 import it.polimi.ingsw.exceptions.NicknameAlreadyTakenException;
@@ -29,6 +30,7 @@ public class Match {  //tested with 100% coverage
     private int turn;
     private int playersNumber;
     private final String id;
+    private GamePhase currentGamePhase;
 
     private static final ConcurrentMap<String, Match> matchInstances = new ConcurrentHashMap<>();
 
@@ -49,7 +51,7 @@ public class Match {  //tested with 100% coverage
         this.matchBoard = Board.getInstance(String.valueOf(Thread.currentThread().getId()));
         this.turn = 0;
         this.playersNumber = playersNumber;
-
+        this.currentGamePhase = GamePhase.firstPhase();
     }
 
     /**
@@ -166,5 +168,13 @@ public class Match {  //tested with 100% coverage
      */
     public Board getMatchBoard() {
         return this.matchBoard;
+    }
+
+    public GamePhase getCurrentGamePhase() {
+        return this.currentGamePhase;
+    }
+
+    public void nextGamePhase() {
+        this.currentGamePhase = GamePhase.nextGamePhase(this.currentGamePhase);
     }
 }
