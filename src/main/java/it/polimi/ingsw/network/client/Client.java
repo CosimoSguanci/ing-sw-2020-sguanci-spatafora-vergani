@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.controller.commands.GamePreparationCommand;
 import it.polimi.ingsw.controller.commands.GodChoiceCommand;
+import it.polimi.ingsw.controller.commands.InitialInfoCommand;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
 
 import java.io.*;
@@ -51,6 +52,13 @@ public class Client {
     }
 
     public void sendGamePreparationCommand(GamePreparationCommand command) throws IOException {
+        if(objectOutputStream == null)
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        objectOutputStream.writeObject(command);
+        objectOutputStream.flush();
+    }
+
+    public void sendInitialInfoCommand(InitialInfoCommand command) throws IOException { // todo make only one method to send commands
         if(objectOutputStream == null)
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         objectOutputStream.writeObject(command);

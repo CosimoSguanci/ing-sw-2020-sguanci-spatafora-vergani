@@ -19,9 +19,9 @@ public class AthenaTest {
         Athena athena = new Athena();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
-        Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
+        Player player = new Player(UUID.randomUUID().toString(),  match);
         Worker worker = player.getWorkerFirst();
-        Player oppositePlayer = new Player(UUID.randomUUID().toString(), "oppositeNickname", match);
+        Player oppositePlayer = new Player(UUID.randomUUID().toString(),  match);
         Worker oppositeWorker = oppositePlayer.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
@@ -57,7 +57,7 @@ public class AthenaTest {
         Athena athena = new Athena();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
-        Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
+        Player player = new Player(UUID.randomUUID().toString(),  match);
         Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);

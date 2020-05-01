@@ -19,7 +19,7 @@ public class ArtemisTest {
         Artemis artemis = new Artemis();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
-        Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
+        Player player = new Player(UUID.randomUUID().toString(), match);
         Worker worker = player.getWorkerFirst();
         Worker otherWorker = player.getWorkerSecond();
 
@@ -46,7 +46,7 @@ public class ArtemisTest {
         Artemis artemis = new Artemis();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
-        Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
+        Player player = new Player(UUID.randomUUID().toString(),  match);
         Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
@@ -77,7 +77,7 @@ public class ArtemisTest {
         Artemis artemis = new Artemis();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
-        Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
+        Player player = new Player(UUID.randomUUID().toString(), match);
         Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);

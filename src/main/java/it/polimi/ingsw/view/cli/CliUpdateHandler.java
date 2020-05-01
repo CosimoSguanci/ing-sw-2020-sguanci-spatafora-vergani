@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.controller.commands.InitialInfoCommand;
 import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.view.UpdateHandler;
 
@@ -12,14 +13,11 @@ public class CliUpdateHandler implements UpdateHandler {
 
     public void handle(MatchStartedUpdate update) {
         cliInstance.printBoard(update.board);
-        cliInstance.setEnableGamePreparation(false);
-        cliInstance.setEnableGameCommands(true);
 
         cliInstance.print("Match Started");
     }
 
     public void handle(ChooseGodsUpdate update) {
-        cliInstance.setEnableGodChoose(true);
 
         if (update.isGodChooser) {
             cliInstance.setInitialGodChooser(true);
@@ -28,7 +26,7 @@ public class CliUpdateHandler implements UpdateHandler {
             cliInstance.setInitialGodChooser(false);
             cliInstance.setSelectableGods(update.selectableGods);
             cliInstance.print("Choose your god. Available choices are: ");
-            cliInstance.getSelectableGods().forEach(System.out::println);
+            update.selectableGods.forEach(System.out::println);
         }
     }
 
@@ -37,9 +35,12 @@ public class CliUpdateHandler implements UpdateHandler {
         cliInstance.printPlayerGods();
     }
 
+    public void handle(SelectedInitialInfoUpdate update) {
+        cliInstance.setPlayersColors(update.initialInfo);
+        cliInstance.printPlayersColors();
+    }
+
     public void handle(GamePreparationUpdate update) {
-        cliInstance.setEnableGodChoose(false);
-        cliInstance.setEnableGamePreparation(true);
         cliInstance.print("Game Preparation: place your workers ");
     }
 
@@ -63,6 +64,24 @@ public class CliUpdateHandler implements UpdateHandler {
         }
     }
 
+    public void handle(GamePhaseChangedUpdate update) {
+        cliInstance.setCurrentGamePhase(update.newGamePhase);
+    }
+
+    public void handle(InitialInfoUpdate update) {
+       cliInstance.print("Type your Nickname and color separated by a space");
+
+       if(!update.selectedNicknames.isEmpty()) {
+           cliInstance.print("Nicknames already taken are: ");
+           update.selectedNicknames.forEach(System.out::println);
+       }
+
+       cliInstance.setSelectedNicknames(update.selectedNicknames);
+       cliInstance.print("Available colors are: ");
+       update.selectableColors.forEach(System.out::println);
+       cliInstance.setSelectableColors(update.selectableColors);
+    }
+
     public void handle(PlayerUpdate update) {
         cliInstance.forwardNotify(update);
     }
@@ -70,5 +89,7 @@ public class CliUpdateHandler implements UpdateHandler {
     public void handle(TurnUpdate update) {
         cliInstance.forwardNotify(update);
     }
+
+
 }
 

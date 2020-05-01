@@ -18,8 +18,8 @@ public class ModelTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Model model = new Model(match);
-        Player p1 = new Player("Marco", "mc", match);
-        Player p2 = new Player("Alessandro", "ale", match);
+        Player p1 = new Player("Marco",  match);
+        Player p2 = new Player("Alessandro",  match);
         try{
             match.addPlayer(p1);
             match.addPlayer(p2);
@@ -50,9 +50,9 @@ public class ModelTest {
 
         assertEquals(board, model.getBoard());
 
-        Player p1 = new Player("Andrea", "and", match);
-        Player p2 = new Player("Cosimo", "cosimo", match);
-        Player p3 = new Player("Roberto", "rb", match);
+        Player p1 = new Player("Andrea",  match);
+        Player p2 = new Player("Cosimo",  match);
+        Player p3 = new Player("Roberto",  match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         match.addPlayer(p3);
@@ -69,9 +69,9 @@ public class ModelTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Model model = new Model(match);
-        Player p1 = new Player("Roberto", "robe", match);
-        Player p2 = new Player("Cosimo", "cos", match);
-        Player p3 = new Player("Andrea", "andmar", match);
+        Player p1 = new Player("Roberto",  match);
+        Player p2 = new Player("Cosimo",  match);
+        Player p3 = new Player("Andrea",  match);
         try{
             match.addPlayer(p1);
             match.addPlayer(p2);
@@ -98,21 +98,21 @@ public class ModelTest {
         Match match = Match.getInstance(key, playersNum);
         Model model = new Model(match);
 
-        Player p1 = new Player("Andrea", "and", match);
-        Player p2 = new Player("Cosimo", "cosimo", match);
-        Player p3 = new Player("Roberto", "rob", match);
+        Player p1 = new Player("Andrea",  match);
+        Player p2 = new Player("Cosimo",  match);
+        Player p3 = new Player("Roberto",  match);
         ArrayList<Player> players = new ArrayList<>();
 
         match.addPlayer(p1);
         players.add(p1);
-        assertEquals(players, new ArrayList(model.getPlayers()));
+        assertEquals(players, new ArrayList<>(model.getPlayers()));
 
         match.addPlayer(p2);
         players.add(p2);
-        assertEquals(players, new ArrayList(model.getPlayers()));
+        assertEquals(players, new ArrayList<>(model.getPlayers()));
 
         match.addPlayer(p3);
         players.add(p3);
-        assertEquals(players, new ArrayList(model.getPlayers()));
+        assertEquals(players, new ArrayList<>(model.getPlayers()));
     }
 }

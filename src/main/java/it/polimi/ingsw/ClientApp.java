@@ -8,8 +8,7 @@ import it.polimi.ingsw.view.cli.Cli;
 
 import java.io.IOException;
 
-public class ClientApp
-{
+public class ClientApp {
     public static void main(String[] args) {
         try {
 

@@ -13,7 +13,7 @@ import it.polimi.ingsw.model.gods.GodStrategy;
  */
 public class Player {
     public final String ID;
-    public final String nickname;
+    private String nickname;
     private PrintableColour color;
     private transient Worker workerFirst; // circular dependency
     private transient Worker workerSecond;
@@ -25,9 +25,8 @@ public class Player {
      * This is the builder of the class. When a Player is created its id, nickname and
      * the match he is enrolled in are set.
      */
-    public Player(String id, String nickname, Match match) {
+    public Player(String id, Match match) {
         this.ID = id;
-        this.nickname = nickname;
         this.match = match;
 
         this.workerFirst = new Worker(this, match.getMatchBoard());
@@ -70,14 +69,6 @@ public class Player {
         return this.workerFirst;
     }
 
-    /**
-     * This setter method allows players to set the first of their workers.
-     *
-     * @param firstWorker is the first worker chosen from a Player at the beginning of the match
-     */
-   /* public void setWorkerFirst(Worker firstWorker) {
-        this.workerFirst = firstWorker;
-    }*/
 
     /**
      * This getter method returns a reference to the second worker the player has chosen.
@@ -88,14 +79,6 @@ public class Player {
         return this.workerSecond;
     }
 
-    /**
-     * This setter method allows players to set the second of their workers.
-     *
-     * @param secondWorker is the second worker chosen from a Player at the beginning of the match
-     */
-    /*public void setWorkerSecond(Worker secondWorker) {
-        this.workerSecond = secondWorker;
-    }*/
 
     /**
      * This setter method allows players to set the GodStrategy associated to them.
@@ -113,5 +96,13 @@ public class Player {
      */
     public GodStrategy getGodStrategy() {
         return this.godStrategy;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getNickname() {
+        return this.nickname;
     }
 }

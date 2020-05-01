@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.client.controller;
 
+import it.polimi.ingsw.controller.commands.InitialInfoCommand;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.controller.commands.GamePreparationCommand;
 import it.polimi.ingsw.controller.commands.GodChoiceCommand;
@@ -58,6 +59,14 @@ public class Controller implements Observer<Object> {
                 GamePreparationCommand gamePreparationCommand = (GamePreparationCommand) message;
                 gamePreparationCommand.setPlayerID(clientPlayerID);
                 client.sendGamePreparationCommand(gamePreparationCommand);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (message instanceof InitialInfoCommand) {
+            try {
+                InitialInfoCommand initialInfoCommand = (InitialInfoCommand) message;
+                initialInfoCommand.setPlayerID(clientPlayerID);
+                client.sendInitialInfoCommand(initialInfoCommand);
             } catch (Exception e) {
                 e.printStackTrace();
             }

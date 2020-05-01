@@ -1,9 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.controller.commands.Command;
-import it.polimi.ingsw.controller.commands.GamePreparationCommand;
-import it.polimi.ingsw.controller.commands.GodChoiceCommand;
-import it.polimi.ingsw.controller.commands.PlayerCommand;
+import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
 import it.polimi.ingsw.exceptions.WrongGamePhaseException;
 import it.polimi.ingsw.exceptions.WrongPlayerException;
@@ -11,9 +8,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.observer.Observer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 /**
@@ -35,6 +30,8 @@ public class Controller implements Observer<Command> {
     private Model model; // todo handle attribute visibility and immutability
     private Player godChooserPlayer;
     private List<String> selectableGods;
+    private List<String> selectedNicknames;
+    private List<PrintableColour> selectableColors;
     private GamePhase currentGamePhase;
     private CommandHandler commandHandler;
 
@@ -80,6 +77,55 @@ public class Controller implements Observer<Command> {
         }
     }
 
+    void handleInitialInfoCommand(InitialInfoCommand initialInfoCommand) {
+
+
+        if(!initialInfoCommand.getPlayer().equals(model.getCurrentPlayer())) {
+            throw new WrongPlayerException();
+        }
+
+
+        String nickname = initialInfoCommand.nickname;
+
+        if(selectedNicknames.contains(nickname)) {
+            // exception
+        }
+
+
+        PrintableColour color = initialInfoCommand.color;
+
+        if(!selectableColors.contains(color)) {
+            // exception
+        }
+
+        model.getCurrentPlayer().setNickname(nickname);
+        model.getCurrentPlayer().setColor(color);
+
+        selectedNicknames.add(nickname); // todo additional checks on server about nickname, colors, etc
+        selectableColors.remove(color);
+
+        model.nextTurn();
+
+
+        if(!model.getCurrentPlayer().equals(godChooserPlayer)) { // here getCurrentPlayer() is who just chose the info
+            model.initialInfoUpdate(model.getCurrentPlayer(), selectedNicknames, selectableColors);
+        }
+        else { // all the players chose the info
+
+
+            HashMap<String, PrintableColour> initialInfo = new HashMap<>();
+
+            model.getPlayers().forEach((player) -> {
+                initialInfo.put(player.getNickname(), player.getColor());
+            });
+
+            model.selectedInitialInfoUpdate(initialInfo);
+
+            godChoosePhase();
+
+        }
+    }
+
     void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {
        List<String> chosenGods = godChoiceCommand.getChosenGods();
        boolean isGodChooser = godChoiceCommand.isGodChooser();
@@ -109,7 +155,7 @@ public class Controller implements Observer<Command> {
            HashMap<String, String> selectedGods = new HashMap<>();
 
            model.getPlayers().forEach((player) -> {
-               selectedGods.put(player.nickname, player.getGodStrategy().getGodInfo().get("name"));
+               selectedGods.put(player.getNickname(), player.getGodStrategy().getGodInfo().get("name"));
            });
 
            model.selectedGodsUpdate(selectedGods);
@@ -138,7 +184,10 @@ public class Controller implements Observer<Command> {
             if(currentPlayer.equals(godChooserPlayer)) { // Game Preparation Done
                 startMatch();
             } else {
-                gamePreparation();
+                //gamePreparation();
+
+                model.boardUpdate();
+                model.gamePreparationUpdate(model.getCurrentPlayer());
             }
 
         }
@@ -275,36 +324,53 @@ public class Controller implements Observer<Command> {
         return model.getBoard().canBuild(movedWorker);
     }
 
-    public void prepareMatch() {
+    public void initialPhase() {
+
+        currentGamePhase = GamePhase.firstPhase();
+        model.gamePhaseChangedUpdate(currentGamePhase);
+
         List<Player> playerList = model.getPlayers();
         int initialTurn = new Random().nextInt((playerList.size()));
-        currentGamePhase = GamePhase.firstPhase();
         godChooserPlayer = playerList.get(initialTurn);
         godChooserPlayer.setAsGodChooser();
         model.setInitialTurn(initialTurn);
+
+        selectedNicknames = new ArrayList<>();
+        selectableColors = PrintableColour.getColorList();
+        model.initialInfoUpdate(godChooserPlayer, selectedNicknames, selectableColors);
+
+    }
+
+    private void godChoosePhase() {
+        currentGamePhase = GamePhase.nextGamePhase(currentGamePhase);
+        model.gamePhaseChangedUpdate(currentGamePhase);
         model.chooseGodsUpdate(godChooserPlayer, null);
     }
 
     private void gamePreparation() {
-        try {
+        /*try {
             nextPhase();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
+        currentGamePhase = GamePhase.nextGamePhase(currentGamePhase);
+        model.gamePhaseChangedUpdate(currentGamePhase);
         model.boardUpdate();
         model.gamePreparationUpdate(model.getCurrentPlayer());
     }
 
     private void startMatch() {
-        try {
+        /*try {
             nextPhase();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
+        currentGamePhase = GamePhase.nextGamePhase(currentGamePhase);
+        model.gamePhaseChangedUpdate(currentGamePhase);
         model.matchStartedUpdate();
     }
 
-    private void nextPhase() throws Exception {
+    /*private void nextPhase() throws Exception {
         if (this.currentGamePhase == GamePhase.CHOOSE_GODS) {
             this.currentGamePhase = GamePhase.GAME_PREPARATION;
         }
@@ -314,5 +380,5 @@ public class Controller implements Observer<Command> {
         else{
             throw new Exception();  //TODO decide what to do with this exception
         }
-    }
+    }*/
 }

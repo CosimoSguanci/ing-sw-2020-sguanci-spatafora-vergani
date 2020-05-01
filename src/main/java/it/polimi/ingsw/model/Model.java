@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.controller.commands.CommandType;
 import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.observer.Observable;
@@ -53,6 +54,16 @@ public class Model extends Observable<Update> {
         match.setInitialTurn(initialTurn);
     }
 
+    public void gamePhaseChangedUpdate(GamePhase newGamePhase) {
+        GamePhaseChangedUpdate gamePhaseChangedUpdate = new GamePhaseChangedUpdate(newGamePhase);
+        notify(gamePhaseChangedUpdate);
+    }
+
+    public void initialInfoUpdate(Player player, List<String> selectedNicknames, List<PrintableColour> selectableColors) {
+        InitialInfoUpdate initialInfoUpdate = new InitialInfoUpdate(player.ID, selectedNicknames, selectableColors);
+        notify(initialInfoUpdate);
+    }
+
     public void reportError(Player player, CommandType commandType) {
         ErrorUpdate errorUpdate = new ErrorUpdate(player.ID, commandType);
         notify(errorUpdate);
@@ -66,6 +77,11 @@ public class Model extends Observable<Update> {
     public void chooseGodsUpdate(Player player, List<String> selectableGods) {
         ChooseGodsUpdate chooseGodsUpdate = new ChooseGodsUpdate(player.ID, player.isGodChooser(), selectableGods);
         notify(chooseGodsUpdate);
+    }
+
+    public void selectedInitialInfoUpdate(Map<String, PrintableColour> initialInfo) {
+        SelectedInitialInfoUpdate selectedInitialInfoUpdate = new SelectedInitialInfoUpdate(initialInfo);
+        notify(selectedInitialInfoUpdate);
     }
 
     public void selectedGodsUpdate(Map<String, String> selectedGods) {

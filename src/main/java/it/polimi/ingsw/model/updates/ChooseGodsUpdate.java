@@ -7,7 +7,7 @@ import java.util.List;
 public class ChooseGodsUpdate extends PlayerSpecificUpdate {
 
     public final boolean isGodChooser;
-    public final List<String> selectableGods;
+    public final List<String> selectableGods; // Gods instead of strings?
 
     public ChooseGodsUpdate(String playerID, boolean isGodChooser, List<String> selectableGods) {
         super(playerID);

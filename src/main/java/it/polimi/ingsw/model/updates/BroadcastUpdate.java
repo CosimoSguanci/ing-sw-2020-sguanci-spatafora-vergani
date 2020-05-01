@@ -12,4 +12,5 @@ public abstract class BroadcastUpdate extends Update implements Serializable {
     BroadcastUpdate(String board) {
         this.board = board;
     }
+
 }

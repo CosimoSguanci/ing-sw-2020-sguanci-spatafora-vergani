@@ -1,9 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.controller.commands.Command;
-import it.polimi.ingsw.controller.commands.GamePreparationCommand;
-import it.polimi.ingsw.controller.commands.GodChoiceCommand;
-import it.polimi.ingsw.controller.commands.PlayerCommand;
+import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.exceptions.WrongGamePhaseException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
@@ -14,6 +11,15 @@ class CommandHandlerImpl implements CommandHandler {
 
     CommandHandlerImpl(Controller controllerInstance) {
         this.controllerInstance = controllerInstance;
+    }
+
+    public void handle(InitialInfoCommand command) {
+        if (controllerInstance.getCurrentGamePhase() == GamePhase.INITIAL_INFO) {
+            setCommandPlayerInstance(command);
+            controllerInstance.handleInitialInfoCommand(command);
+        } else {
+            throw new WrongGamePhaseException();
+        }
     }
 
     public void handle(PlayerCommand command) {

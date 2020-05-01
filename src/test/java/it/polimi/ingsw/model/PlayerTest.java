@@ -19,7 +19,7 @@ public class PlayerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player instanceTest = new Player("Roberto", "RobS", match);
+        Player instanceTest = new Player("Roberto",  match);
         PrintableColour colorTest = PrintableColour.GREEN;
         instanceTest.setColor(colorTest);
         assertEquals(PrintableColour.GREEN, instanceTest.getColor());
@@ -33,7 +33,7 @@ public class PlayerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player instanceTest = new Player("Roberto", "RobS", match);
+        Player instanceTest = new Player("Roberto",  match);
         instanceTest.setAsGodChooser();
         assertTrue(instanceTest.isGodChooser());
         System.out.println("Test successfully completed.");
@@ -47,7 +47,7 @@ public class PlayerTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
-        Player instancePlayerTest = new Player("Roberto", "RobS", match);
+        Player instancePlayerTest = new Player("Roberto",  match);
         Worker instanceWorkerTest = instancePlayerTest.getWorkerFirst();
         assertEquals(instanceWorkerTest, instancePlayerTest.getWorkerFirst());
 
@@ -62,7 +62,7 @@ public class PlayerTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
-        Player instancePlayerTest = new Player("Roberto", "RobS", match);
+        Player instancePlayerTest = new Player("Roberto",  match);
         Worker instanceWorkerTest = instancePlayerTest.getWorkerSecond();
         assertEquals(instanceWorkerTest, instancePlayerTest.getWorkerSecond());
 
@@ -76,7 +76,7 @@ public class PlayerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player instancePlayerTest = new Player("Roberto", "RobS", match);
+        Player instancePlayerTest = new Player("Roberto",  match);
 
         GodStrategy instanceGodTest = new Apollo();
         instancePlayerTest.setGodStrategy(instanceGodTest);

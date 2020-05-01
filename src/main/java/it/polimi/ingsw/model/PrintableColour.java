@@ -1,21 +1,28 @@
 package it.polimi.ingsw.model;
 
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public enum PrintableColour {
-    RED("red"), GREEN("green"), BLUE("blue");
+    RED, GREEN, BLUE;
+
     public static final String RESET = "\u001B[0m";
 
-    private String colour;
-
-    PrintableColour(String colour) {
-        this.colour = colour;
+    public static boolean isValidColor(String colour) {
+        try {
+            Enum.valueOf(PrintableColour.class, colour.toUpperCase());
+            return true;
+        } catch(IllegalArgumentException e) {
+            return false;
+        }
     }
 
-    public String getColour() {
-        return this.colour;
-    }
-
-    @Override
-    public String toString() {
-        return colour;
+    public static List<PrintableColour> getColorList() {
+        ArrayList<PrintableColour> colors = new ArrayList<>();
+        Collections.addAll(colors, PrintableColour.values());
+        return colors;
     }
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.cli;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.PrintableColour;
@@ -17,20 +18,29 @@ import it.polimi.ingsw.view.UpdateHandler;
 
 import java.io.PrintStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Cli extends Observable<Object> implements Observer<Update> {
     private Client client;
-    private String nickname;
     private int playersNum;
     private Scanner stdin;
     private PrintStream stdout;
-    private boolean enableGodChoose = false;
+
+    /*private boolean enableGodChoose = false; // TODO Put currentGamePhase in common superclass with GUI
     private boolean isInitialGodChooser = false;
     private boolean enableGamePreparation = false;
-    private boolean enableGameCommands = false;
+    private boolean enableGameCommands = false;*/
+
+    private GamePhase currentGamePhase;
+
+    private List<String> selectedNicknames;
+    private List<PrintableColour> selectableColors;
+
+    private boolean isInitialGodChooser = false;
 
     private List<String> selectableGods;
     private Map<String, String> playersGods;
+    private Map<String, PrintableColour> playersColors;
 
     private UpdateHandler cliUpdateHandler; //CliUpdateHandler
 
@@ -53,9 +63,6 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
         try {
 
-            print("Type a nickname: ");
-            nickname = stdin.nextLine();
-            client.sendString(nickname);
 
             do {
 
@@ -89,7 +96,9 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         String command;
 
         while (true) {
-            command = stdin.nextLine().toLowerCase();
+            //command = stdin.nextLine().toLowerCase();
+
+            command = stdin.nextLine();
 
             String[] splitCommand = command.split("\\s+");
 
@@ -124,7 +133,37 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     }
                     print("Quitting...");
                     System.exit(0);
-                } else if (enableGodChoose && isInitialGodChooser) {
+                }
+                else if (currentGamePhase == GamePhase.INITIAL_INFO) {
+                    if (CommandType.parseCommandType(splitCommand[0]) != CommandType.PICK || splitCommand.length != 3) {
+                        throw new BadCommandException();
+                    }
+
+                    String nickname = splitCommand[1];
+
+                    if (selectedNicknames.stream().map(String::toLowerCase).collect(Collectors.toList()).contains(nickname)) {
+                        print("This nickname was already taken for this match");
+                        throw new BadCommandException();
+                    }
+
+                    String color = splitCommand[2];
+
+                    if(!PrintableColour.isValidColor(color)) {
+                        print("Not a valid color");
+                        throw new BadCommandException();
+                    }
+
+                    PrintableColour actualColor = Enum.valueOf(PrintableColour.class, color.toUpperCase());
+
+                    if(!selectableColors.contains(actualColor)) {
+                        print("Not a selectable color");
+                        throw new BadCommandException();
+                    }
+
+                    InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nickname, actualColor);
+                    notify(initialInfoCommand);
+
+                } else if (currentGamePhase == GamePhase.CHOOSE_GODS && isInitialGodChooser) {
 
                     if (CommandType.parseCommandType(splitCommand[0]) != CommandType.SELECT || splitCommand.length > playersNum + 1) {
                         throw new BadCommandException();
@@ -142,11 +181,11 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                         chosenGods.add(god);
                     }
 
-                    enableGodChoose = false;
+                    //enableGodChoose = false;
 
                     GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
                     notify(godChoiceCommand);
-                } else if (enableGodChoose) { // not initial god chooser
+                } else if (currentGamePhase == GamePhase.CHOOSE_GODS) { // but not initial god chooser
 
                     if (CommandType.parseCommandType(splitCommand[0]) != CommandType.SELECT || splitCommand.length > 2) {
                         throw new BadCommandException();
@@ -162,12 +201,12 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     selected.add(god);
                     GodChoiceCommand godChoiceCommand = new GodChoiceCommand(selected, false);
                     notify(godChoiceCommand);
-                } else if (enableGamePreparation) {
+                } else if (currentGamePhase == GamePhase.GAME_PREPARATION) {
 
                     GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput(command);
                     notify(gamePreparationCommand);
 
-                } else if (enableGameCommands) {
+                } else if (currentGamePhase == GamePhase.REAL_GAME) {
 
                     PlayerCommand playerCommand = PlayerCommand.parseInput(command);
                     notify(playerCommand);
@@ -186,17 +225,6 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         notify(update);
     }
 
-    void setEnableGamePreparation(boolean value) {
-        this.enableGamePreparation = value;
-    }
-
-    void setEnableGameCommands(boolean value) {
-        this.enableGameCommands = value;
-    }
-
-    void setEnableGodChoose(boolean value) {
-        this.enableGodChoose = value;
-    }
 
     void setInitialGodChooser(boolean value) {
         this.isInitialGodChooser = value;
@@ -206,8 +234,12 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         this.selectableGods = selectableGods;
     }
 
-    List<String> getSelectableGods() {
-        return this.selectableGods;
+    void setSelectedNicknames(List<String> selectedNicknames) {
+        this.selectedNicknames = selectedNicknames;
+    }
+
+    void setSelectableColors(List<PrintableColour> selectableColors) {
+        this.selectableColors = selectableColors;
     }
 
     int getPlayersNum() {
@@ -216,6 +248,30 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
     void setPlayersGods(Map<String, String> playersGods) {
         this.playersGods = playersGods;
+    }
+
+    void setPlayersColors(Map<String, PrintableColour> playersColors) {
+        this.playersColors = playersColors;
+    }
+
+
+    void setCurrentGamePhase(GamePhase newGamePhase) {
+        this.currentGamePhase = newGamePhase;
+
+        switch(this.currentGamePhase) {
+            case INITIAL_INFO:
+                print("Players are choosing nickname and color...");
+                break;
+            case CHOOSE_GODS:
+                print("Players are choosing their gods...");
+                break;
+            case GAME_PREPARATION:
+                print("Players are placing their Workers...");
+                break;
+            case REAL_GAME:
+                // real game
+                break;
+        }
     }
 
 
@@ -229,6 +285,10 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
         Gson gson = builder.create();
         Board gameBoard = gson.fromJson(board, Board.class);
+
+        print("");
+        print("");
+        print("");
 
         for(int i = 0; i < 5; i++) {    //Single cell printed as 5x5: +---+ board; " "/"1"/"2" if worker is inside; BlockType specified.
             System.out.println("+ - - - + + - - - + + - - - + + - - - + + - - - +");
@@ -255,7 +315,10 @@ public class Cli extends Observable<Object> implements Observer<Update> {
             System.out.println("+ - - - + + - - - + + - - - + + - - - + + - - - +");
 
         }
-        //print(board);
+
+        print("");
+        print("");
+        print("");
     }
 
     private String convertBlockTypeToUnicode(BlockType level) {
@@ -407,6 +470,12 @@ public class Cli extends Observable<Object> implements Observer<Update> {
     void printPlayerGods() {
         this.playersGods.keySet().forEach((key) -> {
             print(key + " has " + playersGods.get(key));
+        });
+    }
+
+    void printPlayersColors() {
+        this.playersColors.keySet().forEach((key) -> {
+            print(key + " is " + playersColors.get(key));
         });
     }
 

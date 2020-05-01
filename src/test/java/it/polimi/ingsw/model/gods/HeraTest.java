@@ -19,7 +19,7 @@ public class HeraTest {
         Hera hera = new Hera();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
-        Player player = new Player(UUID.randomUUID().toString(), "nickname", match);
+        Player player = new Player(UUID.randomUUID().toString(), match);
         Worker opponentWorker = player.getWorkerFirst();
 
         // Pick a god that does not have additional Win Conditions for opponent...

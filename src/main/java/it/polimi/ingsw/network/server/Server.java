@@ -33,10 +33,10 @@ public class Server {
     private Map<String, ClientHandler> waitingConnectionTwoPlayers = new HashMap<>();
     private Map<String, ClientHandler> waitingConnectionThreePlayers = new HashMap<>();
 
-    public synchronized void lobby(ClientHandler c, String nickname, int playersNum) {
+    public synchronized void lobby(ClientHandler c, String clientId, int playersNum) {
         Map<String, ClientHandler> waitingConnection = playersNum == 2 ? waitingConnectionTwoPlayers : waitingConnectionThreePlayers;
 
-        waitingConnection.put(nickname, c);
+        waitingConnection.put(clientId, c);
 
         if (waitingConnection.size() == playersNum) {
 
@@ -48,11 +48,10 @@ public class Server {
 
                 List<String> keys = new ArrayList<>(waitingConnection.keySet());
 
-
                 int i = 0;
                 for (String key : keys) {
                     ClientHandler clientHandler = waitingConnection.get(key);
-                    Player player = new Player(UUID.randomUUID().toString(), keys.get(i++), match);
+                    Player player = new Player(keys.get(i++), match);
                     match.addPlayer(player);
                     RemoteView remoteView = new RemoteView(player, clientHandler);
                     model.addObserver(remoteView);
@@ -60,7 +59,7 @@ public class Server {
                     model.playerUpdate(player);
                 }
 
-                controller.prepareMatch();
+                controller.initialPhase();
 
             } catch (Exception e) {
                 e.printStackTrace();

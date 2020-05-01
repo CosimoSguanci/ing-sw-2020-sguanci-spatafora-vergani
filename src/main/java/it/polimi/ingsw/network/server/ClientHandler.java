@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 public class ClientHandler extends Observable<Command> implements Runnable, Observer<Command> {
 
@@ -37,19 +38,19 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
     @Override
     public void run() {
         DataInputStream input;
-        String nickname;
+        String clientID;
         int playersNum;
         try {
 
             input = new DataInputStream(clientSocket.getInputStream());
-            nickname = input.readUTF();
             playersNum = input.readInt();
+            clientID = UUID.randomUUID().toString();
 
             CommandListener commandListener = new CommandListener(clientSocket);
             new Thread(commandListener).start();
             commandListener.addObserver(this);
 
-            server.lobby(this, nickname, playersNum);
+            server.lobby(this, clientID, playersNum);
 
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error!" + e.getMessage());

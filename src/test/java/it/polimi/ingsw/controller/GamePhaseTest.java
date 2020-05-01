@@ -10,6 +10,6 @@ class GamePhaseTest {
     void firstPhase() {
         GamePhase gamePhase;
         gamePhase = GamePhase.firstPhase();
-        assertEquals(GamePhase.CHOOSE_GODS, gamePhase);
+        assertEquals(GamePhase.INITIAL_INFO, gamePhase);
     }
 }

@@ -26,7 +26,7 @@ class CliTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p = new Player("Andrea", "and", match);
+        Player p = new Player("Andrea",  match);
         match.addPlayer(p);
         Client client = null;
         try {
