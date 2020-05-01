@@ -18,7 +18,7 @@ public class RemoteView extends View {
 
     }
 
-    private ClientHandler clientHandler;
+    private final ClientHandler clientHandler;
 
     public RemoteView(Player player, ClientHandler clientHandler) {
         super(player);

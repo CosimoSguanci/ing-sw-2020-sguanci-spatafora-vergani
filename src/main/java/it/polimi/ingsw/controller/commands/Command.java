@@ -24,8 +24,14 @@ public abstract class Command implements Serializable {
     protected final static String ROW_KEY = "row";
     protected final static String COL_KEY = "col";
 
+    public final CommandType commandType;
     protected transient Player player;
     protected String playerID;
+
+    protected Command(CommandType commandType) {
+        this.commandType = commandType;
+    }
+
 
     public void setPlayer(Player player) {
         this.player = player;

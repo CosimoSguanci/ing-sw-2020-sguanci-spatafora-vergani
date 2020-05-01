@@ -27,13 +27,13 @@ import java.util.*;
  * @author Roberto Spatafora
  */
 public class Controller implements Observer<Command> {
-    private Model model; // todo handle attribute visibility and immutability
+    private final Model model; // todo handle attribute visibility and immutability
     private Player godChooserPlayer;
     private List<String> selectableGods;
     private List<String> selectedNicknames;
     private List<PrintableColour> selectableColors;
     private GamePhase currentGamePhase;
-    private CommandHandler commandHandler;
+    private final CommandHandler commandHandler;
 
     /**
      * The constructor creates an instance of Controller class. This class
@@ -70,9 +70,9 @@ public class Controller implements Observer<Command> {
     public void update(Command command) {
         try {
             command.handleCommand(this.commandHandler);
-        } catch(WrongGamePhaseException e) {
+        } catch (WrongGamePhaseException e) {
             // todo handle
-        } catch(WrongPlayerException e) {
+        } catch (WrongPlayerException e) {
             // todo handle
         }
     }
@@ -80,21 +80,21 @@ public class Controller implements Observer<Command> {
     void handleInitialInfoCommand(InitialInfoCommand initialInfoCommand) {
 
 
-        if(!initialInfoCommand.getPlayer().equals(model.getCurrentPlayer())) {
+        if (!initialInfoCommand.getPlayer().equals(model.getCurrentPlayer())) {
             throw new WrongPlayerException();
         }
 
 
         String nickname = initialInfoCommand.nickname;
 
-        if(selectedNicknames.contains(nickname)) {
+        if (selectedNicknames.contains(nickname)) {
             // exception
         }
 
 
         PrintableColour color = initialInfoCommand.color;
 
-        if(!selectableColors.contains(color)) {
+        if (!selectableColors.contains(color)) {
             // exception
         }
 
@@ -104,13 +104,12 @@ public class Controller implements Observer<Command> {
         selectedNicknames.add(nickname); // todo additional checks on server about nickname, colors, etc
         selectableColors.remove(color);
 
-        model.nextTurn();
+        model.endTurn();
 
 
-        if(!model.getCurrentPlayer().equals(godChooserPlayer)) { // here getCurrentPlayer() is who just chose the info
+        if (!model.getCurrentPlayer().equals(godChooserPlayer)) { // here getCurrentPlayer() is who just chose the info
             model.initialInfoUpdate(model.getCurrentPlayer(), selectedNicknames, selectableColors);
-        }
-        else { // all the players chose the info
+        } else { // all the players chose the info
 
 
             HashMap<String, PrintableColour> initialInfo = new HashMap<>();
@@ -127,43 +126,42 @@ public class Controller implements Observer<Command> {
     }
 
     void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {
-       List<String> chosenGods = godChoiceCommand.getChosenGods();
-       boolean isGodChooser = godChoiceCommand.isGodChooser();
+        List<String> chosenGods = godChoiceCommand.getChosenGods();
+        boolean isGodChooser = godChoiceCommand.isGodChooser();
 
-       if(!godChoiceCommand.getPlayer().equals(model.getCurrentPlayer())) {
-           throw new WrongPlayerException();
-       }
+        if (!godChoiceCommand.getPlayer().equals(model.getCurrentPlayer())) {
+            throw new WrongPlayerException();
+        }
 
-       if(isGodChooser) {
-           this.selectableGods = chosenGods;
+        if (isGodChooser) {
+            this.selectableGods = chosenGods;
 
-       } else {
+        } else {
             String god = chosenGods.get(0);
             model.getCurrentPlayer().setGodStrategy(GodStrategy.instantiateGod(god));
             this.selectableGods.remove(god);
-       }
+        }
 
-        model.nextTurn();
+        model.endTurn();
 
-       if(!model.getCurrentPlayer().equals(godChooserPlayer)) {
+        if (!model.getCurrentPlayer().equals(godChooserPlayer)) {
             model.chooseGodsUpdate(model.getCurrentPlayer(), selectableGods);
-       }
-       else {
-           // The God Chooser picks the last gods
-           String god = selectableGods.get(0);
-           model.getCurrentPlayer().setGodStrategy(GodStrategy.instantiateGod(god));
-           HashMap<String, String> selectedGods = new HashMap<>();
+        } else {
+            // The God Chooser picks the last gods
+            String god = selectableGods.get(0);
+            model.getCurrentPlayer().setGodStrategy(GodStrategy.instantiateGod(god));
+            HashMap<String, String> selectedGods = new HashMap<>();
 
-           model.getPlayers().forEach((player) -> {
-               selectedGods.put(player.getNickname(), player.getGodStrategy().getGodInfo().get("name"));
-           });
+            model.getPlayers().forEach((player) -> {
+                selectedGods.put(player.getNickname(), player.getGodStrategy().getGodInfo().get("name"));
+            });
 
-           model.selectedGodsUpdate(selectedGods);
-           model.nextTurn();
+            model.selectedGodsUpdate(selectedGods);
+            model.endTurn(); // TODO OK endTurn here?
 
-           gamePreparation();
+            gamePreparation();
 
-       }
+        }
 
     }
 
@@ -174,14 +172,14 @@ public class Controller implements Observer<Command> {
             throw new WrongPlayerException();
         } else {
 
-            if(currentPlayer.getGodStrategy().checkGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell())) {
+            if (currentPlayer.getGodStrategy().checkGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell())) {
                 currentPlayer.getGodStrategy().executeGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell());
             }
             // todo else
 
-            model.nextTurn();
+            model.endTurn();
 
-            if(currentPlayer.equals(godChooserPlayer)) { // Game Preparation Done
+            if (currentPlayer.equals(godChooserPlayer)) { // Game Preparation Done
                 startMatch();
             } else {
                 //gamePreparation();
@@ -220,7 +218,7 @@ public class Controller implements Observer<Command> {
 
 
                         // if !hasWon check if the new currentPlayer can build
-                        if(!currentPlayerCanBuild(playerCommand.getWorker())) {
+                        if (!currentPlayerCanBuild(playerCommand.getWorker())) {
                             // lose
                         }
 
@@ -244,11 +242,11 @@ public class Controller implements Observer<Command> {
                     break;
                 case END_TURN:
 
-                    if(currentPlayer.getGodStrategy().checkEndTurn()) {
+                    if (currentPlayer.getGodStrategy().checkEndTurn()) {
                         model.endTurn();
 
                         // check if the new currentPlayer can move
-                        if(!currentPlayerCanMove()) {
+                        if (!currentPlayerCanMove()) {
                             // lose -> TODO Remove player from list and workers from board
                         }
                     } else {
@@ -324,6 +322,7 @@ public class Controller implements Observer<Command> {
         return model.getBoard().canBuild(movedWorker);
     }
 
+    // Entry point from Server class
     public void initialPhase() {
 
         currentGamePhase = GamePhase.firstPhase();
@@ -334,6 +333,8 @@ public class Controller implements Observer<Command> {
         godChooserPlayer = playerList.get(initialTurn);
         godChooserPlayer.setAsGodChooser();
         model.setInitialTurn(initialTurn);
+
+        model.turnUpdate(model.getCurrentPlayer());
 
         selectedNicknames = new ArrayList<>();
         selectableColors = PrintableColour.getColorList();

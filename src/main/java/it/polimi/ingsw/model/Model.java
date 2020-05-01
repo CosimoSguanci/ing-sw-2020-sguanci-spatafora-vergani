@@ -41,14 +41,10 @@ public class Model extends Observable<Update> {
      *
      */
     public void endTurn() {
-        nextTurn();
-        TurnUpdate turnUpdate = new TurnUpdate(match.getCurrentPlayer().ID);
-        notify(turnUpdate);
+        match.nextTurn();
+        turnUpdate(match.getCurrentPlayer());
     }
 
-    public void nextTurn() {
-        match.nextTurn();
-    }
 
     public void setInitialTurn(int initialTurn) {
         match.setInitialTurn(initialTurn);
@@ -104,5 +100,10 @@ public class Model extends Observable<Update> {
         notify(turnUpdate);
         MatchStartedUpdate matchStartedUpdate = new MatchStartedUpdate(match.getMatchBoard().toString());
         notify(matchStartedUpdate);
+    }
+
+    public void turnUpdate(Player currentPlayer) {
+        TurnUpdate turnUpdate = new TurnUpdate(currentPlayer.ID);
+        notify(turnUpdate);
     }
 }

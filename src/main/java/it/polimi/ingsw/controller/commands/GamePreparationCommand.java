@@ -24,6 +24,8 @@ public class GamePreparationCommand extends Command {
 
     public GamePreparationCommand(int workerFirstRow, int workerFirstCol, int workerSecondRow, int workerSecondCol) {
 
+        super(CommandType.PLACE); // todo PLACE -> GAME_PREP_COMMAND ?
+
         this.workerFirstRow = workerFirstRow;
         this.workerFirstCol = workerFirstCol;
 
@@ -70,7 +72,7 @@ public class GamePreparationCommand extends Command {
                 throw new BadCommandException();
             }
 
-            s = Arrays.stream(s).map(String::toLowerCase).toArray(String[]::new); // TODO Test
+            s = Arrays.stream(s).map(String::toLowerCase).toArray(String[]::new);
 
             String type = s[0];
 

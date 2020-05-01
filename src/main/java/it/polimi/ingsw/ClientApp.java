@@ -18,6 +18,7 @@ public class ClientApp {
             Cli cli = new Cli(client);
             updateListener.addObserver(cli);
             cli.addObserver(controller);
+            controller.addObserver(cli);
             cli.start();
 
         } catch(IOException e) {

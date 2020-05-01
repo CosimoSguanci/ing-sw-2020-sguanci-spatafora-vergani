@@ -43,6 +43,7 @@ public class PlayerCommand extends Command {
      * the builder sets the class' attributes to the relatives values received.
      */
     public PlayerCommand(CommandType commandType, String workerID, int row, int col, BlockType cellBlockType) {
+        super(commandType);
         this.commandType = commandType;
         this.workerID = workerID;
         this.row = row;

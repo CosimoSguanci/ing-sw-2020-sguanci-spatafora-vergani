@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 public class ErrorUpdate extends PlayerSpecificUpdate {
     public final CommandType command;
+    // todo add error type enum
 
     public ErrorUpdate(String playerID, CommandType command) {
         super(playerID);
