@@ -24,6 +24,8 @@ public class Worker {
     private transient boolean hasMoved;
     private transient boolean hasBuilt;
 
+    public final String workerType;
+
     /**
      * Worker is the builder of the class. At the moment of a worker creation a player is
      * associated to it and the relative board in which the player is playing.
@@ -31,9 +33,10 @@ public class Worker {
      * @param player indicates the player who has the control on the worker being created.
      * @param board indicates the board table in which the player is involved in.
      */
-    Worker(Player player, Board board) {
+    Worker(Player player, Board board, String workerType) {
         this.player = player;
         this.board = board;
+        this.workerType = workerType;
     }
 
     /**

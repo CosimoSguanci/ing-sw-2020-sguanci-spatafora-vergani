@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.commands.Command;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -57,7 +58,7 @@ public class ModelTest {
         match.addPlayer(p2);
         match.addPlayer(p3);
 
-        Worker w1 = new Worker(p1, board);
+        Worker w1 = new Worker(p1, board, Command.WORKER_FIRST);
         w1.setInitialPosition(4, 3);
 
         assertEquals(board, model.getBoard());

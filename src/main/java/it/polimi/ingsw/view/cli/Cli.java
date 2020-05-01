@@ -301,7 +301,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
         char rowIdentifier = 'A';
 
-        if(playerSymbol == null) {
+        if(playerSymbol == null || playerSymbol.size() < playersNum) {
             playerSymbol = mapPlayerIdToSymbol(gameBoard);
         }
 
@@ -325,7 +325,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                 if (!gameBoard.getCell(i, j).isEmpty()) {
 
                     Worker printableWorker = gameBoard.getCell(i, j).getWorker();
-                    if (printableWorker.equals(printableWorker.player.getWorkerFirst())) {
+                    if (printableWorker.workerType.equals(Command.WORKER_FIRST)) {
                         System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + playerSymbol.get(printableWorker.player.ID) + " 1" + PrintableColour.RESET);
                     } else {
                         System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + playerSymbol.get(printableWorker.player.ID) + " 2" + PrintableColour.RESET);
@@ -390,15 +390,15 @@ public class Cli extends Observable<Object> implements Observer<Update> {
     static String convertBlockTypeToUnicode(BlockType level) { // todo move to BlockType
         switch (level) {
             case GROUND:
-                return "\u2070";
+                return "0";
             case LEVEL_ONE:
-                return "\u00B9";
+                return "1";
             case LEVEL_TWO:
-                return "\u00B2";
+                return "2";
             case LEVEL_THREE:
-                return "\u00B3";
+                return "3";
             case DOME:
-                return "\u2074";
+                return "D";
             default:
                 throw new IllegalArgumentException();
         }

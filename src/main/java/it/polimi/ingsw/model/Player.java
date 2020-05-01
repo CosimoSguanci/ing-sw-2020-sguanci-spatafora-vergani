@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.commands.Command;
+import it.polimi.ingsw.controller.commands.CommandType;
 import it.polimi.ingsw.model.gods.GodStrategy;
 
 /**
@@ -29,8 +31,8 @@ public class Player {
         this.ID = id;
         this.match = match;
 
-        this.workerFirst = new Worker(this, match.getMatchBoard());
-        this.workerSecond = new Worker(this, match.getMatchBoard());
+        this.workerFirst = new Worker(this, match.getMatchBoard(), Command.WORKER_FIRST);
+        this.workerSecond = new Worker(this, match.getMatchBoard(), Command.WORKER_SECOND);
     }
 
     /**

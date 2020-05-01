@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.exceptions.CellNotEmptyException;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +21,8 @@ public class WorkerTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player testPlayer = new Player("Roberto",  match);
-        Worker testFirstWorker = new Worker(testPlayer, board);
-        Worker testSecondWorker = new Worker(testPlayer, board);
+        Worker testFirstWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
+        Worker testSecondWorker = new Worker(testPlayer, board, Command.WORKER_SECOND);
 
         testFirstWorker.setInitialPosition(0,0);
         assertEquals(board.getCell(0,0), testFirstWorker.getPosition());
@@ -39,7 +40,7 @@ public class WorkerTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player testPlayer = new Player("Roberto",  match);
-        Worker testWorker = new Worker(testPlayer, board);
+        Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing move() with a valid movement...");
 
@@ -62,7 +63,7 @@ public class WorkerTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);
         Player testPlayer = new Player("Roberto", match);
-        Worker testWorker = new Worker(testPlayer, board);
+        Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing move() with an invalid movement: an adjacent cell must be requested for movement...");
 
@@ -83,8 +84,8 @@ public class WorkerTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player testPlayer = new Player("Roberto", match);
-        Worker testWorker = new Worker(testPlayer, board);
-        Worker testOccupantWorker = new Worker(testPlayer, board);
+        Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
+        Worker testOccupantWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing move() with an invalid movement: an empty cell must be requested for movement...");
 
@@ -107,7 +108,7 @@ public class WorkerTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player testPlayer = new Player("Roberto",  match);
-        Worker testWorker = new Worker(testPlayer, board);
+        Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing move() with an invalid movement: workers can't move in a DOME...");
 
@@ -130,7 +131,7 @@ public class WorkerTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player testPlayer = new Player("Roberto",  match);
-        Worker testWorker = new Worker(testPlayer, board);
+        Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing move() with an invalid movement: workers can't move more that one level up...");
 
@@ -152,7 +153,7 @@ public class WorkerTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player testPlayer = new Player("Roberto",  match);
-        Worker testWorker = new Worker(testPlayer, board);
+        Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing build() with a valid request...");
 
@@ -216,7 +217,7 @@ public class WorkerTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player testPlayer = new Player("Roberto",  match);
-        Worker testWorker = new Worker(testPlayer, board);
+        Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing build() with an invalid movement: an adjacent cell must be requested to build in...");
 
@@ -238,8 +239,8 @@ public class WorkerTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player testPlayer = new Player("Roberto",  match);
-        Worker testWorker = new Worker(testPlayer, board);
-        Worker testSecondWorker = new Worker(testPlayer, board);
+        Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
+        Worker testSecondWorker = new Worker(testPlayer, board, Command.WORKER_SECOND);
 
         System.out.println("testing build() with an invalid movement: an empty cell must be requested to build in...");
 
@@ -261,7 +262,7 @@ public class WorkerTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = Board.getInstance(key);;
         Player testPlayer = new Player("Roberto", match);
-        Worker testWorker = new Worker(testPlayer, board);
+        Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing build() with an invalid movement: workers can't build in a dome...");
 
