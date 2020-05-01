@@ -286,39 +286,47 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         Gson gson = builder.create();
         Board gameBoard = gson.fromJson(board, Board.class);
 
-        print("");
-        print("");
-        print("");
+        //print("");
+        //print("");
+        //print("");
 
-        for(int i = 0; i < 5; i++) {    //Single cell printed as 5x5: +---+ board; " "/"1"/"2" if worker is inside; BlockType specified.
-            System.out.println("+ - - - + + - - - + + - - - + + - - - + + - - - +");
-            System.out.println("|     " + convertBlockTypeToUnicode(gameBoard.getCell(i, 0).getLevel()) + " | " +
-                               "|     " + convertBlockTypeToUnicode(gameBoard.getCell(i, 1).getLevel()) + " | " +
-                               "|     " + convertBlockTypeToUnicode(gameBoard.getCell(i, 2).getLevel()) + " | " +
-                               "|     " + convertBlockTypeToUnicode(gameBoard.getCell(i, 3).getLevel()) + " | " +
-                               "|     " + convertBlockTypeToUnicode(gameBoard.getCell(i, 4).getLevel()) + " |");
+        char rowIdentifier = 'A';
+        System.out.println("\t    1         2         3         4         5    ");
+        for (int i = 0; i < 5; i++) {    //Single cell printed as 5x5: +---+ board; " "/"1"/"2" if worker is inside; BlockType specified.
+            System.out.println("\t+  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +");
+            System.out.println("\t|        " + convertBlockTypeToUnicode(gameBoard.getCell(i, 0).getLevel()) + "  | "+
+                    " |        " + convertBlockTypeToUnicode(gameBoard.getCell(i, 1).getLevel()) + "  | " +
+                    " |        " + convertBlockTypeToUnicode(gameBoard.getCell(i, 2).getLevel()) + "  | " +
+                    " |        " + convertBlockTypeToUnicode(gameBoard.getCell(i, 3).getLevel()) + "  | " +
+                    " |        " + convertBlockTypeToUnicode(gameBoard.getCell(i, 4).getLevel()) + "  |");
 
-            for(int j = 0; j < 5; j++) {
-                System.out.print("|   " );
-                if(!gameBoard.getCell(i, j).isEmpty()) {
+            System.out.print(rowIdentifier + "\t");
+            rowIdentifier++;
+
+            for (int j = 0; j < 5; j++) {
+                System.out.print("|    ");
+                if (!gameBoard.getCell(i, j).isEmpty()) {
                     Worker printableWorker = gameBoard.getCell(i, j).getWorker();
-                    if(printableWorker.equals(printableWorker.player.getWorkerFirst())) {
-                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + "\uD83C\uDFC3\u2081\t" + PrintableColour.RESET);
-                    } else {System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + "\uD83C\uDFC3\u2082\t" + PrintableColour.RESET);}
+                    if (printableWorker.equals(printableWorker.player.getWorkerFirst())) {
+                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + " W1" + PrintableColour.RESET);
+                    } else {
+                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + " W2" + PrintableColour.RESET);
+                    }
+                } else {
+                    System.out.print("   ");
                 }
-                else {System.out.print("    ");}
-                System.out.print("| " );
+                System.out.print("    |  ");
             }
 
             System.out.println();
-            System.out.println("|       | |       | |       | |       | |       |");
-            System.out.println("+ - - - + + - - - + + - - - + + - - - + + - - - +");
+            System.out.println("\t|           |  |           |  |           |  |           |  |           |");
+            System.out.println("\t+  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +");
 
         }
 
-        print("");
-        print("");
-        print("");
+        //print("");
+        //print("");
+        //print("");
     }
 
     private String convertBlockTypeToUnicode(BlockType level) {
