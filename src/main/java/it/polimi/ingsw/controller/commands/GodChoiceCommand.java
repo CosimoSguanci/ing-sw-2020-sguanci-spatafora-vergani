@@ -9,6 +9,7 @@ public class GodChoiceCommand extends Command {
     private boolean isGodChooser;
 
     public GodChoiceCommand(List<String> chosenGods, boolean isGodChooser) {
+        super(CommandType.SELECT);
         this.chosenGods = chosenGods;
         this.isGodChooser = isGodChooser;
     }

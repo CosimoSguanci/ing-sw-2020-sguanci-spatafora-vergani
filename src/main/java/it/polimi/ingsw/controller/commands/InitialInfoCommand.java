@@ -9,6 +9,7 @@ public class InitialInfoCommand extends Command {
     public final PrintableColour color;
 
     public InitialInfoCommand(String nickname, PrintableColour color) {
+        super(CommandType.PICK);
         this.nickname = nickname;
         this.color = color;
     }

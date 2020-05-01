@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.controller.commands.InitialInfoCommand;
+import it.polimi.ingsw.model.PrintableColour;
 import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.view.UpdateHandler;
 
@@ -61,6 +62,18 @@ public class CliUpdateHandler implements UpdateHandler {
             case END_TURN:
                 cliInstance.print("You can't end your turn");
                 break;
+
+            case PICK:
+                cliInstance.print("Nickname/Color choose Error: check if it's your turn");
+                break;
+
+            case PLACE:
+                cliInstance.print("Game Preparation Error: check if it's your turn");
+                break;
+
+            case SELECT:
+                cliInstance.print("Gods Choose Error: check if it's your turn");
+                break;
         }
     }
 
@@ -78,7 +91,13 @@ public class CliUpdateHandler implements UpdateHandler {
 
        cliInstance.setSelectedNicknames(update.selectedNicknames);
        cliInstance.print("Available colors are: ");
-       update.selectableColors.forEach(System.out::println);
+
+       update.selectableColors.forEach((color) -> {
+            cliInstance.print(Cli.convertColorToAnsi(color) + color + PrintableColour.RESET);
+        });
+
+       //update.selectableColors.forEach(System.out::println);
+
        cliInstance.setSelectableColors(update.selectableColors);
     }
 

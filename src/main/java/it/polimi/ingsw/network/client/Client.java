@@ -27,11 +27,6 @@ public class Client {
         this.socketOut = new DataOutputStream(socket.getOutputStream());
     }
 
-    public void sendString(String message) throws IOException {
-        socketOut.writeUTF(message);
-        socketOut.flush();
-    }
-
     public void sendInt(int message) throws IOException {
         socketOut.writeInt(message);
         socketOut.flush();

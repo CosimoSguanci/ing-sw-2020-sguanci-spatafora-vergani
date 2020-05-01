@@ -26,10 +26,8 @@ public class Cli extends Observable<Object> implements Observer<Update> {
     private Scanner stdin;
     private PrintStream stdout;
 
-    /*private boolean enableGodChoose = false; // TODO Put currentGamePhase in common superclass with GUI
-    private boolean isInitialGodChooser = false;
-    private boolean enableGamePreparation = false;
-    private boolean enableGameCommands = false;*/
+    // TODO Put currentGamePhase in common superclass with GUI
+
 
     private GamePhase currentGamePhase;
 
@@ -42,7 +40,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
     private Map<String, String> playersGods;
     private Map<String, PrintableColour> playersColors;
 
-    private final UpdateHandler cliUpdateHandler; //CliUpdateHandler
+    private final UpdateHandler cliUpdateHandler;
 
     public Cli(Client client) {
         this.client = client;
@@ -111,7 +109,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
             }
 
             try {
-                if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 1)) {
+                if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 1)) { // todo extend help
                     print("help -> print command list and tutorial");
                     print("info <god> -> get info about a god");
                     print("build w1/w2 [letter, number] [optional: blockType {one, two, three, dome}] -> tries to build with the chosen Worker in the specified position");
@@ -163,6 +161,9 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nickname, actualColor);
                     notify(initialInfoCommand);
 
+                    print("Wait for other players to choose their nicknames and colors...");
+
+
                 } else if (currentGamePhase == GamePhase.CHOOSE_GODS && isInitialGodChooser) {
 
                     if (CommandType.parseCommandType(splitCommand[0]) != CommandType.SELECT || splitCommand.length > playersNum + 1) {
@@ -185,6 +186,9 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
                     GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
                     notify(godChoiceCommand);
+
+                    print("Wait for other players to choose their gods...");
+
                 } else if (currentGamePhase == GamePhase.CHOOSE_GODS) { // but not initial god chooser
 
                     if (CommandType.parseCommandType(splitCommand[0]) != CommandType.SELECT || splitCommand.length > 2) {
@@ -201,15 +205,23 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     selected.add(god);
                     GodChoiceCommand godChoiceCommand = new GodChoiceCommand(selected, false);
                     notify(godChoiceCommand);
+
+                    print("Wait for other players to choose their gods...");
                 } else if (currentGamePhase == GamePhase.GAME_PREPARATION) {
 
                     GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput(command);
                     notify(gamePreparationCommand);
 
+                    print("Wait for other players to place their Workers...");
+
+
                 } else if (currentGamePhase == GamePhase.REAL_GAME) {
 
                     PlayerCommand playerCommand = PlayerCommand.parseInput(command);
                     notify(playerCommand);
+
+                   // print("Wait for other players to choose their gods...");
+
 
                 } else {
                     print("Unknown Command");
@@ -224,7 +236,6 @@ public class Cli extends Observable<Object> implements Observer<Update> {
     void forwardNotify(Update update) { // forwards update to client-side Controller
         notify(update);
     }
-
 
     void setInitialGodChooser(boolean value) {
         this.isInitialGodChooser = value;
@@ -260,13 +271,13 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
         switch(this.currentGamePhase) {
             case INITIAL_INFO:
-                print("Players are choosing nickname and color...");
+                print("Players are choosing nickname and color... Wait for your turn.");
                 break;
             case CHOOSE_GODS:
-                print("Players are choosing their gods...");
+                print("Players are choosing their gods... Wait for your turn.");
                 break;
             case GAME_PREPARATION:
-                print("Players are placing their Workers...");
+                print("Players are placing their Workers... Wait for your turn.");
                 break;
             case REAL_GAME:
                 // real game
@@ -286,7 +297,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         Gson gson = builder.create();
         Board gameBoard = gson.fromJson(board, Board.class);
 
-        print("");
+        print(""); // todo use print and println
         print("");
         print("");
 
@@ -321,7 +332,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         print("");
     }
 
-    private String convertBlockTypeToUnicode(BlockType level) {
+    static String convertBlockTypeToUnicode(BlockType level) { // todo move to BlockType
         switch (level) {
             case GROUND:
                 return "\u2070";
@@ -338,7 +349,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         }
     }
 
-    private String convertColorToAnsi (PrintableColour color) {
+    static String convertColorToAnsi (PrintableColour color) { // todo move to PrintableColor
         switch (color) {
             case RED:
                 return "\u001B[31m";
@@ -347,7 +358,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
             case GREEN:
                 return "\u001B[32m";
             case YELLOW:
-                return "\u001B[43m";
+                return "\u001B[33m";
             case PURPLE:
                 return "\u001B[35m";
             default:
@@ -479,7 +490,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
     void printPlayersColors() {
         this.playersColors.keySet().forEach((key) -> {
-            print(key + " is " + playersColors.get(key));
+            print(key + " is " + convertColorToAnsi(playersColors.get(key)) + playersColors.get(key) + PrintableColour.RESET);
         });
     }
 
