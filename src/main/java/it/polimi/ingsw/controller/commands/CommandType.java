@@ -23,6 +23,7 @@ public enum CommandType {
            if(input.toUpperCase().equals("END")) {
                return END_TURN;
            }
+
            else {
                throw new BadCommandException();
            }

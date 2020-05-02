@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.controller.commands.InitialInfoCommand;
 import it.polimi.ingsw.model.PrintableColour;
 import it.polimi.ingsw.model.updates.*;
@@ -106,8 +107,33 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     public void handle(TurnUpdate update) {
+        /*if(cliInstance.controller.getClientPlayerID().equals(update.currentPlayerID)) {
+            cliInstance.print("Your Turn");
+        } else {
+            cliInstance.print("Turn ended. Wait for your turn...");
+        }*/
         cliInstance.forwardNotify(update);
     }
+
+    public void handle(WinUpdate update) {
+        cliInstance.print(update.winnerPlayerNickname + " wins!");
+
+        cliInstance.print("Do you want to play another match?");
+
+        //cliInstance.handleMatchEnded();
+    }
+
+    public void handle(LoseUpdate update) {
+        cliInstance.print(update.loserPlayerNickname + " lost!");
+
+        if(cliInstance.controller.getClientPlayerID().equals(update.loserPlayerID)) {
+            cliInstance.setCurrentGamePhase(GamePhase.MATCH_LOST);
+            cliInstance.print("Do you want to continue to watch this match?");
+        }
+
+        // todo handle new match without watch current match
+    }
+
 
 
 }

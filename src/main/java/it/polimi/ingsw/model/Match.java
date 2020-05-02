@@ -7,6 +7,7 @@ import it.polimi.ingsw.exceptions.NicknameAlreadyTakenException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -48,7 +49,7 @@ public class Match {  //tested with 100% coverage
 
         if(playersNumber != 2 && playersNumber != 3)  throw new InvalidPlayerNumberException();
         this.players = new ArrayList<>();
-        this.matchBoard = Board.getInstance(String.valueOf(Thread.currentThread().getId()));
+        this.matchBoard = Board.getInstance(UUID.randomUUID().toString());
         this.turn = 0;
         this.playersNumber = playersNumber;
         this.currentGamePhase = GamePhase.firstPhase();

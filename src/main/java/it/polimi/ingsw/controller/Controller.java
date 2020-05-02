@@ -209,7 +209,6 @@ public class Controller implements Observer<Command> {
         if (!playerCommand.getPlayer().equals(currentPlayer)) {
             throw new WrongPlayerException();
         } else {
-            // TODO When Player Lose?
             switch (playerCommand.commandType) {
                 case MOVE:
                     if (checkAllMoveConstraints(playerCommand) && currentPlayer.getGodStrategy().checkMove(playerCommand.getWorker(), playerCommand.getCell())) {
@@ -220,13 +219,27 @@ public class Controller implements Observer<Command> {
                                 currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker());
 
 
-                        // if !hasWon check if the new currentPlayer can build
-                        if (!currentPlayerCanBuild(playerCommand.getWorker())) {
-                            // lose
+                        if(hasWon) {
+                            model.nextGamePhase();
+                            model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
+
+                            model.winUpdate(currentPlayer);
+
+                            return;
+                            // end match
                         }
+                        else {
+                            // if !hasWon check if the new currentPlayer can build
+                            if (!currentPlayerCanBuild(playerCommand.getWorker())) {
+                                handlePlayerLose(currentPlayer);
+                            }
+                        }
+
 
                     } else {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
+
+                        // return;
                     }
                     break;
                 case BUILD:
@@ -239,6 +252,16 @@ public class Controller implements Observer<Command> {
                          */
                         boolean hasWon = checkAllWinConstraints(playerCommand) && currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker());
 
+                        if(hasWon) {
+                            model.nextGamePhase();
+                            model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
+
+                            model.winUpdate(currentPlayer);
+
+                            return;
+                            // end match
+                        }
+
                     } else {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
                     }
@@ -246,11 +269,14 @@ public class Controller implements Observer<Command> {
                 case END_TURN:
 
                     if (currentPlayer.getGodStrategy().checkEndTurn()) {
+
+                        currentPlayer.getGodStrategy().endTurn(currentPlayer);
+
                         model.endTurn();
 
                         // check if the new currentPlayer can move
                         if (!currentPlayerCanMove()) {
-                            // lose -> TODO Remove player from list and workers from board
+                            handlePlayerLose(model.getCurrentPlayer());
                         }
                     } else {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
@@ -360,6 +386,16 @@ public class Controller implements Observer<Command> {
         model.nextGamePhase();
         model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
         model.matchStartedUpdate();
+    }
+
+    private void handlePlayerLose(Player loserPlayer) {
+        loserPlayer.getWorkerFirst().getPosition().setWorker(null);
+        loserPlayer.getWorkerSecond().getPosition().setWorker(null);
+
+        model.removePlayer(loserPlayer);
+        model.loseUpdate(loserPlayer);
+
+        model.turnUpdate(model.getCurrentPlayer());
     }
 
 }

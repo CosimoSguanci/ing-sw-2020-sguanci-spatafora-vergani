@@ -6,7 +6,7 @@ import it.polimi.ingsw.exceptions.BadCommandException;
 import java.util.Arrays;
 
 public enum GamePhase {
-    INITIAL_INFO, CHOOSE_GODS, GAME_PREPARATION, REAL_GAME;
+    INITIAL_INFO, CHOOSE_GODS, GAME_PREPARATION, REAL_GAME, MATCH_ENDED, MATCH_LOST;
 
     public static GamePhase firstPhase() {
         return INITIAL_INFO;
@@ -21,8 +21,7 @@ public enum GamePhase {
             case GAME_PREPARATION:
                 return REAL_GAME;
             case REAL_GAME:
-                // TODO handle this
-                return REAL_GAME;
+                return MATCH_ENDED;
             default:
                 // TODO handle this (exception?)
                 return REAL_GAME;

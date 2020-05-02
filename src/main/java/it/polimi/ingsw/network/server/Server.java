@@ -42,7 +42,7 @@ public class Server {
 
             try {
 
-                Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), playersNum);
+                Match match = Match.getInstance(UUID.randomUUID().toString(), playersNum);
                 Model model = new Model(match);
                 Controller controller = new Controller(model);
 
@@ -52,14 +52,18 @@ public class Server {
                 for (String key : keys) {
                     ClientHandler clientHandler = waitingConnection.get(key);
                     Player player = new Player(keys.get(i++), match);
+
+                    waitingConnection.remove(key);
+
                     match.addPlayer(player);
                     RemoteView remoteView = new RemoteView(player, clientHandler);
                     model.addObserver(remoteView);
                     remoteView.addObserver(controller);
                     model.playerUpdate(player);
                 }
-
+                // todo start a new thread for the match
                 controller.initialPhase();
+
 
             } catch (Exception e) {
                 e.printStackTrace();

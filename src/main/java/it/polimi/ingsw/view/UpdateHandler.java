@@ -14,4 +14,6 @@ public interface UpdateHandler { // Implements Visitor Pattern
     void handle(ErrorUpdate update);
     void handle(PlayerUpdate update);
     void handle(TurnUpdate update);
+    void handle(WinUpdate update);
+    void handle(LoseUpdate update);
 }

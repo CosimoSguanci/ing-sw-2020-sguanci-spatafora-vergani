@@ -12,10 +12,13 @@ import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.gods.*;
 import it.polimi.ingsw.model.updates.*;
+import it.polimi.ingsw.network.client.UpdateListener;
+import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.UpdateHandler;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,8 +46,11 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
     private final UpdateHandler cliUpdateHandler;
 
-    public Cli(Client client) {
+    final Controller controller; /// WIP
+
+    public Cli(Client client, Controller controller) {
         this.client = client;
+        this.controller = controller; // WIP
         this.cliUpdateHandler = new CliUpdateHandler(this);
     }
 
@@ -61,7 +67,6 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         stdout = System.out;
 
         try {
-
 
             do {
 
@@ -95,7 +100,6 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         String command;
 
         while (true) {
-            //command = stdin.nextLine().toLowerCase();
 
             command = stdin.nextLine();
 
@@ -110,7 +114,56 @@ public class Cli extends Observable<Object> implements Observer<Update> {
             }
 
             try {
-                if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 1)) { // todo extend help
+
+                if (currentGamePhase == GamePhase.MATCH_ENDED) {
+
+                    command = command.toLowerCase();
+
+                    if(command.equals("yes")) {
+
+                        try {
+                            client.closeConnection();
+                            client.reinitializeConnection();
+
+                            UpdateListener updateListener = new UpdateListener(client.getSocket());
+                            new Thread(updateListener).start();
+                            updateListener.addObserver(this);
+
+                            this.playerSymbol = null;
+
+                        } catch(IOException e) {
+                            e.printStackTrace();
+                            System.err.println("The Game couldn't start, maybe there was some network error or the server isn't available.");
+                            System.exit(0);
+                        }
+
+                        start();
+                        break;
+                    }
+                    else if(command.equals("no")) {
+                        print("Quitting...");
+                        System.exit(0);
+                    }
+                    else throw new BadCommandException();
+
+                }
+                else if (currentGamePhase == GamePhase.MATCH_LOST) {
+
+                    command = command.toLowerCase();
+
+                    if(command.equals("yes")) {
+                        //continue;
+                        break;
+                    }
+                    else if(command.equals("no")) {
+                        this.currentGamePhase = GamePhase.MATCH_ENDED;
+                        print("Do you want to play another match?");
+
+                    }
+                    else throw new BadCommandException(); // todo add multiple exception
+
+                }
+                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 1)) { // todo extend help
                     print("If you want information about a specific game-phase: help <game-phase>");
                     print("Game phases are: " + GamePhase.toStringBuilder());
                     print("help -> print command list and tutorial");
@@ -260,7 +313,8 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                    // print("Wait for other players to choose their gods...");
 
 
-                } else {
+                }
+                else {
                     print("Unknown Command");
                 }
             } catch (BadCommandException e) {
@@ -584,6 +638,48 @@ public class Cli extends Observable<Object> implements Observer<Update> {
             print(key + " is " + convertColorToAnsi(playersColors.get(key)) + playersColors.get(key) + PrintableColour.RESET);
         });
     }
+
+    /*void handleMatchEnded() {
+
+        String response;
+        Byte res;
+
+
+        do {
+
+            print("Do you want to play another match?");
+            res = stdin.nextByte();
+
+            response = res.;
+
+            if(response.equals("yes")) {
+
+                try {
+                    client.closeConnection();
+                    client.reinitializeConnection();
+
+                    UpdateListener updateListener = new UpdateListener(client.getSocket());
+                    new Thread(updateListener).start();
+                    updateListener.addObserver(this);
+
+                } catch(IOException e) {
+                    e.printStackTrace();
+                    System.err.println("The Game couldn't start, maybe there was some network error or the server isn't available.");
+                    System.exit(0);
+                }
+
+                start();
+            }
+            else if(response.equals("no")) {
+                print("Quitting...");
+                System.exit(0);
+            }
+
+        } while (!response.equals("yes"));
+
+
+
+    }*/
 
 
 }

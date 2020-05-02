@@ -36,6 +36,10 @@ public class Model extends Observable<Update> {
         return match.getPlayers();
     }
 
+    public void removePlayer(Player player) {
+        match.removePlayer(player);
+    }
+
     /**
      * The method calls for the end of turn of current player.
      *
@@ -105,6 +109,16 @@ public class Model extends Observable<Update> {
     public void turnUpdate(Player currentPlayer) {
         TurnUpdate turnUpdate = new TurnUpdate(currentPlayer.ID);
         notify(turnUpdate);
+    }
+
+    public void winUpdate(Player winnerPlayer) {
+        WinUpdate winUpdate = new WinUpdate(winnerPlayer.ID, winnerPlayer.getNickname());
+        notify(winUpdate);
+    }
+
+    public void loseUpdate(Player loserPlayer) {
+        LoseUpdate loseUpdate = new LoseUpdate(loserPlayer.ID, loserPlayer.getNickname(), match.getMatchBoard().toString());
+        notify(loseUpdate);
     }
 
     public GamePhase getCurrentGamePhase() {

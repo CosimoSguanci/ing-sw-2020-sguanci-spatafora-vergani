@@ -22,13 +22,8 @@ public class Controller extends Observable<Update> implements Observer<Object> {
         this.client = client;
     }
 
-    private void handleCommand(PlayerCommand playerCommand) throws WrongPlayerException, IOException { // TODO remove Exception
-        if (clientPlayerID.equals(currentPlayerID)) {
-            playerCommand.setPlayerID(clientPlayerID);
-            client.sendPlayerCommand(playerCommand);
-        } else {
-            throw new WrongPlayerException();
-        }
+    public String getClientPlayerID() { /// WIP
+        return this.clientPlayerID;
     }
 
     @Override

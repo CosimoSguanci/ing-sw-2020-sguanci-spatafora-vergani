@@ -27,6 +27,15 @@ public class Client {
         this.socketOut = new DataOutputStream(socket.getOutputStream());
     }
 
+    public void closeConnection() throws IOException {
+        this.socket.close();
+    }
+
+    public void reinitializeConnection() throws IOException {
+        initConnection();
+        this.objectOutputStream = null;
+    }
+
     public void sendInt(int message) throws IOException {
         socketOut.writeInt(message);
         socketOut.flush();

@@ -19,7 +19,7 @@ public class ObjectListenerDelegate {
             }
         } catch (Exception e){
             objectListener.setIsActive(false);
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 }
