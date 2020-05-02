@@ -42,7 +42,7 @@ public enum GamePhase {
         String[] values = Arrays.stream(GamePhase.class.getEnumConstants()).map(Enum::name).toArray(String[]::new);
         StringBuilder result = new StringBuilder(values[0].toLowerCase());
         for(int i=1; i<values.length; i++){
-            result.append(", " + values[i].toLowerCase());
+            result.append(", ").append(values[i].toLowerCase());
         }
         return result;
     }

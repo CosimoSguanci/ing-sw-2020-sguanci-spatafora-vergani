@@ -346,11 +346,6 @@ public class Controller implements Observer<Command> {
     }
 
     private void gamePreparation() {
-        /*try {
-            nextPhase();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
         model.nextGamePhase();
         model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
         model.boardUpdate();
@@ -358,25 +353,9 @@ public class Controller implements Observer<Command> {
     }
 
     private void startMatch() {
-        /*try {
-            nextPhase();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
         model.nextGamePhase();
         model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
         model.matchStartedUpdate();
     }
 
-    /*private void nextPhase() throws Exception {
-        if (this.currentGamePhase == GamePhase.CHOOSE_GODS) {
-            this.currentGamePhase = GamePhase.GAME_PREPARATION;
-        }
-        else if(this.currentGamePhase == GamePhase.GAME_PREPARATION) {
-            this.currentGamePhase = GamePhase.REAL_GAME;
-        }
-        else{
-            throw new Exception();  //TODO decide what to do with this exception
-        }
-    }*/
 }

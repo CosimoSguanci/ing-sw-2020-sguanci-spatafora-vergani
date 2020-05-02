@@ -202,7 +202,8 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
                 } else if (currentGamePhase == GamePhase.CHOOSE_GODS && isInitialGodChooser) {
 
-                    if (CommandType.parseCommandType(splitCommand[0]) != CommandType.SELECT || splitCommand.length > playersNum + 1) {
+                    if (CommandType.parseCommandType(splitCommand[0]) != CommandType.SELECT || splitCommand.length != playersNum + 1) {
+                        print("You have to use the SELECT command, and type " + playersNum + " names of gods separated by spaces");
                         throw new BadCommandException();
                     }
 
