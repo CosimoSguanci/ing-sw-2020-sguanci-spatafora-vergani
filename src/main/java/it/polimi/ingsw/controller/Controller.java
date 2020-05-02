@@ -174,7 +174,11 @@ public class Controller implements Observer<Command> {
             if (currentPlayer.getGodStrategy().checkGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell())) {
                 currentPlayer.getGodStrategy().executeGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell());
             }
-            // todo else
+            else {
+                model.reportError(currentPlayer, CommandType.PLACE);
+                return;
+            }
+
 
             model.endTurn();
 
