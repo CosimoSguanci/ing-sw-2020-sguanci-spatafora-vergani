@@ -75,7 +75,6 @@ public class Eros extends GodStrategy {
     public void executeMove(Worker worker, Cell moveCell) {
         super.executeMove(worker, moveCell);
         Worker otherWorker = worker.player.getWorkerFirst().equals(worker) ? worker.player.getWorkerSecond() : worker.player.getWorkerFirst();
-        //Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), null); TODO FIX NullPointerException in tests
         Match match = worker.player.match;
         boolean levelCondition = match.getPlayersNumber() == 3 ? worker.getPosition().getLevel() == otherWorker.getPosition().getLevel()
                     : (worker.getPosition().getLevel() == otherWorker.getPosition().getLevel() && worker.getPosition().getLevel() == BlockType.LEVEL_ONE);

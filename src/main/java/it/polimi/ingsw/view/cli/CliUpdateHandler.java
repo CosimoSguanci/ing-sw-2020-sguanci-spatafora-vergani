@@ -130,6 +130,11 @@ public class CliUpdateHandler implements UpdateHandler {
             cliInstance.setCurrentGamePhase(GamePhase.MATCH_LOST);
             cliInstance.print("Do you want to continue to watch this match?");
         }
+        else if(update.onePlayerRemaining) {
+            cliInstance.print("You Win!");
+            cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
+            cliInstance.print("Do you want to play another match?");
+        }
 
         // todo handle new match without watch current match
     }

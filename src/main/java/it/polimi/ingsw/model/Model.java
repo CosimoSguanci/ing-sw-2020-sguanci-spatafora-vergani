@@ -117,7 +117,8 @@ public class Model extends Observable<Update> {
     }
 
     public void loseUpdate(Player loserPlayer) {
-        LoseUpdate loseUpdate = new LoseUpdate(loserPlayer.ID, loserPlayer.getNickname(), match.getMatchBoard().toString());
+        boolean onePlayerRemaining = getPlayers().size() == 1;
+        LoseUpdate loseUpdate = new LoseUpdate(loserPlayer.ID, loserPlayer.getNickname(), onePlayerRemaining, match.getMatchBoard().toString());
         notify(loseUpdate);
     }
 

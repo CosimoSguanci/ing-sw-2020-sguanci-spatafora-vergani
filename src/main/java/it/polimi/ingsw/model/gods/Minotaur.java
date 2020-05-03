@@ -41,7 +41,7 @@ public class Minotaur extends GodStrategy { // TODO Test EndTurn
      * to be empty and without a Dome on it).
      *
      * @see GodStrategy#checkMove(Worker, Cell)
-     * @see Minotaur#computeBackwardCell(Cell, Cell)
+     * @see Minotaur#computeBackwardCell(Board, Cell, Cell)
      * @param worker   the worker that the Player wants to move.
      * @param moveCell the cell in which the Player want to move the worker.
      * @return true if the Move passed as parameter can be performed, false otherwise.
@@ -54,7 +54,7 @@ public class Minotaur extends GodStrategy { // TODO Test EndTurn
 
         else {
             try {
-                backwardCell = computeBackwardCell(worker.getPosition(), moveCell);
+                backwardCell = computeBackwardCell(worker.board, worker.getPosition(), moveCell);
 
                 return  !worker.hasMoved() &&
                         !worker.hasBuilt() &&
@@ -102,9 +102,8 @@ public class Minotaur extends GodStrategy { // TODO Test EndTurn
      * @return The Cell that is backward of moveCell.
      * @throws Exception if any Cell is invalid
      */
-    private Cell computeBackwardCell(Cell workerCell, Cell moveCell) throws Exception {
+    private Cell computeBackwardCell(Board board, Cell workerCell, Cell moveCell) throws Exception {
 
-        Board board = Board.getInstance(String.valueOf(Thread.currentThread().getId())); // worker.player.match.getMatchBoard()
 
         int backwardRow;
         int backwardCol;

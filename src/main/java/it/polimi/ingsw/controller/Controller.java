@@ -34,6 +34,7 @@ public class Controller implements Observer<Command> {
     private List<PrintableColour> selectableColors;
     private final CommandHandler commandHandler;
 
+
     /**
      * The constructor creates an instance of Controller class. This class
      * needs to reference to the general Model of the game, so that changes
@@ -396,6 +397,7 @@ public class Controller implements Observer<Command> {
         model.loseUpdate(loserPlayer);
 
         model.turnUpdate(model.getCurrentPlayer());
+
     }
 
 }
