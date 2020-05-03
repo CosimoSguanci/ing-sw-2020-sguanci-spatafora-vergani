@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.client;
 
+import it.polimi.ingsw.model.updates.ServerUnreachableUpdate;
 import it.polimi.ingsw.model.updates.Update;
 import it.polimi.ingsw.network.ObjectListener;
 import it.polimi.ingsw.network.ObjectListenerDelegate;
@@ -37,6 +38,13 @@ public class UpdateListener extends Observable<Update> implements ObjectListener
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void handleConnectionReset() {
+        // TODO Implement method
+        ServerUnreachableUpdate serverUnreachableUpdate = new ServerUnreachableUpdate();
+        notify(serverUnreachableUpdate); // notify the view
     }
 }
 

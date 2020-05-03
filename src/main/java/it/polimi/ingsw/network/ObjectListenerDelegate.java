@@ -2,9 +2,10 @@ package it.polimi.ingsw.network;
 
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class ObjectListenerDelegate {
-    private Socket socket;
+    private final Socket socket;
 
     public ObjectListenerDelegate(Socket socket) {
         this.socket = socket;
@@ -17,9 +18,9 @@ public class ObjectListenerDelegate {
                 Object inputObject = objectInputStream.readObject();
                 objectListener.forwardNotify(inputObject);
             }
-        } catch (Exception e){
+        } catch (Exception e){ // TODO catch SocketException?
             objectListener.setIsActive(false);
-            //e.printStackTrace();
+            objectListener.handleConnectionReset();
         }
     }
 }

@@ -122,6 +122,12 @@ public class Model extends Observable<Update> {
         notify(loseUpdate);
     }
 
+    public void disconnectedPlayerUpdate(Player disconnectedPlayer) {
+        boolean onePlayerRemaining = getPlayers().size() == 1;
+        DisconnectedPlayerUpdate disconnectedPlayerUpdate = new DisconnectedPlayerUpdate(disconnectedPlayer.ID, disconnectedPlayer.getNickname(), onePlayerRemaining, match.getMatchBoard().toString());
+        notify(disconnectedPlayerUpdate);
+    }
+
     public GamePhase getCurrentGamePhase() {
         return match.getCurrentGamePhase();
     }

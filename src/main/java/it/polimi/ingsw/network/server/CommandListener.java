@@ -8,8 +8,9 @@ import it.polimi.ingsw.observer.Observable;
 import java.net.Socket;
 
 public class CommandListener extends Observable<Command> implements ObjectListener, Runnable {
-    private ObjectListenerDelegate objectListenerDelegate;
-
+    private final ObjectListenerDelegate objectListenerDelegate;
+    private final Socket socket;
+    private final Server server; // needed to handle clients disconnection
     private boolean isActive;
 
     public boolean isActive() {
@@ -20,8 +21,10 @@ public class CommandListener extends Observable<Command> implements ObjectListen
         this.isActive = active;
     }
 
-    public CommandListener(Socket socket) {
+    public CommandListener(Socket socket, Server server) {
         objectListenerDelegate = new ObjectListenerDelegate(socket);
+        this.socket = socket;
+        this.server = server;
     }
 
     @Override
@@ -37,5 +40,10 @@ public class CommandListener extends Observable<Command> implements ObjectListen
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void handleConnectionReset() {
+        server.handleConnectionReset(socket);
     }
 }

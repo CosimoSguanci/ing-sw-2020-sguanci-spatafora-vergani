@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class Server {
     private static final int PORT = 12345;
@@ -30,13 +31,20 @@ public class Server {
 
     private ExecutorService executor = Executors.newFixedThreadPool(128);
 
-    private Map<String, ClientHandler> waitingConnectionTwoPlayers = new HashMap<>();
-    private Map<String, ClientHandler> waitingConnectionThreePlayers = new HashMap<>();
+    private Map<Socket, ClientHandler> clientHandlersMap = new HashMap<>();
+
+    private Map<Socket, String> waitingConnectionTwoPlayers = new HashMap<>(); // associates clientSocket with corresponding clientID
+    private Map<Socket, String> waitingConnectionThreePlayers = new HashMap<>();
+    private Map<Socket, String> playingConnections = new HashMap<>();
+
+
+    private Map<Model, Controller> modelsControllersMap = new HashMap<>();
+
 
     public synchronized void lobby(ClientHandler c, String clientId, int playersNum) {
-        Map<String, ClientHandler> waitingConnection = playersNum == 2 ? waitingConnectionTwoPlayers : waitingConnectionThreePlayers;
+        Map<Socket, String> waitingConnection = playersNum == 2 ? waitingConnectionTwoPlayers : waitingConnectionThreePlayers;
 
-        waitingConnection.put(clientId, c);
+        waitingConnection.put(c.getClientSocket(), clientId);
 
         if (waitingConnection.size() == playersNum) {
 
@@ -46,12 +54,16 @@ public class Server {
                 Model model = new Model(match);
                 Controller controller = new Controller(model);
 
-                List<String> keys = new ArrayList<>(waitingConnection.keySet());
+                modelsControllersMap.put(model, controller); // todo REMOVE when match ends
+
+                List<Socket> keys = new ArrayList<>(waitingConnection.keySet());
 
                 int i = 0;
-                for (String key : keys) {
-                    ClientHandler clientHandler = waitingConnection.get(key);
-                    Player player = new Player(keys.get(i++), match);
+                for (Socket key : keys) {
+                    ClientHandler clientHandler = clientHandlersMap.get(key);
+                    Player player = new Player(waitingConnection.get(keys.get(i++)), match);
+
+                    playingConnections.put(key, player.ID); // todo REMOVE when match ends
 
                     waitingConnection.remove(key);
 
@@ -82,12 +94,44 @@ public class Server {
             try {
                 Socket socket = serverSocket.accept();
                 System.out.println("Player connected " + socket.getInetAddress() + " : " + socket.getPort());
-                ClientHandler connection = new ClientHandler(this, socket);
-                executor.submit(connection);
+                ClientHandler clientHandler = new ClientHandler(this, socket);
+                executor.submit(clientHandler);
+                clientHandlersMap.put(socket, clientHandler);
             } catch (IOException e) {
                 System.err.println("Connection error");
             }
         }
+    }
+
+    void handleConnectionReset(Socket clientSocket) { // Removes client form waiting Maps
+        clientHandlersMap.remove(clientSocket);
+
+        String clientPlayerID = playingConnections.remove(clientSocket);
+
+        if(clientPlayerID != null) {
+            searchAndRemovePlayerInMatch(clientPlayerID);
+        }
+        else {
+            waitingConnectionTwoPlayers.remove(clientSocket);
+            waitingConnectionThreePlayers.remove(clientSocket);
+        }
+
+    }
+
+    private void searchAndRemovePlayerInMatch(String playerID) {
+
+        modelsControllersMap.entrySet().parallelStream().forEach((entry) -> {
+            Model model = entry.getKey();
+            Controller matchController = entry.getValue();
+
+            List<Player> players = model.getPlayers().stream().filter((player) -> player.ID.equals(playerID)).collect(Collectors.toList());
+
+            if(players.size() > 0) { // Match found
+                matchController.onPlayerDisconnected(playerID);
+            }
+
+        });
+
     }
 
 }

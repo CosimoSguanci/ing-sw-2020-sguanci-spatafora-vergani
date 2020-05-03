@@ -35,6 +35,10 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
         notify(command);
     }
 
+    Socket getClientSocket() {
+        return this.clientSocket;
+    }
+
     @Override
     public void run() {
         DataInputStream input;
@@ -46,14 +50,14 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
             playersNum = input.readInt();
             clientID = UUID.randomUUID().toString();
 
-            CommandListener commandListener = new CommandListener(clientSocket);
+            CommandListener commandListener = new CommandListener(clientSocket, server);
             new Thread(commandListener).start();
             commandListener.addObserver(this);
 
             server.lobby(this, clientID, playersNum);
 
         } catch (IOException | NoSuchElementException e) {
-            System.err.println("Error!" + e.getMessage());
+            System.err.println("Error! " + e.getMessage());
         }
     }
 }

@@ -136,10 +136,25 @@ public class CliUpdateHandler implements UpdateHandler {
             cliInstance.print("Do you want to play another match?");
         }
 
-        // todo handle new match without watch current match
     }
 
+    public void handle(ServerUnreachableUpdate update) {
+        cliInstance.print("Cannot communicate to the Server, maybe it's down. Otherwise, check your connection.");
+        cliInstance.print("Quitting..."); // todo method quit()
+        System.exit(0);
+    }
 
+    public void handle(DisconnectedPlayerUpdate update) {
+        String nicknameToShow = update.disconnectedPlayerNickname != null ? update.disconnectedPlayerNickname : "A player";
+        cliInstance.print(nicknameToShow + " disconnected!");
+
+       if(update.onePlayerRemaining) {
+            cliInstance.print("You Win!");
+            cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
+            cliInstance.print("Do you want to play another match?");
+        }
+
+    }
 
 }
 

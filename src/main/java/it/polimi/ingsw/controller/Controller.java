@@ -400,4 +400,26 @@ public class Controller implements Observer<Command> {
 
     }
 
+    public void onPlayerDisconnected(String playerID) {
+        Player disconnectedPlayer = model.getPlayers().stream().filter((player) -> player.ID.equals(playerID)).findFirst().orElse(null);
+
+        if (disconnectedPlayer == null) return;
+
+        if (disconnectedPlayer.getWorkerFirst().getPosition() != null) {
+            disconnectedPlayer.getWorkerFirst().getPosition().setWorker(null);
+        }
+
+        if (disconnectedPlayer.getWorkerSecond().getPosition() != null) {
+            disconnectedPlayer.getWorkerSecond().getPosition().setWorker(null);
+        }
+
+        model.removePlayer(disconnectedPlayer);
+        model.disconnectedPlayerUpdate(disconnectedPlayer);
+
+        if(model.getPlayers().size() > 1 && model.getCurrentPlayer().equals(disconnectedPlayer)) { // todo check if turn is well handled by removePlayer()
+            model.turnUpdate(model.getCurrentPlayer());
+        }
+
+    }
+
 }
