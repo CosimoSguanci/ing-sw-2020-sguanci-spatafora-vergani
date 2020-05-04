@@ -1,9 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.commands.*;
-import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
-import it.polimi.ingsw.exceptions.WrongGamePhaseException;
-import it.polimi.ingsw.exceptions.WrongPlayerException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.observer.Observable;
@@ -72,9 +70,13 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         try {
             command.handleCommand(this.commandHandler);
         } catch (WrongGamePhaseException e) {
-            // todo handle
-        } catch (WrongPlayerException e) {
-            // todo handle
+            model.reportError(command.getPlayer(), command.commandType);
+        } catch (WrongPlayerException e) { //Not collapsed as suggested: //TODO modify reportError to have
+            model.reportError(command.getPlayer(), command.commandType);
+        } catch (NicknameAlreadyTakenException e) {
+            model.reportError(command.getPlayer(), command.commandType);
+        } catch (InvalidColorException e) {
+            model.reportError(command.getPlayer(), command.commandType);
         }
     }
 
@@ -89,14 +91,14 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         String nickname = initialInfoCommand.nickname;
 
         if (selectedNicknames.contains(nickname)) {
-            // exception
+            throw new NicknameAlreadyTakenException();
         }
 
 
         PrintableColour color = initialInfoCommand.color;
 
         if (!selectableColors.contains(color)) {
-            // exception
+            throw new InvalidColorException();
         }
 
         model.getCurrentPlayer().setNickname(nickname);
@@ -417,7 +419,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         model.removePlayer(disconnectedPlayer);
         model.disconnectedPlayerUpdate(disconnectedPlayer);
 
-        if(model.getPlayers().size() > 1 && model.getCurrentPlayer().equals(disconnectedPlayer)) { // todo check if turn is well handled by removePlayer()
+        if (model.getPlayers().size() > 1 && model.getCurrentPlayer().equals(disconnectedPlayer)) { // todo check if turn is well handled by removePlayer()
             model.turnUpdate(model.getCurrentPlayer());
         }
 
