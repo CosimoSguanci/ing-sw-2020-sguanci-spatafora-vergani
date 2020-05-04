@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.controller.commands.*;
+import it.polimi.ingsw.exceptions.InvalidColorException;
+import it.polimi.ingsw.exceptions.NicknameAlreadyTakenException;
 import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.PrintableColour;
 import it.polimi.ingsw.model.Worker;
@@ -69,7 +71,6 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         try {
 
             do {
-
                 print("How many players do you want in you match? ");
                 String playersNumString = stdin.nextLine();
 
@@ -214,7 +215,8 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     String god = splitCommand[1];
 
                     printGodInfo(god);
-                } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.QUIT) {
+                }
+                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.QUIT) {
                     if (splitCommand.length > 1) {
                         throw new BadCommandException();
                     }
@@ -229,8 +231,8 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     String nickname = splitCommand[1];
 
                     if (selectedNicknames.stream().map(String::toLowerCase).collect(Collectors.toList()).contains(nickname)) {
-                        print("This nickname was already taken for this match");
-                        throw new BadCommandException();
+                        //print("This nickname was already taken for this match");
+                        throw new NicknameAlreadyTakenException();
                     }
 
                     String color = splitCommand[2];
@@ -243,8 +245,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     PrintableColour actualColor = Enum.valueOf(PrintableColour.class, color.toUpperCase());
 
                     if(!selectableColors.contains(actualColor)) {
-                        print("Not a selectable color");
-                        throw new BadCommandException();
+                        throw new InvalidColorException();
                     }
 
                     InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nickname, actualColor);
@@ -319,6 +320,10 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                 }
             } catch (BadCommandException e) {
                 print("Bad command generated, please repeat it.");
+            } catch (NicknameAlreadyTakenException e) {
+                print("Nickname already taken for this match, please select another nickname.");
+            } catch (InvalidColorException e) {
+                print ("Invalid color requested: another player already choose it or this color is not available in this game.");
             }
         }
     }
