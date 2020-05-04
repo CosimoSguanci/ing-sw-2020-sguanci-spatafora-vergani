@@ -19,7 +19,7 @@ public class ObjectListenerDelegate {
                 objectListener.forwardNotify(inputObject);
             }
         } catch (Exception e){ // TODO catch SocketException?
-            objectListener.setIsActive(false);
+            objectListener.setIsActive(false); //-> java.net.SocketException: Connection, reset java.net.SocketException: Socket closed
             objectListener.handleConnectionReset();
         }
     }

@@ -6,6 +6,7 @@ import it.polimi.ingsw.exceptions.WrongGamePhaseException;
 import it.polimi.ingsw.exceptions.WrongPlayerException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.GodStrategy;
+import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
 import java.util.*;
@@ -26,7 +27,7 @@ import java.util.*;
  * @author Cosimo Sguanci
  * @author Roberto Spatafora
  */
-public class Controller implements Observer<Command> {
+public class Controller extends Observable<Model> implements Observer<Command> {
     private final Model model; // todo handle attribute visibility and immutability
     private Player godChooserPlayer;
     private List<String> selectableGods;

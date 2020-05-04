@@ -9,7 +9,7 @@ import it.polimi.ingsw.observer.Observable;
 import java.net.Socket;
 
 public class UpdateListener extends Observable<Update> implements ObjectListener, Runnable {
-    private ObjectListenerDelegate objectListenerDelegate;
+    private final ObjectListenerDelegate objectListenerDelegate;
 
     private boolean isActive;
 
@@ -42,9 +42,12 @@ public class UpdateListener extends Observable<Update> implements ObjectListener
 
     @Override
     public void handleConnectionReset() {
-        // TODO Implement method
-        ServerUnreachableUpdate serverUnreachableUpdate = new ServerUnreachableUpdate();
-        notify(serverUnreachableUpdate); // notify the view
+
+        if(!Client.isServerReachable()) {
+            ServerUnreachableUpdate serverUnreachableUpdate = new ServerUnreachableUpdate();
+            notify(serverUnreachableUpdate); // notify the view
+        }
+
     }
 }
 

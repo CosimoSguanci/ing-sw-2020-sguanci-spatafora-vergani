@@ -6,13 +6,16 @@ import it.polimi.ingsw.controller.commands.InitialInfoCommand;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 
 public class Client {
 
     private final static String IP = "127.0.0.1";
     private final static int PORT = 12345;
+    private final static int PING_PORT = 12346;
 
     private Socket socket;
     DataOutputStream socketOut;
@@ -71,6 +74,19 @@ public class Client {
 
     public Socket getSocket() {
         return this.socket;
+    }
+
+    public static boolean isServerReachable() {
+
+        try {
+            Socket pingSocket = new Socket(IP, PING_PORT);
+
+            pingSocket.close();
+
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
 }
