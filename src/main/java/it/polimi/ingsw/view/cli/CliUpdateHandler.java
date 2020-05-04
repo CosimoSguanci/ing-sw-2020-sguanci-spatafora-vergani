@@ -83,7 +83,7 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     public void handle(InitialInfoUpdate update) {
-       cliInstance.print("Type your Nickname and color separated by a space");
+       cliInstance.print("Type your Nickname and color separated by a space.    Command format expected: pick [nickname] [color]");
 
        if(!update.selectedNicknames.isEmpty()) {
            cliInstance.print("Nicknames already taken are: ");
