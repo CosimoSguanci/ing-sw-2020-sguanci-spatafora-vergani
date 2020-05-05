@@ -132,6 +132,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                             updateListener.addObserver(this);
 
                             this.playerSymbol = null;
+                            this.playersNum = 0;
 
                         } catch(IOException e) {
                             e.printStackTrace();

@@ -239,6 +239,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                             }
                         }
 
+                        //handlePlayerLose(currentPlayer); // TODO REMOVE (test player losing)
 
                     } else {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType);

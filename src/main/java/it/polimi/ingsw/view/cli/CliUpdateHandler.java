@@ -124,17 +124,26 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     public void handle(LoseUpdate update) {
-        cliInstance.print(update.loserPlayerNickname + " lost!");
 
         if(cliInstance.controller.getClientPlayerID().equals(update.loserPlayerID)) {
+            cliInstance.print("You lost!");
             cliInstance.setCurrentGamePhase(GamePhase.MATCH_LOST);
-            cliInstance.print("Do you want to continue to watch this match?");
+
+            if(update.onePlayerRemaining) {
+                cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED); // todo method to avoid duplicate
+                cliInstance.print("Do you want to play another match?");
+            }
+            else {
+                cliInstance.print("Do you want to continue to watch this match?");
+            }
         }
         else if(update.onePlayerRemaining) {
+            cliInstance.print(update.loserPlayerNickname + " lost!");
             cliInstance.print("You Win!");
             cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
             cliInstance.print("Do you want to play another match?");
         }
+
 
     }
 
