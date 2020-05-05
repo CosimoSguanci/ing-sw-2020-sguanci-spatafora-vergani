@@ -32,7 +32,6 @@ public abstract class Command implements Serializable {
         this.commandType = commandType;
     }
 
-
     public void setPlayer(Player player) {
         this.player = player;
     }

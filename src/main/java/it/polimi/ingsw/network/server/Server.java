@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.RemoteView;
 
 import java.io.IOException;
@@ -14,8 +15,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-public class Server {
+public class Server implements Observer<Model> {
     private static final int PORT = 12345;
+    private static final int PING_PORT = 12346;
 
     private static boolean isActive;
 
@@ -28,6 +30,8 @@ public class Server {
     }
 
     private ServerSocket serverSocket;
+    private ServerSocket pingSocket; // Socket used by Client to check if Server is reachable
+
 
     private ExecutorService executor = Executors.newFixedThreadPool(128);
 
@@ -36,7 +40,6 @@ public class Server {
     private Map<Socket, String> waitingConnectionTwoPlayers = new HashMap<>(); // associates clientSocket with corresponding clientID
     private Map<Socket, String> waitingConnectionThreePlayers = new HashMap<>();
     private Map<Socket, String> playingConnections = new HashMap<>();
-
 
     private Map<Model, Controller> modelsControllersMap = new HashMap<>();
 
@@ -86,9 +89,10 @@ public class Server {
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
+        this.pingSocket = new ServerSocket(PING_PORT);
     }
 
-    public void run() {
+    public void runServer() {
         System.out.println("Waiting for incoming connections...");
         while (isActive()) {
             try {
@@ -103,6 +107,16 @@ public class Server {
         }
     }
 
+    public void runPingService() {
+        while (isActive()) {
+            try {
+                pingSocket.accept();
+            } catch (IOException e) {
+                System.err.println("Connection error");
+            }
+        }
+    }
+
     void handleConnectionReset(Socket clientSocket) { // Removes client form waiting Maps
         clientHandlersMap.remove(clientSocket);
 
@@ -110,6 +124,8 @@ public class Server {
 
         if(clientPlayerID != null) {
             searchAndRemovePlayerInMatch(clientPlayerID);
+
+            playingConnections.remove(clientSocket);
         }
         else {
             waitingConnectionTwoPlayers.remove(clientSocket);
@@ -134,4 +150,8 @@ public class Server {
 
     }
 
+    @Override
+    public void update(Model model) {
+        modelsControllersMap.remove(model);
+    }
 }

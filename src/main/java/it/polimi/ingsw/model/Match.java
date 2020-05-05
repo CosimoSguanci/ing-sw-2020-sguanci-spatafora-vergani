@@ -100,7 +100,6 @@ public class Match {  //tested with 100% coverage
     public void addPlayer(Player p) throws InvalidPlayerNumberException, AlreadyInsidePlayerException, NicknameAlreadyTakenException {
         if(players.size() >= playersNumber)  throw new InvalidPlayerNumberException();
         if(players.contains(p))  throw new AlreadyInsidePlayerException();  //rather than exception, notify through View
-        //if(nicknameAlreadyInside(p))  throw new NicknameAlreadyTakenException();  //rather than exception, notify through View
         players.add(p);
     }
 

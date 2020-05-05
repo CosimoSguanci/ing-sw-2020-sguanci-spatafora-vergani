@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.GodStrategy;
+import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
 import java.util.*;
@@ -24,7 +25,7 @@ import java.util.*;
  * @author Cosimo Sguanci
  * @author Roberto Spatafora
  */
-public class Controller implements Observer<Command> {
+public class Controller extends Observable<Model> implements Observer<Command> {
     private final Model model; // todo handle attribute visibility and immutability
     private Player godChooserPlayer;
     private List<String> selectableGods;
@@ -221,6 +222,8 @@ public class Controller implements Observer<Command> {
                         boolean hasWon = checkAllWinConstraints(playerCommand) && // TODO first checkWinCond?
                                 currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker());
 
+                        model.boardUpdate();
+
 
                         if(hasWon) {
                             model.nextGamePhase();
@@ -238,6 +241,7 @@ public class Controller implements Observer<Command> {
                             }
                         }
 
+                        //handlePlayerLose(currentPlayer); // TODO REMOVE (test player losing)
 
                     } else {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
@@ -254,6 +258,8 @@ public class Controller implements Observer<Command> {
                          *  Example: "If XXX built a Dome and it's adjacent to another Worker, it wins"
                          */
                         boolean hasWon = checkAllWinConstraints(playerCommand) && currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker());
+
+                        model.boardUpdate();
 
                         if(hasWon) {
                             model.nextGamePhase();
@@ -277,6 +283,8 @@ public class Controller implements Observer<Command> {
 
                         model.endTurn();
 
+                        model.boardUpdate();
+
                         // check if the new currentPlayer can move
                         if (!currentPlayerCanMove()) {
                             handlePlayerLose(model.getCurrentPlayer());
@@ -288,7 +296,6 @@ public class Controller implements Observer<Command> {
                     break;
             }
 
-            model.boardUpdate();
         }
     }
 

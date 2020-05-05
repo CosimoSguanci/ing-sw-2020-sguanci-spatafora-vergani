@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.exceptions.InvalidColorException;
 import it.polimi.ingsw.exceptions.NicknameAlreadyTakenException;
+import it.polimi.ingsw.exceptions.WrongPlayerException;
 import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.PrintableColour;
 import it.polimi.ingsw.model.Worker;
@@ -132,6 +133,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                             updateListener.addObserver(this);
 
                             this.playerSymbol = null;
+                            this.playersNum = 0;
 
                         } catch(IOException e) {
                             e.printStackTrace();
@@ -243,9 +245,13 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
                     String nickname = splitCommand[1];
 
-                    if (selectedNicknames.stream().map(String::toLowerCase).collect(Collectors.toList()).contains(nickname)) {
-                        //print("This nickname was already taken for this match");
-                        throw new NicknameAlreadyTakenException();
+                    if (selectedNicknames != null) {
+                        if (selectedNicknames.stream().map(String::toLowerCase).collect(Collectors.toList()).contains(nickname)) {
+                            //print("This nickname was already taken for this match");
+                            throw new NicknameAlreadyTakenException();
+                        }
+                    } else {
+                        throw new WrongPlayerException();
                     }
 
                     String color = splitCommand[2];
@@ -300,10 +306,12 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     }
 
                     String god = splitCommand[1];
-
-                    if (!selectableGods.contains(god)) {
-                        throw new BadCommandException();
-                    }
+//todo if selectableGods...
+                    if (selectableGods != null) {
+                        if (!selectableGods.contains(god)) {
+                            throw new BadCommandException();
+                        }
+                    } else {throw new WrongPlayerException();}
 
                     ArrayList<String> selected = new ArrayList<>();
                     selected.add(god);
@@ -337,6 +345,8 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                 print("Nickname already taken for this match, please select another nickname.");
             } catch (InvalidColorException e) {
                 print ("Invalid color requested: another player already choose it or this color is not available in this game.");
+            } catch (WrongPlayerException e) {
+                print ("Invalid command: please check if it's your turn!");
             }
         }
     }
@@ -445,10 +455,6 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
         char rowIdentifier = 'A';
 
-        if(playerSymbol == null || playerSymbol.size() < playersNum) {
-            playerSymbol = mapPlayerIdToSymbol(gameBoard);
-        }
-
         print("");
         print("");
         print("");
@@ -470,16 +476,13 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
                     Worker printableWorker = gameBoard.getCell(i, j).getWorker();
                     if (printableWorker.workerType.equals(Command.WORKER_FIRST)) {
-                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + playerSymbol.get(printableWorker.player.ID) + " 1" + PrintableColour.RESET);
+                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + " W1" + PrintableColour.RESET);
                     } else {
-                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + playerSymbol.get(printableWorker.player.ID) + " 2" + PrintableColour.RESET);
+                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + " W2" + PrintableColour.RESET);
                     }
                 } else {
                     System.out.print("   ");
                 }
-
-
-
                 System.out.print("    |  ");
 
             }
@@ -497,38 +500,6 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         print("");
         print("");
         print("");
-    }
-
-    private static Map<String, String> mapPlayerIdToSymbol(Board board) {
-        Map<String, String> symbolMap = new HashMap<>();
-        String symbol = "";
-
-
-        for(int i = 0; i < Board.HEIGHT_SIZE; i++) {
-            for(int j = 0; j < Board.WIDTH_SIZE; j++) {
-                if(!board.getCell(i, j).isEmpty()) {
-                    if(!symbolMap.containsKey(board.getCell(i, j).getWorker().player.ID)) {
-                        symbol = nextSymbol(symbol);
-                        symbolMap.put(board.getCell(i, j).getWorker().player.ID, symbol);
-                    }
-                }
-            }
-        }
-
-        return symbolMap;
-    }
-
-    private static String nextSymbol(String symbol) {
-        switch(symbol) {
-            case "":
-                return "\u265C";
-            case "\u265C":
-                return "\u265E";
-            case "\u265E":
-                return("\u265F");
-            default:
-                return "";
-        }
     }
 
     static String convertBlockTypeToUnicode(BlockType level) { // todo move to BlockType
