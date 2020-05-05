@@ -36,6 +36,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
 
     private GamePhase currentGamePhase;
+    private final String currentPhaseString = "current_phase";
 
     private List<String> selectedNicknames;
     private List<PrintableColour> selectableColors;
@@ -104,7 +105,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
             command = stdin.nextLine();
 
-            String[] splitCommand = command.split("\\s+");
+            String[] splitCommand = command.toLowerCase().split("\\s+");
 
             if ((splitCommand.length == 0) || (splitCommand[0].equals("") && splitCommand.length == 1)) {
                 continue;
@@ -167,32 +168,43 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                 else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 1)) { // todo extend help
                     print("If you want information about a specific game-phase: help <game-phase>");
                     print("Game phases are: " + GamePhase.toStringBuilder());
+                    print("Help Specific-Phase Example: help initial_info");
+                    print("Help Current-Phase Example: help " + currentPhaseString);
                     print("help -> print command list and tutorial");
+                    print("Help Example: help");
                     print("info <god> -> get info about a god");
+                    print("Info Example: info Apollo");
+                    /*print("Here are commands of real_game phase (you will need this more often than others):");
                     print("build w1/w2 [letter, number] [optional: blockType {one, two, three, dome}] -> tries to build with the chosen Worker in the specified position");
                     print("move  w1/w2 [letter, number] -> tries to move with the chosen Worker to the specified position\"");
                     print("end -> tries to end the current turn");
-                    print("Info Example : info Apollo");
                     print("Move Example : move w1 a1");
-                    print("Build Example: build w1 a2 dome");
+                    print("Build Example: build w1 a2 dome");*/
                 }
-                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 2)) {
-                    if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.INITIAL_INFO) {
+                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 2)  && (GamePhase.isGamePhase(splitCommand[1]) || infoAboutGamePhase(splitCommand[1]))) {
+                    if(infoAboutGamePhase(splitCommand[1])){
+                        helpString(currentGamePhase);
+                    }
+                    else{
+                        helpString(GamePhase.parseGamePhase(splitCommand[1]));
+                    }
+                    /*
+                    if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.INITIAL_INFO || (infoAboutGamePhase(splitCommand[1]) && currentGamePhase == GamePhase.INITIAL_INFO)) {
                         print("In this phase, you decide your nickname and your workers' colour");
                         print("Command format: pick <nickname> <colour>");
                         print("Command example: pick Mike green");
                     }
-                    else if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.CHOOSE_GODS) {
+                    else if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.CHOOSE_GODS || (infoAboutGamePhase(splitCommand[1]) && currentGamePhase == GamePhase.CHOOSE_GODS)) {
                         print("In this phase, you select your god");
                         print("Command format: select <god>");
                         print("Command example: select Apollo");
                     }
-                    else if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.GAME_PREPARATION) {
+                    else if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.GAME_PREPARATION || (infoAboutGamePhase(splitCommand[1]) && currentGamePhase == GamePhase.GAME_PREPARATION)) {
                         print("In this phase, you place your workers over the board");
                         print("Command format: place w1 [letter, number] w2 [letter, number]");
                         print("Command example: place w1 A1 w2 B2");
                     }
-                    else if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.REAL_GAME) {
+                    else if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.REAL_GAME || (infoAboutGamePhase(splitCommand[1]) && currentGamePhase == GamePhase.REAL_GAME)) {
                         print("In this phase, you play!");
                         print("Move format: move w1/w2 [letter, number] -> tries to move with the chosen Worker to the specified position");
                         print("Move example: move w1 A1");
@@ -205,6 +217,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     else{
                         throw new BadCommandException();
                     }
+                    */
                 }
 
 
@@ -326,6 +339,42 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                 print ("Invalid color requested: another player already choose it or this color is not available in this game.");
             }
         }
+    }
+
+    private void helpString(GamePhase gamePhase) {
+        switch (gamePhase) {
+            case INITIAL_INFO:
+                print("In this phase, you decide your nickname and your workers' colour");
+                print("Command format: pick <nickname> <colour>");
+                print("Command example: pick Mike green");
+                break;
+            case CHOOSE_GODS:
+                print("In this phase, you select your god");
+                print("Command format: select <god>");
+                print("Command example: select Apollo");
+                break;
+            case GAME_PREPARATION:
+                print("In this phase, you place your workers on the board");
+                print("Command format: place w1 [letter, number] w2 [letter, number]");
+                print("Command example: place w1 A1 w2 B2");
+                break;
+            case REAL_GAME:
+                print("In this phase, you play!");
+                print("Move format: move w1/w2 [letter, number] -> tries to move with the chosen Worker to the specified position");
+                print("Move example: move w1 A1");
+                print("Build format: build w1/w2 [letter, number] [optional: blockType {one, two, three, dome}] -> tries to build with the chosen Worker in the specified position");
+                print("Build example: build w1 A2");
+                print("Build example: build w1 A2 dome");
+                print("End format: end -> tries to end the current turn");
+                print("End example: end");
+                break;
+            default:
+                throw new BadCommandException();
+        }
+    }
+
+    private boolean infoAboutGamePhase(String input) {
+        return input.equals(currentPhaseString);
     }
 
 
