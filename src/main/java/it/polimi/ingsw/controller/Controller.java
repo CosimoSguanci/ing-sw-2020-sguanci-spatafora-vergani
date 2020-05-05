@@ -222,6 +222,8 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                         boolean hasWon = checkAllWinConstraints(playerCommand) && // TODO first checkWinCond?
                                 currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker());
 
+                        model.boardUpdate();
+
 
                         if(hasWon) {
                             model.nextGamePhase();
@@ -257,6 +259,8 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                          */
                         boolean hasWon = checkAllWinConstraints(playerCommand) && currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker());
 
+                        model.boardUpdate();
+
                         if(hasWon) {
                             model.nextGamePhase();
                             model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
@@ -279,6 +283,8 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                         model.endTurn();
 
+                        model.boardUpdate();
+
                         // check if the new currentPlayer can move
                         if (!currentPlayerCanMove()) {
                             handlePlayerLose(model.getCurrentPlayer());
@@ -290,7 +296,6 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                     break;
             }
 
-            model.boardUpdate();
         }
     }
 
