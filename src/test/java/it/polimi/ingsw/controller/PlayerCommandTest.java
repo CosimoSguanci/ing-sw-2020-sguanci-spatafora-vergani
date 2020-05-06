@@ -155,5 +155,9 @@ class PlayerCommandTest {
                 () -> PlayerCommand.parseInput("end turn"));
         assertThrows(BadCommandException.class,
                 () -> PlayerCommand.parseInput("move w2 B2 tree"));
+        assertThrows(BadCommandException.class,
+                () -> PlayerCommand.parseInput(" "));
+        assertThrows(BadCommandException.class,
+                () -> PlayerCommand.parseInput(""));
     }
 }
