@@ -26,6 +26,14 @@ import java.io.PrintStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
+/**
+ * Cli is the class in which interactions with users are managed.
+ * This class extends Observable interface and different types of
+ * command observe it.
+ *
+ * @author Cosimo Sguanci
+ * @author Roberto Spatafora*/
 public class Cli extends Observable<Object> implements Observer<Update> {
     private Client client;
     private int playersNum;
@@ -51,19 +59,35 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
     final Controller controller; /// WIP
 
+    /**
+     * Cli is the builder of the class. At the moment of the Cli creation
+     * a client and a controller of the client are associated to it
+     *
+     * @param client indicates the client with whom a conversation with
+     * the Cli instance created will take place.
+     * @param controller indicates clientSideController implements client-side checks
+     * in order to avoid repeated and unnecessary interactions with the server. */
     public Cli(Client client, Controller controller) {
         this.client = client;
         this.controller = controller; // WIP
         this.cliUpdateHandler = new CliUpdateHandler(this);
     }
 
+    /**
+     * This is a method useful to avoid code repetitions
+     * It is an abbreviation of stdout.println
+     * @param string id the string printed by this method.
+     */
     void print(String string) {
         if (stdout == null)
             return;
         stdout.println(string);
     }
 
-
+    /**
+     * In this method, once a connection between client and server
+     * is established, every game phase is managed.
+     */
     public void start() { // todo Command Pattern?
 
         stdin = new Scanner(System.in);
@@ -96,6 +120,11 @@ public class Cli extends Observable<Object> implements Observer<Update> {
 
     }
 
+    /**
+     * This method manages every possible interaction with the client.
+     * All the commands received by the client are parsed in this method
+     * grouped by game phases.
+     */
     private void gameLoop() {
         print("Waiting for a match...");
 
@@ -343,35 +372,71 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         notify(update);
     }
 
+    /**
+     * This method is a setter used to set to the received value of
+     * the parameter if this client is or not the GodChooser.
+     * @param value is received as boolean parameter from the server,
+     * after having it randomly from the players list.
+     */
     void setInitialGodChooser(boolean value) {
         this.isInitialGodChooser = value;
     }
 
+    /**
+     * This method make possible client who are not GodChooser to select
+     * a God once the GodChooser selected Gods that will be involved in the match.
+     * @param selectableGods is as list used to have references to all Gods
+     * a player can choose in a specific match (once GodChooser selected them)
+     */
     void setSelectableGods(List<String> selectableGods) {
         this.selectableGods = selectableGods;
     }
 
+    /**
+     * This method let clients choose a nickname unique in the match.
+     * @param selectedNicknames is a list of all nickname already chosen from players.
+     */
     void setSelectedNicknames(List<String> selectedNicknames) {
         this.selectedNicknames = selectedNicknames;
     }
 
+    /**
+     * This method let clients choose a color unique in the match.
+     * @param selectableColors is a list of all color not yet chosen from players.
+     */
     void setSelectableColors(List<PrintableColour> selectableColors) {
         this.selectableColors = selectableColors;
     }
 
+    /**
+     * This getter method gives information about the number of player involved in a match
+     * @return the number of player involved in the match
+     */
     int getPlayersNum() {
         return this.playersNum;
     }
 
+    /**
+     * This method makes a correspondence to the client and the God associated.
+     * @param playersGods is the corresponding God to the client.
+     */
     void setPlayersGods(Map<String, String> playersGods) {
         this.playersGods = playersGods;
     }
 
+    /**
+     * This method makes a correspondence to the client and the color associated.
+     * @param playersColors is the corresponding color to the client.
+     */
     void setPlayersColors(Map<String, PrintableColour> playersColors) {
         this.playersColors = playersColors;
     }
 
-
+    /**
+     * This setter method is used to set a specific game phase.
+     * It is necessary to have this method to change different phase during the match.
+     * @param newGamePhase is the new phase that it is set with the invocation of this method.
+     */
     void setCurrentGamePhase(GamePhase newGamePhase) {
         this.currentGamePhase = newGamePhase;
 
@@ -392,11 +457,25 @@ public class Cli extends Observable<Object> implements Observer<Update> {
     }
 
 
+    /**
+     * This method manages all the message received from the server.
+     * Visitor pattern used to invoke the correct method for each different
+     * instance of update from server to client.
+     * @param update contains references to what changes server-side
+     *               and it is notified to the client.
+     */
     @Override
     public void update(Update update) {
         update.handleUpdate(this.cliUpdateHandler);
     }
 
+    /**
+     * This method contains an algorithm to print the board game Cli version.
+     * Every cell is printed as a 5x5; there are boarders which delimit each cell.
+     * @param board indicates the board which is used in the relative match.
+     *              It contains references to each cell (including their level
+     *              and workers if there are on that cell).
+     */
     void printBoard(String board) {
         GsonBuilder builder = new GsonBuilder();
 
@@ -410,7 +489,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         print("");
         print("");
 
-        for (int i = 0; i < 5; i++) {    //Single cell printed as 5x5: +---+ board; " "/"1"/"2" if worker is inside; BlockType specified.
+        for (int i = 0; i < 5; i++) {    //Single cell printed as 5x5: +---+ boarders; " "/"1"/"2" if worker is inside; BlockType specified.
             System.out.println("\t+  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +");
             System.out.println("\t|         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 0).getLevel()) + " | " +
                     " |         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 1).getLevel()) + " | " +
@@ -453,6 +532,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         print("");
     }
 
+    //TODO eliminate: getLevelNumber() is a BlockType method.
     static String convertBlockTypeToUnicode(BlockType level) { // todo move to BlockType
         switch (level) {
             case GROUND:
@@ -470,6 +550,12 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         }
     }
 
+    /**
+     * This method converts a color given as parameter according to enum
+     * defined, and it is used to have the correct correspondence Ansi color.
+     * @param color is the PrintableColor you want to calculate the Ansi code
+     * @return the string of the respective Ansi color.
+     */
     static String convertColorToAnsi (PrintableColour color) { // todo move to PrintableColor
         switch (color) {
             case RED:
@@ -487,6 +573,10 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         }
     }
 
+    /**
+     * This method is used to print information about a specific requested God.
+     * @param god is the God whom information is requested.
+     */
     private void printGodInfo(String god) {
         switch (god) {
             case "apollo":
@@ -578,9 +668,16 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         }
     }
 
+    /**
+     * This method checks if a God chosen by a Client is a valid one.
+     * There is a check for the correct name of a God received. Moreover
+     * there is a check in order to control if God received is already chosen
+     * from a different player.
+     * @param god is a String which indicates the name of a God chosen by a client
+     * @param chosenGods contains different Gods chosen by other players of the match
+     * @return true if the God received is a selectable God and was not already chosen from another player.
+     */
     private boolean isValidGod(String god, ArrayList<String> chosenGods) {
-
-
         ArrayList<String> validGods = new ArrayList<>(
                 Arrays.asList(
                         "apollo",
@@ -598,17 +695,25 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                         "prometheus",
                         "zeus"
                 ));
-
-
         return validGods.contains(god) && (chosenGods == null || !chosenGods.contains(god));
     }
 
+    /**
+     * This method is used to print Gods chosen by users.
+     * Its format is [nickname] has [God Name] and it is
+     * printed for each player involved in the match
+     */
     void printPlayerGods() {
         this.playersGods.keySet().forEach((key) -> {
             print(key + " has " + playersGods.get(key));
         });
     }
 
+    /**
+     * This method is used to print colors chosen by users.
+     * Its format is [nickname] is [color] and it is
+     * printed for each player involved in the match
+     */
     void printPlayersColors() {
         this.playersColors.keySet().forEach((key) -> {
             print(key + " is " + convertColorToAnsi(playersColors.get(key)) + playersColors.get(key) + PrintableColour.RESET);
