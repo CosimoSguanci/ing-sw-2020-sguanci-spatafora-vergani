@@ -60,16 +60,6 @@ public class DemeterTest {
 
     }
 
-    @Test
-    public void getGodInfoTest() {
-        Demeter demeter = new Demeter();
-
-        Map<String, String> info = demeter.getGodInfo();
-
-        assertEquals(info.get("name"), Demeter.NAME);
-        assertEquals(info.get("description"), Demeter.DESCRIPTION);
-        assertEquals(info.get("power_description"), Demeter.POWER_DESCRIPTION);
-    }
 
     @Test
     public void demeterEndTurnTest() {

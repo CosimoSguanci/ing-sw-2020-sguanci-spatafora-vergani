@@ -4,14 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.controller.commands.*;
-import it.polimi.ingsw.exceptions.InvalidColorException;
-import it.polimi.ingsw.exceptions.NicknameAlreadyTakenException;
-import it.polimi.ingsw.exceptions.WrongPlayerException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.PrintableColour;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.gods.*;
 import it.polimi.ingsw.model.updates.*;
@@ -488,119 +486,20 @@ public class Cli extends Observable<Object> implements Observer<Update> {
     }
 
     private void printGodInfo(String god) {
-        switch (god) {
-            case "apollo":
-                print("Name: " + Apollo.NAME);
-                print("Description: " + Apollo.DESCRIPTION);
-                print("Power: " + Apollo.POWER_DESCRIPTION);
-                break;
 
-            case "artemis":
-                print("Name: " + Artemis.NAME);
-                print("Description: " + Artemis.DESCRIPTION);
-                print("Power: " + Artemis.POWER_DESCRIPTION);
-                break;
-
-            case "athena":
-                print("Name: " + Athena.NAME);
-                print("Description: " + Athena.DESCRIPTION);
-                print("Power: " + Athena.POWER_DESCRIPTION);
-                break;
-
-            case "atlas":
-                print("Name: " + Atlas.NAME);
-                print("Description: " + Atlas.DESCRIPTION);
-                print("Power: " + Atlas.POWER_DESCRIPTION);
-                break;
-
-            case "demeter":
-                print("Name: " + Demeter.NAME);
-                print("Description: " + Demeter.DESCRIPTION);
-                print("Power: " + Demeter.POWER_DESCRIPTION);
-                break;
-
-            case "eros":
-                print("Name: " + Eros.NAME);
-                print("Description: " + Eros.DESCRIPTION);
-                print("Power: " + Eros.POWER_DESCRIPTION);
-                break;
-
-            case "hephaestus":
-                print("Name: " + Hephaestus.NAME);
-                print("Description: " + Hephaestus.DESCRIPTION);
-                print("Power: " + Hephaestus.POWER_DESCRIPTION);
-                break;
-
-            case "hera":
-                print("Name: " + Hera.NAME);
-                print("Description: " + Hera.DESCRIPTION);
-                print("Power: " + Hera.POWER_DESCRIPTION);
-                break;
-
-            case "hestia":
-                print("Name: " + Hestia.NAME);
-                print("Description: " + Hestia.DESCRIPTION);
-                print("Power: " + Hestia.POWER_DESCRIPTION);
-                break;
-
-            case "minotaur":
-                print("Name: " + Minotaur.NAME);
-                print("Description: " + Minotaur.DESCRIPTION);
-                print("Power: " + Minotaur.POWER_DESCRIPTION);
-                break;
-
-            case "pan":
-                print("Name: " + Pan.NAME);
-                print("Description: " + Pan.DESCRIPTION);
-                print("Power: " + Pan.POWER_DESCRIPTION);
-                break;
-
-            case "poseidon":
-                print("Name: " + Poseidon.NAME);
-                print("Description: " + Poseidon.DESCRIPTION);
-                print("Power: " + Poseidon.POWER_DESCRIPTION);
-                break;
-
-            case "prometheus":
-                print("Name: " + Prometheus.NAME);
-                print("Description: " + Prometheus.DESCRIPTION);
-                print("Power: " + Prometheus.POWER_DESCRIPTION);
-                break;
-
-            case "zeus":
-                print("Name: " + Zeus.NAME);
-                print("Description: " + Zeus.DESCRIPTION);
-                print("Power: " + Zeus.POWER_DESCRIPTION);
-                break;
-
-            default:
-                throw new BadCommandException();
+        try {
+            Map<String, String> godInfo = GodsUtils.parseGodName(god);
+            print("Name: " + godInfo.get(GodsUtils.GOD_NAME));
+            print("Description: " + godInfo.get(GodsUtils.GOD_DESCRIPTION));
+            print("Power: " + godInfo.get(GodsUtils.POWER_DESCRIPTION));
+        } catch(UnknownGodException e) {
+            print("Unknown God Typed");
+            throw new BadCommandException(); // todo ok ?
         }
     }
 
     private boolean isValidGod(String god, ArrayList<String> chosenGods) {
-
-
-        ArrayList<String> validGods = new ArrayList<>(
-                Arrays.asList(
-                        "apollo",
-                        "artemis",
-                        "athena",
-                        "atlas",
-                        "demeter",
-                        "hephaestus",
-                        "eros",
-                        "hera",
-                        "hestia",
-                        "minotaur",
-                        "pan",
-                        "poseidon",
-                        "prometheus",
-                        "zeus"
-                ));
-
-
-        return validGods.contains(god) && (chosenGods == null || !chosenGods.contains(god));
+        return GodsUtils.isValidGod(god) && (chosenGods == null || !chosenGods.contains(god));
     }
 
     void printPlayerGods() {
@@ -614,48 +513,5 @@ public class Cli extends Observable<Object> implements Observer<Update> {
             print(key + " is " + convertColorToAnsi(playersColors.get(key)) + playersColors.get(key) + PrintableColour.RESET);
         });
     }
-
-    /*void handleMatchEnded() {
-
-        String response;
-        Byte res;
-
-
-        do {
-
-            print("Do you want to play another match?");
-            res = stdin.nextByte();
-
-            response = res.;
-
-            if(response.equals("yes")) {
-
-                try {
-                    client.closeConnection();
-                    client.reinitializeConnection();
-
-                    UpdateListener updateListener = new UpdateListener(client.getSocket());
-                    new Thread(updateListener).start();
-                    updateListener.addObserver(this);
-
-                } catch(IOException e) {
-                    e.printStackTrace();
-                    System.err.println("The Game couldn't start, maybe there was some network error or the server isn't available.");
-                    System.exit(0);
-                }
-
-                start();
-            }
-            else if(response.equals("no")) {
-                print("Quitting...");
-                System.exit(0);
-            }
-
-        } while (!response.equals("yes"));
-
-
-
-    }*/
-
 
 }

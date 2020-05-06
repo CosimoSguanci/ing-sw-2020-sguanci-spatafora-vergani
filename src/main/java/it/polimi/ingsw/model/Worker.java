@@ -124,7 +124,10 @@ public class Worker {
      * worker tries to move up more than a single level.
      */
     public void move(Cell moveCell) {
-        this.position.setWorker(null);
+
+        if(this.position.getWorker().equals(this)) // todo OK ?
+            this.position.setWorker(null);
+
         this.previousPositionBlockType = position.getLevel();
         this.position = moveCell;
         moveCell.setWorker(this);

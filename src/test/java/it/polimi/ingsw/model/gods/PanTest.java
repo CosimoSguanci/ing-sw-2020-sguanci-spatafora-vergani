@@ -36,15 +36,4 @@ public class PanTest {
         assertTrue(pan.checkWinCondition(worker));
 
     }
-
-    @Test
-    public void getGodInfoTest() {
-        Pan pan = new Pan();
-
-        Map<String, String> info = pan.getGodInfo();
-
-        assertEquals(info.get("name"), Pan.NAME);
-        assertEquals(info.get("description"), Pan.DESCRIPTION);
-        assertEquals(info.get("power_description"), Pan.POWER_DESCRIPTION);
-    }
 }

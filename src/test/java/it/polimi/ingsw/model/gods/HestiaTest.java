@@ -60,16 +60,6 @@ public class HestiaTest {
 
     }
 
-    @Test
-    public void getGodInfoTest() {
-        Hestia hestia = new Hestia();
-
-        Map<String, String> info = hestia.getGodInfo();
-
-        assertEquals(info.get("name"), Hestia.NAME);
-        assertEquals(info.get("description"), Hestia.DESCRIPTION);
-        assertEquals(info.get("power_description"), Hestia.POWER_DESCRIPTION);
-    }
 
     @Test
     public void hestiaEndTurnTest() {

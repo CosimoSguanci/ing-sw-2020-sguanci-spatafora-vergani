@@ -29,16 +29,9 @@ public class Hephaestus extends GodStrategy {
      */
     private PreviousCellNeededDelegate previousCellNeededDelegate;
 
-    @Override
-    public Map<String, String> getGodInfo() {
-        HashMap<String, String> info = new HashMap<>();
-        info.put("name", NAME);
-        info.put("description", DESCRIPTION);
-        info.put("power_description", POWER_DESCRIPTION);
-        return info;
-    }
 
     public Hephaestus() {
+        super(NAME, DESCRIPTION, POWER_DESCRIPTION);
         multipleBuildDelegate = new MultipleBuildDelegate(HEPHAESTUS_MAX_BUILD_NUM);
         previousCellNeededDelegate = new PreviousCellNeededDelegate();
     }

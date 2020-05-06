@@ -20,14 +20,10 @@ public class Zeus extends GodStrategy {
     public static final String DESCRIPTION = "God of the Sky";
     public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build a block under itself.";
 
-    @Override
-    public Map<String, String> getGodInfo() {
-        HashMap<String, String> info = new HashMap<>();
-        info.put("name", NAME);
-        info.put("description", DESCRIPTION);
-        info.put("power_description", POWER_DESCRIPTION);
-        return info;
+    public Zeus() {
+        super(NAME, DESCRIPTION, POWER_DESCRIPTION);
     }
+
 
 
     /**

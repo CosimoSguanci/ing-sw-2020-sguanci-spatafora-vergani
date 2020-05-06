@@ -25,14 +25,10 @@ public class Athena extends GodStrategy {
      */
     private boolean shouldBlockLevelUp;
 
-    @Override
-    public Map<String, String> getGodInfo() {
-        HashMap<String, String> info = new HashMap<>();
-        info.put("name", NAME);
-        info.put("description", DESCRIPTION);
-        info.put("power_description", POWER_DESCRIPTION);
-        return info;
+    public Athena() {
+        super(NAME, DESCRIPTION, POWER_DESCRIPTION);
     }
+
 
     /**
      * Implements movement execution by calling superclass standard executeMove,

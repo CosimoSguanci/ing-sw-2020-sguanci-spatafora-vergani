@@ -41,14 +41,4 @@ public class HeraTest {
 
     }
 
-    @Test
-    public void getGodInfoTest() {
-        Hera hera = new Hera();
-
-        Map<String, String> info = hera.getGodInfo();
-
-        assertEquals(info.get("name"), Hera.NAME);
-        assertEquals(info.get("description"), Hera.DESCRIPTION);
-        assertEquals(info.get("power_description"), Hera.POWER_DESCRIPTION);
-    }
 }

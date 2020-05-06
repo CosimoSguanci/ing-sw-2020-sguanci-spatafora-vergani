@@ -30,16 +30,8 @@ public class Apollo extends GodStrategy {
      */
     private final OpponentWorkerMoverDelegate opponentWorkerMoverDelegate;
 
-    @Override
-    public Map<String, String> getGodInfo() {
-        HashMap<String, String> info = new HashMap<>();
-        info.put("name", NAME);
-        info.put("description", DESCRIPTION);
-        info.put("power_description", POWER_DESCRIPTION);
-        return info;
-    }
-
     public Apollo() {
+        super(NAME, DESCRIPTION, POWER_DESCRIPTION);
         this.opponentWorkerMoverDelegate = new OpponentWorkerMoverDelegate();
     }
 

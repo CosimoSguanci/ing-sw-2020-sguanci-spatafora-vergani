@@ -21,16 +21,10 @@ public class Hestia extends GodStrategy {
     final int HESTIA_MAX_BUILD_NUM = 2;
     private MultipleBuildDelegate multipleBuildDelegate;
 
-    @Override
-    public Map<String, String> getGodInfo() {
-        HashMap<String, String> info = new HashMap<>();
-        info.put("name", NAME);
-        info.put("description", DESCRIPTION);
-        info.put("power_description", POWER_DESCRIPTION);
-        return info;
-    }
+
 
     public Hestia() {
+        super(NAME, DESCRIPTION, POWER_DESCRIPTION);
         multipleBuildDelegate = new MultipleBuildDelegate(HESTIA_MAX_BUILD_NUM);
     }
 

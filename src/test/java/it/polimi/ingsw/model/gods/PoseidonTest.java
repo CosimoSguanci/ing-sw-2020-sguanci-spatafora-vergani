@@ -66,16 +66,6 @@ public class PoseidonTest {
         assertFalse(poseidon.checkBuild(unmovedWorker, match.getMatchBoard().getCell(4, 1), BlockType.LEVEL_TWO));
     }
 
-    @Test
-    public void getGodInfoTest() {
-        Poseidon poseidon = new Poseidon();
-
-        Map<String, String> info = poseidon.getGodInfo();
-
-        assertEquals(info.get("name"), Poseidon.NAME);
-        assertEquals(info.get("description"), Poseidon.DESCRIPTION);
-        assertEquals(info.get("power_description"), Poseidon.POWER_DESCRIPTION);
-    }
 
     @Test
     public void poseidonEndTurnTest() {

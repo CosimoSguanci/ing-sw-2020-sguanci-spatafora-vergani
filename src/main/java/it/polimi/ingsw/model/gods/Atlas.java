@@ -21,13 +21,8 @@ public class Atlas extends GodStrategy {
     public static final String DESCRIPTION = "Titan Shouldering the Heavens";
     public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build a dome at any level.";
 
-    @Override
-    public Map<String, String> getGodInfo() {
-        HashMap<String, String> info = new HashMap<>();
-        info.put("name", NAME);
-        info.put("description", DESCRIPTION);
-        info.put("power_description", POWER_DESCRIPTION);
-        return info;
+    public Atlas() {
+        super(NAME, DESCRIPTION, POWER_DESCRIPTION);
     }
 
     // TODO SHOULD CHECK ALSO THE LEVEL BEING BUILT?

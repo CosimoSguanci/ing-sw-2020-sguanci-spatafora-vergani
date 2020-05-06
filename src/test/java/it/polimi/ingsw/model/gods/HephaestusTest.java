@@ -88,17 +88,6 @@ public class HephaestusTest {
     }
 
     @Test
-    public void getGodInfoTest() {
-        Hephaestus hephaestus = new Hephaestus();
-
-        Map<String, String> info = hephaestus.getGodInfo();
-
-        assertEquals(info.get("name"), Hephaestus.NAME);
-        assertEquals(info.get("description"), Hephaestus.DESCRIPTION);
-        assertEquals(info.get("power_description"), Hephaestus.POWER_DESCRIPTION);
-    }
-
-    @Test
     public void hephaestusEndTurnTest() { // TODO Add tests to check previousCell was reset?
         Board.clearInstances();
         Match.clearInstances();

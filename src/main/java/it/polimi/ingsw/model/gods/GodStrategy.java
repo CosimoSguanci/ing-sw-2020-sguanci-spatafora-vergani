@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.utils.GodsUtils;
 
 import java.util.Map;
 
@@ -19,7 +20,16 @@ import java.util.Map;
 
 public abstract class GodStrategy {
      // TODO consider checkGamePrepConstraints + endTurnConstraints?
-    public abstract Map<String, String> getGodInfo(); // TODO FIX Duplicated GetGodInfo Impl
+
+    public final String NAME;
+    public final String DESCRIPTION;
+    public final String POWER_DESCRIPTION;
+
+    protected GodStrategy(String name, String description, String powerDescription) {
+        NAME = name;
+        DESCRIPTION = description;
+        POWER_DESCRIPTION = powerDescription;
+    }
 
     /**
      * This property is useful for all Gods and it's used to keep track of the selected Worker
@@ -194,39 +204,6 @@ public abstract class GodStrategy {
 
 
     public static GodStrategy instantiateGod(String god) {
-        switch(god) {
-            case "apollo" :
-                return new Apollo();
-            case "artemis" :
-                return new Artemis();
-            case "athena" :
-                return new Athena();
-            case "atlas" :
-                return new Atlas();
-            case "demeter" :
-                return new Demeter();
-            case "eros" :
-                return new Eros();
-            case "hephaestus" :
-                return new Hephaestus();
-            case "hera" :
-                return new Hera();
-            case "hestia" :
-                return new Hestia();
-            case "minotaur" :
-                return new Minotaur();
-            case "pan" :
-                return new Pan();
-            case "poseidon" :
-                return new Poseidon();
-            case "prometheus" :
-                return new Prometheus();
-            case "zeus" :
-                return new Zeus();
-            default:
-                return new Zeus();  //TODO is this an exception? Client-side controls could not be all -> UnknownGodException
-        }
+        return GodsUtils.godsFactory(god);
     }
-
-
 }

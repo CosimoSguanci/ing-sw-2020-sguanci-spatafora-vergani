@@ -27,14 +27,11 @@ public class Eros extends GodStrategy {
      */
     private boolean neighboringOtherWorker;
 
-    @Override
-    public Map<String, String> getGodInfo() {
-        HashMap<String, String> info = new HashMap<>();
-        info.put("name", NAME);
-        info.put("description", DESCRIPTION);
-        info.put("power_description", POWER_DESCRIPTION);
-        return info;
+    public Eros() {
+        super(NAME, DESCRIPTION, POWER_DESCRIPTION);
     }
+
+
 
     /**
      * This method checks that Eros Game Preparation constraints are satisfied.

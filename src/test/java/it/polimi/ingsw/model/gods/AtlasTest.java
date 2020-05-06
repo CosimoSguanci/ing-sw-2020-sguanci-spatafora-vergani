@@ -47,14 +47,4 @@ public class AtlasTest {
         assertSame(BlockType.LEVEL_ONE, match.getMatchBoard().getCell(0, 1).getLevel());
     }
 
-    @Test
-    public void getGodInfoTest() {
-        Atlas atlas = new Atlas();
-
-        Map<String, String> info = atlas.getGodInfo();
-
-        assertEquals(info.get("name"), Atlas.NAME);
-        assertEquals(info.get("description"), Atlas.DESCRIPTION);
-        assertEquals(info.get("power_description"), Atlas.POWER_DESCRIPTION);
-    }
 }

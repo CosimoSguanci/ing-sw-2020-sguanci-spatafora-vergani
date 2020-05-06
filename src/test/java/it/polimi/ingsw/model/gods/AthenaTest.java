@@ -38,16 +38,6 @@ public class AthenaTest {
 
     }
 
-    @Test
-    public void getGodInfoTest() {
-        Athena athena = new Athena();
-
-        Map<String, String> info = athena.getGodInfo();
-
-        assertEquals(info.get("name"), Athena.NAME);
-        assertEquals(info.get("description"), Athena.DESCRIPTION);
-        assertEquals(info.get("power_description"), Athena.POWER_DESCRIPTION);
-    }
 
     @Test
     public void athenaEndTurnTest() {

@@ -23,16 +23,9 @@ public class Poseidon extends GodStrategy {
     private MultipleBuildDelegate multipleBuildDelegate;
     private Worker unmovedWorker;
 
-    @Override
-    public Map<String, String> getGodInfo() {
-        HashMap<String, String> info = new HashMap<>();
-        info.put("name", NAME);
-        info.put("description", DESCRIPTION);
-        info.put("power_description", POWER_DESCRIPTION);
-        return info;
-    }
 
     public Poseidon() {
+        super(NAME, DESCRIPTION, POWER_DESCRIPTION);
         multipleBuildDelegate = new MultipleBuildDelegate(POSEIDON_MAX_BUILD_NUM);
     }
 

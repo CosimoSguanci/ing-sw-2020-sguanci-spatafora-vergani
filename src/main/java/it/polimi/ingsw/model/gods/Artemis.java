@@ -26,16 +26,9 @@ public class Artemis extends GodStrategy {
     private MultipleMovementDelegate multipleMovementDelegate;
     private PreviousCellNeededDelegate previousCellNeededDelegate;
 
-    @Override
-    public Map<String, String> getGodInfo() {
-        HashMap<String, String> info = new HashMap<>();
-        info.put("name", NAME);
-        info.put("description", DESCRIPTION);
-        info.put("power_description", POWER_DESCRIPTION);
-        return info;
-    }
 
     public Artemis() {
+        super(NAME, DESCRIPTION, POWER_DESCRIPTION);
         this.multipleMovementDelegate = new MultipleMovementDelegate(ARTEMIS_MAX_MOVE_NUM);
         this.previousCellNeededDelegate = new PreviousCellNeededDelegate();
     }

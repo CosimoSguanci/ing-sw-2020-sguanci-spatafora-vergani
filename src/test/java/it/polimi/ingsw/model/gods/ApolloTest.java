@@ -53,17 +53,8 @@ public class ApolloTest {
         assertEquals(match.getMatchBoard().getCell(0, 1), worker.getPosition());
         assertEquals(match.getMatchBoard().getCell(0, 0), oppositeWorker.getPosition());
 
-    }
-
-    @Test
-    public void getGodInfoTest() {
-        Apollo apollo = new Apollo();
-
-        Map<String, String> info = apollo.getGodInfo();
-
-        assertEquals(info.get("name"), Apollo.NAME);
-        assertEquals(info.get("description"), Apollo.DESCRIPTION);
-        assertEquals(info.get("power_description"), Apollo.POWER_DESCRIPTION);
+        assertEquals(worker, match.getMatchBoard().getCell(0, 1).getWorker());
+        assertEquals(oppositeWorker, match.getMatchBoard().getCell(0, 0).getWorker());
     }
 
 }

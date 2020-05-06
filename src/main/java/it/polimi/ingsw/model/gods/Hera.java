@@ -18,14 +18,11 @@ public class Hera extends GodStrategy {
     public static final String DESCRIPTION = "Godness of Marriage";
     public static final String POWER_DESCRIPTION = "Opponent’s Turn: An opponent cannot win by moving into a perimeter space.";
 
-    @Override
-    public Map<String, String> getGodInfo() {
-        HashMap<String, String> info = new HashMap<>();
-        info.put("name", NAME);
-        info.put("description", DESCRIPTION);
-        info.put("power_description", POWER_DESCRIPTION);
-        return info;
+    public Hera() {
+        super(NAME, DESCRIPTION, POWER_DESCRIPTION);
     }
+
+
 
 
     /**

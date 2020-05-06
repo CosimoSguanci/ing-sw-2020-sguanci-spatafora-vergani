@@ -75,16 +75,6 @@ public class PrometheusTest {
         assertFalse(prometheus.checkBuild(worker, match.getMatchBoard().getCell(1, 1), BlockType.LEVEL_TWO));
     }
 
-    @Test
-    public void getGodInfoTest() {
-        Prometheus prometheus = new Prometheus();
-
-        Map<String, String> info = prometheus.getGodInfo();
-
-        assertEquals(info.get("name"), Prometheus.NAME);
-        assertEquals(info.get("description"), Prometheus.DESCRIPTION);
-        assertEquals(info.get("power_description"), Prometheus.POWER_DESCRIPTION);
-    }
 
     @Test
     public void prometheusEndTurnTest() {

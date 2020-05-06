@@ -25,16 +25,9 @@ public class Prometheus extends GodStrategy {
     private MultipleBuildDelegate multipleBuildDelegate;
     private boolean builtBeforeMoving;
 
-    @Override
-    public Map<String, String> getGodInfo() {
-        HashMap<String, String> info = new HashMap<>();
-        info.put("name", NAME);
-        info.put("description", DESCRIPTION);
-        info.put("power_description", POWER_DESCRIPTION);
-        return info;
-    }
 
     public Prometheus() {
+        super(NAME, DESCRIPTION, POWER_DESCRIPTION);
         multipleBuildDelegate = new MultipleBuildDelegate(PROMETHEUS_MAX_BUILD_NUM);
     }
 

@@ -66,14 +66,4 @@ public class MinotaurTest {
         assertEquals(match.getMatchBoard().getCell(2, 3), oppositeWorker.getPosition()); // Forced one space straight backwards
     }
 
-    @Test
-    public void getGodInfoTest() {
-        Minotaur minotaur = new Minotaur();
-
-        Map<String, String> info = minotaur.getGodInfo();
-
-        assertEquals(info.get("name"), Minotaur.NAME);
-        assertEquals(info.get("description"), Minotaur.DESCRIPTION);
-        assertEquals(info.get("power_description"), Minotaur.POWER_DESCRIPTION);
-    }
 }

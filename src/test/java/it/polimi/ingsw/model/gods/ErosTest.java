@@ -80,16 +80,6 @@ public class ErosTest {
         assertTrue(eros.checkGamePreparation(workerFirst, match.getMatchBoard().getCell(0, 1), workerSecond, match.getMatchBoard().getCell(4,1)));
     }
 
-    @Test
-    public void getGodInfoTest() {
-        Eros eros = new Eros();
-
-        Map<String, String> info = eros.getGodInfo();
-
-        assertEquals(info.get("name"), Eros.NAME);
-        assertEquals(info.get("description"), Eros.DESCRIPTION);
-        assertEquals(info.get("power_description"), Eros.POWER_DESCRIPTION);
-    }
 
     @Test
     public void erosEndTurnTest() {

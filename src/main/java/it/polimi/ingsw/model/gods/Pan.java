@@ -20,14 +20,10 @@ public class Pan extends GodStrategy {
     public static final String DESCRIPTION = "God of the Wild";
     public static final String POWER_DESCRIPTION = "Win Condition: You also win if your Worker moves down two or more levels.";
 
-    @Override
-    public Map<String, String> getGodInfo() {
-        HashMap<String, String> info = new HashMap<>();
-        info.put("name", NAME);
-        info.put("description", DESCRIPTION);
-        info.put("power_description", POWER_DESCRIPTION);
-        return info;
+    public Pan() {
+        super(NAME, DESCRIPTION, POWER_DESCRIPTION);
     }
+
 
     /**
      * Flag used to determine if the Worker went down two or more levels.

@@ -58,16 +58,6 @@ public class ArtemisTest {
 
     }
 
-    @Test
-    public void getGodInfoTest() {
-        Artemis artemis = new Artemis();
-
-        Map<String, String> info = artemis.getGodInfo();
-
-        assertEquals(info.get("name"), Artemis.NAME);
-        assertEquals(info.get("description"), Artemis.DESCRIPTION);
-        assertEquals(info.get("power_description"), Artemis.POWER_DESCRIPTION);
-    }
 
     @Test
     public void artemisEndTurnTest() {
