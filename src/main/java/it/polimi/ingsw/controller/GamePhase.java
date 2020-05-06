@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.commands.CommandType;
 import it.polimi.ingsw.exceptions.BadCommandException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public enum GamePhase {
@@ -26,6 +27,15 @@ public enum GamePhase {
                 // TODO handle this (exception?)
                 return REAL_GAME;
         }
+    }
+
+    public static boolean isGamePhase(String input) {
+        ArrayList<String> values = new ArrayList();
+        for(GamePhase gamePhase : GamePhase.values()) {
+            values.add(gamePhase.toString().toLowerCase());
+        }
+        //values now contains all the enum values, in the form of String
+        return values.contains(input.toLowerCase());
     }
 
     public static GamePhase parseGamePhase(String input) {
