@@ -48,6 +48,7 @@ public class CliUpdateHandler implements UpdateHandler {
 
     public void handle(BoardUpdate update) {
         cliInstance.printBoard(update.board);
+        cliInstance.printCurrentTurn();
     }
 
     public void handle(ErrorUpdate update) {
@@ -113,6 +114,7 @@ public class CliUpdateHandler implements UpdateHandler {
             cliInstance.print("Turn ended. Wait for your turn...");
         }*/
         cliInstance.forwardNotify(update);
+        //cliInstance.printCurrentTurn();
     }
 
     public void handle(WinUpdate update) {

@@ -95,7 +95,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         try {
 
             do {
-                print("How many players do you want in you match? ");
+                print("How many players do you want in your match? ");
                 String playersNumString = stdin.nextLine();
 
                 if (playersNumString.equals("2")) {
@@ -371,7 +371,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
             } catch (NicknameAlreadyTakenException e) {
                 print("Nickname already taken for this match, please select another nickname.");
             } catch (InvalidColorException e) {
-                print ("Invalid color requested: another player already choose it or this color is not available in this game.");
+                print ("Invalid color requested: another player already chose it or this color is not available in this game.");
             } catch (WrongPlayerException e) {
                 print ("Invalid command: please check if it's your turn!");
             }
@@ -670,6 +670,24 @@ public class Cli extends Observable<Object> implements Observer<Update> {
         this.playersColors.keySet().forEach((key) -> {
             print(key + " is " + convertColorToAnsi(playersColors.get(key)) + playersColors.get(key) + PrintableColour.RESET);
         });
+    }
+
+    private String playerWithColor(String nickname) {
+        if(playersColors != null) {
+            return convertColorToAnsi(playersColors.get(nickname)) + nickname + PrintableColour.RESET;
+        }
+        return null;
+    }
+
+    void printCurrentTurn() {
+        String currentPlayerNickname = controller.getCurrentPlayerNickname();
+        if(currentPlayerNickname != null && playerWithColor(currentPlayerNickname) != null) {
+            if (!controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {  //not player's turn
+                print("It's " + playerWithColor(currentPlayerNickname) + "'s turn!");
+            } else {  //client's turn
+                print("It's" + convertColorToAnsi(playersColors.get(currentPlayerNickname)) + " your " + PrintableColour.RESET + "turn!");
+            }
+        }
     }
 
 }

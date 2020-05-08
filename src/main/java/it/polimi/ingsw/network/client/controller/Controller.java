@@ -16,6 +16,7 @@ public class Controller extends Observable<Update> implements Observer<Object> {
 
     private String clientPlayerID;
     private String currentPlayerID;
+    private String currentPlayerNickname;
     private final Client client;
 
     public Controller(Client client) {
@@ -26,12 +27,21 @@ public class Controller extends Observable<Update> implements Observer<Object> {
         return this.clientPlayerID;
     }
 
+    public String getCurrentPlayerNickname() {
+        return this.currentPlayerNickname;
+    }
+
+    public String getCurrentPlayerID() {
+        return this.currentPlayerID;
+    }
+
     @Override
     public void update(Object message) { // todo Visitor?
         if (message instanceof PlayerUpdate) {
             this.clientPlayerID = ((PlayerUpdate) message).playerID;
         } else if (message instanceof TurnUpdate) {
             this.currentPlayerID = ((TurnUpdate) message).currentPlayerID;
+            this.currentPlayerNickname = ((TurnUpdate) message).currentPlayerNickname;
         } else {
 
             if (!(message instanceof Command)) {
