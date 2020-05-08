@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.PrintableColour;
 import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.view.UpdateHandler;
 
+import java.util.List;
+
 public class CliUpdateHandler implements UpdateHandler {
     private final Cli cliInstance;
 
@@ -17,18 +19,20 @@ public class CliUpdateHandler implements UpdateHandler {
         cliInstance.printBoard(update.board);
 
         cliInstance.print("Match Started");
+        cliInstance.printCurrentTurn();
     }
 
     public void handle(ChooseGodsUpdate update) {
 
         if (update.isGodChooser) {
             cliInstance.setInitialGodChooser(true);
-            cliInstance.print("Choose " + cliInstance.getPlayersNum() + " gods...");
+            cliInstance.print("Choose " + cliInstance.getPlayersNum() + " gods.    Command format expected: select [god(1)] ... [god(n)]");
         } else {
             cliInstance.setInitialGodChooser(false);
             cliInstance.setSelectableGods(update.selectableGods);
-            cliInstance.print("Choose your god. Available choices are: ");
-            update.selectableGods.forEach(System.out::println);
+            cliInstance.print("Choose your god.    Command format expected: select [god]");
+            cliInstance.print("Available choices are: " + listToStringBuilder(update.selectableGods));
+            //update.selectableGods.forEach(System.out::println);
         }
     }
 
@@ -43,7 +47,7 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     public void handle(GamePreparationUpdate update) {
-        cliInstance.print("Game Preparation: place your workers ");
+        cliInstance.print("Game Preparation: place your workers.    Command format expected: place W1 [row1][col1]  W2 [row2][col2]");
     }
 
     public void handle(BoardUpdate update) {
@@ -87,8 +91,8 @@ public class CliUpdateHandler implements UpdateHandler {
        cliInstance.print("Type your Nickname and color separated by a space.    Command format expected: pick [nickname] [color]");
 
        if(!update.selectedNicknames.isEmpty()) {
-           cliInstance.print("Nicknames already taken are: ");
-           update.selectedNicknames.forEach(System.out::println);
+           cliInstance.print("Nicknames already taken are: " + listToStringBuilder(update.selectedNicknames));
+           //update.selectedNicknames.forEach(System.out::println);
        }
 
        cliInstance.setSelectedNicknames(update.selectedNicknames);
@@ -165,6 +169,18 @@ public class CliUpdateHandler implements UpdateHandler {
             cliInstance.print("Do you want to play another match?");
         }
 
+    }
+
+
+    public StringBuilder listToStringBuilder(List<String> value) {
+        if(value.size() == 0) {
+            return null;
+        }
+        StringBuilder result = new StringBuilder(value.get(0));
+        for(int i = 1; i < value.size(); i++) {
+            result.append(", ").append(value.get(i));
+        }
+        return result;
     }
 
 }

@@ -249,6 +249,15 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     */
                 }
 
+                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.TURN  && splitCommand.length == 1) {
+                    if(currentGamePhase == GamePhase.REAL_GAME) {  //it's interesting to know who is playing only in real-game phase
+                        printCurrentTurn();
+                    }
+                    else {
+                        print("It is not the right moment for this command. Retry after match started");
+                    }
+                }
+
 
                 else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.INFO) {
                     if (splitCommand.length != 2) {
@@ -404,6 +413,7 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                 print("Build example: build w1 A2 dome");
                 print("End format: end -> tries to end the current turn");
                 print("End example: end");
+                print("Want to know who is playing in this moment? Type turn");
                 break;
             default:
                 throw new BadCommandException();

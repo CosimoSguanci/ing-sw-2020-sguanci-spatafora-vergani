@@ -19,4 +19,5 @@ public class ChooseGodsUpdate extends PlayerSpecificUpdate {
     public void handleUpdate(UpdateHandler handler) {
         handler.handle(this);
     }
+
 }
