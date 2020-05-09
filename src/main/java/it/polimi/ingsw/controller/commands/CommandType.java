@@ -14,7 +14,7 @@ import it.polimi.ingsw.exceptions.BadCommandException;
  */
 public enum CommandType {
 
-    MOVE, BUILD, END_TURN, PICK, SELECT, PLACE, HELP, INFO, QUIT, TURN;
+    MOVE, BUILD, END_TURN, PICK, SELECT, PLACE, HELP, INFO, QUIT, TURN, RULES, GOD;
 
     public static CommandType parseCommandType(String input) {
         try {
