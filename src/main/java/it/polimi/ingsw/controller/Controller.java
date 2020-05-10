@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.GodStrategy;
-import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
@@ -31,7 +30,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
     private Player godChooserPlayer;
     private List<String> selectableGods;
     private List<String> selectedNicknames;
-    private List<PrintableColour> selectableColors;
+    private List<PrintableColor> selectableColors;
     private final CommandHandler commandHandler;
 
 
@@ -72,7 +71,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
             command.handleCommand(this.commandHandler);
         } catch (WrongGamePhaseException e) {
             model.reportError(command.getPlayer(), command.commandType);
-        } catch (WrongPlayerException e) { //Not collapsed as suggested: //TODO modify reportError to have
+        } catch (WrongPlayerException e) {  //TODO -> modify reportError
             model.reportError(command.getPlayer(), command.commandType);
         } catch (NicknameAlreadyTakenException e) {
             model.reportError(command.getPlayer(), command.commandType);
@@ -96,7 +95,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         }
 
 
-        PrintableColour color = initialInfoCommand.color;
+        PrintableColor color = initialInfoCommand.color;
 
         if (!selectableColors.contains(color)) {
             throw new InvalidColorException();
@@ -116,7 +115,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         } else { // all the players chose the info
 
 
-            HashMap<String, PrintableColour> initialInfo = new HashMap<>();
+            HashMap<String, PrintableColor> initialInfo = new HashMap<>();
 
             model.getPlayers().forEach((player) -> {
                 initialInfo.put(player.getNickname(), player.getColor());
@@ -375,7 +374,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         model.turnUpdate(model.getCurrentPlayer());
 
         selectedNicknames = new ArrayList<>();
-        selectableColors = PrintableColour.getColorList();
+        selectableColors = PrintableColor.getColorList();
         model.initialInfoUpdate(godChooserPlayer, selectedNicknames, selectableColors);
 
     }

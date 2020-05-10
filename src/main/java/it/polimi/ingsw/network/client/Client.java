@@ -6,9 +6,7 @@ import it.polimi.ingsw.controller.commands.InitialInfoCommand;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 
 public class Client {
@@ -79,7 +77,6 @@ public class Client {
 
         try {
             Socket pingSocket = new Socket(IP, PORT);
-
             pingSocket.close();
 
             return true;

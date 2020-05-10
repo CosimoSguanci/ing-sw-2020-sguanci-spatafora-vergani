@@ -20,9 +20,9 @@ public class PlayerTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Player instanceTest = new Player("Roberto",  match);
-        PrintableColour colorTest = PrintableColour.GREEN;
+        PrintableColor colorTest = PrintableColor.GREEN;
         instanceTest.setColor(colorTest);
-        assertEquals(PrintableColour.GREEN, instanceTest.getColor());
+        assertEquals(PrintableColor.GREEN, instanceTest.getColor());
         System.out.println("Test successfully completed.");
     }
 

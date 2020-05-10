@@ -8,11 +8,9 @@ import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.model.gods.*;
 import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.network.client.UpdateListener;
 import it.polimi.ingsw.network.client.controller.Controller;
-import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
@@ -44,13 +42,13 @@ public class Cli extends View implements Observer<Update> {
     private final String currentPhaseString = "current_phase";
 
     private List<String> selectedNicknames;
-    private List<PrintableColour> selectableColors;
+    private List<PrintableColor> selectableColors;
 
     private boolean isInitialGodChooser = false;
 
     private List<String> selectableGods;
     private Map<String, String> playersGods;
-    private Map<String, PrintableColour> playersColors;
+    private Map<String, PrintableColor> playersColors;
 
     private final UpdateHandler cliUpdateHandler;
 
@@ -319,12 +317,12 @@ public class Cli extends View implements Observer<Update> {
 
                     String color = splitCommand[2];
 
-                    if(!PrintableColour.isValidColor(color)) {
+                    if(!PrintableColor.isValidColor(color)) {
                         print("Not a valid color");
                         throw new BadCommandException();
                     }
 
-                    PrintableColour actualColor = Enum.valueOf(PrintableColour.class, color.toUpperCase());
+                    PrintableColor actualColor = Enum.valueOf(PrintableColor.class, color.toUpperCase());
 
                     if(!selectableColors.contains(actualColor)) {
                         throw new InvalidColorException();
@@ -420,8 +418,8 @@ public class Cli extends View implements Observer<Update> {
     private void helpString(GamePhase gamePhase) {
         switch (gamePhase) {
             case INITIAL_INFO:
-                print("In this phase, you decide your nickname and your workers' colour");
-                print("Command format: pick <nickname> <colour>");
+                print("In this phase, you decide your nickname and your workers' color");
+                print("Command format: pick <nickname> <color>");
                 print("Command example: pick Mike green");
                 break;
             case CHOOSE_GODS:
@@ -494,7 +492,7 @@ public class Cli extends View implements Observer<Update> {
      * This method let clients choose a color unique in the match.
      * @param selectableColors is a list of all color not yet chosen from players.
      */
-    void setSelectableColors(List<PrintableColour> selectableColors) {
+    void setSelectableColors(List<PrintableColor> selectableColors) {
         this.selectableColors = selectableColors;
     }
 
@@ -518,7 +516,7 @@ public class Cli extends View implements Observer<Update> {
      * This method makes a correspondence to the client and the color associated.
      * @param playersColors is the corresponding color to the client.
      */
-    void setPlayersColors(Map<String, PrintableColour> playersColors) {
+    void setPlayersColors(Map<String, PrintableColor> playersColors) {
         this.playersColors = playersColors;
     }
 
@@ -599,9 +597,9 @@ public class Cli extends View implements Observer<Update> {
 
                     Worker printableWorker = gameBoard.getCell(i, j).getWorker();
                     if (printableWorker.workerType.equals(Command.WORKER_FIRST)) {
-                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + " W1" + PrintableColour.RESET);
+                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + " W1" + PrintableColor.RESET);
                     } else {
-                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + " W2" + PrintableColour.RESET);
+                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + " W2" + PrintableColor.RESET);
                     }
                 } else {
                     System.out.print("   ");
@@ -649,7 +647,7 @@ public class Cli extends View implements Observer<Update> {
      * @param color is the PrintableColor you want to calculate the Ansi code
      * @return the string of the respective Ansi color.
      */
-    static String convertColorToAnsi (PrintableColour color) { // todo move to PrintableColor
+    static String convertColorToAnsi (PrintableColor color) { // todo move to PrintableColor
         switch (color) {
             case RED:
                 return "\u001B[31m";
@@ -714,13 +712,13 @@ public class Cli extends View implements Observer<Update> {
      */
     void printPlayersColors() {
         this.playersColors.keySet().forEach((key) -> {
-            print(key + " is " + convertColorToAnsi(playersColors.get(key)) + playersColors.get(key) + PrintableColour.RESET);
+            print(key + " is " + convertColorToAnsi(playersColors.get(key)) + playersColors.get(key) + PrintableColor.RESET);
         });
     }
 
     String playerWithColor(String nickname) {
         if(playersColors != null) {
-            return convertColorToAnsi(playersColors.get(nickname)) + nickname + PrintableColour.RESET;
+            return convertColorToAnsi(playersColors.get(nickname)) + nickname + PrintableColor.RESET;
         }
         return null;
     }
@@ -731,7 +729,7 @@ public class Cli extends View implements Observer<Update> {
             if (!controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {  //not player's turn
                 print("It's " + playerWithColor(currentPlayerNickname) + "'s turn!");
             } else {  //client's turn
-                print("It's" + convertColorToAnsi(playersColors.get(currentPlayerNickname)) + " your " + PrintableColour.RESET + "turn!");
+                print("It's" + convertColorToAnsi(playersColors.get(currentPlayerNickname)) + " your " + PrintableColor.RESET + "turn!");
             }
             newLine();
         }
@@ -742,7 +740,7 @@ public class Cli extends View implements Observer<Update> {
     }
 
     static String toBold(String s) {
-        return PrintableColour.BOLD + s + PrintableColour.RESET;
+        return PrintableColor.BOLD + s + PrintableColor.RESET;
     }
 
 }

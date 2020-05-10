@@ -1,14 +1,14 @@
 package it.polimi.ingsw.model.updates;
 
-import it.polimi.ingsw.model.PrintableColour;
+import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.view.UpdateHandler;
 
 import java.util.Map;
 
 public class SelectedInitialInfoUpdate extends BroadcastUpdate {
-    public final Map<String, PrintableColour> initialInfo; // Nickname : Color
+    public final Map<String, PrintableColor> initialInfo; // Nickname : Color
 
-    public SelectedInitialInfoUpdate(Map<String, PrintableColour> initialInfo) {
+    public SelectedInitialInfoUpdate(Map<String, PrintableColor> initialInfo) {
         super(null);
         this.initialInfo = initialInfo;
     }

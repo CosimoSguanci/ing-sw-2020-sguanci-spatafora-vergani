@@ -59,7 +59,7 @@ public class Model extends Observable<Update> {
         notify(gamePhaseChangedUpdate);
     }
 
-    public void initialInfoUpdate(Player player, List<String> selectedNicknames, List<PrintableColour> selectableColors) {
+    public void initialInfoUpdate(Player player, List<String> selectedNicknames, List<PrintableColor> selectableColors) {
         InitialInfoUpdate initialInfoUpdate = new InitialInfoUpdate(player.ID, selectedNicknames, selectableColors);
         notify(initialInfoUpdate);
     }
@@ -79,7 +79,7 @@ public class Model extends Observable<Update> {
         notify(chooseGodsUpdate);
     }
 
-    public void selectedInitialInfoUpdate(Map<String, PrintableColour> initialInfo) {
+    public void selectedInitialInfoUpdate(Map<String, PrintableColor> initialInfo) {
         SelectedInitialInfoUpdate selectedInitialInfoUpdate = new SelectedInitialInfoUpdate(initialInfo);
         notify(selectedInitialInfoUpdate);
     }

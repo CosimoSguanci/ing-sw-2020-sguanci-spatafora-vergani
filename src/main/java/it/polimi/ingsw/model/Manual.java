@@ -38,11 +38,11 @@ public class Manual {
 
 
     public static String manual() {
-        String info = PrintableColour.BOLD + "General information" + PrintableColour.RESET;
-        String play = PrintableColour.BOLD + "How to play" + PrintableColour.RESET;
-        String winLose = PrintableColour.BOLD + "Win and lose a match" + PrintableColour.RESET;
-        String gods = PrintableColour.BOLD + "Gods" + PrintableColour.RESET;
-        String infoGods = PrintableColour.BOLD + "More about gods" + PrintableColour.RESET;
+        String info = PrintableColor.BOLD + "General information" + PrintableColor.RESET;
+        String play = PrintableColor.BOLD + "How to play" + PrintableColor.RESET;
+        String winLose = PrintableColor.BOLD + "Win and lose a match" + PrintableColor.RESET;
+        String gods = PrintableColor.BOLD + "Gods" + PrintableColor.RESET;
+        String infoGods = PrintableColor.BOLD + "More about gods" + PrintableColor.RESET;
 
         return info + System.lineSeparator() + generalInfo + System.lineSeparator() +
                 play + System.lineSeparator() + howToPlay + System.lineSeparator() +

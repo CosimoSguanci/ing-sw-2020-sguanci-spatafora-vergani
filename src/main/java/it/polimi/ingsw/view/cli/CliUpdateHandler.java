@@ -1,8 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.controller.GamePhase;
-import it.polimi.ingsw.controller.commands.InitialInfoCommand;
-import it.polimi.ingsw.model.PrintableColour;
+import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.view.UpdateHandler;
@@ -121,7 +120,7 @@ public class CliUpdateHandler implements UpdateHandler {
        cliInstance.print("Available colors are: ");
 
        update.selectableColors.forEach((color) -> {
-            cliInstance.print(Cli.convertColorToAnsi(color) + color + PrintableColour.RESET);
+            cliInstance.print(Cli.convertColorToAnsi(color) + color + PrintableColor.RESET);
         });
 
        //update.selectableColors.forEach(System.out::println);

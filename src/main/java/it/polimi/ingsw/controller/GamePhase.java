@@ -1,7 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.controller.commands.CommandType;
-import it.polimi.ingsw.controller.commands.GamePreparationCommand;
 import it.polimi.ingsw.exceptions.BadCommandException;
 
 import java.util.ArrayList;
@@ -24,13 +22,12 @@ public enum GamePhase {
             case REAL_GAME:
                 return MATCH_ENDED;
             default:
-                // TODO handle this (exception?)
-                return REAL_GAME;
+                throw new IllegalArgumentException();
         }
     }
 
     public static boolean isGamePhase(String input) {
-        ArrayList<String> values = new ArrayList();
+        ArrayList<String> values = new ArrayList<>();
         for(GamePhase gamePhase : GamePhase.values()) {
             values.add(gamePhase.toString().toLowerCase());
         }
@@ -53,7 +50,7 @@ public enum GamePhase {
         StringBuilder result = new StringBuilder();
         for(j=0; j<phases.length; j++) {
             if(phases[j].isPrintable()) {
-                result = result.append(phases[j].toString().toLowerCase());
+                result.append(phases[j].toString().toLowerCase());
                 break;
             }
         }

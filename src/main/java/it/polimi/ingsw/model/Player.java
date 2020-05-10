@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.commands.Command;
-import it.polimi.ingsw.controller.commands.CommandType;
 import it.polimi.ingsw.model.gods.GodStrategy;
 
 /**
@@ -16,7 +15,7 @@ import it.polimi.ingsw.model.gods.GodStrategy;
 public class Player {
     public final String ID;
     private String nickname;
-    private PrintableColour color;
+    private PrintableColor color;
     private transient Worker workerFirst; // circular dependency
     private transient Worker workerSecond;
     private transient boolean isGodChooser;
@@ -41,7 +40,7 @@ public class Player {
      *
      * @return the chosen color of worker, it returns null if the color has not been set yet
      */
-    public PrintableColour getColor() {
+    public PrintableColor getColor() {
         return this.color;
     }
 
@@ -50,7 +49,7 @@ public class Player {
      *
      * @param color is the String that indicates the color chosen from a Player at the beginning of the match
      */
-    public void setColor(PrintableColour color) {
+    public void setColor(PrintableColor color) {
         this.color = color;
     }
 

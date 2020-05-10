@@ -12,7 +12,6 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.model.gods.*;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -496,9 +495,9 @@ public class ControllerTest {
         String nick1 = "pippo";
         String nick2 = "pluto";
         String nick3 = "tex";
-        PrintableColour colour1 = PrintableColour.BLUE;
-        PrintableColour colour2 = PrintableColour.GREEN;
-        PrintableColour colour3 = PrintableColour.RED;
+        PrintableColor colour1 = PrintableColor.BLUE;
+        PrintableColor colour2 = PrintableColor.GREEN;
+        PrintableColor colour3 = PrintableColor.RED;
         InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nick1, colour1);
         initialInfoCommand.setPlayer(model.getCurrentPlayer());
         controller.update(initialInfoCommand);
@@ -516,13 +515,13 @@ public class ControllerTest {
         int plutoGreen = 0;
         int texRed = 0;
         for(Player player : players) {
-            if(player.getNickname().equals("pippo") && player.getColor() == PrintableColour.BLUE) {
+            if(player.getNickname().equals("pippo") && player.getColor() == PrintableColor.BLUE) {
                 pippoBlue++;
             }
-            else if(player.getNickname().equals("pluto") && player.getColor() == PrintableColour.GREEN) {
+            else if(player.getNickname().equals("pluto") && player.getColor() == PrintableColor.GREEN) {
                 plutoGreen++;
             }
-            else if(player.getNickname().equals("tex") && player.getColor() == PrintableColour.RED) {
+            else if(player.getNickname().equals("tex") && player.getColor() == PrintableColor.RED) {
                 texRed++;
             }
         }
@@ -554,9 +553,9 @@ public class ControllerTest {
 
         String nick1 = "pippo";
         String nick2 = "pluto";
-        PrintableColour colour1 = PrintableColour.BLUE;
-        PrintableColour colour2 = PrintableColour.GREEN;
-        PrintableColour colour3 = PrintableColour.RED;
+        PrintableColor colour1 = PrintableColor.BLUE;
+        PrintableColor colour2 = PrintableColor.GREEN;
+        PrintableColor colour3 = PrintableColor.RED;
         InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nick1, colour1);
         initialInfoCommand.setPlayer(model.getCurrentPlayer());
         controller.update(initialInfoCommand);
@@ -570,9 +569,9 @@ public class ControllerTest {
         int plutoGreen = 0;
         for(Player player : players) {
             if(player.getNickname() != null && player.getColor() != null) {
-                if (player.getNickname().equals("pippo") && player.getColor() == PrintableColour.BLUE) {
+                if (player.getNickname().equals("pippo") && player.getColor() == PrintableColor.BLUE) {
                     pippoBlue++;
-                } else if (player.getNickname().equals("pluto") && player.getColor() == PrintableColour.GREEN) {
+                } else if (player.getNickname().equals("pluto") && player.getColor() == PrintableColor.GREEN) {
                     plutoGreen++;
                 }
             }
@@ -609,7 +608,7 @@ public class ControllerTest {
 
         String nick1 = "pippo";
         String nick2 = "pluto";
-        PrintableColour colour = PrintableColour.YELLOW;
+        PrintableColor colour = PrintableColor.YELLOW;
         InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nick1, colour);
         initialInfoCommand.setPlayer(model.getCurrentPlayer());
         controller.update(initialInfoCommand);
@@ -618,7 +617,7 @@ public class ControllerTest {
         int pippoYellow = 0;
         for(Player player : players) {
             if(player.getNickname() != null && player.getColor() != null) {
-                if (player.getNickname().equals("pippo") && player.getColor() == PrintableColour.YELLOW) {
+                if (player.getNickname().equals("pippo") && player.getColor() == PrintableColor.YELLOW) {
                     pippoYellow++;
                 }
             }
@@ -652,8 +651,8 @@ public class ControllerTest {
 
         String nick1 = "pippo";
         String nick2 = "pluto";
-        PrintableColour colour1 = PrintableColour.GREEN;
-        PrintableColour colour2 = PrintableColour.RED;
+        PrintableColor colour1 = PrintableColor.GREEN;
+        PrintableColor colour2 = PrintableColor.RED;
         InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nick1, colour1);
         initialInfoCommand.setPlayer(model.getCurrentPlayer());
         controller.update(initialInfoCommand);
@@ -666,10 +665,10 @@ public class ControllerTest {
         int pippoGreen = 0;
         int plutoRed = 0;
         for(Player player : players) {
-            if(player.getNickname().equals("pippo") && player.getColor() == PrintableColour.GREEN) {
+            if(player.getNickname().equals("pippo") && player.getColor() == PrintableColor.GREEN) {
                 pippoGreen++;
             }
-            else if(player.getNickname().equals("pluto") && player.getColor() == PrintableColour.RED) {
+            else if(player.getNickname().equals("pluto") && player.getColor() == PrintableColor.RED) {
                 plutoRed++;
             }
         }

@@ -144,12 +144,9 @@ public class PlayerCommand extends Command {
                 }
             }
 
-
             return new PlayerCommand(commandType, worker, cellIdentifiers.get(ROW_KEY), cellIdentifiers.get(COL_KEY), blockType);
         } catch (Exception e) {
             throw new BadCommandException();
         }
-
-
     }
 }
