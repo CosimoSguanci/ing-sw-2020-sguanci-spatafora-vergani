@@ -167,4 +167,8 @@ public final class GodsUtils {
 
         throw new UnknownGodException();
     }
+
+    public static Map<String, Map<String, String>> getGodsInfo() {
+        return godsInfo;
+    }
 }

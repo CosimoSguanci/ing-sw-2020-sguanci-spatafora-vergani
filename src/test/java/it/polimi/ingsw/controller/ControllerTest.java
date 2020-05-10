@@ -1,8 +1,12 @@
 package it.polimi.ingsw.controller;
 
 
+import it.polimi.ingsw.controller.commands.GamePreparationCommand;
 import it.polimi.ingsw.controller.commands.GodChoiceCommand;
+import it.polimi.ingsw.controller.commands.InitialInfoCommand;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
+import it.polimi.ingsw.exceptions.InvalidColorException;
+import it.polimi.ingsw.exceptions.NicknameAlreadyTakenException;
 import it.polimi.ingsw.exceptions.WrongPlayerException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
@@ -423,7 +427,7 @@ public class ControllerTest {
         Board.clearInstances();
         Match.clearInstances();
 
-        int playersNum = 3;
+        int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Player p1 = new Player("Andrea",  match);
@@ -466,6 +470,452 @@ public class ControllerTest {
         assertEquals(1, eros);
         assertEquals(1, minotaur);
 
+    }
+
+
+    @Test
+    public void updateInitialInfoCommandTest() {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Player p1 = new Player("Andrea",  match);
+        Player p2 = new Player("Cosimo",  match);
+        Player p3 = new Player("Roberto", match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Model model = new Model(match);
+        Controller controller = new Controller(model);
+        controller.initialPhase();  //random first player to play
+
+        String nick1 = "pippo";
+        String nick2 = "pluto";
+        String nick3 = "tex";
+        PrintableColour colour1 = PrintableColour.BLUE;
+        PrintableColour colour2 = PrintableColour.GREEN;
+        PrintableColour colour3 = PrintableColour.RED;
+        InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nick1, colour1);
+        initialInfoCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(initialInfoCommand);
+
+        initialInfoCommand = new InitialInfoCommand(nick2, colour2);
+        initialInfoCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(initialInfoCommand);
+
+        initialInfoCommand = new InitialInfoCommand(nick3, colour3);
+        initialInfoCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(initialInfoCommand);
+
+        ArrayList<Player> players = new ArrayList<>(model.getPlayers());
+        int pippoBlue = 0;
+        int plutoGreen = 0;
+        int texRed = 0;
+        for(Player player : players) {
+            if(player.getNickname().equals("pippo") && player.getColor() == PrintableColour.BLUE) {
+                pippoBlue++;
+            }
+            else if(player.getNickname().equals("pluto") && player.getColor() == PrintableColour.GREEN) {
+                plutoGreen++;
+            }
+            else if(player.getNickname().equals("tex") && player.getColor() == PrintableColour.RED) {
+                texRed++;
+            }
+        }
+
+        assertEquals(1, pippoBlue);
+        assertEquals(1, plutoGreen);
+        assertEquals(1, texRed);
+    }
+
+    @Test
+    public void updateInitialInfoCommandNicknameAlreadyTakenExceptionTest() {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Player p1 = new Player("Andrea",  match);
+        Player p2 = new Player("Cosimo",  match);
+        Player p3 = new Player("Roberto", match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Model model = new Model(match);
+        Controller controller = new Controller(model);
+        controller.initialPhase();  //random first player to play
+
+        String nick1 = "pippo";
+        String nick2 = "pluto";
+        PrintableColour colour1 = PrintableColour.BLUE;
+        PrintableColour colour2 = PrintableColour.GREEN;
+        PrintableColour colour3 = PrintableColour.RED;
+        InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nick1, colour1);
+        initialInfoCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(initialInfoCommand);
+
+        initialInfoCommand = new InitialInfoCommand(nick2, colour2);
+        initialInfoCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(initialInfoCommand);
+
+        ArrayList<Player> players = new ArrayList<>(model.getPlayers());
+        int pippoBlue = 0;
+        int plutoGreen = 0;
+        for(Player player : players) {
+            if(player.getNickname() != null && player.getColor() != null) {
+                if (player.getNickname().equals("pippo") && player.getColor() == PrintableColour.BLUE) {
+                    pippoBlue++;
+                } else if (player.getNickname().equals("pluto") && player.getColor() == PrintableColour.GREEN) {
+                    plutoGreen++;
+                }
+            }
+        }
+
+        assertEquals(1, pippoBlue);
+        assertEquals(1, plutoGreen);
+
+        final InitialInfoCommand initialInfoCommandExc = new InitialInfoCommand(nick2, colour3);
+        initialInfoCommandExc.setPlayer(model.getCurrentPlayer());
+        assertThrows(NicknameAlreadyTakenException.class,
+                () -> controller.handleInitialInfoCommand(initialInfoCommandExc));
+    }
+
+    @Test
+    public void updateInitialInfoCommandInvalidColorExceptionTest() {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Player p1 = new Player("Andrea",  match);
+        Player p2 = new Player("Cosimo",  match);
+        Player p3 = new Player("Roberto", match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Model model = new Model(match);
+        Controller controller = new Controller(model);
+        controller.initialPhase();  //random first player to play
+
+        String nick1 = "pippo";
+        String nick2 = "pluto";
+        PrintableColour colour = PrintableColour.YELLOW;
+        InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nick1, colour);
+        initialInfoCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(initialInfoCommand);
+
+        ArrayList<Player> players = new ArrayList<>(model.getPlayers());
+        int pippoYellow = 0;
+        for(Player player : players) {
+            if(player.getNickname() != null && player.getColor() != null) {
+                if (player.getNickname().equals("pippo") && player.getColor() == PrintableColour.YELLOW) {
+                    pippoYellow++;
+                }
+            }
+        }
+
+        assertEquals(1, pippoYellow);
+
+        final InitialInfoCommand initialInfoCommandExc = new InitialInfoCommand(nick2, colour);
+        initialInfoCommandExc.setPlayer(model.getCurrentPlayer());
+        assertThrows(InvalidColorException.class,
+                () -> controller.handleInitialInfoCommand(initialInfoCommandExc));
+    }
+
+    @Test
+    public void updateInitialInfoCommand2PlayerTest() {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
+        int playersNum = 2;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Player p1 = new Player("Andrea",  match);
+        Player p2 = new Player("Marco", match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+
+        Model model = new Model(match);
+        Controller controller = new Controller(model);
+        controller.initialPhase();  //random first player to play
+
+        String nick1 = "pippo";
+        String nick2 = "pluto";
+        PrintableColour colour1 = PrintableColour.GREEN;
+        PrintableColour colour2 = PrintableColour.RED;
+        InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nick1, colour1);
+        initialInfoCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(initialInfoCommand);
+
+        initialInfoCommand = new InitialInfoCommand(nick2, colour2);
+        initialInfoCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(initialInfoCommand);
+
+        ArrayList<Player> players = new ArrayList<>(model.getPlayers());
+        int pippoGreen = 0;
+        int plutoRed = 0;
+        for(Player player : players) {
+            if(player.getNickname().equals("pippo") && player.getColor() == PrintableColour.GREEN) {
+                pippoGreen++;
+            }
+            else if(player.getNickname().equals("pluto") && player.getColor() == PrintableColour.RED) {
+                plutoRed++;
+            }
+        }
+
+        assertEquals(1, pippoGreen);
+        assertEquals(1, plutoRed);
+    }
+
+    @Test
+    public void updateGamePreparationCommandTest() {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Player p1 = new Player("Andrea",  match);
+        Player p2 = new Player("Cosimo",  match);
+        Player p3 = new Player("Roberto",  match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Model model = new Model(match);
+        Controller controller = new Controller(model);
+
+        model.nextGamePhase();  //Choose_Gods phase
+        model.nextGamePhase();
+
+        Apollo apollo = new Apollo();
+        Hera hera = new Hera();
+        Athena athena = new Athena();
+
+        p1.setGodStrategy(apollo);
+        p2.setGodStrategy(hera);
+        p3.setGodStrategy(athena);
+
+        GamePreparationCommand gamePreparationCommand = new GamePreparationCommand(1,3, 3, 4);
+        gamePreparationCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(gamePreparationCommand);
+        model.endTurn();
+        model.endTurn();  //now it's again his turn
+        assertEquals(1, model.getCurrentPlayer().getWorkerFirst().getPosition().getRowIdentifier());
+        assertEquals(3, model.getCurrentPlayer().getWorkerFirst().getPosition().getColIdentifier());
+        assertEquals(3, model.getCurrentPlayer().getWorkerSecond().getPosition().getRowIdentifier());
+        assertEquals(4, model.getCurrentPlayer().getWorkerSecond().getPosition().getColIdentifier());
+        model.endTurn();  //next turn
+
+        gamePreparationCommand = new GamePreparationCommand(2,1, 0, 0);
+        gamePreparationCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(gamePreparationCommand);
+        model.endTurn();
+        model.endTurn();  //now it's again his turn
+        assertEquals(2, model.getCurrentPlayer().getWorkerFirst().getPosition().getRowIdentifier());
+        assertEquals(1, model.getCurrentPlayer().getWorkerFirst().getPosition().getColIdentifier());
+        assertEquals(0, model.getCurrentPlayer().getWorkerSecond().getPosition().getRowIdentifier());
+        assertEquals(0, model.getCurrentPlayer().getWorkerSecond().getPosition().getColIdentifier());
+        model.endTurn();  //next turn
+
+        gamePreparationCommand = new GamePreparationCommand(4,3, 4, 2);
+        gamePreparationCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(gamePreparationCommand);
+        model.endTurn();
+        model.endTurn();  //now it's again his turn
+        assertEquals(4, model.getCurrentPlayer().getWorkerFirst().getPosition().getRowIdentifier());
+        assertEquals(3, model.getCurrentPlayer().getWorkerFirst().getPosition().getColIdentifier());
+        assertEquals(4, model.getCurrentPlayer().getWorkerSecond().getPosition().getRowIdentifier());
+        assertEquals(2, model.getCurrentPlayer().getWorkerSecond().getPosition().getColIdentifier());
+        model.endTurn();  //next turn
+    }
+
+    @Test
+    public void updateGamePreparationCommand2PlayerTest() {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Player p1 = new Player("Andrea",  match);
+        Player p2 = new Player("Cosimo",  match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+
+        Model model = new Model(match);
+        Controller controller = new Controller(model);
+
+        model.nextGamePhase();  //Choose_Gods phase
+        model.nextGamePhase();
+
+        Apollo apollo = new Apollo();
+        Hera hera = new Hera();
+
+        p1.setGodStrategy(apollo);
+        p2.setGodStrategy(hera);
+
+        GamePreparationCommand gamePreparationCommand = new GamePreparationCommand(1,3, 3, 4);
+        gamePreparationCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(gamePreparationCommand);
+        model.endTurn();  //now it's again his turn
+        assertEquals(1, model.getCurrentPlayer().getWorkerFirst().getPosition().getRowIdentifier());
+        assertEquals(3, model.getCurrentPlayer().getWorkerFirst().getPosition().getColIdentifier());
+        assertEquals(3, model.getCurrentPlayer().getWorkerSecond().getPosition().getRowIdentifier());
+        assertEquals(4, model.getCurrentPlayer().getWorkerSecond().getPosition().getColIdentifier());
+        model.endTurn();  //next turn
+
+        gamePreparationCommand = new GamePreparationCommand(2,1, 0, 0);
+        gamePreparationCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(gamePreparationCommand);
+        model.endTurn();  //now it's again his turn
+        assertEquals(2, model.getCurrentPlayer().getWorkerFirst().getPosition().getRowIdentifier());
+        assertEquals(1, model.getCurrentPlayer().getWorkerFirst().getPosition().getColIdentifier());
+        assertEquals(0, model.getCurrentPlayer().getWorkerSecond().getPosition().getRowIdentifier());
+        assertEquals(0, model.getCurrentPlayer().getWorkerSecond().getPosition().getColIdentifier());
+        model.endTurn();  //next turn
+    }
+
+    @Test
+    public void updateGamePreparationCommandSameCellTest() {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Player p1 = new Player("Andrea",  match);
+        Player p2 = new Player("Cosimo",  match);
+        Player p3 = new Player("Roberto",  match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Model model = new Model(match);
+        Controller controller = new Controller(model);
+
+        model.nextGamePhase();  //Choose_Gods phase
+        model.nextGamePhase();
+
+        Apollo apollo = new Apollo();
+        Hera hera = new Hera();
+        Athena athena = new Athena();
+
+        p1.setGodStrategy(apollo);
+        p2.setGodStrategy(hera);
+        p3.setGodStrategy(athena);
+
+        GamePreparationCommand gamePreparationCommand = new GamePreparationCommand(1,3, 3, 4);
+        gamePreparationCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(gamePreparationCommand);
+        model.endTurn();
+        model.endTurn();  //now it's again his turn
+        assertEquals(1, model.getCurrentPlayer().getWorkerFirst().getPosition().getRowIdentifier());
+        assertEquals(3, model.getCurrentPlayer().getWorkerFirst().getPosition().getColIdentifier());
+        assertEquals(3, model.getCurrentPlayer().getWorkerSecond().getPosition().getRowIdentifier());
+        assertEquals(4, model.getCurrentPlayer().getWorkerSecond().getPosition().getColIdentifier());
+        model.endTurn();  //next turn
+
+        gamePreparationCommand = new GamePreparationCommand(2,1, 0, 0);
+        gamePreparationCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(gamePreparationCommand);
+        model.endTurn();
+        model.endTurn();  //now it's again his turn
+        assertEquals(2, model.getCurrentPlayer().getWorkerFirst().getPosition().getRowIdentifier());
+        assertEquals(1, model.getCurrentPlayer().getWorkerFirst().getPosition().getColIdentifier());
+        assertEquals(0, model.getCurrentPlayer().getWorkerSecond().getPosition().getRowIdentifier());
+        assertEquals(0, model.getCurrentPlayer().getWorkerSecond().getPosition().getColIdentifier());
+        model.endTurn();  //next turn
+
+        gamePreparationCommand = new GamePreparationCommand(4,3, 0, 0);
+        gamePreparationCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(gamePreparationCommand);
+        assertEquals(null, model.getCurrentPlayer().getWorkerFirst().getPosition());
+        assertEquals(null, model.getCurrentPlayer().getWorkerFirst().getPosition());
+        assertEquals(null, model.getCurrentPlayer().getWorkerSecond().getPosition());
+        assertEquals(null, model.getCurrentPlayer().getWorkerSecond().getPosition());
+        model.endTurn();  //next turn
+    }
+
+    @Test
+    public void updateGamePreparationCommandGodPowerTest() {
+
+        Board.clearInstances();
+        Match.clearInstances();
+
+        int playersNum = 3;
+        String key = UUID.randomUUID().toString();
+        Match match = Match.getInstance(key, playersNum);
+        Player p1 = new Player("Andrea",  match);
+        Player p2 = new Player("Cosimo",  match);
+        Player p3 = new Player("Roberto",  match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Model model = new Model(match);
+        Controller controller = new Controller(model);
+
+        model.nextGamePhase();  //Choose_Gods phase
+        model.nextGamePhase();
+
+        Eros eros = new Eros();
+        ArrayList<Player> players = new ArrayList<>(model.getPlayers());
+
+        GamePreparationCommand gamePreparationCommand = new GamePreparationCommand(1,3, 3, 4);
+        gamePreparationCommand.setPlayer(model.getCurrentPlayer());
+        model.getCurrentPlayer().setGodStrategy(eros);
+        controller.update(gamePreparationCommand);
+        for(Player player : players) {
+            assertEquals(null, player.getWorkerFirst().getPosition());
+            assertEquals(null, player.getWorkerFirst().getPosition());
+            assertEquals(null, player.getWorkerSecond().getPosition());
+            assertEquals(null, player.getWorkerSecond().getPosition());
+        }
+
+        gamePreparationCommand = new GamePreparationCommand(0,2, 2, 4);
+        gamePreparationCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(gamePreparationCommand);
+        for(Player player : players) {
+            assertEquals(null, player.getWorkerFirst().getPosition());
+            assertEquals(null, player.getWorkerFirst().getPosition());
+            assertEquals(null, player.getWorkerSecond().getPosition());
+            assertEquals(null, player.getWorkerSecond().getPosition());
+        }
+
+        gamePreparationCommand = new GamePreparationCommand(0,2, 3, 2);
+        gamePreparationCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(gamePreparationCommand);
+        for(Player player : players) {
+            assertEquals(null, player.getWorkerFirst().getPosition());
+            assertEquals(null, player.getWorkerFirst().getPosition());
+            assertEquals(null, player.getWorkerSecond().getPosition());
+            assertEquals(null, player.getWorkerSecond().getPosition());
+        }
+
+        gamePreparationCommand = new GamePreparationCommand(3, 0, 1, 4);
+        gamePreparationCommand.setPlayer(model.getCurrentPlayer());
+        controller.update(gamePreparationCommand);
+        model.endTurn();
+        model.endTurn();  //now it's again his turn
+        assertEquals(3, model.getCurrentPlayer().getWorkerFirst().getPosition().getRowIdentifier());
+        assertEquals(0, model.getCurrentPlayer().getWorkerFirst().getPosition().getColIdentifier());
+        assertEquals(1, model.getCurrentPlayer().getWorkerSecond().getPosition().getRowIdentifier());
+        assertEquals(4, model.getCurrentPlayer().getWorkerSecond().getPosition().getColIdentifier());
     }
 
 }
