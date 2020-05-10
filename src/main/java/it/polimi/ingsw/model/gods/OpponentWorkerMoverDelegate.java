@@ -26,5 +26,6 @@ class OpponentWorkerMoverDelegate {
      */
     void moveOpponentWorker(Worker opponent, Cell opponentNewPosition) {
         opponent.move(opponentNewPosition);
+        opponent.reinitializeBuiltMoved();
     }
 }

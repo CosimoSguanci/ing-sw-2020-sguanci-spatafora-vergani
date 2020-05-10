@@ -1,5 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.PrintableColor;
 
 public class Manual {
     private static final String generalInfo = "Santorini is a strategy board-game;" +

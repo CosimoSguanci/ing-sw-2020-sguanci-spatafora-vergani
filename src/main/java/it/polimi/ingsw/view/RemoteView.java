@@ -54,5 +54,4 @@ public class RemoteView extends Observable<Command> implements Observer<Update>{
             e.printStackTrace();
         }
     }
-
 }

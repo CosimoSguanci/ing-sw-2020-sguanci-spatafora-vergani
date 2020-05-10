@@ -103,7 +103,21 @@ public class CliUpdateHandler implements UpdateHandler {
         cliInstance.newLine();
         cliInstance.newLine();
         if(update.newGamePhase.isPrintable()) {
-            cliInstance.print(Cli.toBold(update.newGamePhase.toString()));
+            //cliInstance.print(Cli.toBold(update.newGamePhase.toString()));
+            switch(update.newGamePhase) {
+                case INITIAL_INFO:
+                    cliInstance.print(Cli.toBold("INITIAL INFORMATION PHASE"));
+                    break;
+                case CHOOSE_GODS:
+                    cliInstance.print(Cli.toBold("GODS CHOOSE PHASE"));
+                    break;
+                case GAME_PREPARATION:
+                    cliInstance.print(Cli.toBold("GAME PREPARATION PHASE"));
+                    break;
+                case REAL_GAME:
+                    cliInstance.print(Cli.toBold("GAME STARTED PHASE"));
+                    break;
+            }
         }
         cliInstance.setCurrentGamePhase(update.newGamePhase);
     }
@@ -215,7 +229,7 @@ public class CliUpdateHandler implements UpdateHandler {
 
     private StringBuilder availableGods() {
         HashMap<String, HashMap<String, String>> godsInfo = new HashMap(GodsUtils.getGodsInfo());  //all info about available gods
-        ArrayList<String> godNames = new ArrayList(godsInfo.keySet());  //list of gods' names
+        ArrayList<String> godNames = new ArrayList<>(godsInfo.keySet());  //list of gods' names
         StringBuilder result = new StringBuilder(godNames.get(0).toUpperCase());
         for(int i = 1; i < godNames.size(); i++) {
             result.append(", ").append(godNames.get(i).toUpperCase());

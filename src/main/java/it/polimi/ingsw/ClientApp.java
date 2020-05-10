@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class ClientApp {
     public static void main(String[] args) {
-        try { // todo -> 2 applicativi diversi tra cli e gui
+        try {
 
             Client client = new Client();
             UpdateListener updateListener = new UpdateListener(client.getSocket());

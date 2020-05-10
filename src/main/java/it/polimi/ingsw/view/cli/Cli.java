@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.network.client.UpdateListener;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.view.Manual;
 import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
 
