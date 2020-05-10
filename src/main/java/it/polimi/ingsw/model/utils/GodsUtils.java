@@ -26,7 +26,9 @@ public final class GodsUtils {
     private static final Map<String, Supplier<GodStrategy>> godsFactoryMap;
 
     static {
-
+        /*
+         * Gods info static initializations
+         */
         Map<String, Map<String, String>> tmpGodsInfo = new HashMap<>();
 
         Map<String, String> godInfo;
@@ -117,7 +119,7 @@ public final class GodsUtils {
 
         godsInfo = Collections.unmodifiableMap(tmpGodsInfo);
 
-        /**
+        /*
          * Gods factory static initializations
          */
         Map<String, Supplier<GodStrategy>> tmpGodsFactoryMap = new HashMap<>();

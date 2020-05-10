@@ -18,6 +18,7 @@ import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.UpdateHandler;
+import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -31,13 +32,13 @@ import java.util.stream.Collectors;
  * command observe it.
  *
  * @author Cosimo Sguanci
- * @author Roberto Spatafora*/
-public class Cli extends Observable<Object> implements Observer<Update> {
-    private Client client;
+ * @author Roberto Spatafora
+ */
+public class Cli extends View implements Observer<Update> {
+    private final Client client;
     private int playersNum;
     private Scanner stdin;
     private PrintStream stdout;
-    private Map<String, String> playerSymbol;
 
     // TODO Put currentGamePhase in common superclass with GUI
 
@@ -65,7 +66,8 @@ public class Cli extends Observable<Object> implements Observer<Update> {
      * @param client indicates the client with whom a conversation with
      * the Cli instance created will take place.
      * @param controller indicates clientSideController implements client-side checks
-     * in order to avoid repeated and unnecessary interactions with the server. */
+     * in order to avoid repeated and unnecessary interactions with the server.
+     */
     public Cli(Client client, Controller controller) {
         this.client = client;
         this.controller = controller; // WIP
@@ -159,7 +161,6 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                             new Thread(updateListener).start();
                             updateListener.addObserver(this);
 
-                            this.playerSymbol = null;
                             this.playersNum = 0;
 
                         } catch(IOException e) {
@@ -183,7 +184,6 @@ public class Cli extends Observable<Object> implements Observer<Update> {
                     command = command.toLowerCase();
 
                     if(command.equals("yes")) {
-                        //continue;
                         break;
                     }
                     else if(command.equals("no")) {

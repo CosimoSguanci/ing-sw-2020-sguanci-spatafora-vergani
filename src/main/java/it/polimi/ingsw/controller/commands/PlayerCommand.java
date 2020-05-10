@@ -28,7 +28,7 @@ public class PlayerCommand extends Command {
     public final int row;
     public final int col;
 
-    public final CommandType commandType;
+  //  public final CommandType commandType;
     public final BlockType cellBlockType;
 
     /**
@@ -44,7 +44,6 @@ public class PlayerCommand extends Command {
      */
     public PlayerCommand(CommandType commandType, String workerID, int row, int col, BlockType cellBlockType) {
         super(commandType);
-        this.commandType = commandType;
         this.workerID = workerID;
         this.row = row;
         this.col = col;
