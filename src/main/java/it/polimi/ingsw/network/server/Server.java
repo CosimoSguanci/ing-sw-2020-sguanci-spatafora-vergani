@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 public class Server implements Observer<Model> {
     private static final int PORT = 12345;
-    private static final int PING_PORT = 12346;
 
     private static boolean isActive;
 
@@ -30,8 +29,6 @@ public class Server implements Observer<Model> {
     }
 
     private ServerSocket serverSocket;
-    private ServerSocket pingSocket; // Socket used by Client to check if Server is reachable
-
 
     private ExecutorService executor = Executors.newFixedThreadPool(128);
 
@@ -89,7 +86,6 @@ public class Server implements Observer<Model> {
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
-        this.pingSocket = new ServerSocket(PING_PORT);
     }
 
     public void runServer() {
@@ -101,16 +97,6 @@ public class Server implements Observer<Model> {
                 ClientHandler clientHandler = new ClientHandler(this, socket);
                 executor.submit(clientHandler);
                 clientHandlersMap.put(socket, clientHandler);
-            } catch (IOException e) {
-                System.err.println("Connection error");
-            }
-        }
-    }
-
-    public void runPingService() {
-        while (isActive()) {
-            try {
-                pingSocket.accept();
             } catch (IOException e) {
                 System.err.println("Connection error");
             }

@@ -57,6 +57,8 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
             server.lobby(this, clientID, playersNum);
 
         } catch (IOException | NoSuchElementException e) {
+            // todo remove from clientHandlersMap
+            server.handleConnectionReset(clientSocket);
             System.err.println("Error! " + e.getMessage());
         }
     }

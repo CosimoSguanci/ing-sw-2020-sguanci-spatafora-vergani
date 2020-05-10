@@ -15,7 +15,6 @@ public class Client {
 
     private final static String IP = "127.0.0.1";
     private final static int PORT = 12345;
-    private final static int PING_PORT = 12346;
 
     private Socket socket;
     DataOutputStream socketOut;
@@ -79,7 +78,7 @@ public class Client {
     public static boolean isServerReachable() {
 
         try {
-            Socket pingSocket = new Socket(IP, PING_PORT);
+            Socket pingSocket = new Socket(IP, PORT);
 
             pingSocket.close();
 

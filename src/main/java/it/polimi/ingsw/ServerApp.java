@@ -8,7 +8,6 @@ public class ServerApp {
             Server server = new Server();
             Server.setIsActive(true);
             server.runServer();
-            server.runPingService();
         } catch (Exception e) {
             System.err.println("Uncaught Exception: " + e.getMessage());
             Server.setIsActive(false);
