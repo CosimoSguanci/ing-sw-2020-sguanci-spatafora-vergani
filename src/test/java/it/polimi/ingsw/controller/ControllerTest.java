@@ -26,9 +26,6 @@ public class ControllerTest {
     @Test
     public void updatePlayerCommandNormalTest() {
 
-
-
-
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match =new Match(playersNum);
@@ -87,7 +84,6 @@ public class ControllerTest {
 
 
         int playersNum = 2;
-        String key = UUID.randomUUID().toString();
         Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
@@ -170,9 +166,7 @@ public class ControllerTest {
 
     @Test
     public void updatePlayerCommandImpossibleMoveAndBuildTest() {
-
-
-
+        
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match =new Match(playersNum);

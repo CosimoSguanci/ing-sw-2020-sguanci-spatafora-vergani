@@ -219,7 +219,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                         boolean hasWon = currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker()) && checkAllWinConstraints(playerCommand);
 
-                        model.boardUpdate();
+                        model.boardUpdate(playerCommand);
 
                         if(hasWon) {
                             model.nextGamePhase();
@@ -236,6 +236,14 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                                 if(model.getPlayers().size() != 1) { // 2 players remaining...
                                     model.boardUpdate();
+                                }
+                            } else {
+                                if(!checkCanBuildOtherGodsConstraints(model.getCurrentPlayer())) {
+                                    model.onPlayerLose(model.getCurrentPlayer());
+
+                                    if(model.getPlayers().size() != 1) {
+                                        model.boardUpdate();
+                                    }
                                 }
                             }
                         }
@@ -254,7 +262,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                          */
                         boolean hasWon = currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker()) && checkAllWinConstraints(playerCommand);
 
-                        model.boardUpdate();
+                        model.boardUpdate(playerCommand);
 
                         if(hasWon) {
                             model.nextGamePhase();
@@ -286,6 +294,14 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                             if(model.getPlayers().size() != 1) {
                                 model.boardUpdate();
+                            }
+                        } else {
+                            if(!checkCanMoveOtherGodsConstraints(model.getCurrentPlayer())) {
+                                model.onPlayerLose(model.getCurrentPlayer());
+
+                                if(model.getPlayers().size() != 1) {
+                                    model.boardUpdate();
+                                }
                             }
                         }
 
@@ -353,6 +369,62 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         return true;
     }
 
+    private boolean checkCanMoveOtherGodsConstraints(Player player) {
+        List<Cell> availableMoveCellsWorkerFirst = model.getBoard().getAvailableMoveCells(player.getWorkerFirst());
+
+        for(Player p : model.getPlayers()) {
+            if(!p.equals(player)) {
+                for(Cell moveCell : availableMoveCellsWorkerFirst) {
+                    if(p.getGodStrategy().checkMoveConstraints(player.getWorkerFirst(), moveCell)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        List<Cell> availableMoveCellsWorkerSecond = model.getBoard().getAvailableMoveCells(player.getWorkerSecond());
+
+        for(Player p : model.getPlayers()) {
+            if(!p.equals(player)) {
+                for(Cell moveCell : availableMoveCellsWorkerSecond) {
+                    if(p.getGodStrategy().checkMoveConstraints(player.getWorkerSecond(), moveCell)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkCanBuildOtherGodsConstraints(Player player) {
+        List<Cell> availableBuildCellsWorkerFirst = model.getBoard().getAvailableBuildCells(player.getWorkerFirst());
+
+        for(Player p : model.getPlayers()) {
+            if(!p.equals(player)) {
+                for(Cell buildCell : availableBuildCellsWorkerFirst) {
+                    if(p.getGodStrategy().checkBuildConstraints(player.getWorkerFirst(), buildCell, null)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        List<Cell> availableBuildCellsWorkerSecond = model.getBoard().getAvailableBuildCells(player.getWorkerSecond());
+
+        for(Player p : model.getPlayers()) {
+            if(!p.equals(player)) {
+                for(Cell buildCell : availableBuildCellsWorkerSecond) {
+                    if(p.getGodStrategy().checkBuildConstraints(player.getWorkerSecond(), buildCell, null)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     // Entry point from Server class
     public void initialPhase() {
@@ -392,10 +464,22 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
         // check if the first currentPlayer can move
         if (!model.getCurrentPlayer().getGodStrategy().canMove(model.getBoard(), model.getCurrentPlayer())) {
+            // manca da controllare se non si può muovere per un potere di un god
+
+
             model.onPlayerLose(model.getCurrentPlayer());
 
             if(model.getPlayers().size() != 1) {
                 model.boardUpdate();
+            }
+        }
+        else {
+            if(!checkCanMoveOtherGodsConstraints(model.getCurrentPlayer())) {
+                model.onPlayerLose(model.getCurrentPlayer());
+
+                if(model.getPlayers().size() != 1) {
+                    model.boardUpdate();
+                }
             }
         }
     }

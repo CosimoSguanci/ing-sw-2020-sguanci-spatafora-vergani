@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.controller.commands.CommandType;
+import it.polimi.ingsw.controller.commands.PlayerCommand;
 import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.observer.Observable;
 
@@ -92,6 +93,13 @@ public class Model extends Observable<Update> {
 
     public void boardUpdate() {
         BoardUpdate boardUpdate = new BoardUpdate(match.getMatchBoard().toString());
+        notify(boardUpdate);
+    }
+
+    public void boardUpdate(PlayerCommand executedCommand) {
+        BoardUpdate boardUpdate = new BoardUpdate(match.getMatchBoard().toString());
+        executedCommand.setPlayerNickname(getCurrentPlayer().getNickname());
+        boardUpdate.setExecutedCommand(executedCommand);
         notify(boardUpdate);
     }
 

@@ -1,6 +1,9 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.controller.GamePhase;
+import it.polimi.ingsw.controller.commands.CommandType;
+import it.polimi.ingsw.controller.commands.PlayerCommand;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.model.utils.GodsUtils;
@@ -65,6 +68,45 @@ public class CliUpdateHandler implements UpdateHandler {
 
     public void handle(BoardUpdate update) {
         cliInstance.printBoard(update.board);
+
+        if(update.getExecutedCommand() != null && (update.getExecutedCommand().commandType == CommandType.BUILD || update.getExecutedCommand().commandType == CommandType.MOVE)) {
+            PlayerCommand executedCommand = update.getExecutedCommand();
+
+            cliInstance.newLine();
+
+            String nickname = executedCommand.getPlayerNickname() != null ? executedCommand.getPlayerNickname() : "Player";
+            String rowChar = "";
+
+            switch(executedCommand.row) {
+                case 0:
+                    rowChar = "A";
+                    break;
+                case 1:
+                    rowChar = "B";
+                    break;
+                case 2:
+                    rowChar = "C";
+                    break;
+                case 3:
+                    rowChar = "D";
+                    break;
+                case 4:
+                    rowChar = "E";
+                    break;
+            }
+
+            if(executedCommand.commandType == CommandType.MOVE) {
+                cliInstance.print(cliInstance.playerWithColor(nickname) + " moved " + executedCommand.workerID.toUpperCase() + " to " + rowChar + (executedCommand.col + 1));
+            }
+            else {
+                cliInstance.print(cliInstance.playerWithColor(nickname) + " built with " + executedCommand.workerID.toUpperCase() + " in " + rowChar + (executedCommand.col + 1));
+            }
+
+            cliInstance.newLine();
+
+        }
+
+
         cliInstance.printCurrentTurn();
     }
 
