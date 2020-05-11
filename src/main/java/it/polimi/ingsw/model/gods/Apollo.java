@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model.gods;
 
-import it.polimi.ingsw.model.BlockType;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,4 +68,25 @@ public class Apollo extends GodStrategy {
         super.executeMove(worker, moveCell);
     }
 
+    @Override
+    public boolean canMove(Board board, Player player) {
+        Cell cellOne = player.getWorkerFirst().getPosition();  //actual cell of the first worker
+        Cell cellTwo = player.getWorkerSecond().getPosition();  //actual cell of the second worker
+        boolean possibleOne = canApolloMoveFromCell(board, cellOne);  //true if movement from cellOne is possible, so first worker can move somewhere
+        boolean possibleTwo = canApolloMoveFromCell(board, cellTwo);  //true if movement from cellTwo is possible, so second worker can move somewhere
+        return (possibleOne || possibleTwo);
+    }
+
+    private boolean canApolloMoveFromCell(Board board, Cell cell) {
+
+        for (int i = 0; i < Board.WIDTH_SIZE; i++) {
+            for(int j = 0; j < Board.HEIGHT_SIZE; j++) {
+                if (cell.isLevelDifferenceOk(board.getCell(i, j)) && board.getCell(i, j).getLevel() != BlockType.DOME) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

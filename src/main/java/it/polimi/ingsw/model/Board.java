@@ -69,17 +69,27 @@ public class Board {
      */
     private boolean movementPossibleFromCell(Cell cell) {
 
-        int row = cell.getRowIdentifier();  //i value for (i,j) coordinates of parameter
+        /*int row = cell.getRowIdentifier();  //i value for (i,j) coordinates of parameter
         int column = cell.getColIdentifier();  //j value for (i,j) coordinates of parameter
         for (int i = Math.max(row - 1, 0); i <= Math.min(row + 1, board.length - 1); i++) {
             for (int j = Math.max(column - 1, 0); j <= Math.min(column + 1, board[i].length - 1); j++) {
-                if (i != row && j != column) {  //explore all adjacent cells
+               // if (i != row && j != column) {  //explore all adjacent cells
                     if (cell.isLevelDifferenceOk(board[i][j]) && board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()) {
                         return true;  //movement is possible if an adjacent cell is at lower, same or (+1) level, it is empty and not a dome
                     }
+               // }
+            }
+        }*/
+
+        for (int i = 0; i < Board.WIDTH_SIZE; i++) {
+            for(int j = 0; j < Board.HEIGHT_SIZE; j++) {
+                if (cell.isLevelDifferenceOk(board[i][j]) && board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()) {
+                    return true;
                 }
             }
         }
+
+
         return false;
     }
 

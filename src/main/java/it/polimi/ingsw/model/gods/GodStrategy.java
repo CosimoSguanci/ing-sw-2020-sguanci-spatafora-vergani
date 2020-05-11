@@ -204,6 +204,14 @@ public abstract class GodStrategy {
         return worker.getPosition().getLevel() == BlockType.LEVEL_THREE && worker.getPreviousPositionBlockType() == BlockType.LEVEL_TWO; // TODO Win condition, if I go up two levels in a move?
     }
 
+    public boolean canMove(Board board, Player player) {
+        return board.canMove(player);
+    }
+
+    public boolean canBuild(Board board, Worker worker) {
+        return board.canBuild(worker); // selected worker ?
+    }
+
 
     public static GodStrategy instantiateGod(String god) {
         return GodsUtils.godsFactory(god);

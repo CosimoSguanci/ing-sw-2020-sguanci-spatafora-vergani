@@ -20,14 +20,16 @@ public class Player {
     private transient Worker workerSecond;
     private transient boolean isGodChooser;
     public final transient Match match;
+    public final transient Model model;
     private transient GodStrategy godStrategy;
 
     /**
      * This is the builder of the class. When a Player is created its id, nickname and
      * the match he is enrolled in are set.
      */
-    public Player(String id, Match match) {
+    public Player(String id, Model model, Match match) {
         this.ID = id;
+        this.model = model;
         this.match = match;
 
         this.workerFirst = new Worker(this, match.getMatchBoard(), Command.WORKER_FIRST);

@@ -75,4 +75,42 @@ public class Artemis extends GodStrategy {
         multipleMovementDelegate.reinitializeMoveCount();
         previousCellNeededDelegate.reinitializeCell();
     }
+
+    @Override
+    public boolean canBuild(Board board, Worker worker) {
+        if(super.canBuild(board, worker))
+            return true;
+
+        if(!super.canBuild(board, worker) && !multipleMovementDelegate.canMoveAgain()) {
+            return false;
+        }
+
+        // super.canBuild is false e si può ancora muovere -> controllo che in una qualsiasi delle celle adiacenti in cui si può muovere, possa costruire
+
+        for (int i = 0; i < Board.WIDTH_SIZE; i++) {
+            for(int j = 0; j < Board.HEIGHT_SIZE; j++) {
+                if (worker.getPosition().isLevelDifferenceOk(board.getCell(i, j)) && board.getCell(i, j).getLevel() != BlockType.DOME && board.getCell(i, j).isEmpty()) {
+
+                    if(buildPossibleFromCell(board, board.getCell(i, j))) {
+                        return true;
+                    }
+
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean buildPossibleFromCell(Board board, Cell cell) {
+
+        for (int i = 0; i < Board.WIDTH_SIZE; i++) {
+            for(int j = 0; j < Board.HEIGHT_SIZE; j++) {
+                if(board.getCell(i, j).isAdjacentTo(cell) && board.getCell(i, j).getLevel() != BlockType.DOME && board.getCell(i, j).isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

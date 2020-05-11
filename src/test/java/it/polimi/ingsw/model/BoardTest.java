@@ -23,11 +23,11 @@ public class BoardTest {
         Match match = Match.getInstance(key, playersNum);
         Board board = match.getMatchBoard();
 
-        Player player = new Player("Andrea",  match);
+        Player player = new Player("Andrea", new Model(match), match);
         Worker w1 = player.getWorkerFirst();
         Worker w2 = player.getWorkerSecond();
 
-        Player opponent = new Player("Marco",  match);
+        Player opponent = new Player("Marco", new Model(match), match);
         Worker wOpp1 = opponent.getWorkerFirst();
         Worker wOpp2 = opponent.getWorkerSecond();
 
@@ -68,11 +68,11 @@ public class BoardTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board =   match.getMatchBoard();
-        Player player = new Player("Andrea", match);
+        Player player = new Player("Andrea", new Model(match), match);
         Worker w1 = player.getWorkerFirst();
         Worker w2 = player.getWorkerSecond();
 
-        Player opponent = new Player("Marco", match);
+        Player opponent = new Player("Marco", new Model(match), match);
         Worker wOpp1 = opponent.getWorkerFirst();
         Worker wOpp2 = opponent.getWorkerSecond();
 
@@ -112,11 +112,11 @@ public class BoardTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = match.getMatchBoard();
-        Player player = new Player("Andrea",  match);
+        Player player = new Player("Andrea", new Model(match), match);
         Worker w1 = player.getWorkerFirst();
         Worker w2 = player.getWorkerSecond();
 
-        Player opponent = new Player("Marco", match);
+        Player opponent = new Player("Marco", new Model(match), match);
         Worker wOpp1 = opponent.getWorkerFirst();
         Worker wOpp2 = opponent.getWorkerSecond();
 
@@ -159,7 +159,7 @@ public class BoardTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = match.getMatchBoard();
-        Player player = new Player("Andrea",  match);
+        Player player = new Player("Andrea", new Model(match), match);
         Worker w1 = player.getWorkerFirst();
         Worker w2 = player.getWorkerSecond();
 

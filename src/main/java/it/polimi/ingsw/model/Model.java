@@ -138,4 +138,15 @@ public class Model extends Observable<Update> {
     public void nextGamePhase() {
         match.nextGamePhase();
     }
+
+    public void onPlayerLose(Player loserPlayer) {
+        loserPlayer.getWorkerFirst().getPosition().setWorker(null);
+        loserPlayer.getWorkerSecond().getPosition().setWorker(null);
+
+        removePlayer(loserPlayer);
+        loseUpdate(loserPlayer);
+
+        turnUpdate(getCurrentPlayer());
+
+    }
 }

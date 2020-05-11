@@ -19,7 +19,7 @@ public class ErosTest {
         Eros eros = new Eros();
 
         Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 3);
-        Player player = new Player(UUID.randomUUID().toString(), match);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker workerFirst = player.getWorkerFirst();
         Worker workerSecond = player.getWorkerSecond();
 
@@ -43,7 +43,7 @@ public class ErosTest {
         Eros eros = new Eros();
 
         Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 2);
-        Player player = new Player(UUID.randomUUID().toString(),  match);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker workerFirst = player.getWorkerFirst();
         Worker workerSecond = player.getWorkerSecond();
 
@@ -70,7 +70,7 @@ public class ErosTest {
         Eros eros = new Eros();
 
         Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 2);
-        Player player = new Player(UUID.randomUUID().toString(),  match);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker workerFirst = player.getWorkerFirst();
         Worker workerSecond = player.getWorkerFirst();
 
@@ -89,7 +89,7 @@ public class ErosTest {
         Eros eros = new Eros();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
-        Player player = new Player(UUID.randomUUID().toString(),  match);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
         Worker otherWorker = player.getWorkerSecond();
 

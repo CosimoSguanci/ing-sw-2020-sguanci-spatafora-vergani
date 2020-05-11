@@ -61,7 +61,7 @@ public class Server implements Observer<Model> {
                 int i = 0;
                 for (Socket key : keys) {
                     ClientHandler clientHandler = clientHandlersMap.get(key);
-                    Player player = new Player(waitingConnection.get(keys.get(i++)), match);
+                    Player player = new Player(waitingConnection.get(keys.get(i++)), model, match);
 
                     playingConnections.put(key, player.ID); // todo REMOVE when match ends
 

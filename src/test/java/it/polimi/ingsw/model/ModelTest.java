@@ -19,8 +19,8 @@ public class ModelTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Model model = new Model(match);
-        Player p1 = new Player("Marco",  match);
-        Player p2 = new Player("Alessandro",  match);
+        Player p1 = new Player("Marco",  model, match);
+        Player p2 = new Player("Alessandro", model,  match);
         try{
             match.addPlayer(p1);
             match.addPlayer(p2);
@@ -51,9 +51,9 @@ public class ModelTest {
 
         assertEquals(board, model.getBoard());
 
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Roberto",  match);
+        Player p1 = new Player("Andrea",  model, match);
+        Player p2 = new Player("Cosimo",  model, match);
+        Player p3 = new Player("Roberto",  model, match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         match.addPlayer(p3);
@@ -70,9 +70,9 @@ public class ModelTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Model model = new Model(match);
-        Player p1 = new Player("Roberto",  match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Andrea",  match);
+        Player p1 = new Player("Roberto",  model, match);
+        Player p2 = new Player("Cosimo",  model, match);
+        Player p3 = new Player("Andrea",  model, match);
         try{
             match.addPlayer(p1);
             match.addPlayer(p2);
@@ -99,9 +99,9 @@ public class ModelTest {
         Match match = Match.getInstance(key, playersNum);
         Model model = new Model(match);
 
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Roberto",  match);
+        Player p1 = new Player("Andrea",  model, match);
+        Player p2 = new Player("Cosimo",  model, match);
+        Player p3 = new Player("Roberto", model,  match);
         ArrayList<Player> players = new ArrayList<>();
 
         match.addPlayer(p1);

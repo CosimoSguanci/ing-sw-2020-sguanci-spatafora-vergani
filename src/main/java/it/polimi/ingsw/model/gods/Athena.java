@@ -72,6 +72,6 @@ public class Athena extends GodStrategy {
 
     @Override
     public void endRoundTurn(Player player) {
-        shouldBlockLevelUp = false; // todo NOT HERE
+        shouldBlockLevelUp = false;
     }
 }

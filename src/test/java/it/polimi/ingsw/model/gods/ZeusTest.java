@@ -19,7 +19,7 @@ public class ZeusTest {
         Zeus zeus = new Zeus();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
-        Player player = new Player(UUID.randomUUID().toString(), match);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);

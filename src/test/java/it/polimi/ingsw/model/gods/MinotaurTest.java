@@ -17,9 +17,9 @@ public class MinotaurTest {
         Minotaur minotaur = new Minotaur();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
-        Player player = new Player(UUID.randomUUID().toString(),  match);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
-        Player oppositePlayer = new Player(UUID.randomUUID().toString(), match);
+        Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker oppositeWorker = oppositePlayer.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
@@ -43,9 +43,9 @@ public class MinotaurTest {
         Minotaur minotaur = new Minotaur();
 
         Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
-        Player player = new Player(UUID.randomUUID().toString(),  match);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
-        Player oppositePlayer = new Player(UUID.randomUUID().toString(),  match);
+        Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker oppositeWorker = oppositePlayer.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);

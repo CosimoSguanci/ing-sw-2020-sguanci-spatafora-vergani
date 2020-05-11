@@ -20,7 +20,7 @@ public class WorkerTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = match.getMatchBoard();
-        Player testPlayer = new Player("Roberto",  match);
+        Player testPlayer = new Player("Roberto", new Model(match), match);
         Worker testFirstWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
         Worker testSecondWorker = new Worker(testPlayer, board, Command.WORKER_SECOND);
 
@@ -39,7 +39,7 @@ public class WorkerTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = match.getMatchBoard();
-        Player testPlayer = new Player("Roberto",  match);
+        Player testPlayer = new Player("Roberto",  new Model(match), match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing move() with a valid movement...");
@@ -62,7 +62,7 @@ public class WorkerTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = match.getMatchBoard();
-        Player testPlayer = new Player("Roberto", match);
+        Player testPlayer = new Player("Roberto", new Model(match), match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing move() with an invalid movement: an adjacent cell must be requested for movement...");
@@ -83,7 +83,7 @@ public class WorkerTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = match.getMatchBoard();
-        Player testPlayer = new Player("Roberto", match);
+        Player testPlayer = new Player("Roberto", new Model(match), match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
         Worker testOccupantWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
@@ -107,7 +107,7 @@ public class WorkerTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = match.getMatchBoard();
-        Player testPlayer = new Player("Roberto",  match);
+        Player testPlayer = new Player("Roberto",  new Model(match), match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing move() with an invalid movement: workers can't move in a DOME...");
@@ -130,7 +130,7 @@ public class WorkerTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = match.getMatchBoard();
-        Player testPlayer = new Player("Roberto",  match);
+        Player testPlayer = new Player("Roberto",  new Model(match), match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing move() with an invalid movement: workers can't move more that one level up...");
@@ -152,7 +152,7 @@ public class WorkerTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = match.getMatchBoard();
-        Player testPlayer = new Player("Roberto",  match);
+        Player testPlayer = new Player("Roberto", new Model(match), match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing build() with a valid request...");
@@ -216,7 +216,7 @@ public class WorkerTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = match.getMatchBoard();
-        Player testPlayer = new Player("Roberto",  match);
+        Player testPlayer = new Player("Roberto",  new Model(match), match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing build() with an invalid movement: an adjacent cell must be requested to build in...");
@@ -238,7 +238,7 @@ public class WorkerTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = match.getMatchBoard();
-        Player testPlayer = new Player("Roberto",  match);
+        Player testPlayer = new Player("Roberto",  new Model(match), match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
         Worker testSecondWorker = new Worker(testPlayer, board, Command.WORKER_SECOND);
 
@@ -261,7 +261,7 @@ public class WorkerTest {
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
         Board board = match.getMatchBoard();
-        Player testPlayer = new Player("Roberto", match);
+        Player testPlayer = new Player("Roberto", new Model(match), match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
         System.out.println("testing build() with an invalid movement: workers can't build in a dome...");

@@ -236,8 +236,11 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                         }
                         else {
                             // if !hasWon check if the new currentPlayer can build
-                            if (!currentPlayerCanBuild(playerCommand.getWorker())) {
-                                handlePlayerLose(currentPlayer);
+
+                            //if (!currentPlayerCanBuild(playerCommand.getWorker())) {
+                            if (!currentPlayer.getGodStrategy().canBuild(model.getBoard(), playerCommand.getWorker())) {
+
+                                model.onPlayerLose(currentPlayer);
                             }
                         }
 
@@ -281,15 +284,18 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                         model.endTurn();
 
-                        if(model.isInitialTurn()) {
+                      /*  if(model.isInitialTurn()) {
                             endTotalTurn();
-                        }
+                        }  */
+
+                        model.getCurrentPlayer().getGodStrategy().endRoundTurn(currentPlayer); // onTurnStart
 
                         model.boardUpdate();
 
                         // check if the new currentPlayer can move
-                        if (!currentPlayerCanMove()) {
-                            handlePlayerLose(model.getCurrentPlayer());
+                        //if (!currentPlayerCanMove()) {
+                        if (!currentPlayer.getGodStrategy().canMove(model.getBoard(), currentPlayer)) {
+                            model.onPlayerLose(model.getCurrentPlayer());
                         }
                     } else {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
@@ -406,7 +412,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         model.matchStartedUpdate();
     }
 
-    private void handlePlayerLose(Player loserPlayer) {
+    /*private void onPlayerLose(Player loserPlayer) {
         loserPlayer.getWorkerFirst().getPosition().setWorker(null);
         loserPlayer.getWorkerSecond().getPosition().setWorker(null);
 
@@ -415,7 +421,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
         model.turnUpdate(model.getCurrentPlayer());
 
-    }
+    }*/
 
     public void onPlayerDisconnected(String playerID) {
         Player disconnectedPlayer = model.getPlayers().stream().filter((player) -> player.ID.equals(playerID)).findFirst().orElse(null);

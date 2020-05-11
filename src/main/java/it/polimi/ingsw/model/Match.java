@@ -146,7 +146,7 @@ public class Match {  //tested with 100% coverage
     }
 
     public void setInitialTurn(int initialTurn) {
-        this.initalTurn = initialTurn + 1; // initialTurn is the turn of the player which is next to the GodChooser, so the first Player who starts the game.
+        this.initalTurn = (initalTurn + 1) % players.size();; // initialTurn is the turn of the player which is next to the GodChooser, so the first Player who starts the game.
         this.turn = initialTurn;
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gods;
 
+import it.polimi.ingsw.exceptions.InvalidCellException;
 import it.polimi.ingsw.model.*;
 
 import java.util.HashMap;
@@ -57,7 +58,7 @@ public class Minotaur extends GodStrategy { // TODO Test EndTurn
                         backwardCell.isEmpty() &&
                         backwardCell.getLevel() != BlockType.DOME;
 
-            } catch (Exception e) {
+            } catch (InvalidCellException e) {
                 e.printStackTrace();
                 return false;
             }
@@ -93,9 +94,8 @@ public class Minotaur extends GodStrategy { // TODO Test EndTurn
      * @param workerCell    the position of worker that the Player wants to move.
      * @param moveCell      the cell in which the Player want to move the worker.
      * @return The Cell that is backward of moveCell.
-     * @throws Exception if any Cell is invalid
      */
-    private Cell computeBackwardCell(Board board, Cell workerCell, Cell moveCell) throws Exception {
+    private Cell computeBackwardCell(Board board, Cell workerCell, Cell moveCell) throws InvalidCellException {
 
 
         int backwardRow;
@@ -139,6 +139,38 @@ public class Minotaur extends GodStrategy { // TODO Test EndTurn
         }
 
         return board.getCell(backwardRow, backwardCol);
+    }
+
+    @Override
+    public boolean canMove(Board board, Player player) {
+        Cell cellOne = player.getWorkerFirst().getPosition();  //actual cell of the first worker
+        Cell cellTwo = player.getWorkerSecond().getPosition();  //actual cell of the second worker
+        boolean possibleOne = canMinotaurMoveFromCell(board, cellOne);  //true if movement from cellOne is possible, so first worker can move somewhere
+        boolean possibleTwo = canMinotaurMoveFromCell(board, cellTwo);  //true if movement from cellTwo is possible, so second worker can move somewhere
+        return (possibleOne || possibleTwo);
+    }
+
+    private boolean canMinotaurMoveFromCell(Board board, Cell cell) {
+
+        for (int i = 0; i < Board.WIDTH_SIZE; i++) {
+            for(int j = 0; j < Board.HEIGHT_SIZE; j++) {
+                if (cell.isLevelDifferenceOk(board.getCell(i, j)) && board.getCell(i, j).getLevel() != BlockType.DOME) {
+
+                    if(board.getCell(i, j).isEmpty())
+                        return true;
+                    else {
+                        try {
+                            return computeBackwardCell(board, cell, board.getCell(i, j)).isEmpty();
+                        } catch(InvalidCellException e) {
+                            e.printStackTrace();
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
 

@@ -18,7 +18,7 @@ public class PanTest {
         Pan pan = new Pan();
 
         Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 3);
-        Player player = new Player(UUID.randomUUID().toString(), match);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);

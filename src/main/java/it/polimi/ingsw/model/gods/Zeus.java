@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.BlockType;
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Worker;
 
@@ -38,4 +39,8 @@ public class Zeus extends GodStrategy {
         return isUsingSelectedWorker(worker) && worker.hasMoved() && !worker.hasBuilt() && (worker.getPosition().isAdjacentTo(buildCell) || worker.getPosition().equals(buildCell)) && (buildCell.getLevel() != BlockType.DOME);
     }
 
+    @Override
+    public boolean canBuild(Board board, Worker worker) {
+        return worker.getPosition().getLevel() != BlockType.LEVEL_THREE;
+    }
 }

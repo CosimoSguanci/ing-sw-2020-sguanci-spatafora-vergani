@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.Board;
@@ -26,7 +27,7 @@ class CliTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p = new Player("Andrea",  match);
+        Player p = new Player("Andrea",  new Model(match), match);
         match.addPlayer(p);
         Client client = null;
         try {

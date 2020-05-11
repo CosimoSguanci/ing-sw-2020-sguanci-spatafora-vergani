@@ -32,9 +32,9 @@ public class ControllerTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Roberto",  match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
+        Player p3 = new Player("Roberto", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         match.addPlayer(p3);
@@ -89,8 +89,8 @@ public class ControllerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo", match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
 
@@ -176,8 +176,8 @@ public class ControllerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea", match);
-        Player p2 = new Player("Cosimo", match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
 
@@ -264,9 +264,9 @@ public class ControllerTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea", match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Roberto",  match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo",  new Model(match), match);
+        Player p3 = new Player("Roberto",  new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         match.addPlayer(p3);
@@ -364,9 +364,9 @@ public class ControllerTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Roberto",  match);
+        Player p1 = new Player("Andrea",  new Model(match), match);
+        Player p2 = new Player("Cosimo",  new Model(match), match);
+        Player p3 = new Player("Roberto", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         match.addPlayer(p3);
@@ -429,8 +429,8 @@ public class ControllerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Marco",  match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Marco", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
 
@@ -481,9 +481,9 @@ public class ControllerTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Roberto", match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
+        Player p3 = new Player("Roberto", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         match.addPlayer(p3);
@@ -540,9 +540,9 @@ public class ControllerTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Roberto", match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
+        Player p3 = new Player("Roberto", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         match.addPlayer(p3);
@@ -595,9 +595,9 @@ public class ControllerTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Roberto", match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
+        Player p3 = new Player("Roberto", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         match.addPlayer(p3);
@@ -640,8 +640,8 @@ public class ControllerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Marco", match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Marco", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
 
@@ -686,9 +686,9 @@ public class ControllerTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Roberto",  match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
+        Player p3 = new Player("Roberto", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         match.addPlayer(p3);
@@ -750,8 +750,8 @@ public class ControllerTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo",  match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
 
@@ -797,9 +797,9 @@ public class ControllerTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Roberto",  match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
+        Player p3 = new Player("Roberto", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         match.addPlayer(p3);
@@ -843,10 +843,10 @@ public class ControllerTest {
         gamePreparationCommand = new GamePreparationCommand(4,3, 0, 0);
         gamePreparationCommand.setPlayer(model.getCurrentPlayer());
         controller.update(gamePreparationCommand);
-        assertEquals(null, model.getCurrentPlayer().getWorkerFirst().getPosition());
-        assertEquals(null, model.getCurrentPlayer().getWorkerFirst().getPosition());
-        assertEquals(null, model.getCurrentPlayer().getWorkerSecond().getPosition());
-        assertEquals(null, model.getCurrentPlayer().getWorkerSecond().getPosition());
+        assertNull(model.getCurrentPlayer().getWorkerFirst().getPosition());
+        assertNull(model.getCurrentPlayer().getWorkerFirst().getPosition());
+        assertNull(model.getCurrentPlayer().getWorkerSecond().getPosition());
+        assertNull(model.getCurrentPlayer().getWorkerSecond().getPosition());
         model.endTurn();  //next turn
     }
 
@@ -859,9 +859,9 @@ public class ControllerTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Roberto",  match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
+        Player p3 = new Player("Roberto", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         match.addPlayer(p3);

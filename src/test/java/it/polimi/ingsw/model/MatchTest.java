@@ -18,9 +18,9 @@ public class MatchTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Roberto",  match);
+        Player p1 = new Player("Andrea",  new Model(match), match);
+        Player p2 = new Player("Cosimo",  new Model(match), match);
+        Player p3 = new Player("Roberto", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         assertThrows(AlreadyInsidePlayerException.class, () -> match.addPlayer(p2));
@@ -33,9 +33,9 @@ public class MatchTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea",  match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("ValerioAndoni",  match);
+        Player p1 = new Player("Andrea",  new Model(match), match);
+        Player p2 = new Player("Cosimo",  new Model(match), match);
+        Player p3 = new Player("ValerioAndoni",  new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         assertThrows(NicknameAlreadyTakenException.class, () -> match.addPlayer(p3));
@@ -46,9 +46,9 @@ public class MatchTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea", match);
-        Player p2 = new Player("Cosimo", match);
-        Player p3 = new Player("Roberto", match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
+        Player p3 = new Player("Roberto", new Model(match), match);
         try {
             match.addPlayer(p1);
             match.addPlayer(p2);
@@ -92,9 +92,9 @@ public class MatchTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Andrea", match);
-        Player p2 = new Player("Cosimo",  match);
-        Player p3 = new Player("Roberto",  match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo",  new Model(match), match);
+        Player p3 = new Player("Roberto",  new Model(match), match);
         try {
             match.addPlayer(p1);
             match.addPlayer(p2);
@@ -125,8 +125,8 @@ public class MatchTest {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Player p1 = new Player("Marco", match);
-        Player p2 = new Player("Alessandro", match);
+        Player p1 = new Player("Marco", new Model(match), match);
+        Player p2 = new Player("Alessandro", new Model(match), match);
         try{
             match.addPlayer(p1);
             match.addPlayer(p2);

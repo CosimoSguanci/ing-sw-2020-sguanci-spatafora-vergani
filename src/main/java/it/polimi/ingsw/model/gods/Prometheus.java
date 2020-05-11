@@ -85,11 +85,16 @@ public class Prometheus extends GodStrategy {
     public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
         super.executeBuild(worker, buildCell, buildCellBlockType);
 
-        if (!worker.hasMoved())
+        if (!worker.hasMoved()) {
             builtBeforeMoving = true;
+        }
 
         multipleBuildDelegate.increaseBuildCount();
-        this.selectedWorker = worker;
+
+        if(builtBeforeMoving && !this.canMove(worker.board, worker.player)) //-> perso
+        {
+            worker.player.model.onPlayerLose(worker.player); // or Player.lose etc
+        }
     }
 
     @Override
