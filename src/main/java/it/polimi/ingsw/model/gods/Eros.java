@@ -2,9 +2,6 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * This class implements the Eros strategy used by the Player who chose the powers of this God.
  * Specifically, Eros imposes a Game Preparation constraints: the Player's worker must be placed
@@ -32,16 +29,15 @@ public class Eros extends GodStrategy {
     }
 
 
-
     /**
      * This method checks that Eros Game Preparation constraints are satisfied.
      *
-     * @see Eros#checkOppositeBorder(Cell, Cell)
-     * @param workerFirst       the "first" Player Worker.
-     * @param workerFirstCell   the cell in which the Player wants to put the "first" Worker at startup.
-     * @param workerSecond      the "second" Player Worker.
-     * @param workerSecondCell  the cell in which the Player wants to put the "second" Worker at startup.
+     * @param workerFirst      the "first" Player Worker.
+     * @param workerFirstCell  the cell in which the Player wants to put the "first" Worker at startup.
+     * @param workerSecond     the "second" Player Worker.
+     * @param workerSecondCell the cell in which the Player wants to put the "second" Worker at startup.
      * @return true if the Game Preparation constraints are satisfied, false otherwise.
+     * @see Eros#checkOppositeBorder(Cell, Cell)
      */
     @Override
     public boolean checkGamePreparation(Worker workerFirst, Cell workerFirstCell, Worker workerSecond, Cell workerSecondCell) {
@@ -51,8 +47,8 @@ public class Eros extends GodStrategy {
     /**
      * This method checks that the workers given as parameter are at opposite border of the game Board.
      *
-     * @param workerFirstCell   the cell in which the Player wants to put the "first" Worker.
-     * @param workerSecondCell  the cell in which the Player wants to put the "second" Worker.
+     * @param workerFirstCell  the cell in which the Player wants to put the "first" Worker.
+     * @param workerSecondCell the cell in which the Player wants to put the "second" Worker.
      * @return true if the Cells are at opposite borders of the game Board, false otherwise.
      */
     private boolean checkOppositeBorder(Cell workerFirstCell, Cell workerSecondCell) {
@@ -64,9 +60,9 @@ public class Eros extends GodStrategy {
      * This method first calls superclass execute move to actually move the worker.
      * Then it sets the flag that represents Eros Win Condition.
      *
-     * @see GodStrategy#executeMove(Worker, Cell)
      * @param worker   the worker that the Player wants to move.
      * @param moveCell the cell in which the Player want to move the worker.
+     * @see GodStrategy#executeMove(Worker, Cell)
      */
     @Override
     public void executeMove(Worker worker, Cell moveCell) {
@@ -74,7 +70,7 @@ public class Eros extends GodStrategy {
         Worker otherWorker = worker.player.getWorkerFirst().equals(worker) ? worker.player.getWorkerSecond() : worker.player.getWorkerFirst();
         Match match = worker.player.match;
         boolean levelCondition = match.getPlayersNumber() == 3 ? worker.getPosition().getLevel() == otherWorker.getPosition().getLevel()
-                    : (worker.getPosition().getLevel() == otherWorker.getPosition().getLevel() && worker.getPosition().getLevel() == BlockType.LEVEL_ONE);
+                : (worker.getPosition().getLevel() == otherWorker.getPosition().getLevel() && worker.getPosition().getLevel() == BlockType.LEVEL_ONE);
 
         neighboringOtherWorker = worker.getPosition().isAdjacentTo(otherWorker.getPosition()) && levelCondition;
 
@@ -83,9 +79,9 @@ public class Eros extends GodStrategy {
     /**
      * This method checks if standard Win Conditions or Eros Win Conditions are satisfied.
      *
-     * @see GodStrategy#checkWinCondition(Worker)
-     * @param worker    the worker that the Player selected for this turn.
+     * @param worker the worker that the Player selected for this turn.
      * @return true if Eros Wind Conditions OR standard Win Conditions are satisfied, false otherwise.
+     * @see GodStrategy#checkWinCondition(Worker)
      */
     @Override
     public boolean checkWinCondition(Worker worker) {
@@ -95,8 +91,8 @@ public class Eros extends GodStrategy {
     /**
      * Calls superclass endTurn and resets flags to false.
      *
+     * @param player The player whose turn is ending.
      * @see GodStrategy#endPlayerTurn(Player)
-     * @param player    The player whose turn is ending.
      */
     @Override
     public void endPlayerTurn(Player player) {

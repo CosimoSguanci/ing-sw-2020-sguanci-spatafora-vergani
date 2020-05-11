@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.gods;
 
-import it.polimi.ingsw.model.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import it.polimi.ingsw.model.BlockType;
+import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Worker;
 
 /**
  * This class implements the Hephaestus strategy used by the Player who chose the powers of this God.
@@ -42,11 +42,11 @@ public class Hephaestus extends GodStrategy {
      * and additional controls are performed to ensure that the new buildCell is equal to the first Build Cell
      * and that the second level built it's not a Dome.
      *
-     * @see GodStrategy#checkBuild(Worker, Cell, BlockType)
-     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, Worker)
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
      * @return true if the Build passed as parameter can be performed, false otherwise.
+     * @see GodStrategy#checkBuild(Worker, Cell, BlockType)
+     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, Worker)
      */
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
@@ -63,9 +63,9 @@ public class Hephaestus extends GodStrategy {
     /**
      * Decorates the standard executeBuild increasing the build count of delegate and saving a reference to the last buildCell.
      *
-     * @see GodStrategy#executeBuild(Worker, Cell, BlockType)
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
+     * @see GodStrategy#executeBuild(Worker, Cell, BlockType)
      */
     @Override
     public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
@@ -77,8 +77,8 @@ public class Hephaestus extends GodStrategy {
     /**
      * Calls superclass endTurn and resets delegates properties.
      *
+     * @param player The player whose turn is ending.
      * @see GodStrategy#endPlayerTurn(Player)
-     * @param player    The player whose turn is ending.
      */
     @Override
     public void endPlayerTurn(Player player) {

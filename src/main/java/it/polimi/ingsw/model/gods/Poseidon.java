@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.gods;
 
-import it.polimi.ingsw.model.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import it.polimi.ingsw.model.BlockType;
+import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Worker;
 
 /**
  * This class implements the Poseidon strategy used by the Player who chose the powers of this God.
@@ -35,10 +35,10 @@ public class Poseidon extends GodStrategy {
      * {@link MultipleBuildDelegate} checkBuild can't be used: the check about selectedWorker would fail because Poseidon allows
      * to build with the unselected Worker.
      *
-     * @see GodStrategy#checkBuild(Worker, Cell, BlockType)
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
      * @return true if the Build passed as parameter can be performed, false otherwise.
+     * @see GodStrategy#checkBuild(Worker, Cell, BlockType)
      */
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
@@ -59,23 +59,23 @@ public class Poseidon extends GodStrategy {
      * Decorates the standard executeBuild increasing the build count of {@link MultipleBuildDelegate},
      * if the Player is using unmoved Worker.
      *
-     * @see GodStrategy#executeBuild(Worker, Cell, BlockType)
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
+     * @see GodStrategy#executeBuild(Worker, Cell, BlockType)
      */
     @Override
     public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
         super.executeBuild(worker, buildCell, buildCellBlockType);
 
-        if(worker.equals(unmovedWorker))
+        if (worker.equals(unmovedWorker))
             multipleBuildDelegate.increaseBuildCount();
     }
 
     /**
      * Calls superclass endTurn and resets delegates properties.
      *
+     * @param player The player whose turn is ending.
      * @see GodStrategy#endPlayerTurn(Player)
-     * @param player    The player whose turn is ending.
      */
     @Override
     public void endPlayerTurn(Player player) {

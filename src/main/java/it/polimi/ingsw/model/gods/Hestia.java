@@ -2,9 +2,6 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * This class implements the Hestia strategy used by the Player who chose the powers of this God.
  * Specifically, Hestia allows the selected worker to build an additional time using {@link MultipleBuildDelegate}, but not on a perimeter space.

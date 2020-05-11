@@ -104,16 +104,16 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         model.getCurrentPlayer().setNickname(nickname);
         model.getCurrentPlayer().setColor(color);
 
-        selectedNicknames.add(nickname); // todo additional checks on server about nickname, colors, etc
+        selectedNicknames.add(nickname);
         selectableColors.remove(color);
 
         model.endTurn();
 
-
-        if (!model.getCurrentPlayer().equals(godChooserPlayer)) { // here getCurrentPlayer() is who just chose the info
+        // here getCurrentPlayer() is who just chose the info
+        if (!model.getCurrentPlayer().equals(godChooserPlayer)) {
             model.initialInfoUpdate(model.getCurrentPlayer(), selectedNicknames, selectableColors);
-        } else { // all the players chose the info
-
+        } else {
+            // all the players chose the info
 
             HashMap<String, PrintableColor> initialInfo = new HashMap<>();
 
@@ -160,9 +160,9 @@ public class Controller extends Observable<Model> implements Observer<Command> {
             });
 
             model.selectedGodsUpdate(selectedGods);
-            model.endTurn(); // TODO OK endTurn here?
+            model.endTurn();
 
-            gamePreparation();
+            gamePreparationPhase();
 
         }
 
@@ -189,8 +189,6 @@ public class Controller extends Observable<Model> implements Observer<Command> {
             if (currentPlayer.equals(godChooserPlayer)) { // Game Preparation Done
                 startMatch();
             } else {
-                //gamePreparation();
-
                 model.boardUpdate();
                 model.gamePreparationUpdate(model.getCurrentPlayer());
             }
@@ -219,35 +217,27 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                         currentPlayer.getGodStrategy().executeMove(playerCommand.getWorker(), playerCommand.getCell());
 
-                        boolean hasWon = checkAllWinConstraints(playerCommand) && // TODO first checkWinCond?
-                                currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker());
+                        boolean hasWon = currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker()) && checkAllWinConstraints(playerCommand);
 
                         model.boardUpdate();
-
 
                         if(hasWon) {
                             model.nextGamePhase();
                             model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
-
                             model.winUpdate(currentPlayer);
 
-                            return;
-                            // end match
+                            return; // end match
                         }
                         else {
                             // if !hasWon check if the new currentPlayer can build
 
-                            //if (!currentPlayerCanBuild(playerCommand.getWorker())) {
                             if (!currentPlayer.getGodStrategy().canBuild(model.getBoard(), playerCommand.getWorker())) {
-
                                 model.onPlayerLose(currentPlayer);
                             }
                         }
 
                     } else {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
-
-                        // return;
                     }
                     break;
                 case BUILD:
@@ -258,18 +248,16 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                          *  Necessary to cover the possibility that a Gods could have a Win Conditions that triggers when it builds a block under certain conditions.
                          *  Example: "If XXX built a Dome and it's adjacent to another Worker, it wins"
                          */
-                        boolean hasWon = checkAllWinConstraints(playerCommand) && currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker());
+                        boolean hasWon = currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker()) && checkAllWinConstraints(playerCommand);
 
                         model.boardUpdate();
 
                         if(hasWon) {
                             model.nextGamePhase();
                             model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
-
                             model.winUpdate(currentPlayer);
 
-                            return;
-                            // end match
+                            return; // end match
                         }
 
                     } else {
@@ -284,19 +272,15 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                         model.endTurn();
 
-                      /*  if(model.isInitialTurn()) {
-                            endTotalTurn();
-                        }  */
-
-                        model.getCurrentPlayer().getGodStrategy().endRoundTurn(currentPlayer); // onTurnStart
+                        model.getCurrentPlayer().getGodStrategy().onTurnStarted(currentPlayer); // onTurnStart
 
                         model.boardUpdate();
 
                         // check if the new currentPlayer can move
-                        //if (!currentPlayerCanMove()) {
                         if (!currentPlayer.getGodStrategy().canMove(model.getBoard(), currentPlayer)) {
                             model.onPlayerLose(model.getCurrentPlayer());
                         }
+
                     } else {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
                     }
@@ -361,19 +345,6 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         return true;
     }
 
-    private void endTotalTurn() {
-        for (Player p : model.getPlayers()) {
-            p.getGodStrategy().endRoundTurn(p);
-        }
-    }
-
-    private boolean currentPlayerCanMove() {
-        return model.getBoard().canMove(model.getCurrentPlayer());
-    }
-
-    private boolean currentPlayerCanBuild(Worker movedWorker) {
-        return model.getBoard().canBuild(movedWorker);
-    }
 
     // Entry point from Server class
     public void initialPhase() {
@@ -399,7 +370,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         model.chooseGodsUpdate(godChooserPlayer, null);
     }
 
-    private void gamePreparation() {
+    private void gamePreparationPhase() {
         model.nextGamePhase();
         model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
         model.boardUpdate();
@@ -411,17 +382,6 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
         model.matchStartedUpdate();
     }
-
-    /*private void onPlayerLose(Player loserPlayer) {
-        loserPlayer.getWorkerFirst().getPosition().setWorker(null);
-        loserPlayer.getWorkerSecond().getPosition().setWorker(null);
-
-        model.removePlayer(loserPlayer);
-        model.loseUpdate(loserPlayer);
-
-        model.turnUpdate(model.getCurrentPlayer());
-
-    }*/
 
     public void onPlayerDisconnected(String playerID) {
         Player disconnectedPlayer = model.getPlayers().stream().filter((player) -> player.ID.equals(playerID)).findFirst().orElse(null);
@@ -439,7 +399,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         model.removePlayer(disconnectedPlayer);
         model.disconnectedPlayerUpdate(disconnectedPlayer);
 
-        if (model.getPlayers().size() > 1 && model.getCurrentPlayer().equals(disconnectedPlayer)) { // todo check if turn is well handled by removePlayer()
+        if (model.getPlayers().size() > 1 && model.getCurrentPlayer().equals(disconnectedPlayer)) {
             model.turnUpdate(model.getCurrentPlayer());
         }
 

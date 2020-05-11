@@ -3,9 +3,6 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Worker;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * This class implements the Pan strategy used by the Player who chose the powers of this God.
  * Specifically, Pan adds a Win Condition: the Player also win if the selected Worker moves
@@ -36,9 +33,9 @@ public class Pan extends GodStrategy {
      * previous Cell and the new Cell is greater than or equal to 2, Pan's Win Condition
      * is triggered.
      *
-     * @see GodStrategy#executeMove(Worker, Cell)
      * @param worker   the worker that the Player wants to move.
      * @param moveCell the cell in which the Player want to move the worker.
+     * @see GodStrategy#executeMove(Worker, Cell)
      */
     @Override
     public void executeMove(Worker worker, Cell moveCell) {
@@ -50,9 +47,9 @@ public class Pan extends GodStrategy {
     /**
      * This method checks if standard Win Conditions or Pan Win Conditions are satisfied.
      *
-     * @see GodStrategy#checkWinCondition(Worker)
-     * @param worker    the worker that the Player selected for this turn.
+     * @param worker the worker that the Player selected for this turn.
      * @return true if Pan Wind Conditions OR standard Win Conditions are satisfied, false otherwise.
+     * @see GodStrategy#checkWinCondition(Worker)
      */
     @Override
     public boolean checkWinCondition(Worker worker) {

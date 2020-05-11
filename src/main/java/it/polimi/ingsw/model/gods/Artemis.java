@@ -2,8 +2,6 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class implements the Artemis strategy used by the Player who chose the powers of this God.
@@ -37,10 +35,10 @@ public class Artemis extends GodStrategy {
      * Implements movements check by delegating to {@link MultipleMovementDelegate}
      * and checking that moveCell is not equal to the original Worker position (in this turn).
      *
-     * @see MultipleMovementDelegate#checkMove(Worker, Cell, Worker) 
      * @param worker   the worker that the Player wants to move.
      * @param moveCell the cell in which the Player want to move the worker.
      * @return true if the Move passed as parameter can be performed, false otherwise.
+     * @see MultipleMovementDelegate#checkMove(Worker, Cell, Worker)
      */
     @Override
     public boolean checkMove(Worker worker, Cell moveCell) {
@@ -52,9 +50,9 @@ public class Artemis extends GodStrategy {
      * doesn't move an additional time to its initial position, then it executes standard move, finally movement count of
      * {@link MultipleMovementDelegate} is increased.
      *
-     * @see GodStrategy#executeMove(Worker, Cell)
      * @param worker   the worker that the Player wants to move.
      * @param moveCell the cell in which the Player want to move the worker.
+     * @see GodStrategy#executeMove(Worker, Cell)
      */
     @Override
     public void executeMove(Worker worker, Cell moveCell) {
@@ -66,8 +64,8 @@ public class Artemis extends GodStrategy {
     /**
      * This method calls superclass endTurn, then resets movement count and previous cell at the end of Player's turn.
      *
+     * @param player Player corresponding to the current turn.
      * @see GodStrategy#endPlayerTurn(Player)
-     * @param player    Player corresponding to the current turn.
      */
     @Override
     public void endPlayerTurn(Player player) {
@@ -78,20 +76,20 @@ public class Artemis extends GodStrategy {
 
     @Override
     public boolean canBuild(Board board, Worker worker) {
-        if(super.canBuild(board, worker))
+        if (super.canBuild(board, worker))
             return true;
 
-        if(!super.canBuild(board, worker) && !multipleMovementDelegate.canMoveAgain()) {
+        if (!super.canBuild(board, worker) && !multipleMovementDelegate.canMoveAgain()) {
             return false;
         }
 
         // super.canBuild is false e si può ancora muovere -> controllo che in una qualsiasi delle celle adiacenti in cui si può muovere, possa costruire
 
         for (int i = 0; i < Board.WIDTH_SIZE; i++) {
-            for(int j = 0; j < Board.HEIGHT_SIZE; j++) {
+            for (int j = 0; j < Board.HEIGHT_SIZE; j++) {
                 if (worker.getPosition().isLevelDifferenceOk(board.getCell(i, j)) && board.getCell(i, j).getLevel() != BlockType.DOME && board.getCell(i, j).isEmpty()) {
 
-                    if(buildPossibleFromCell(board, board.getCell(i, j))) {
+                    if (buildPossibleFromCell(board, board.getCell(i, j))) {
                         return true;
                     }
 
@@ -105,8 +103,8 @@ public class Artemis extends GodStrategy {
     private boolean buildPossibleFromCell(Board board, Cell cell) {
 
         for (int i = 0; i < Board.WIDTH_SIZE; i++) {
-            for(int j = 0; j < Board.HEIGHT_SIZE; j++) {
-                if(board.getCell(i, j).isAdjacentTo(cell) && board.getCell(i, j).getLevel() != BlockType.DOME && board.getCell(i, j).isEmpty()) {
+            for (int j = 0; j < Board.HEIGHT_SIZE; j++) {
+                if (board.getCell(i, j).isAdjacentTo(cell) && board.getCell(i, j).getLevel() != BlockType.DOME && board.getCell(i, j).isEmpty()) {
                     return true;
                 }
             }

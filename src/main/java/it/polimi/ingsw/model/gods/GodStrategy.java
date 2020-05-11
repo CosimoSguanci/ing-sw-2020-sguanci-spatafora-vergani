@@ -3,8 +3,6 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.utils.GodsUtils;
 
-import java.util.Map;
-
 /**
  * This is the abstract class all the gods must extend in order to be playable in the game.
  * This abstract class allows the use of Strategy Pattern, the God only knows it has a GodStrategy,
@@ -19,7 +17,6 @@ import java.util.Map;
  */
 
 public abstract class GodStrategy {
-     // TODO consider checkGamePrepConstraints + endTurnConstraints?
 
     public final String NAME;
     public final String DESCRIPTION;
@@ -59,6 +56,10 @@ public abstract class GodStrategy {
         return workerFirstCell.isEmpty() && workerSecondCell.isEmpty();
     }
 
+    public boolean checkGamePreparationConstraints(Worker workerFirst, Cell workerFirstCell, Worker workerSecond, Cell workerSecondCell) {
+        return true;
+    }
+
     /**
      * This method is called at every turn before executing the worker's movement.
      * It checks if the move which the player requested to do is allowed.
@@ -84,7 +85,7 @@ public abstract class GodStrategy {
      * @return true if the Build passed as parameter can be performed, false otherwise.
      */
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        return isUsingSelectedWorker(worker) && worker.standardCheckBuild(buildCell);
+        return isUsingSelectedWorker(worker) && (buildCellBlockType == null || buildCellBlockType.getLevelNumber() == buildCell.getLevel().getLevelNumber() + 1) && worker.standardCheckBuild(buildCell);
     }
 
     /**
@@ -94,6 +95,10 @@ public abstract class GodStrategy {
      */
     public boolean checkEndTurn() {
         return selectedWorker != null && selectedWorker.hasMoved() && selectedWorker.hasBuilt();
+    }
+
+    public boolean checkEndTurnConstraints() {
+        return true;
     }
 
     /**
@@ -133,7 +138,6 @@ public abstract class GodStrategy {
      */
     public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
         worker.build(buildCell);
-        //this.selectedWorker = worker;
     }
 
     /**
@@ -149,7 +153,7 @@ public abstract class GodStrategy {
         player.getWorkerSecond().reinitializeBuiltMoved();
     }
 
-    public void endRoundTurn(Player player) {}
+    public void onTurnStarted(Player player) {}
 
     /**
      * This is the method used to check if there are movement constraints imposed by other Players

@@ -4,8 +4,6 @@ import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class implements the Athena strategy used by the Player who chose the powers of this God.
@@ -34,9 +32,9 @@ public class Athena extends GodStrategy {
      * Implements movement execution by calling superclass standard executeMove,
      * setting the power flag if the God has moved up.
      *
-     * @see GodStrategy#executeMove(Worker, Cell)
      * @param worker   the worker that the Player wants to move.
      * @param moveCell the cell in which the Player want to move the worker.
+     * @see GodStrategy#executeMove(Worker, Cell)
      */
     @Override
     public void executeMove(Worker worker, Cell moveCell) {
@@ -49,8 +47,8 @@ public class Athena extends GodStrategy {
      * Implements movement constraints to other Player's workers.
      * If Athena as moved up, none of the others Players can move up.
      *
-     * @param oppositeWorker    the worker that the opposite Player wants to move.
-     * @param moveCell          the cell in which the opposite Player want to move the worker.
+     * @param oppositeWorker the worker that the opposite Player wants to move.
+     * @param moveCell       the cell in which the opposite Player want to move the worker.
      * @return true if the Move passed as parameter can be performed, false otherwise.
      */
     @Override
@@ -58,20 +56,8 @@ public class Athena extends GodStrategy {
         return !shouldBlockLevelUp || moveCell.getLevel().getLevelNumber() <= oppositeWorker.getPosition().getLevel().getLevelNumber();
     }
 
-    /**
-     * This method calls superclass endTurn, then resets move constraint flag.
-     *
-     * @see GodStrategy#endPlayerTurn(Player)
-     * @param player    Player corresponding to the current turn.
-     */
- /*   @Override
-    public void endPlayerTurn(Player player) {
-        super.endPlayerTurn(player);
-        shouldBlockLevelUp = false; // todo NOT HERE
-    } */
-
     @Override
-    public void endRoundTurn(Player player) {
+    public void onTurnStarted(Player player) {
         shouldBlockLevelUp = false;
     }
 }

@@ -101,12 +101,8 @@ public class Worker {
      */
     public boolean standardCheckBuild(Cell buildCell) {
 
-        if (this.hasMoved && !this.hasBuilt && this.position.isAdjacentTo(buildCell) && (buildCell.getLevel() != BlockType.DOME) && (buildCell.isEmpty())) {// Workers can build if the cell level is not the maximum and if the cell has not another Worker in it.
-            return true;
-        }
-        else {
-            return false;
-        }
+        // Workers can build if the cell level is not the maximum and if the cell has not another Worker in it.
+        return this.hasMoved && !this.hasBuilt && this.position.isAdjacentTo(buildCell) && (buildCell.getLevel() != BlockType.DOME) && (buildCell.isEmpty());
     }
 
     /**

@@ -2,9 +2,6 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 
 /**
  * This class implements the Apollo strategy used by the Player who chose the powers of this God.
@@ -23,7 +20,7 @@ public class Apollo extends GodStrategy {
     /**
      * Delegation pattern (composition over inheritance) is used to share common behaviours
      * between gods and to allow a single god to inherit multiple common properties.
-     *
+     * <p>
      * {@link OpponentWorkerMoverDelegate} is used by Apollo to swap positions with an opponent worker, if necessary.
      */
     private final OpponentWorkerMoverDelegate opponentWorkerMoverDelegate;
@@ -53,10 +50,10 @@ public class Apollo extends GodStrategy {
      * the opponent's worker that is occupying moveCell must be moved out of it,
      * and this is done delegating to {@link OpponentWorkerMoverDelegate}..
      *
-     * @see GodStrategy#executeMove(Worker, Cell)
-     * @see OpponentWorkerMoverDelegate#moveOpponentWorker(Worker, Cell)
      * @param worker   the worker that the Player wants to move.
      * @param moveCell the cell in which the Player want to move the worker.
+     * @see GodStrategy#executeMove(Worker, Cell)
+     * @see OpponentWorkerMoverDelegate#moveOpponentWorker(Worker, Cell)
      */
     @Override
     public void executeMove(Worker worker, Cell moveCell) {
@@ -80,7 +77,7 @@ public class Apollo extends GodStrategy {
     private boolean canApolloMoveFromCell(Board board, Cell cell) {
 
         for (int i = 0; i < Board.WIDTH_SIZE; i++) {
-            for(int j = 0; j < Board.HEIGHT_SIZE; j++) {
+            for (int j = 0; j < Board.HEIGHT_SIZE; j++) {
                 if (cell.isLevelDifferenceOk(board.getCell(i, j)) && board.getCell(i, j).getLevel() != BlockType.DOME) {
                     return true;
                 }

@@ -5,12 +5,9 @@ import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * This class implements the Prometheus strategy used by the Player who chose the powers of this God.
- * Specifically, if the selected Worker does not move up, it can build both before and after moving. 
+ * Specifically, if the selected Worker does not move up, it can build both before and after moving.
  *
  * @author Cosimo Sguanci
  */
@@ -35,10 +32,10 @@ public class Prometheus extends GodStrategy {
      * If the Player is trying to perform a Build BEFORE the Move phase, Prometheus power is activated.
      * Otherwise, {@link MultipleBuildDelegate} checkBuild is called.
      *
-     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, Worker)
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
      * @return true if the Build passed as parameter can be performed, false otherwise.
+     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, Worker)
      */
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
@@ -58,10 +55,10 @@ public class Prometheus extends GodStrategy {
      * Otherwise, the method checks that the Worker isn't going to a higher level. In this case we can't use standard {@link GodStrategy}
      * checkMove because it would check that the worker hasn't already build, so it would always fail.
      *
-     * @see GodStrategy#checkMove(Worker, Cell) 
      * @param worker   the worker that the Player wants to move.
      * @param moveCell the cell in which the Player want to move the worker.
      * @return true if the Move passed as parameter can be performed, false otherwise.
+     * @see GodStrategy#checkMove(Worker, Cell)
      */
     @Override
     public boolean checkMove(Worker worker, Cell moveCell) {
@@ -77,9 +74,9 @@ public class Prometheus extends GodStrategy {
      * and setting to true the flag that indicates if Prometheus power was activated, if the worker hasn't
      * already performed a move.
      *
-     * @see GodStrategy#executeBuild(Worker, Cell, BlockType) 
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
+     * @see GodStrategy#executeBuild(Worker, Cell, BlockType)
      */
     @Override
     public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
@@ -91,7 +88,7 @@ public class Prometheus extends GodStrategy {
 
         multipleBuildDelegate.increaseBuildCount();
 
-        if(builtBeforeMoving && !this.canMove(worker.board, worker.player)) //-> perso
+        if (builtBeforeMoving && !this.canMove(worker.board, worker.player)) //-> perso
         {
             worker.player.model.onPlayerLose(worker.player); // or Player.lose etc
         }
@@ -101,7 +98,7 @@ public class Prometheus extends GodStrategy {
     public boolean checkEndTurn() {
         //if(!builtBeforeMoving)
 
-        if(!builtBeforeMoving)
+        if (!builtBeforeMoving)
             return super.checkEndTurn();
 
         return super.checkEndTurn() && multipleBuildDelegate.getBuildCount() == PROMETHEUS_MAX_BUILD_NUM;
@@ -110,8 +107,8 @@ public class Prometheus extends GodStrategy {
     /**
      * Calls superclass endTurn and resets delegates properties.
      *
+     * @param player The player whose turn is ending.
      * @see GodStrategy#endPlayerTurn(Player)
-     * @param player    The player whose turn is ending.
      */
     @Override
     public void endPlayerTurn(Player player) {

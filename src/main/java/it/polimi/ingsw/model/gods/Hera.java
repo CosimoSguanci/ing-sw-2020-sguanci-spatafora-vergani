@@ -1,9 +1,8 @@
 package it.polimi.ingsw.model.gods;
 
-import it.polimi.ingsw.model.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Worker;
 
 /**
  * This class implements the Hera strategy used by the Player who chose the powers of this God.
