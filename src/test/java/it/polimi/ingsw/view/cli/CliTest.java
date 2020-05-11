@@ -21,7 +21,7 @@ class CliTest {
     @Test
     void startTest() {
         Match.clearInstances();
-        Board.clearInstances();
+
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();

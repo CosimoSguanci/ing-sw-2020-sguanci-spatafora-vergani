@@ -26,7 +26,7 @@ public class ControllerTest {
     @Test
     public void updatePlayerCommandNormalTest() {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 3;
@@ -76,14 +76,14 @@ public class ControllerTest {
         assertEquals(p1, model.getCurrentPlayer());
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
 
-        Board.clearInstances();
+
         Match.clearInstances();
     }
 
 
     @Test
     public void updatePlayerCommandGodPowerTest() {
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 2;
@@ -163,14 +163,14 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(4,3), w2A.getPosition());
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
-        Board.clearInstances();
+
         Match.clearInstances();
     }
 
 
     @Test
     public void updatePlayerCommandImpossibleMoveAndBuildTest() {
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 2;
@@ -251,14 +251,14 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(4,3), w2A.getPosition());
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
-        Board.clearInstances();
+
         Match.clearInstances();
     }
 
 
     @Test
     public void updatePlayerCommandCompleteTest() {
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 3;
@@ -358,7 +358,7 @@ public class ControllerTest {
     @Test
     public void updateGodChoiceCommandNormalTest() throws NoSuchFieldException, IllegalAccessException {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 3;
@@ -415,7 +415,7 @@ public class ControllerTest {
         assertEquals(1, apollo);
         assertEquals(1, athena);
 
-        Board.clearInstances();
+
         Match.clearInstances();
     }
 
@@ -423,7 +423,7 @@ public class ControllerTest {
     @Test
     public void updateGodChoiceCommand2PlayersTest() throws NoSuchFieldException, IllegalAccessException {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 2;
@@ -475,7 +475,7 @@ public class ControllerTest {
     @Test
     public void updateInitialInfoCommandTest() {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 3;
@@ -534,7 +534,7 @@ public class ControllerTest {
     @Test
     public void updateInitialInfoCommandNicknameAlreadyTakenExceptionTest() {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 3;
@@ -589,7 +589,7 @@ public class ControllerTest {
     @Test
     public void updateInitialInfoCommandInvalidColorExceptionTest() {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 3;
@@ -634,7 +634,7 @@ public class ControllerTest {
     @Test
     public void updateInitialInfoCommand2PlayerTest() {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 2;
@@ -680,7 +680,7 @@ public class ControllerTest {
     @Test
     public void updateGamePreparationCommandTest() {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 3;
@@ -744,7 +744,7 @@ public class ControllerTest {
     @Test
     public void updateGamePreparationCommand2PlayerTest() {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 3;
@@ -791,7 +791,7 @@ public class ControllerTest {
     @Test
     public void updateGamePreparationCommandSameCellTest() {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 3;
@@ -853,7 +853,7 @@ public class ControllerTest {
     @Test
     public void updateGamePreparationCommandGodPowerTest() {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 3;

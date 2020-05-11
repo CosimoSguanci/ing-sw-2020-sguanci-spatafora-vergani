@@ -74,12 +74,12 @@ public class Poseidon extends GodStrategy {
     /**
      * Calls superclass endTurn and resets delegates properties.
      *
-     * @see GodStrategy#endTurn(Player)
+     * @see GodStrategy#endPlayerTurn(Player)
      * @param player    The player whose turn is ending.
      */
     @Override
-    public void endTurn(Player player) {
-        super.endTurn(player);
+    public void endPlayerTurn(Player player) {
+        super.endPlayerTurn(player);
         multipleBuildDelegate.reinitializeBuildCount();
     }
 }

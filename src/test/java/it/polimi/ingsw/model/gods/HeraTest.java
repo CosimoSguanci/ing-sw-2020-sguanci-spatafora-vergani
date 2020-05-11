@@ -13,7 +13,7 @@ public class HeraTest {
     @Test
     public void heraWinConstraintsTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Hera hera = new Hera();

@@ -14,7 +14,7 @@ public class DemeterTest {
     @Test
     public void demeterCheckMultipleBuildTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Demeter demeter = new Demeter();
@@ -40,7 +40,7 @@ public class DemeterTest {
     @Test
     public void demeterCheckMultipleBuildSameSpaceTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Demeter demeter = new Demeter();
@@ -63,7 +63,7 @@ public class DemeterTest {
 
     @Test
     public void demeterEndTurnTest() {
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Demeter demeter = new Demeter();
@@ -87,7 +87,7 @@ public class DemeterTest {
         demeter.executeBuild(worker, match.getMatchBoard().getCell(1, 1), BlockType.LEVEL_ONE);
 
         assertTrue(demeter.checkEndTurn());
-        demeter.endTurn(player);
+        demeter.endPlayerTurn(player);
 
         //Now I check that I can move/build again (so the values are correctly reinitialized
         assertTrue(demeter.checkMove(worker, match.getMatchBoard().getCell(1, 1)));

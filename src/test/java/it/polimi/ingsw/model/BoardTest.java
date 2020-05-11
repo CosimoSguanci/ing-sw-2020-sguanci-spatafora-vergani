@@ -15,7 +15,7 @@ public class BoardTest {
     @Test
     public void canMoveTrueTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 2;
@@ -61,13 +61,13 @@ public class BoardTest {
     @Test
     public void canMoveFalseTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board =   match.getMatchBoard();
         Player player = new Player("Andrea", match);
         Worker w1 = player.getWorkerFirst();
         Worker w2 = player.getWorkerSecond();
@@ -105,13 +105,13 @@ public class BoardTest {
     @Test
     public void canBuildTrueTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = match.getMatchBoard();
         Player player = new Player("Andrea",  match);
         Worker w1 = player.getWorkerFirst();
         Worker w2 = player.getWorkerSecond();
@@ -152,13 +152,13 @@ public class BoardTest {
     @Test
     public void canBuildFalseTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = match.getMatchBoard();
         Player player = new Player("Andrea",  match);
         Worker w1 = player.getWorkerFirst();
         Worker w2 = player.getWorkerSecond();

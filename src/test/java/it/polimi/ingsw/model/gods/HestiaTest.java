@@ -14,7 +14,7 @@ public class HestiaTest {
     @Test
     public void hestiaCheckMultipleBuildTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Hestia hestia = new Hestia();
@@ -40,7 +40,7 @@ public class HestiaTest {
     @Test
     public void demeterCheckMultipleBuildPerimeterSpaceTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Hestia hestia = new Hestia();
@@ -63,7 +63,7 @@ public class HestiaTest {
 
     @Test
     public void hestiaEndTurnTest() {
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Hestia hestia = new Hestia();
@@ -87,7 +87,7 @@ public class HestiaTest {
         hestia.executeBuild(worker, match.getMatchBoard().getCell(1, 1), BlockType.LEVEL_ONE);
 
         assertTrue(hestia.checkEndTurn());
-        hestia.endTurn(player);
+        hestia.endPlayerTurn(player);
 
         //Now I check that I can move/build again (so the values are correctly reinitialized
         assertTrue(hestia.checkMove(worker, match.getMatchBoard().getCell(1, 1)));

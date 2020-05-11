@@ -61,12 +61,17 @@ public class Athena extends GodStrategy {
     /**
      * This method calls superclass endTurn, then resets move constraint flag.
      *
-     * @see GodStrategy#endTurn(Player)
+     * @see GodStrategy#endPlayerTurn(Player)
      * @param player    Player corresponding to the current turn.
      */
+ /*   @Override
+    public void endPlayerTurn(Player player) {
+        super.endPlayerTurn(player);
+        shouldBlockLevelUp = false; // todo NOT HERE
+    } */
+
     @Override
-    public void endTurn(Player player) {
-        super.endTurn(player);
-        shouldBlockLevelUp = false;
+    public void endRoundTurn(Player player) {
+        shouldBlockLevelUp = false; // todo NOT HERE
     }
 }

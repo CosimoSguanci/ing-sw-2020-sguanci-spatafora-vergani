@@ -13,7 +13,7 @@ public class AthenaTest {
     @Test
     public void athenaCheckMoveConstraintsTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Athena athena = new Athena();
@@ -41,7 +41,7 @@ public class AthenaTest {
 
     @Test
     public void athenaEndTurnTest() {
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Athena athena = new Athena();
@@ -65,7 +65,7 @@ public class AthenaTest {
         assertFalse(athena.checkMove(worker, match.getMatchBoard().getCell(0, 2)));
 
         assertTrue(athena.checkEndTurn());
-        athena.endTurn(player);
+        athena.endPlayerTurn(player);
 
         //Now I check that I can move again (so the values are correctly reinitialized
         assertTrue(athena.checkMove(worker, match.getMatchBoard().getCell(0, 2)));

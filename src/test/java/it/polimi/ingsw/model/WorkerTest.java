@@ -19,7 +19,7 @@ public class WorkerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = match.getMatchBoard();
         Player testPlayer = new Player("Roberto",  match);
         Worker testFirstWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
         Worker testSecondWorker = new Worker(testPlayer, board, Command.WORKER_SECOND);
@@ -38,7 +38,7 @@ public class WorkerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = match.getMatchBoard();
         Player testPlayer = new Player("Roberto",  match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
@@ -61,7 +61,7 @@ public class WorkerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);
+        Board board = match.getMatchBoard();
         Player testPlayer = new Player("Roberto", match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
@@ -82,7 +82,7 @@ public class WorkerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = match.getMatchBoard();
         Player testPlayer = new Player("Roberto", match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
         Worker testOccupantWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
@@ -106,7 +106,7 @@ public class WorkerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = match.getMatchBoard();
         Player testPlayer = new Player("Roberto",  match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
@@ -129,7 +129,7 @@ public class WorkerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = match.getMatchBoard();
         Player testPlayer = new Player("Roberto",  match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
@@ -151,7 +151,7 @@ public class WorkerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = match.getMatchBoard();
         Player testPlayer = new Player("Roberto",  match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
@@ -215,7 +215,7 @@ public class WorkerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = match.getMatchBoard();
         Player testPlayer = new Player("Roberto",  match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 
@@ -237,7 +237,7 @@ public class WorkerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = match.getMatchBoard();
         Player testPlayer = new Player("Roberto",  match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
         Worker testSecondWorker = new Worker(testPlayer, board, Command.WORKER_SECOND);
@@ -260,7 +260,7 @@ public class WorkerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = match.getMatchBoard();
         Player testPlayer = new Player("Roberto", match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
 

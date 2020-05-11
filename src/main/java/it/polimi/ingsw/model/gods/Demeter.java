@@ -65,12 +65,12 @@ public class Demeter extends GodStrategy {
     /**
      * This method calls superclass endTurn, then resets build count and previous cell at the end of Player's turn.
      *
-     * @see GodStrategy#endTurn(Player)
+     * @see GodStrategy#endPlayerTurn(Player)
      * @param player    Player corresponding to the current turn.
      */
     @Override
-    public void endTurn(Player player) {
-        super.endTurn(player);
+    public void endPlayerTurn(Player player) {
+        super.endPlayerTurn(player);
         multipleBuildDelegate.reinitializeBuildCount();
         previousCellNeededDelegate.reinitializeCell();
     }

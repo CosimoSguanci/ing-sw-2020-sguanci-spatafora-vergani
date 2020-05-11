@@ -22,7 +22,7 @@ public class Prometheus extends GodStrategy {
     public static final String POWER_DESCRIPTION = "Your Turn: If your Worker does not move up, it may build both before and after moving.";
 
     final int PROMETHEUS_MAX_BUILD_NUM = 2;
-    private MultipleBuildDelegate multipleBuildDelegate;
+    private final MultipleBuildDelegate multipleBuildDelegate;
     private boolean builtBeforeMoving;
 
 
@@ -92,15 +92,26 @@ public class Prometheus extends GodStrategy {
         this.selectedWorker = worker;
     }
 
+    @Override
+    public boolean checkEndTurn() {
+        //if(!builtBeforeMoving)
+
+        if(!builtBeforeMoving)
+            return super.checkEndTurn();
+
+        return super.checkEndTurn() && multipleBuildDelegate.getBuildCount() == PROMETHEUS_MAX_BUILD_NUM;
+    }
+
     /**
      * Calls superclass endTurn and resets delegates properties.
      *
-     * @see GodStrategy#endTurn(Player) 
+     * @see GodStrategy#endPlayerTurn(Player)
      * @param player    The player whose turn is ending.
      */
     @Override
-    public void endTurn(Player player) {
-        super.endTurn(player);
+    public void endPlayerTurn(Player player) {
+        super.endPlayerTurn(player);
         multipleBuildDelegate.reinitializeBuildCount();
+        builtBeforeMoving = false;
     }
 }

@@ -12,7 +12,7 @@ public class PoseidonTest {
     @Test
     public void poseidonCheckBuildGroundTest()  { // Unmoved worker is on ground at the end of the turn
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Poseidon poseidon = new Poseidon();
@@ -44,7 +44,7 @@ public class PoseidonTest {
     @Test
     public void poseidonCheckBuildNotGroundTest()  { // Unmoved worker is NOT on ground at the end of the turn
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Poseidon poseidon = new Poseidon();
@@ -69,7 +69,7 @@ public class PoseidonTest {
 
     @Test
     public void poseidonEndTurnTest() {
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Poseidon poseidon = new Poseidon();
@@ -102,7 +102,7 @@ public class PoseidonTest {
 
 
         assertTrue(poseidon.checkEndTurn());
-        poseidon.endTurn(player);
+        poseidon.endPlayerTurn(player);
 
         //Now I check that I can move/build again (so the values are correctly reinitialized) -> repeat the turn:
 

@@ -13,7 +13,7 @@ public class ErosTest {
     @Test
     public void erosWinConditionThreePlayersTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Eros eros = new Eros();
@@ -37,7 +37,7 @@ public class ErosTest {
     @Test
     public void erosWinConditionTwoPlayersTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Eros eros = new Eros();
@@ -64,7 +64,7 @@ public class ErosTest {
 
     @Test
     public void erosCheckGamePreparationTest() {
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Eros eros = new Eros();
@@ -83,7 +83,7 @@ public class ErosTest {
 
     @Test
     public void erosEndTurnTest() {
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Eros eros = new Eros();
@@ -109,7 +109,7 @@ public class ErosTest {
         assertFalse(eros.checkMove(worker, match.getMatchBoard().getCell(0, 2)));
 
         assertTrue(eros.checkEndTurn());
-        eros.endTurn(player);
+        eros.endPlayerTurn(player);
 
         //Now I check that I can move again (so the values are correctly reinitialized
         assertTrue(eros.checkMove(worker, match.getMatchBoard().getCell(0, 2)));

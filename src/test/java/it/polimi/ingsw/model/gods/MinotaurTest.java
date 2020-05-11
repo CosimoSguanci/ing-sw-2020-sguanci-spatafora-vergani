@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MinotaurTest {
     @Test
     public void minotaurCheckMoveTest() {
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Minotaur minotaur = new Minotaur();
@@ -31,13 +31,13 @@ public class MinotaurTest {
 
         assertFalse(minotaur.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
 
-        Board.clearInstances();
+
         Match.clearInstances();
     }
 
     @Test
     public void minotaurExecuteMoveTest() {
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Minotaur minotaur = new Minotaur();

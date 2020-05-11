@@ -13,7 +13,7 @@ public class ArtemisTest {
     @Test
     public void artemisCheckMultipleMoveTest() {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Artemis artemis = new Artemis();
@@ -40,7 +40,7 @@ public class ArtemisTest {
     @Test
     public void artemisCheckMultipleMoveInitialPositionTest() {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Artemis artemis = new Artemis();
@@ -61,7 +61,7 @@ public class ArtemisTest {
 
     @Test
     public void artemisEndTurnTest() {
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Artemis artemis = new Artemis();
@@ -88,7 +88,7 @@ public class ArtemisTest {
         assertFalse(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 3)));
 
         assertTrue(artemis.checkEndTurn());
-        artemis.endTurn(player);
+        artemis.endPlayerTurn(player);
 
         //Now I check that I can move again (so the values are correctly reinitialized
         assertTrue(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 3)));

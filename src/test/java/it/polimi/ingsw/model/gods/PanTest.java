@@ -12,7 +12,7 @@ public class PanTest {
     @Test
     public void panWinConditionTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Pan pan = new Pan();

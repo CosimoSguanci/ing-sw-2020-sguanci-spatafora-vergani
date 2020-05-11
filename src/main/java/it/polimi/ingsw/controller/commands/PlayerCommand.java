@@ -28,7 +28,6 @@ public class PlayerCommand extends Command {
     public final int row;
     public final int col;
 
-  //  public final CommandType commandType;
     public final BlockType cellBlockType;
 
     /**

@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.updates;
 
 import it.polimi.ingsw.view.UpdateHandler;
 
-public abstract class Update {
+import java.io.Serializable;
+
+public abstract class Update implements Serializable {
     public abstract void handleUpdate(UpdateHandler handler);
 }

@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model.updates;
 
-import java.io.Serializable;
-
-public abstract class BroadcastUpdate extends Update implements Serializable {
+public abstract class BroadcastUpdate extends Update {
 
     /**
      * JSON Serialized Board representation.

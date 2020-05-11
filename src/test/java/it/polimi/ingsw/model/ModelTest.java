@@ -41,7 +41,7 @@ public class ModelTest {
     @Test
     public void getBoardTest() {
         Match.clearInstances();
-        Board.clearInstances();
+
 
         int playersNum = 3;
         String key = UUID.randomUUID().toString();

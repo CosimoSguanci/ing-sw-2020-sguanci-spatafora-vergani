@@ -28,6 +28,7 @@ import java.util.concurrent.ConcurrentMap;
 public class Match {  //tested with 100% coverage
     private ArrayList<Player> players;
     private Board matchBoard;
+    private int initalTurn;
     private int turn;
     private int playersNumber;
     private final String id;
@@ -49,7 +50,7 @@ public class Match {  //tested with 100% coverage
 
         if(playersNumber != 2 && playersNumber != 3)  throw new InvalidPlayerNumberException();
         this.players = new ArrayList<>();
-        this.matchBoard = Board.getInstance(UUID.randomUUID().toString());
+        this.matchBoard = new Board();
         this.turn = 0;
         this.playersNumber = playersNumber;
         this.currentGamePhase = GamePhase.firstPhase();
@@ -145,9 +146,14 @@ public class Match {  //tested with 100% coverage
     }
 
     public void setInitialTurn(int initialTurn) {
+        this.initalTurn = initialTurn + 1; // initialTurn is the turn of the player which is next to the GodChooser, so the first Player who starts the game.
         this.turn = initialTurn;
     }
 
+
+    boolean isInitialTurn() {
+        return this.turn == initalTurn;
+    }
 
     /**
      * The method returns the player who has the right to play his (current) turn

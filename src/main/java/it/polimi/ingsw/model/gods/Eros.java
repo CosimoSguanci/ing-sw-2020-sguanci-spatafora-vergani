@@ -95,12 +95,12 @@ public class Eros extends GodStrategy {
     /**
      * Calls superclass endTurn and resets flags to false.
      *
-     * @see GodStrategy#endTurn(Player)
+     * @see GodStrategy#endPlayerTurn(Player)
      * @param player    The player whose turn is ending.
      */
     @Override
-    public void endTurn(Player player) {
-        super.endTurn(player);
+    public void endPlayerTurn(Player player) {
+        super.endPlayerTurn(player);
         this.neighboringOtherWorker = false;
     }
 }

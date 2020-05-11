@@ -12,7 +12,7 @@ public class AtlasTest {
     @Test
     public void atlasBuildDomeAnywhereTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Atlas atlas = new Atlas();
@@ -31,7 +31,7 @@ public class AtlasTest {
     @Test
     public void atlasStandardBuild()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Atlas atlas = new Atlas();

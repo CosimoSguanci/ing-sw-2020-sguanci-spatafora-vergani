@@ -27,7 +27,6 @@ public class Model extends Observable<Update> {
         return this.match.getCurrentPlayer();
     }
 
-
     public Board getBoard() {
         return this.match.getMatchBoard();
     }
@@ -49,6 +48,10 @@ public class Model extends Observable<Update> {
         turnUpdate(match.getCurrentPlayer());
     }
 
+
+    public boolean isInitialTurn() {
+        return match.isInitialTurn();
+    }
 
     public void setInitialTurn(int initialTurn) {
         match.setInitialTurn(initialTurn);

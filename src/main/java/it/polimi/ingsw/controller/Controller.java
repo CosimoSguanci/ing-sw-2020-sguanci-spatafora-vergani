@@ -241,8 +241,6 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                             }
                         }
 
-                        //handlePlayerLose(currentPlayer); // TODO REMOVE (test player losing)
-
                     } else {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
 
@@ -279,9 +277,13 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                     if (currentPlayer.getGodStrategy().checkEndTurn()) {
 
-                        currentPlayer.getGodStrategy().endTurn(currentPlayer);
+                        currentPlayer.getGodStrategy().endPlayerTurn(currentPlayer);
 
                         model.endTurn();
+
+                        if(model.isInitialTurn()) {
+                            endTotalTurn();
+                        }
 
                         model.boardUpdate();
 
@@ -351,6 +353,12 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         }
 
         return true;
+    }
+
+    private void endTotalTurn() {
+        for (Player p : model.getPlayers()) {
+            p.getGodStrategy().endRoundTurn(p);
+        }
     }
 
     private boolean currentPlayerCanMove() {

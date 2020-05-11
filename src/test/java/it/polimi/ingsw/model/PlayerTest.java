@@ -46,7 +46,7 @@ public class PlayerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = match.getMatchBoard();
         Player instancePlayerTest = new Player("Roberto",  match);
         Worker instanceWorkerTest = instancePlayerTest.getWorkerFirst();
         assertEquals(instanceWorkerTest, instancePlayerTest.getWorkerFirst());
@@ -61,7 +61,7 @@ public class PlayerTest {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
         Match match = Match.getInstance(key, playersNum);
-        Board board = Board.getInstance(key);;
+        Board board = match.getMatchBoard();
         Player instancePlayerTest = new Player("Roberto",  match);
         Worker instanceWorkerTest = instancePlayerTest.getWorkerSecond();
         assertEquals(instanceWorkerTest, instancePlayerTest.getWorkerSecond());

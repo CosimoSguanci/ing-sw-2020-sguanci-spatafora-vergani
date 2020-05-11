@@ -23,8 +23,6 @@ public class Hera extends GodStrategy {
     }
 
 
-
-
     /**
      * Implements Hera Win Constraints to other players.
      *

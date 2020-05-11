@@ -144,10 +144,12 @@ public abstract class GodStrategy {
      * @see Worker#reinitializeBuiltMoved()
      * @param player    Player corresponding to the current turn.
      */
-    public void endTurn(Player player) {
+    public void endPlayerTurn(Player player) {
         player.getWorkerFirst().reinitializeBuiltMoved();
         player.getWorkerSecond().reinitializeBuiltMoved();
     }
+
+    public void endRoundTurn(Player player) {}
 
     /**
      * This is the method used to check if there are movement constraints imposed by other Players
@@ -173,7 +175,7 @@ public abstract class GodStrategy {
      * @param buildCell         the cell in which the Player want to build a new level.
      * @return true if no constraint prevent the move passed as parameter, false otherwise.
      */
-    public boolean checkBuildConstraints(Worker oppositeWorker, Cell buildCell, BlockType buildCellBlockType) {
+    public boolean checkBuildConstraints(Worker oppositeWorker, Cell buildCell, BlockType buildCellBlockType) { // todo remove params [overloading]?
         return true;
     }
 

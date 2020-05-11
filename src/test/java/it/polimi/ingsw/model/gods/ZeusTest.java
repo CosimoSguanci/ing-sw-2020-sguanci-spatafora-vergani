@@ -13,7 +13,7 @@ public class ZeusTest {
     @Test
     public void zeusCheckBuildTest() { // Zeus Worker can build under itself
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Zeus zeus = new Zeus();

@@ -5,8 +5,8 @@ import it.polimi.ingsw.controller.CommandHandler;
 import java.util.List;
 
 public class GodChoiceCommand extends Command {
-    private List<String> chosenGods;
-    private boolean isGodChooser;
+    private final List<String> chosenGods;
+    private final boolean isGodChooser;
 
     public GodChoiceCommand(List<String> chosenGods, boolean isGodChooser) {
         super(CommandType.SELECT);

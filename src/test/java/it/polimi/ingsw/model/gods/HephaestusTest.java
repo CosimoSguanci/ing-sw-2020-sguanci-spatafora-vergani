@@ -12,7 +12,7 @@ public class HephaestusTest {
     @Test
     public void hephaestusCheckMultipleBuildTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Hephaestus hephaestus = new Hephaestus();
@@ -40,7 +40,7 @@ public class HephaestusTest {
     @Test
     public void hephaestusCheckMultipleBuildAnotherCellTest()  { // check multiple build on different positions, should always fail
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Hephaestus hephaestus = new Hephaestus();
@@ -64,7 +64,7 @@ public class HephaestusTest {
     @Test
     public void hephaestusCheckMultipleBuildDomeTest()  { // check multiple build on same position but with a dome, should fail
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Hephaestus hephaestus = new Hephaestus();
@@ -89,7 +89,7 @@ public class HephaestusTest {
 
     @Test
     public void hephaestusEndTurnTest() { // TODO Add tests to check previousCell was reset?
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Hephaestus hephaestus = new Hephaestus();
@@ -113,7 +113,7 @@ public class HephaestusTest {
         hephaestus.executeBuild(worker, match.getMatchBoard().getCell(0, 2), BlockType.LEVEL_TWO);
 
         assertTrue(hephaestus.checkEndTurn());
-        hephaestus.endTurn(player);
+        hephaestus.endPlayerTurn(player);
 
         //Now I check that I can move/build again (so the values are correctly reinitialized
         assertTrue(hephaestus.checkMove(worker, match.getMatchBoard().getCell(1, 1)));

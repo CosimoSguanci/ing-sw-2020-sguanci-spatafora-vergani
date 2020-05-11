@@ -13,7 +13,7 @@ public class PrometheusTest {
     @Test
     public void prometheusBuildThenMoveTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Prometheus prometheus = new Prometheus();
@@ -34,7 +34,7 @@ public class PrometheusTest {
     @Test
     public void prometheusCannotMoveUpIfBuiltBeforeMovingTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Prometheus prometheus = new Prometheus();
@@ -55,7 +55,7 @@ public class PrometheusTest {
     @Test
     public void prometheusCannotMultipleBuildIfMoveBeforeBuildTest()  {
 
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Prometheus prometheus = new Prometheus();
@@ -78,7 +78,7 @@ public class PrometheusTest {
 
     @Test
     public void prometheusEndTurnTest() {
-        Board.clearInstances();
+
         Match.clearInstances();
 
         Prometheus prometheus = new Prometheus();
@@ -104,7 +104,7 @@ public class PrometheusTest {
         assertFalse(prometheus.checkBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_THREE));
 
         assertTrue(prometheus.checkEndTurn());
-        prometheus.endTurn(player);
+        prometheus.endPlayerTurn(player);
 
         //Now I check that I can move/build again (so the values are correctly reinitialized
         assertTrue(prometheus.checkBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_THREE));
