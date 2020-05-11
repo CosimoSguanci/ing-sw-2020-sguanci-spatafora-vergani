@@ -10,7 +10,7 @@ public class DisconnectedPlayerUpdate extends BroadcastUpdate {
     /**
      * Flag which indicates if the only one player is still playing, in this case it automatically wins.
      */
-    public final boolean onePlayerRemaining;
+    public final boolean onePlayerRemaining; // todo remove
 
     public DisconnectedPlayerUpdate(String disconnectedPlayerID, String disconnectedPlayerNickname, boolean onePlayerRemaining, String board) {
         super(board);

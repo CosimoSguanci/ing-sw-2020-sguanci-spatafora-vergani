@@ -233,6 +233,10 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                             if (!currentPlayer.getGodStrategy().canBuild(model.getBoard(), playerCommand.getWorker())) {
                                 model.onPlayerLose(currentPlayer);
+
+                                if(model.getPlayers().size() != 1) { // 2 players remaining...
+                                    model.boardUpdate();
+                                }
                             }
                         }
 
@@ -279,6 +283,10 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                         // check if the new currentPlayer can move
                         if (!model.getCurrentPlayer().getGodStrategy().canMove(model.getBoard(), model.getCurrentPlayer())) {
                             model.onPlayerLose(model.getCurrentPlayer());
+
+                            if(model.getPlayers().size() != 1) {
+                                model.boardUpdate();
+                            }
                         }
 
                     } else {
@@ -381,6 +389,15 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         model.nextGamePhase();
         model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
         model.matchStartedUpdate();
+
+        // check if the first currentPlayer can move
+        if (!model.getCurrentPlayer().getGodStrategy().canMove(model.getBoard(), model.getCurrentPlayer())) {
+            model.onPlayerLose(model.getCurrentPlayer());
+
+            if(model.getPlayers().size() != 1) {
+                model.boardUpdate();
+            }
+        }
     }
 
     public void onPlayerDisconnected(String playerID) {
