@@ -272,12 +272,12 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                         model.endTurn();
 
-                        model.getCurrentPlayer().getGodStrategy().onTurnStarted(currentPlayer); // onTurnStart
+                        model.getCurrentPlayer().getGodStrategy().onTurnStarted(model.getCurrentPlayer()); // onTurnStart
 
                         model.boardUpdate();
 
                         // check if the new currentPlayer can move
-                        if (!currentPlayer.getGodStrategy().canMove(model.getBoard(), currentPlayer)) {
+                        if (!model.getCurrentPlayer().getGodStrategy().canMove(model.getBoard(), model.getCurrentPlayer())) {
                             model.onPlayerLose(model.getCurrentPlayer());
                         }
 
