@@ -205,13 +205,17 @@ public class CliUpdateHandler implements UpdateHandler {
         String nicknameToShow = update.disconnectedPlayerNickname != null ? update.disconnectedPlayerNickname : "A player";
         cliInstance.print(nicknameToShow + " disconnected!");
 
-       if(update.onePlayerRemaining) {
+      /* if(update.onePlayerRemaining) {
             cliInstance.newLine();
             cliInstance.print(Cli.toBold("You Win!"));
             cliInstance.newLine();
             cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
             cliInstance.print("Do you want to play another match?");
-        }
+        } */
+
+        cliInstance.newLine();
+        cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
+        cliInstance.print("Do you want to play another match?");
 
     }
 
