@@ -183,6 +183,7 @@ public class CliUpdateHandler implements UpdateHandler {
                 cliInstance.print("Do you want to continue to watch this match?");
             }
         }
+
         else if(update.onePlayerRemaining) {
             cliInstance.newLine();
             cliInstance.print(cliInstance.playerWithColor(update.loserPlayerNickname) + " lost!");
@@ -190,6 +191,10 @@ public class CliUpdateHandler implements UpdateHandler {
             cliInstance.newLine();
             cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
             cliInstance.print("Do you want to play another match?");
+        }
+        else {
+            cliInstance.newLine();
+            cliInstance.print(cliInstance.playerWithColor(update.loserPlayerNickname) + " lost!");
         }
 
 
@@ -204,15 +209,6 @@ public class CliUpdateHandler implements UpdateHandler {
     public void handle(DisconnectedPlayerUpdate update) {
         String nicknameToShow = update.disconnectedPlayerNickname != null ? update.disconnectedPlayerNickname : "A player";
         cliInstance.print(nicknameToShow + " disconnected!");
-
-      /* if(update.onePlayerRemaining) {
-            cliInstance.newLine();
-            cliInstance.print(Cli.toBold("You Win!"));
-            cliInstance.newLine();
-            cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
-            cliInstance.print("Do you want to play another match?");
-        } */
-
         cliInstance.newLine();
         cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
         cliInstance.print("Do you want to play another match?");
