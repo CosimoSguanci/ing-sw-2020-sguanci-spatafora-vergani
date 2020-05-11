@@ -45,7 +45,7 @@ public class Poseidon extends GodStrategy {
         unmovedWorker = worker.player.getWorkerFirst().equals(selectedWorker) ?
                 worker.player.getWorkerSecond() : worker.player.getWorkerFirst();
 
-        if (!worker.equals(unmovedWorker)) { // TODO check, turn must be ended?
+        if (!worker.equals(unmovedWorker) || !selectedWorker.hasBuilt()) { // also if turn is not ended
             return super.checkBuild(worker, buildCell, buildCellBlockType);
         } else {
             if (worker.getPosition().getLevel() != BlockType.GROUND)

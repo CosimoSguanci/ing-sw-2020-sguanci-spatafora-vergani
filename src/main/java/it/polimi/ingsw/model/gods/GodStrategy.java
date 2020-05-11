@@ -205,7 +205,7 @@ public abstract class GodStrategy {
      * @return true if Worker's position level is 3 and it comes from level 2 (standard Win Condition triggered), false otherwise.
      */
     public boolean checkWinCondition(Worker worker) { // TODO hasMoved()?
-        return worker.getPosition().getLevel() == BlockType.LEVEL_THREE && worker.getPreviousPositionBlockType() == BlockType.LEVEL_TWO; // TODO Win condition, if I go up two levels in a move?
+        return !worker.hasBuilt() && worker.getPosition().getLevel() == BlockType.LEVEL_THREE && worker.getPreviousPositionBlockType() == BlockType.LEVEL_TWO; // TODO Win condition, if I go up two levels in a move?
     }
 
     public boolean canMove(Board board, Player player) {
