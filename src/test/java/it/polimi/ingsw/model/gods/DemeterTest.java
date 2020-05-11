@@ -15,11 +15,11 @@ public class DemeterTest {
     public void demeterCheckMultipleBuildTest()  {
 
 
-        Match.clearInstances();
+
 
         Demeter demeter = new Demeter();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(),  new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
@@ -41,11 +41,11 @@ public class DemeterTest {
     public void demeterCheckMultipleBuildSameSpaceTest()  {
 
 
-        Match.clearInstances();
+
 
         Demeter demeter = new Demeter();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(),  new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
@@ -64,11 +64,11 @@ public class DemeterTest {
     @Test
     public void demeterEndTurnTest() {
 
-        Match.clearInstances();
+
 
         Demeter demeter = new Demeter();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(),  new Model(match), match);
         Worker worker = player.getWorkerFirst();
 

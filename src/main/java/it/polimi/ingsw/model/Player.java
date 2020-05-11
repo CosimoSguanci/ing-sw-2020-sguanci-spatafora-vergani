@@ -14,13 +14,13 @@ import it.polimi.ingsw.model.gods.GodStrategy;
  */
 public class Player {
     public final String ID;
+    public final transient Match match;
+    public final transient Model model;
     private String nickname;
     private PrintableColor color;
     private transient Worker workerFirst; // circular dependency
     private transient Worker workerSecond;
     private transient boolean isGodChooser;
-    public final transient Match match;
-    public final transient Model model;
     private transient GodStrategy godStrategy;
 
     /**
@@ -82,6 +82,14 @@ public class Player {
         return this.workerSecond;
     }
 
+    /**
+     * This getter method returns a reference to the GodStrategy the player has chosen.
+     *
+     * @return the GodStrategy associated to the player, it returns null if the God has not been set yet
+     */
+    public GodStrategy getGodStrategy() {
+        return this.godStrategy;
+    }
 
     /**
      * This setter method allows players to set the GodStrategy associated to them.
@@ -92,20 +100,11 @@ public class Player {
         this.godStrategy = godStrategy;
     }
 
-    /**
-     * This getter method returns a reference to the GodStrategy the player has chosen.
-     *
-     * @return the GodStrategy associated to the player, it returns null if the God has not been set yet
-     */
-    public GodStrategy getGodStrategy() {
-        return this.godStrategy;
+    public String getNickname() {
+        return this.nickname;
     }
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    public String getNickname() {
-        return this.nickname;
     }
 }

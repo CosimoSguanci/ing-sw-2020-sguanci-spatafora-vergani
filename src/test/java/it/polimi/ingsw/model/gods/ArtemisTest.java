@@ -14,11 +14,11 @@ public class ArtemisTest {
     public void artemisCheckMultipleMoveTest() {
 
 
-        Match.clearInstances();
+
 
         Artemis artemis = new Artemis();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
         Worker otherWorker = player.getWorkerSecond();
@@ -41,11 +41,11 @@ public class ArtemisTest {
     public void artemisCheckMultipleMoveInitialPositionTest() {
 
 
-        Match.clearInstances();
+
 
         Artemis artemis = new Artemis();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
@@ -62,11 +62,11 @@ public class ArtemisTest {
     @Test
     public void artemisEndTurnTest() {
 
-        Match.clearInstances();
+
 
         Artemis artemis = new Artemis();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 

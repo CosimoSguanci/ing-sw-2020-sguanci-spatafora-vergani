@@ -44,7 +44,6 @@ public class Prometheus extends GodStrategy {
             return worker.getPosition().isAdjacentTo(buildCell) && (buildCell.getLevel() != BlockType.DOME) && (buildCell.isEmpty());
         }
 
-
         return builtBeforeMoving
                 ? multipleBuildDelegate.checkBuild(worker, buildCell, selectedWorker)
                 : super.checkBuild(worker, buildCell, buildCellBlockType);
@@ -69,6 +68,15 @@ public class Prometheus extends GodStrategy {
                     && moveCell.getLevel().getLevelNumber() <= worker.getPosition().getLevel().getLevelNumber();
     }
 
+    @Override
+    public void executeMove(Worker worker, Cell moveCell) {
+        worker.move(moveCell);
+
+        if(!builtBeforeMoving) { // not setting selectedWorker if builtBeforeMoving (it is set in executeBuild otherwise)
+            this.selectedWorker = worker;
+        }
+    }
+
     /**
      * Decorates the standard executeBuild increasing the build count of {@link MultipleBuildDelegate}
      * and setting to true the flag that indicates if Prometheus power was activated, if the worker hasn't
@@ -84,19 +92,19 @@ public class Prometheus extends GodStrategy {
 
         if (!worker.hasMoved()) {
             builtBeforeMoving = true;
+
+            this.selectedWorker = worker;
         }
 
         multipleBuildDelegate.increaseBuildCount();
 
-        if (builtBeforeMoving && !this.canMove(worker.board, worker.player)) //-> perso
-        {
+        if (builtBeforeMoving && !worker.canMove()) {
             worker.player.model.onPlayerLose(worker.player); // or Player.lose etc
         }
     }
 
     @Override
     public boolean checkEndTurn() {
-        //if(!builtBeforeMoving)
 
         if (!builtBeforeMoving)
             return super.checkEndTurn();

@@ -18,7 +18,7 @@ public class PlayerTest {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player instanceTest = new Player("Roberto", new Model(match), match);
         PrintableColor colorTest = PrintableColor.GREEN;
         instanceTest.setColor(colorTest);
@@ -32,7 +32,7 @@ public class PlayerTest {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player instanceTest = new Player("Roberto", new Model(match), match);
         instanceTest.setAsGodChooser();
         assertTrue(instanceTest.isGodChooser());
@@ -45,7 +45,7 @@ public class PlayerTest {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Board board = match.getMatchBoard();
         Player instancePlayerTest = new Player("Roberto", new Model(match), match);
         Worker instanceWorkerTest = instancePlayerTest.getWorkerFirst();
@@ -60,7 +60,7 @@ public class PlayerTest {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Board board = match.getMatchBoard();
         Player instancePlayerTest = new Player("Roberto", new Model(match), match);
         Worker instanceWorkerTest = instancePlayerTest.getWorkerSecond();
@@ -75,7 +75,7 @@ public class PlayerTest {
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player instancePlayerTest = new Player("Roberto", new Model(match), match);
 
         GodStrategy instanceGodTest = new Apollo();

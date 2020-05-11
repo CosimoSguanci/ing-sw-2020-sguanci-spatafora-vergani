@@ -67,7 +67,6 @@ public class Cell {
      *
      * @return level of the cell
      */
-    //tested
     public BlockType getLevel() {
         return this.level;
     }
@@ -82,7 +81,6 @@ public class Cell {
      * @throws Exception when someone is trying to increase the level of the cell, but the
      * actual level is the highest one: a dome
      */
-    //tested
     public void increaseLevel() throws CannotIncreaseLevelException {
 
         switch(this.level) {
@@ -170,7 +168,6 @@ public class Cell {
     }
 
 
-
     /**
      * The method controls if the caller-cell is adjacent to the parameter-cell in
      * the board. Reading game rules, every cell has (up to) eight neighbouring
@@ -181,12 +178,9 @@ public class Cell {
      *
      */
     public boolean isAdjacentTo(Cell other) {
-        int iDiff = this.getRowIdentifier()-other.getRowIdentifier();  //iDiff contains difference between i values of (i,j) coordinates for the two cells
-        int jDiff = this.getColIdentifier()-other.getColIdentifier();  //jDiff contains difference between j values of (i,j) coordinates for the two cells
-        //case adjacent cells: absolute value of difference between cells' coordinates is <=1, so a cell "surrounds" the other one
-        //in other cases, cells are not adjacent
-        if(iDiff == 0 && jDiff == 0) return false;  //case 'first' and 'second' are the same cell, so they are not adjacent
+        int iDiff = this.getRowIdentifier()-other.getRowIdentifier();
+        int jDiff = this.getColIdentifier()-other.getColIdentifier();
+        if(iDiff == 0 && jDiff == 0) return false;
         else return (Math.abs(iDiff) <= 1 && Math.abs(jDiff) <= 1);
     }
-
 }

@@ -14,11 +14,11 @@ public class ErosTest {
     public void erosWinConditionThreePlayersTest()  {
 
 
-        Match.clearInstances();
+
 
         Eros eros = new Eros();
 
-        Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 3);
+        Match match = new Match(3);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker workerFirst = player.getWorkerFirst();
         Worker workerSecond = player.getWorkerSecond();
@@ -38,11 +38,11 @@ public class ErosTest {
     public void erosWinConditionTwoPlayersTest()  {
 
 
-        Match.clearInstances();
+
 
         Eros eros = new Eros();
 
-        Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker workerFirst = player.getWorkerFirst();
         Worker workerSecond = player.getWorkerSecond();
@@ -65,11 +65,11 @@ public class ErosTest {
     @Test
     public void erosCheckGamePreparationTest() {
 
-        Match.clearInstances();
+
 
         Eros eros = new Eros();
 
-        Match match = Match.getInstance(String.valueOf(Thread.currentThread().getId()), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker workerFirst = player.getWorkerFirst();
         Worker workerSecond = player.getWorkerFirst();
@@ -84,11 +84,11 @@ public class ErosTest {
     @Test
     public void erosEndTurnTest() {
 
-        Match.clearInstances();
+
 
         Eros eros = new Eros();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
         Worker otherWorker = player.getWorkerSecond();

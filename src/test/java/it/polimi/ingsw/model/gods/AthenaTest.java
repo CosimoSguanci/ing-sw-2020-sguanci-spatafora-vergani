@@ -14,11 +14,11 @@ public class AthenaTest {
     public void athenaCheckMoveConstraintsTest()  {
 
 
-        Match.clearInstances();
+
 
         Athena athena = new Athena();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
         Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
@@ -42,11 +42,11 @@ public class AthenaTest {
     @Test
     public void athenaEndTurnTest() {
 
-        Match.clearInstances();
+
 
         Athena athena = new Athena();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 

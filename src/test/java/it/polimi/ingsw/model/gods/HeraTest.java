@@ -14,11 +14,11 @@ public class HeraTest {
     public void heraWinConstraintsTest()  {
 
 
-        Match.clearInstances();
+
 
         Hera hera = new Hera();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker opponentWorker = player.getWorkerFirst();
 

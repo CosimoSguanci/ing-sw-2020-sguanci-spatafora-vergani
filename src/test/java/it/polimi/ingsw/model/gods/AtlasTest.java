@@ -13,11 +13,11 @@ public class AtlasTest {
     public void atlasBuildDomeAnywhereTest()  {
 
 
-        Match.clearInstances();
+
 
         Atlas atlas = new Atlas();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
@@ -32,11 +32,11 @@ public class AtlasTest {
     public void atlasStandardBuild()  {
 
 
-        Match.clearInstances();
+
 
         Atlas atlas = new Atlas();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 

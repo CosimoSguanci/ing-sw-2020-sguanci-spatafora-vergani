@@ -15,12 +15,8 @@ public class BoardTest {
     @Test
     public void canMoveTrueTest()  {
 
-
-        Match.clearInstances();
-
         int playersNum = 2;
-        String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Board board = match.getMatchBoard();
 
         Player player = new Player("Andrea", new Model(match), match);
@@ -60,14 +56,9 @@ public class BoardTest {
 
     @Test
     public void canMoveFalseTest()  {
-
-
-        Match.clearInstances();
-
         int playersNum = 2;
-        String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
-        Board board =   match.getMatchBoard();
+        Match match = new Match(playersNum);
+        Board board =  match.getMatchBoard();
         Player player = new Player("Andrea", new Model(match), match);
         Worker w1 = player.getWorkerFirst();
         Worker w2 = player.getWorkerSecond();
@@ -105,12 +96,8 @@ public class BoardTest {
     @Test
     public void canBuildTrueTest()  {
 
-
-        Match.clearInstances();
-
         int playersNum = 2;
-        String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match = new Match(playersNum);
         Board board = match.getMatchBoard();
         Player player = new Player("Andrea", new Model(match), match);
         Worker w1 = player.getWorkerFirst();
@@ -153,11 +140,11 @@ public class BoardTest {
     public void canBuildFalseTest()  {
 
 
-        Match.clearInstances();
+
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Board board = match.getMatchBoard();
         Player player = new Player("Andrea", new Model(match), match);
         Worker w1 = player.getWorkerFirst();

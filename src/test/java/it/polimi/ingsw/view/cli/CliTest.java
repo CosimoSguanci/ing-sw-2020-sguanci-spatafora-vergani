@@ -21,12 +21,12 @@ class CliTest {
     @Disabled
     @Test
     void startTest() {
-        Match.clearInstances();
+
 
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p = new Player("Andrea",  new Model(match), match);
         match.addPlayer(p);
         Client client = null;

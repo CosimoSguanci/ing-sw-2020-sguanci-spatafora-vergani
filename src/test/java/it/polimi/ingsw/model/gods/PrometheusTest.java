@@ -14,11 +14,11 @@ public class PrometheusTest {
     public void prometheusBuildThenMoveTest()  {
 
 
-        Match.clearInstances();
+
 
         Prometheus prometheus = new Prometheus();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
@@ -35,11 +35,11 @@ public class PrometheusTest {
     public void prometheusCannotMoveUpIfBuiltBeforeMovingTest()  {
 
 
-        Match.clearInstances();
+
 
         Prometheus prometheus = new Prometheus();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
@@ -56,11 +56,11 @@ public class PrometheusTest {
     public void prometheusCannotMultipleBuildIfMoveBeforeBuildTest()  {
 
 
-        Match.clearInstances();
+
 
         Prometheus prometheus = new Prometheus();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
@@ -79,11 +79,11 @@ public class PrometheusTest {
     @Test
     public void prometheusEndTurnTest() {
 
-        Match.clearInstances();
+
 
         Prometheus prometheus = new Prometheus();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 

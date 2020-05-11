@@ -13,11 +13,11 @@ public class PoseidonTest {
     public void poseidonCheckBuildGroundTest()  { // Unmoved worker is on ground at the end of the turn
 
 
-        Match.clearInstances();
+
 
         Poseidon poseidon = new Poseidon();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker movedWorker = player.getWorkerFirst();
         Worker unmovedWorker = player.getWorkerSecond();
@@ -45,11 +45,11 @@ public class PoseidonTest {
     public void poseidonCheckBuildNotGroundTest()  { // Unmoved worker is NOT on ground at the end of the turn
 
 
-        Match.clearInstances();
+
 
         Poseidon poseidon = new Poseidon();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker movedWorker = player.getWorkerFirst();
         Worker unmovedWorker = player.getWorkerSecond();
@@ -70,11 +70,11 @@ public class PoseidonTest {
     @Test
     public void poseidonEndTurnTest() {
 
-        Match.clearInstances();
+
 
         Poseidon poseidon = new Poseidon();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
         Worker unmovedWorker = player.getWorkerSecond();

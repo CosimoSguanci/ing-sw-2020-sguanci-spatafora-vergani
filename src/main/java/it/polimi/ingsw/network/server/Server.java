@@ -50,7 +50,7 @@ public class Server implements Observer<Model> {
 
             try {
 
-                Match match = Match.getInstance(UUID.randomUUID().toString(), playersNum);
+                Match match = new Match(playersNum);
                 Model model = new Model(match);
                 Controller controller = new Controller(model);
 

@@ -14,11 +14,11 @@ public class ApolloTest {
     public void apolloCheckMoveTest()  {
 
          // TODO Use @BeforeEach
-        Match.clearInstances();
+
 
         Apollo apollo = new Apollo();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
         Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
@@ -35,11 +35,11 @@ public class ApolloTest {
     public void apolloExecuteMoveTest()  {
 
 
-        Match.clearInstances();
+
 
         Apollo apollo = new Apollo();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
         Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);

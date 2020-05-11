@@ -4,9 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.exceptions.InvalidCellException;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 
 /**
  * Board is the class that keeps information about the "Island Board" (mentioned in game
@@ -19,23 +16,7 @@ import java.util.concurrent.ConcurrentMap;
 public class Board {
     public final static int WIDTH_SIZE = 5;
     public final static int HEIGHT_SIZE = 5;
-   // private static final ConcurrentMap<String, Board> boardInstances = new ConcurrentHashMap<>();
     private Cell[][] board;
-  //  private final String id;
-
-    /**
-     * Implements Multiton Pattern: one instance for each thread representing a match that's being played.
-     *
-     * @param key Thread id
-     * @return a new instance of Board if the key was not already contained in boardInstances, otherwise the previous created instance.
-     */
-    /*public static Board getInstance(final String key) {
-        return boardInstances.computeIfAbsent(key, Board::new);
-    }
-
-    public static void clearInstances() {
-        boardInstances.clear();
-    } */
 
     /**
      * The constructor creates the game board: in Santorini, it is a 5x5 space where
@@ -43,9 +24,7 @@ public class Board {
      * constructor, so the whole board will be at ground level and without workers before
      * starting the match
      */
-     Board() {
-        //this.id = id;
-
+    Board() {
         board = new Cell[WIDTH_SIZE][HEIGHT_SIZE];
         //initialization of a "empty" board at ground level (every cell with these starting configurations)
         for (int i = 0; i < board.length; i++) {
@@ -53,7 +32,6 @@ public class Board {
                 board[i][j] = new Cell(i, j);
             }  //initialization of every cell in the board
         }
-
     }
 
 
@@ -67,28 +45,14 @@ public class Board {
      * @param cell is the starting cell, from which possible movements must be considered
      * @return true if a movement in any direction from parameter-cell is possible; otherwise, false
      */
-    private boolean movementPossibleFromCell(Cell cell) {
-
-        /*int row = cell.getRowIdentifier();  //i value for (i,j) coordinates of parameter
-        int column = cell.getColIdentifier();  //j value for (i,j) coordinates of parameter
-        for (int i = Math.max(row - 1, 0); i <= Math.min(row + 1, board.length - 1); i++) {
-            for (int j = Math.max(column - 1, 0); j <= Math.min(column + 1, board[i].length - 1); j++) {
-               // if (i != row && j != column) {  //explore all adjacent cells
-                    if (cell.isLevelDifferenceOk(board[i][j]) && board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()) {
-                        return true;  //movement is possible if an adjacent cell is at lower, same or (+1) level, it is empty and not a dome
-                    }
-               // }
-            }
-        }*/
-
+    public boolean movementPossibleFromCell(Cell cell) {
         for (int i = 0; i < Board.WIDTH_SIZE; i++) {
-            for(int j = 0; j < Board.HEIGHT_SIZE; j++) {
-                if (cell.isLevelDifferenceOk(board[i][j]) && board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()) {
+            for (int j = 0; j < Board.HEIGHT_SIZE; j++) {
+                if (cell.isAdjacentTo(board[i][j]) && cell.isLevelDifferenceOk(board[i][j]) && board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()) {
                     return true;
                 }
             }
         }
-
 
         return false;
     }
@@ -119,22 +83,9 @@ public class Board {
      * @return true if a building in any direction by parameter-worker is possible; otherwise, false
      */
     public boolean canBuild(Worker worker) {
-
-        /*int row = worker.getPosition().getRowIdentifier();  //i value for (i,j) coordinates of worker's cell
-        int column = worker.getPosition().getColIdentifier();  //j value for (i,j) coordinates of worker's cell*/
-
-        /*for (int i = Math.max(row - 1, 0); i <= Math.min(row + 1, board.length - 1); i++) {
-            for (int j = Math.max(column - 1, 0); j <= Math.min(column + 1, board[i].length - 1); j++) {
-                    if (board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()) {
-                        return true;  //building is possible if an adjacent cell is not a dome and it is empty (there is no worker on it)
-                    }
-            }
-        }*/
-
-
         for (int i = 0; i < Board.WIDTH_SIZE; i++) {
-            for(int j = 0; j < Board.HEIGHT_SIZE; j++) {
-                if(board[i][j].isAdjacentTo(worker.getPosition()) && board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()) {
+            for (int j = 0; j < Board.HEIGHT_SIZE; j++) {
+                if (board[i][j].isAdjacentTo(worker.getPosition()) && board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()) {
                     return true;
                 }
             }

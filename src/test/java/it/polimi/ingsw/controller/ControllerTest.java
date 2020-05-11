@@ -27,11 +27,11 @@ public class ControllerTest {
     public void updatePlayerCommandNormalTest() {
 
 
-        Match.clearInstances();
+
 
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -77,18 +77,18 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(2,3), w1A.getPosition());
 
 
-        Match.clearInstances();
+
     }
 
 
     @Test
     public void updatePlayerCommandGodPowerTest() {
 
-        Match.clearInstances();
+
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         match.addPlayer(p1);
@@ -164,18 +164,18 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
 
-        Match.clearInstances();
+
     }
 
 
     @Test
     public void updatePlayerCommandImpossibleMoveAndBuildTest() {
 
-        Match.clearInstances();
+
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         match.addPlayer(p1);
@@ -252,18 +252,18 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
 
 
-        Match.clearInstances();
+
     }
 
 
     @Test
     public void updatePlayerCommandCompleteTest() {
 
-        Match.clearInstances();
+
 
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo",  new Model(match), match);
         Player p3 = new Player("Roberto",  new Model(match), match);
@@ -359,11 +359,11 @@ public class ControllerTest {
     public void updateGodChoiceCommandNormalTest() throws NoSuchFieldException, IllegalAccessException {
 
 
-        Match.clearInstances();
+
 
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea",  new Model(match), match);
         Player p2 = new Player("Cosimo",  new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -416,7 +416,7 @@ public class ControllerTest {
         assertEquals(1, athena);
 
 
-        Match.clearInstances();
+
     }
 
 
@@ -424,11 +424,11 @@ public class ControllerTest {
     public void updateGodChoiceCommand2PlayersTest() throws NoSuchFieldException, IllegalAccessException {
 
 
-        Match.clearInstances();
+
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Marco", new Model(match), match);
         match.addPlayer(p1);
@@ -476,11 +476,11 @@ public class ControllerTest {
     public void updateInitialInfoCommandTest() {
 
 
-        Match.clearInstances();
+
 
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -535,11 +535,11 @@ public class ControllerTest {
     public void updateInitialInfoCommandNicknameAlreadyTakenExceptionTest() {
 
 
-        Match.clearInstances();
+
 
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -590,11 +590,11 @@ public class ControllerTest {
     public void updateInitialInfoCommandInvalidColorExceptionTest() {
 
 
-        Match.clearInstances();
+
 
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -635,11 +635,11 @@ public class ControllerTest {
     public void updateInitialInfoCommand2PlayerTest() {
 
 
-        Match.clearInstances();
+
 
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Marco", new Model(match), match);
         match.addPlayer(p1);
@@ -681,11 +681,11 @@ public class ControllerTest {
     public void updateGamePreparationCommandTest() {
 
 
-        Match.clearInstances();
+
 
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -745,11 +745,11 @@ public class ControllerTest {
     public void updateGamePreparationCommand2PlayerTest() {
 
 
-        Match.clearInstances();
+
 
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         match.addPlayer(p1);
@@ -792,11 +792,11 @@ public class ControllerTest {
     public void updateGamePreparationCommandSameCellTest() {
 
 
-        Match.clearInstances();
+
 
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -854,11 +854,11 @@ public class ControllerTest {
     public void updateGamePreparationCommandGodPowerTest() {
 
 
-        Match.clearInstances();
+
 
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);

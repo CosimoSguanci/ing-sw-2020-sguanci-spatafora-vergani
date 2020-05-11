@@ -12,11 +12,11 @@ public class MinotaurTest {
     @Test
     public void minotaurCheckMoveTest() {
 
-        Match.clearInstances();
+
 
         Minotaur minotaur = new Minotaur();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
         Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
@@ -32,17 +32,17 @@ public class MinotaurTest {
         assertFalse(minotaur.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
 
 
-        Match.clearInstances();
+
     }
 
     @Test
     public void minotaurExecuteMoveTest() {
 
-        Match.clearInstances();
+
 
         Minotaur minotaur = new Minotaur();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
         Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);

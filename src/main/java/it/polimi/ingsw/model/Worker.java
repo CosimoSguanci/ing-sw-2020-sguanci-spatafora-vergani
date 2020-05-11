@@ -170,4 +170,12 @@ public class Worker {
         this.hasBuilt = false;
     }
 
+    public boolean canMove() {
+        return this.board.movementPossibleFromCell(this.position);
+    }
+
+   /* public boolean canBuild() {
+
+    } */
+
 }

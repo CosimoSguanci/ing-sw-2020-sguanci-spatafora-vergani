@@ -15,11 +15,11 @@ public class HestiaTest {
     public void hestiaCheckMultipleBuildTest()  {
 
 
-        Match.clearInstances();
+
 
         Hestia hestia = new Hestia();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(),  new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
@@ -41,11 +41,11 @@ public class HestiaTest {
     public void demeterCheckMultipleBuildPerimeterSpaceTest()  {
 
 
-        Match.clearInstances();
+
 
         Hestia hestia = new Hestia();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(),  new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
@@ -64,11 +64,11 @@ public class HestiaTest {
     @Test
     public void hestiaEndTurnTest() {
 
-        Match.clearInstances();
+
 
         Hestia hestia = new Hestia();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 

@@ -14,11 +14,11 @@ public class ZeusTest {
     public void zeusCheckBuildTest() { // Zeus Worker can build under itself
 
 
-        Match.clearInstances();
+
 
         Zeus zeus = new Zeus();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 

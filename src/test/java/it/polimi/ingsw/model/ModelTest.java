@@ -17,7 +17,7 @@ public class ModelTest {
     public void getCurrentPlayerTest()  {
         int playersNum = 2;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match = new Match(playersNum);
         Model model = new Model(match);
         Player p1 = new Player("Marco",  model, match);
         Player p2 = new Player("Alessandro", model,  match);
@@ -40,12 +40,11 @@ public class ModelTest {
 
     @Test
     public void getBoardTest() {
-        Match.clearInstances();
+
 
 
         int playersNum = 3;
-        String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Board board = match.getMatchBoard();
         Model model = new Model(match);
 
@@ -68,7 +67,7 @@ public class ModelTest {
     public void endTurnTest()  {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Model model = new Model(match);
         Player p1 = new Player("Roberto",  model, match);
         Player p2 = new Player("Cosimo",  model, match);
@@ -96,7 +95,7 @@ public class ModelTest {
     public void getPlayersTest() {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Model model = new Model(match);
 
         Player p1 = new Player("Andrea",  model, match);

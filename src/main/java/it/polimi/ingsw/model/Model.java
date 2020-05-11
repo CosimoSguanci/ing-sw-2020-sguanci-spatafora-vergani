@@ -20,8 +20,7 @@ public class Model extends Observable<Update> {
     /**
      * The method returns current player of the match.
      *
-     * @return   current player
-     *
+     * @return current player
      */
     public Player getCurrentPlayer() {
         return this.match.getCurrentPlayer();
@@ -41,16 +40,10 @@ public class Model extends Observable<Update> {
 
     /**
      * The method calls for the end of turn of current player.
-     *
      */
     public void endTurn() {
         match.nextTurn();
         turnUpdate(match.getCurrentPlayer());
-    }
-
-
-    public boolean isInitialTurn() {
-        return match.isInitialTurn();
     }
 
     public void setInitialTurn(int initialTurn) {

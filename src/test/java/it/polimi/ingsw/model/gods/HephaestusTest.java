@@ -13,11 +13,11 @@ public class HephaestusTest {
     public void hephaestusCheckMultipleBuildTest()  {
 
 
-        Match.clearInstances();
+
 
         Hephaestus hephaestus = new Hephaestus();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
@@ -41,11 +41,11 @@ public class HephaestusTest {
     public void hephaestusCheckMultipleBuildAnotherCellTest()  { // check multiple build on different positions, should always fail
 
 
-        Match.clearInstances();
+
 
         Hephaestus hephaestus = new Hephaestus();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
@@ -65,11 +65,11 @@ public class HephaestusTest {
     public void hephaestusCheckMultipleBuildDomeTest()  { // check multiple build on same position but with a dome, should fail
 
 
-        Match.clearInstances();
+
 
         Hephaestus hephaestus = new Hephaestus();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
@@ -90,11 +90,11 @@ public class HephaestusTest {
     @Test
     public void hephaestusEndTurnTest() { // TODO Add tests to check previousCell was reset?
 
-        Match.clearInstances();
+
 
         Hephaestus hephaestus = new Hephaestus();
 
-        Match match = Match.getInstance(UUID.randomUUID().toString(), 2);
+        Match match = new Match(2);
         Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 

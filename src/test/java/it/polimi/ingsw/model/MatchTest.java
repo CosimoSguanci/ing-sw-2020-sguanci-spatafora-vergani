@@ -17,7 +17,7 @@ public class MatchTest {
     public void addPlayerTest2() {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea",  new Model(match), match);
         Player p2 = new Player("Cosimo",  new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -32,7 +32,7 @@ public class MatchTest {
     public void addPlayerTest1() {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea",  new Model(match), match);
         Player p2 = new Player("Cosimo",  new Model(match), match);
         Player p3 = new Player("ValerioAndoni",  new Model(match), match);
@@ -45,7 +45,7 @@ public class MatchTest {
     public void removePlayerTest() {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -91,7 +91,7 @@ public class MatchTest {
     public void nextTurnTest()  {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo",  new Model(match), match);
         Player p3 = new Player("Roberto",  new Model(match), match);
@@ -124,7 +124,7 @@ public class MatchTest {
     public void getCurrentPlayerTest()  {
         int playersNum = 3;
         String key = UUID.randomUUID().toString();
-        Match match = Match.getInstance(key, playersNum);
+        Match match =new Match(playersNum);
         Player p1 = new Player("Marco", new Model(match), match);
         Player p2 = new Player("Alessandro", new Model(match), match);
         try{
