@@ -413,7 +413,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         return true;
     }
 
-    private boolean checkCanMoveOtherGodsConstraints(Player player) {
+    private boolean checkCanMoveOtherGodsConstraints(Player player) { // todo necessary or reuse checkAllMoveConstraints
         List<Cell> availableMoveCellsWorkerFirst = model.getBoard().getAvailableMoveCells(player.getWorkerFirst());
         List<Cell> availableMoveCellsWorkerSecond = model.getBoard().getAvailableMoveCells(player.getWorkerSecond());
 
