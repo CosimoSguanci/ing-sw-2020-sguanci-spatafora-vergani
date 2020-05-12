@@ -16,10 +16,8 @@ public class Hestia extends GodStrategy {
     public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build one additional time, but this cannot be on a perimeter space.";
 
     final int HESTIA_MAX_BUILD_NUM = 2;
-    private MultipleBuildDelegate multipleBuildDelegate;
-
-
-
+    private final MultipleBuildDelegate multipleBuildDelegate;
+    
     public Hestia() {
         super(NAME, DESCRIPTION, POWER_DESCRIPTION);
         multipleBuildDelegate = new MultipleBuildDelegate(HESTIA_MAX_BUILD_NUM);

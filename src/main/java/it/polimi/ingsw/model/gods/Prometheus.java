@@ -103,7 +103,7 @@ public class Prometheus extends GodStrategy {
 
         multipleBuildDelegate.increaseBuildCount();
 
-        if (builtBeforeMoving ) {
+        if (builtBeforeMoving && multipleBuildDelegate.getBuildCount() == 1) {
 
             if(!worker.canMove()) worker.player.model.onPlayerLose(worker.player); // or: if availableCells.size() == 0
 
