@@ -36,21 +36,7 @@ public class CellTest {
         assertEquals(BlockType.LEVEL_THREE, cell.getLevel());
         cell.increaseLevel();
         assertEquals(BlockType.DOME, cell.getLevel());
-    }
-
-    @Disabled  //because we haven't decided what to do in "dome case" (exception or not) yet
-    @Test
-    public void increaseLevelDomeTest() /**/ {
-        Cell cell = new Cell(2,1);
-        cell.increaseLevel();
-        assertEquals(BlockType.LEVEL_ONE, cell.getLevel());
-        cell.increaseLevel();
-        assertEquals(BlockType.LEVEL_TWO, cell.getLevel());
-        cell.increaseLevel();
-        assertEquals(BlockType.LEVEL_THREE, cell.getLevel());
-        cell.increaseLevel();
-        assertEquals(BlockType.DOME, cell.getLevel());
-        assertThrows(CannotIncreaseLevelException.class, cell::increaseLevel); //TODO FIX
+        assertThrows(CannotIncreaseLevelException.class, cell::increaseLevel);
     }
 
     @Test
