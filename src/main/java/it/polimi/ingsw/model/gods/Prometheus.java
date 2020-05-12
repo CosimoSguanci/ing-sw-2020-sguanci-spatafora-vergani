@@ -98,7 +98,7 @@ public class Prometheus extends GodStrategy {
 
         multipleBuildDelegate.increaseBuildCount();
 
-        if (builtBeforeMoving && !worker.canMove()) {
+        if (builtBeforeMoving && !worker.canMove()) { // todo move constraints here ? Si, perchè se prima della build ha un posto libero in GROUND, poi ci costruisce il LEVEL ONE e magari c'è Athena che non permettte di andarci -> perso
             worker.player.model.onPlayerLose(worker.player); // or Player.lose etc
         }
     }
