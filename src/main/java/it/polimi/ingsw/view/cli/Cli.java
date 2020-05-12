@@ -16,8 +16,13 @@ import it.polimi.ingsw.view.Manual;
 import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,7 +43,6 @@ public class Cli extends View implements Observer<Update> {
 
     // TODO Put currentGamePhase in common superclass with GUI
 
-
     private GamePhase currentGamePhase;
     private final String currentPhaseString = "current_phase";
 
@@ -54,6 +58,8 @@ public class Cli extends View implements Observer<Update> {
     private final UpdateHandler cliUpdateHandler;
 
     final Controller controller; /// WIP
+
+    private boolean soundPlayed = false;
 
     /**
      * Cli is the builder of the class. At the moment of the Cli creation
@@ -99,7 +105,7 @@ public class Cli extends View implements Observer<Update> {
 
         stdin = new Scanner(System.in);
         stdout = System.out;
-
+        
         try {
 
             do {
@@ -732,10 +738,25 @@ public class Cli extends View implements Observer<Update> {
     void printCurrentTurn() {
         String currentPlayerNickname = controller.getCurrentPlayerNickname();
         if(currentPlayerNickname != null && playerWithColor(currentPlayerNickname) != null) {
+
             if (!controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {  //not player's turn
+                soundPlayed = false;
                 print("It's " + playerWithColor(currentPlayerNickname) + "'s turn!");
             } else {  //client's turn
                 print("It's" + convertColorToAnsi(playersColors.get(currentPlayerNickname)) + " your " + PrintableColor.RESET + "turn!");
+
+                if(!soundPlayed) {
+                    try {
+                        URL defaultSound = getClass().getResource("/turn.wav");
+                        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(defaultSound);
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(audioInputStream);
+                        clip.start( );
+
+                        soundPlayed = true;
+                    } catch (Exception ignored) {}
+                }
+
             }
             newLine();
         }
