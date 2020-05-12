@@ -71,6 +71,7 @@ class GamePreparationCommandTest {
         assertThrows(BadCommandException.class, ()->GamePreparationCommand.parseInput("place w1 a5 w2 c6"));
         assertThrows(BadCommandException.class, ()->GamePreparationCommand.parseInput("place w1 f3 w2 e3"));
         assertThrows(BadCommandException.class, ()->GamePreparationCommand.parseInput("pLAce w1 d0 w2 e3"));
+        assertThrows(BadCommandException.class, ()->GamePreparationCommand.parseInput("select w1 a1 w2 a2"));
         assertThrows(BadCommandException.class, ()->GamePreparationCommand.parseInput("plate w1 a1 W2 e3"));
         assertThrows(BadCommandException.class, ()->GamePreparationCommand.parseInput(" place  w a3 w2   e5"));
         assertThrows(BadCommandException.class, ()->GamePreparationCommand.parseInput("select hera prometheus"));
