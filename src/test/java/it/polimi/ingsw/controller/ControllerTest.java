@@ -850,6 +850,10 @@ public class ControllerTest {
         GamePreparationCommand gamePreparationCommand = new GamePreparationCommand(1,3, 3, 4);
         gamePreparationCommand.setPlayer(model.getCurrentPlayer());
         model.getCurrentPlayer().setGodStrategy(eros);
+
+        p2.setGodStrategy(new Apollo());
+        p3.setGodStrategy(new Atlas());
+
         controller.update(gamePreparationCommand);
         for(Player player : players) {
             assertEquals(null, player.getWorkerFirst().getPosition());

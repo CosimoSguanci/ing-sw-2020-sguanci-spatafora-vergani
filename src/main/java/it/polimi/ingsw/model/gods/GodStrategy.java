@@ -99,7 +99,7 @@ public abstract class GodStrategy {
         return selectedWorker != null && selectedWorker.hasMoved() && selectedWorker.hasBuilt();
     }
 
-    public boolean checkEndTurnConstraints() {
+    public boolean checkEndTurnConstraints(Player player) {
         return true;
     }
 
