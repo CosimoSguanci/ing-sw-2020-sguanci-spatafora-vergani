@@ -277,7 +277,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                         model.getCurrentPlayer().getGodStrategy().onTurnStarted(model.getCurrentPlayer()); // onTurnStart
 
-                        //model.boardUpdate();
+                        model.boardUpdate(playerCommand);
 
                         // check if the new currentPlayer can move
                         checkLoseConditionsMove();

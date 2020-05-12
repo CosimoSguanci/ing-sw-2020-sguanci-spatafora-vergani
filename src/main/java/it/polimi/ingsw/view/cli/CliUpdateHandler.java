@@ -68,7 +68,10 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     public void handle(BoardUpdate update) {
-        cliInstance.printBoard(update.board);
+
+        if(update.getExecutedCommand() != null && update.getExecutedCommand().commandType != CommandType.END_TURN) {
+            cliInstance.printBoard(update.board);
+        }
 
         if(update.getExecutedCommand() != null && (update.getExecutedCommand().commandType == CommandType.BUILD || update.getExecutedCommand().commandType == CommandType.MOVE)) {
             PlayerCommand executedCommand = update.getExecutedCommand();
