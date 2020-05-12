@@ -13,8 +13,8 @@ import java.util.UUID;
 
 public class ClientHandler extends Observable<Command> implements Runnable, Observer<Command> {
 
-    private Server server;
-    private Socket clientSocket;
+    private final Server server;
+    private final Socket clientSocket;
     private ObjectOutputStream objectOutputStream;
 
     ClientHandler(Server server, Socket clientSocket) {

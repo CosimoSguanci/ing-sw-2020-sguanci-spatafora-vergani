@@ -11,7 +11,7 @@ import java.util.Map;
 
 // TODO Javadoc Model
 public class Model extends Observable<Update> {
-    private Match match;
+    private final Match match;
 
     public Model(Match match) {
         this.match = match;

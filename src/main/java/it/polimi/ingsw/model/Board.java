@@ -19,7 +19,7 @@ import java.util.List;
 public class Board {
     public final static int WIDTH_SIZE = 5;
     public final static int HEIGHT_SIZE = 5;
-    private Cell[][] board;
+    private final Cell[][] board;
 
     /**
      * The constructor creates the game board: in Santorini, it is a 5x5 space where

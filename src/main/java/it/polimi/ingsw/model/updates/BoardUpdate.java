@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model.updates;
 
-import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.view.UpdateHandler;
 
 public class BoardUpdate extends BroadcastUpdate {

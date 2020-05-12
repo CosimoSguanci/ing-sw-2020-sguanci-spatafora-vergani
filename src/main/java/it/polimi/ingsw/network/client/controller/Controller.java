@@ -2,11 +2,10 @@ package it.polimi.ingsw.network.client.controller;
 
 import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.model.updates.ErrorUpdate;
-import it.polimi.ingsw.model.updates.Update;
-import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.exceptions.WrongPlayerException;
 import it.polimi.ingsw.model.updates.PlayerUpdate;
 import it.polimi.ingsw.model.updates.TurnUpdate;
+import it.polimi.ingsw.model.updates.Update;
+import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 

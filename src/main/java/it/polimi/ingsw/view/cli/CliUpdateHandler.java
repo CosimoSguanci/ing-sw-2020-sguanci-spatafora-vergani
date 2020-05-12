@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.cli;
 import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.controller.commands.CommandType;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.model.utils.GodsUtils;
@@ -35,20 +34,22 @@ public class CliUpdateHandler implements UpdateHandler {
         if (update.isGodChooser) {
             cliInstance.setInitialGodChooser(true);
             cliInstance.print(Cli.toBold("Choose ") + cliInstance.getPlayersNum() + " gods. For a perfect match, choose the ones you like most!    Command " + Cli.toBold("format") + " expected: select [god(1)] ... [god(n)]");
-            cliInstance.print("Available gods are: " + availableGods());
-            cliInstance.print("REMEMBER: if you need info about a god and his/her powers, type 'info [god]'");
             cliInstance.newLine();
+            cliInstance.print("Available gods are: " + availableGods());
+            cliInstance.newLine();
+            cliInstance.print("REMEMBER: if you need info about a god and his/her powers, type 'info [god]'");
         } else {
             cliInstance.setInitialGodChooser(false);
             cliInstance.setSelectableGods(update.selectableGods);
             cliInstance.print(Cli.toBold("Choose ") + "your god.    Command " + Cli.toBold("format") + " expected: select [god]");
             if(listToStringBuilder(update.selectableGods) != null) {
+                cliInstance.newLine();
                 cliInstance.print("Available choices are: " + listToStringBuilder(update.selectableGods));
             }
-            //update.selectableGods.forEach(System.out::println);
-            cliInstance.print("REMEMBER: if you need info about a god, type 'info [god]'");
             cliInstance.newLine();
+            cliInstance.print("REMEMBER: if you need info about a god, type 'info [god]'");
         }
+        cliInstance.newLine();
     }
 
     public void handle(SelectedGodsUpdate update) {
@@ -168,9 +169,11 @@ public class CliUpdateHandler implements UpdateHandler {
        cliInstance.print("Type your " + Cli.toBold("nickname and color") + " separated by a space.    Command " + Cli.toBold("format") + " expected: pick [nickname] [color]");
 
        if(!update.selectedNicknames.isEmpty()) {
+           cliInstance.newLine();
            cliInstance.print("Nicknames already taken are: " + listToStringBuilder(update.selectedNicknames));
-           //update.selectedNicknames.forEach(System.out::println);
        }
+
+       cliInstance.newLine();
 
        cliInstance.setSelectedNicknames(update.selectedNicknames);
        cliInstance.print("Available colors are: ");
@@ -179,7 +182,6 @@ public class CliUpdateHandler implements UpdateHandler {
             cliInstance.print(Cli.convertColorToAnsi(color) + color + PrintableColor.RESET);
         });
 
-       //update.selectableColors.forEach(System.out::println);
 
        cliInstance.setSelectableColors(update.selectableColors);
        cliInstance.newLine();

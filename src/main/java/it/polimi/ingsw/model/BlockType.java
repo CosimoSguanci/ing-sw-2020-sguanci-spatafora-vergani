@@ -13,7 +13,7 @@ package it.polimi.ingsw.model;
  */
 public enum BlockType {
     GROUND(0), LEVEL_ONE(1), LEVEL_TWO(2), LEVEL_THREE(3), DOME(4);
-    private int levelNumber;
+    private final int levelNumber;
 
     /**
      * The constructor simply associates the enumeration with levelNumber

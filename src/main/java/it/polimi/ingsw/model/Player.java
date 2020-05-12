@@ -18,8 +18,8 @@ public class Player {
     public final transient Model model;
     private String nickname;
     private PrintableColor color;
-    private transient Worker workerFirst; // circular dependency
-    private transient Worker workerSecond;
+    private final transient Worker workerFirst; // circular dependency if not transient
+    private final transient Worker workerSecond;
     private transient boolean isGodChooser;
     private transient GodStrategy godStrategy;
 
