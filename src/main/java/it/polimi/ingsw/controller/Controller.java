@@ -8,6 +8,7 @@ import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -371,56 +372,84 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
     private boolean checkCanMoveOtherGodsConstraints(Player player) {
         List<Cell> availableMoveCellsWorkerFirst = model.getBoard().getAvailableMoveCells(player.getWorkerFirst());
-
-        for(Player p : model.getPlayers()) {
-            if(!p.equals(player)) {
-                for(Cell moveCell : availableMoveCellsWorkerFirst) {
-                    if(p.getGodStrategy().checkMoveConstraints(player.getWorkerFirst(), moveCell)) {
-                        return true;
-                    }
-                }
-            }
-        }
-
         List<Cell> availableMoveCellsWorkerSecond = model.getBoard().getAvailableMoveCells(player.getWorkerSecond());
 
-        for(Player p : model.getPlayers()) {
-            if(!p.equals(player)) {
-                for(Cell moveCell : availableMoveCellsWorkerSecond) {
-                    if(p.getGodStrategy().checkMoveConstraints(player.getWorkerSecond(), moveCell)) {
-                        return true;
+
+        for(Cell moveCell : availableMoveCellsWorkerFirst) {
+            boolean feasible = true;
+            for(Player p : model.getPlayers()) {
+                if(!p.equals(player)) {
+                    if(!p.getGodStrategy().checkMoveConstraints(player.getWorkerFirst(), moveCell)) {
+                        feasible = false;
+                        break;
                     }
                 }
             }
+
+            if(feasible) return true;
         }
 
+        // functional solution doesn't work, see why
+    /*    List<Cell> actualCellsAvailable = availableMoveCellsWorkerFirst.stream().filter((moveCell) -> model.getPlayers().stream().filter((p) -> !p.equals(player)).allMatch((p) -> p.getGodStrategy().checkMoveConstraints(player.getWorkerFirst(), moveCell))).collect(Collectors.toList());
+
+        if(actualCellsAvailable.size() == model.getPlayers().size() - 1)
+            return true; */
+
+        for(Cell moveCell : availableMoveCellsWorkerSecond) {
+            boolean feasible = true;
+            for(Player p : model.getPlayers()) {
+                if(!p.equals(player)) {
+                    if(!p.getGodStrategy().checkMoveConstraints(player.getWorkerSecond(), moveCell)) {
+                        feasible = false;
+                        break;
+                    }
+                }
+            }
+
+            if(feasible) return true;
+        }
+
+
         return false;
+
+ /*       List<Cell> actualCellsAvailableW2 = availableMoveCellsWorkerSecond.stream().filter((moveCell) -> model.getPlayers().stream().filter((p) -> !p.equals(player)).allMatch((p) -> p.getGodStrategy().checkMoveConstraints(player.getWorkerSecond(), moveCell))).collect(Collectors.toList());
+
+        return actualCellsAvailableW2.size() == model.getPlayers().size() - 1; */
     }
 
     private boolean checkCanBuildOtherGodsConstraints(Player player) {
         List<Cell> availableBuildCellsWorkerFirst = model.getBoard().getAvailableBuildCells(player.getWorkerFirst());
-
-        for(Player p : model.getPlayers()) {
-            if(!p.equals(player)) {
-                for(Cell buildCell : availableBuildCellsWorkerFirst) {
-                    if(p.getGodStrategy().checkBuildConstraints(player.getWorkerFirst(), buildCell, null)) {
-                        return true;
-                    }
-                }
-            }
-        }
-
         List<Cell> availableBuildCellsWorkerSecond = model.getBoard().getAvailableBuildCells(player.getWorkerSecond());
 
-        for(Player p : model.getPlayers()) {
-            if(!p.equals(player)) {
-                for(Cell buildCell : availableBuildCellsWorkerSecond) {
-                    if(p.getGodStrategy().checkBuildConstraints(player.getWorkerSecond(), buildCell, null)) {
-                        return true;
+
+        for(Cell buildCell : availableBuildCellsWorkerFirst) {
+            boolean feasible = true;
+            for(Player p : model.getPlayers()) {
+                if(!p.equals(player)) {
+                    if(!p.getGodStrategy().checkBuildConstraints(player.getWorkerFirst(), buildCell, null)) {
+                        feasible = false;
+                        break;
                     }
                 }
             }
+
+            if(feasible) return true;
         }
+
+        for(Cell buildCell : availableBuildCellsWorkerSecond) {
+            boolean feasible = true;
+            for(Player p : model.getPlayers()) {
+                if(!p.equals(player)) {
+                    if(!p.getGodStrategy().checkBuildConstraints(player.getWorkerSecond(), buildCell, null)) {
+                        feasible = false;
+                        break;
+                    }
+                }
+            }
+
+            if(feasible) return true;
+        }
+
 
         return false;
     }

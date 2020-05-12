@@ -1,10 +1,7 @@
 package it.polimi.ingsw.controller;
 
 
-import it.polimi.ingsw.controller.commands.GamePreparationCommand;
-import it.polimi.ingsw.controller.commands.GodChoiceCommand;
-import it.polimi.ingsw.controller.commands.InitialInfoCommand;
-import it.polimi.ingsw.controller.commands.PlayerCommand;
+import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.exceptions.InvalidColorException;
 import it.polimi.ingsw.exceptions.NicknameAlreadyTakenException;
 import it.polimi.ingsw.exceptions.WrongPlayerException;
@@ -15,6 +12,7 @@ import it.polimi.ingsw.model.gods.*;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,8 +25,7 @@ public class ControllerTest {
     public void updatePlayerCommandNormalTest() {
 
         int playersNum = 3;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -253,11 +250,8 @@ public class ControllerTest {
     @Test
     public void updatePlayerCommandCompleteTest() {
 
-
-
         int playersNum = 3;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo",  new Model(match), match);
         Player p3 = new Player("Roberto",  new Model(match), match);
@@ -275,7 +269,7 @@ public class ControllerTest {
         Worker w3B = p3.getWorkerSecond();
 
 
-        GodStrategy divinity = new Apollo();
+        GodStrategy divinity = new Apollo(); // todo gods private constructor ?
         p1.setGodStrategy(divinity);
         p2.setGodStrategy(divinity);
         p3.setGodStrategy(divinity);
@@ -469,12 +463,8 @@ public class ControllerTest {
     @Test
     public void updateInitialInfoCommandTest() {
 
-
-
-
         int playersNum = 3;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -527,8 +517,6 @@ public class ControllerTest {
 
     @Test
     public void updateInitialInfoCommandNicknameAlreadyTakenExceptionTest() {
-
-
 
 
         int playersNum = 3;
@@ -584,11 +572,8 @@ public class ControllerTest {
     public void updateInitialInfoCommandInvalidColorExceptionTest() {
 
 
-
-
         int playersNum = 3;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -674,12 +659,8 @@ public class ControllerTest {
     @Test
     public void updateGamePreparationCommandTest() {
 
-
-
-
         int playersNum = 3;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -848,10 +829,7 @@ public class ControllerTest {
     public void updateGamePreparationCommandGodPowerTest() {
 
 
-
-
         int playersNum = 3;
-        String key = UUID.randomUUID().toString();
         Match match =new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
@@ -909,6 +887,77 @@ public class ControllerTest {
         assertEquals(0, model.getCurrentPlayer().getWorkerFirst().getPosition().getColIdentifier());
         assertEquals(1, model.getCurrentPlayer().getWorkerSecond().getPosition().getRowIdentifier());
         assertEquals(4, model.getCurrentPlayer().getWorkerSecond().getPosition().getColIdentifier());
+    }
+
+    @Test
+    public void checkCanMoveOtherGodsConstraintsTest() {
+
+        int playersNum = 3;
+        Match match = new Match(playersNum);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
+        Player p3 = new Player("Roberto", new Model(match), match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Model model = new Model(match);
+        Controller controller = new Controller(model);
+
+        p1.setGodStrategy(GodStrategy.instantiateGod("athena"));
+        p2.setGodStrategy(GodStrategy.instantiateGod("atlas"));
+        p3.setGodStrategy(GodStrategy.instantiateGod("poseidon"));
+
+        p1.getWorkerFirst().setInitialPosition(3, 3);
+        p1.getWorkerSecond().setInitialPosition(3, 4);
+
+        p2.getWorkerFirst().setInitialPosition(0, 0);
+        p2.getWorkerSecond().setInitialPosition(0, 1);
+
+        p3.getWorkerFirst().setInitialPosition(3, 2);
+        p3.getWorkerSecond().setInitialPosition(2, 4);
+
+        match.getMatchBoard().getCell(1, 0).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(0, 2).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(2, 3).setLevel(BlockType.LEVEL_ONE);
+        match.getMatchBoard().getCell(1, 1).setLevel(BlockType.LEVEL_ONE);
+        match.getMatchBoard().getCell(1, 2).setLevel(BlockType.LEVEL_ONE);
+
+        ///
+        model.setInitialTurn(0);
+
+        model.nextGamePhase();
+        model.nextGamePhase();
+        model.nextGamePhase();
+
+        PlayerCommand playerCommand1 = new PlayerCommand(CommandType.MOVE, Command.WORKER_SECOND,2, 3, null);
+        playerCommand1.setPlayer(p1);
+        controller.update(playerCommand1);
+
+        PlayerCommand playerCommand2 = new PlayerCommand(CommandType.BUILD, Command.WORKER_SECOND,1, 4, BlockType.LEVEL_ONE);
+        playerCommand2.setPlayer(p1);
+        controller.update(playerCommand2);
+
+        PlayerCommand playerCommand3 = new PlayerCommand(CommandType.END_TURN, Command.WORKER_SECOND,-1, -1, null);
+        playerCommand3.setPlayer(p1);
+        controller.update(playerCommand3);
+
+        // Atlas must have been removed from the match
+        assertSame(playersNum - 1, model.getPlayers().size()); // Atlas must have been removed from the match
+        assertFalse(model.getPlayers().contains(p2));
+        assertTrue(model.getPlayers().contains(p1) && model.getPlayers().contains(p3));
+
+        // Reflection
+      /*  Method privateMethod = Controller.class.
+                getDeclaredMethod("checkCanMoveOtherGodsConstraints", Player.class);
+
+        privateMethod.setAccessible(true);
+
+        boolean returnValue = (boolean)
+                privateMethod.invoke(controller, p2);
+
+
+        assertFalse(returnValue); */
     }
 
 }
