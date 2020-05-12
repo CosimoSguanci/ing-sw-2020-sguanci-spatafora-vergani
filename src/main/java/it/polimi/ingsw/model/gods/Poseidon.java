@@ -20,7 +20,7 @@ public class Poseidon extends GodStrategy {
     public static final String POWER_DESCRIPTION = "End of Your Turn: If your unmoved Worker is on the ground level, it may build up to three times.";
 
     final int POSEIDON_MAX_BUILD_NUM = 3;
-    private MultipleBuildDelegate multipleBuildDelegate;
+    private final MultipleBuildDelegate multipleBuildDelegate;
     private Worker unmovedWorker;
 
 
@@ -50,7 +50,11 @@ public class Poseidon extends GodStrategy {
         } else {
             if (worker.getPosition().getLevel() != BlockType.GROUND)
                 return false;
-            return multipleBuildDelegate.canBuildAgain() && worker.getPosition().isAdjacentTo(buildCell) && buildCell.getLevel() != BlockType.DOME && buildCell.isEmpty();
+            return multipleBuildDelegate.canBuildAgain() &&
+                    worker.getPosition().isAdjacentTo(buildCell) &&
+                    buildCell.getLevel() != BlockType.DOME &&
+                    buildCell.isEmpty() &&
+                    (buildCellBlockType == null || buildCellBlockType.getLevelNumber() == buildCell.getLevel().getLevelNumber() + 1);
         }
 
     }

@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.CommandHandler;
 import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.view.UpdateHandler;
 
 import java.io.Serializable;
 import java.util.HashMap;

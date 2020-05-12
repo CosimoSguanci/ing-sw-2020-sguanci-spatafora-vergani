@@ -139,7 +139,7 @@ public abstract class GodStrategy {
      * @param buildCell the cell in which the Player want to build a new level.
      */
     public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        worker.build(buildCell);
+        worker.build(buildCell, buildCellBlockType);
     }
 
     /**

@@ -143,8 +143,14 @@ public class Worker {
      * @throws Exception either a worker tries to build in a non adjacent cell or if the cell
      * is already occupied or has reached its maximum level.
      */
-    public void build(Cell buildCell) throws CannotIncreaseLevelException {
-        buildCell.increaseLevel();
+    public void build(Cell buildCell, BlockType buildCellBlockType) throws CannotIncreaseLevelException, CellNotEmptyException {
+
+        if(buildCellBlockType == null) {
+            buildCell.increaseLevel();
+        }
+        else {
+            buildCell.setLevel(buildCellBlockType);
+        }
 
         this.hasBuilt = true;
     }

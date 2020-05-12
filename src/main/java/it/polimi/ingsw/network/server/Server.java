@@ -16,6 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class Server implements Observer<Model> {
+
     private static final int PORT = 12345;
 
     private static boolean isActive;

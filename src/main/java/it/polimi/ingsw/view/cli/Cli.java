@@ -105,7 +105,7 @@ public class Cli extends View implements Observer<Update> {
 
         stdin = new Scanner(System.in);
         stdout = System.out;
-        
+
         try {
 
             do {

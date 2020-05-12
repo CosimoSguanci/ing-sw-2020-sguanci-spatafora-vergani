@@ -21,8 +21,8 @@ public class Demeter extends GodStrategy {
     public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build one additional time, but not on the same space";
 
     final int DEMETER_MAX_BUILD_NUM = 2;
-    private MultipleBuildDelegate multipleBuildDelegate;
-    private PreviousCellNeededDelegate previousCellNeededDelegate;
+    private final MultipleBuildDelegate multipleBuildDelegate;
+    private final PreviousCellNeededDelegate previousCellNeededDelegate;
 
 
     public Demeter() {
@@ -38,11 +38,11 @@ public class Demeter extends GodStrategy {
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
      * @return true if the build passed as parameter can be performed, false otherwise.
-     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, Worker)
+     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, BlockType, Worker)
      */
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        return multipleBuildDelegate.checkBuild(worker, buildCell, selectedWorker) &&
+        return multipleBuildDelegate.checkBuild(worker, buildCell, buildCellBlockType, selectedWorker) &&
                 (!previousCellNeededDelegate.hasPreviousCell() ||
                         !(previousCellNeededDelegate.getPreviousCell().equals(buildCell)));
     }

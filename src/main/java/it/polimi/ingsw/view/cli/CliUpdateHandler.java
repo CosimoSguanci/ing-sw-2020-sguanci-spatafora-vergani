@@ -11,6 +11,7 @@ import it.polimi.ingsw.view.UpdateHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CliUpdateHandler implements UpdateHandler {
     private final Cli cliInstance;
@@ -275,8 +276,7 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     private StringBuilder availableGods() {
-        HashMap<String, HashMap<String, String>> godsInfo = new HashMap(GodsUtils.getGodsInfo());  //all info about available gods
-        ArrayList<String> godNames = new ArrayList<>(godsInfo.keySet());  //list of gods' names
+        ArrayList<String> godNames = new ArrayList<>(GodsUtils.getGodsInfo().keySet());  //list of gods' names
         StringBuilder result = new StringBuilder(godNames.get(0).toUpperCase());
         for(int i = 1; i < godNames.size(); i++) {
             result.append(", ").append(godNames.get(i).toUpperCase());

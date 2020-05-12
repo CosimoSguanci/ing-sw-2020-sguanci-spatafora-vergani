@@ -40,7 +40,7 @@ public class Atlas extends GodStrategy {
      * @param buildCell the cell in which the Player want to build a new level.
      * @see GodStrategy#executeMove(Worker, Cell)
      */
-    @Override
+   /* @Override
     public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
         if (buildCellBlockType == BlockType.DOME) {
             buildCell.setLevel(buildCellBlockType);
@@ -49,5 +49,5 @@ public class Atlas extends GodStrategy {
             super.executeBuild(worker, buildCell, buildCellBlockType);
         }
 
-    }
+    } */
 }
