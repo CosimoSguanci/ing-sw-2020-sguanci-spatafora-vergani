@@ -44,12 +44,13 @@ public class Cli extends View implements Observer<Update> {
     // TODO Put currentGamePhase in common superclass with GUI
 
     private GamePhase currentGamePhase;
-    private final String currentPhaseString = "current_phase";
+    final String currentPhaseString = "current_phase";
 
     private List<String> selectedNicknames;
     private List<PrintableColor> selectableColors;
 
     private boolean isInitialGodChooser = false;
+    private boolean continueToWatch = false;
 
     private List<String> selectableGods;
     private Map<String, String> playersGods;
@@ -179,6 +180,7 @@ public class Cli extends View implements Observer<Update> {
                             updateListener.addObserver(this);
 
                             this.playersNum = 0;
+                            this.continueToWatch = false;
 
                         } catch(IOException e) {
                             e.printStackTrace();
@@ -201,6 +203,7 @@ public class Cli extends View implements Observer<Update> {
                     command = command.toLowerCase();
 
                     if(command.equals("yes")) {
+                        this.continueToWatch = true;
                         continue;// todo test
                     }
                     else if(command.equals("no")) {
@@ -762,8 +765,12 @@ public class Cli extends View implements Observer<Update> {
         }
     }
 
-    String getCurrentPhaseString() {
-        return this.currentPhaseString;
+    GamePhase getCurrentPhase() {
+        return this.currentGamePhase;
+    }
+
+    boolean wantsToContinueToWatch() {
+        return this.continueToWatch;
     }
 
     static String toBold(String s) {
