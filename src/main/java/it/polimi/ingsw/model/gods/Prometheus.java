@@ -5,6 +5,11 @@ import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
 /**
  * This class implements the Prometheus strategy used by the Player who chose the powers of this God.
  * Specifically, if the selected Worker does not move up, it can build both before and after moving.
@@ -45,7 +50,7 @@ public class Prometheus extends GodStrategy {
         }
 
         return builtBeforeMoving
-                ? multipleBuildDelegate.checkBuild(worker, buildCell, selectedWorker)
+                ? multipleBuildDelegate.checkBuild(worker, buildCell, selectedWorker) // TODO ADD buildCellBlockType Checks
                 : super.checkBuild(worker, buildCell, buildCellBlockType);
     }
 
@@ -98,8 +103,46 @@ public class Prometheus extends GodStrategy {
 
         multipleBuildDelegate.increaseBuildCount();
 
-        if (builtBeforeMoving && !worker.canMove()) {
-            worker.player.model.onPlayerLose(worker.player); // or Player.lose etc
+        if (builtBeforeMoving ) {
+
+            if(!worker.canMove()) worker.player.model.onPlayerLose(worker.player); // or: if availableCells.size() == 0
+
+            else {
+                List<Cell> availableCells = worker.board.getAvailableMoveCells(worker);
+
+                List<Cell> feasibleMoveCells = new ArrayList<>();
+
+                availableCells.forEach((moveCell) -> {
+                    if(moveCell.getLevel().getLevelNumber() <= worker.getPosition().getLevel().getLevelNumber()) {
+                        feasibleMoveCells.add(moveCell);
+                    }
+                });
+
+                if(feasibleMoveCells.size() == 0)  worker.player.model.onPlayerLose(worker.player);
+
+                else {
+                    List<Player> players = worker.player.model.getPlayers();
+
+                    List<Cell> actualFeasibleMoveCells = feasibleMoveCells.stream().filter((moveCell) -> {
+                        boolean actuallyFeasible = true;
+                        for(Player p : players) {
+                            if(!p.equals(worker.player)) {
+                                if(!p.getGodStrategy().checkMoveConstraints(worker, moveCell)) {
+                                    actuallyFeasible = false;
+                                    break;
+                                }
+                            }
+                        }
+
+                        return actuallyFeasible;
+                    }).collect(Collectors.toList());
+
+                    if(actualFeasibleMoveCells.size() == 0)  worker.player.model.onPlayerLose(worker.player);
+                }
+
+            }
+
+            //worker.player.model.onPlayerLose(worker.player); // or Player.lose etc
         }
     }
 

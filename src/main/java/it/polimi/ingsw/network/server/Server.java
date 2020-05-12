@@ -28,17 +28,17 @@ public class Server implements Observer<Model> {
         isActive = active;
     }
 
-    private ServerSocket serverSocket;
+    private final ServerSocket serverSocket;
 
-    private ExecutorService executor = Executors.newFixedThreadPool(128);
+    private final ExecutorService executor = Executors.newFixedThreadPool(128);
 
-    private Map<Socket, ClientHandler> clientHandlersMap = new HashMap<>();
+    private final Map<Socket, ClientHandler> clientHandlersMap = new HashMap<>();
 
-    private Map<Socket, String> waitingConnectionTwoPlayers = new HashMap<>(); // associates clientSocket with corresponding clientID
-    private Map<Socket, String> waitingConnectionThreePlayers = new HashMap<>();
-    private Map<Socket, String> playingConnections = new HashMap<>();
+    private final Map<Socket, String> waitingConnectionTwoPlayers = new HashMap<>(); // associates clientSocket with corresponding clientID
+    private final Map<Socket, String> waitingConnectionThreePlayers = new HashMap<>();
+    private final Map<Socket, String> playingConnections = new HashMap<>();
 
-    private Map<Model, Controller> modelsControllersMap = new HashMap<>();
+    private final Map<Model, Controller> modelsControllersMap = new HashMap<>();
 
 
     public synchronized void lobby(ClientHandler c, String clientId, int playersNum) {

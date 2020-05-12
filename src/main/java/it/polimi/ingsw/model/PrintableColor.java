@@ -8,7 +8,6 @@ public enum PrintableColor {
     RED, GREEN, BLUE, YELLOW, PURPLE;
 
     public static final String RESET = "\u001B[0m";
-
     public static final String BOLD = "\u001B[1m";
 
     public static boolean isValidColor(String color) {

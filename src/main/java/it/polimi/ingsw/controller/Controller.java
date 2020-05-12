@@ -7,7 +7,10 @@ import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -25,7 +28,7 @@ import java.util.*;
  * @author Cosimo Sguanci
  * @author Roberto Spatafora
  */
-public class Controller extends Observable<Model> implements Observer<Command> {
+public class Controller extends Observable<Model> implements Observer<Command> { // TODO Refactor Controller in submodules ?
     private final Model model; // todo handle attribute visibility and immutability
     private Player godChooserPlayer;
     private List<String> selectableGods;
@@ -117,9 +120,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
             HashMap<String, PrintableColor> initialInfo = new HashMap<>();
 
-            model.getPlayers().forEach((player) -> {
-                initialInfo.put(player.getNickname(), player.getColor());
-            });
+            model.getPlayers().forEach((player) -> initialInfo.put(player.getNickname(), player.getColor()));
 
             model.selectedInitialInfoUpdate(initialInfo);
 
@@ -155,9 +156,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
             model.getCurrentPlayer().setGodStrategy(GodStrategy.instantiateGod(god));
             HashMap<String, String> selectedGods = new HashMap<>();
 
-            model.getPlayers().forEach((player) -> {
-                selectedGods.put(player.getNickname(), player.getGodStrategy().NAME);
-            });
+            model.getPlayers().forEach((player) -> selectedGods.put(player.getNickname(), player.getGodStrategy().NAME));
 
             model.selectedGodsUpdate(selectedGods);
             model.endTurn();
@@ -175,7 +174,13 @@ public class Controller extends Observable<Model> implements Observer<Command> {
             throw new WrongPlayerException();
         } else {
 
-            if (currentPlayer.getGodStrategy().checkGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell())) {
+            if (checkAllGamePreparationConstraints(gamePreparationCommand) &&
+                    currentPlayer.getGodStrategy().checkGamePreparation(
+                            currentPlayer.getWorkerFirst(),
+                            gamePreparationCommand.getWorkerFirstCell(),
+                            currentPlayer.getWorkerSecond(),
+                            gamePreparationCommand.getWorkerSecondCell())
+            ) {
                 currentPlayer.getGodStrategy().executeGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell());
             }
             else {
@@ -219,7 +224,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                         boolean hasWon = currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker()) && checkAllWinConstraints(playerCommand);
 
-                        model.boardUpdate();
+                        model.boardUpdate(playerCommand);
 
                         if(hasWon) {
                             model.nextGamePhase();
@@ -231,13 +236,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                         else {
                             // if !hasWon check if the new currentPlayer can build
 
-                            if (!currentPlayer.getGodStrategy().canBuild(model.getBoard(), playerCommand.getWorker())) {
-                                model.onPlayerLose(currentPlayer);
-
-                                if(model.getPlayers().size() != 1) { // 2 players remaining...
-                                    model.boardUpdate();
-                                }
-                            }
+                            checkLoseConditionsBuild(playerCommand);
                         }
 
                     } else {
@@ -254,7 +253,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                          */
                         boolean hasWon = currentPlayer.getGodStrategy().checkWinCondition(playerCommand.getWorker()) && checkAllWinConstraints(playerCommand);
 
-                        model.boardUpdate();
+                        model.boardUpdate(playerCommand);
 
                         if(hasWon) {
                             model.nextGamePhase();
@@ -270,7 +269,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                     break;
                 case END_TURN:
 
-                    if (currentPlayer.getGodStrategy().checkEndTurn()) {
+                    if (checkAllEndTurnConstraints(playerCommand) && currentPlayer.getGodStrategy().checkEndTurn()) {
 
                         currentPlayer.getGodStrategy().endPlayerTurn(currentPlayer);
 
@@ -281,13 +280,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                         model.boardUpdate();
 
                         // check if the new currentPlayer can move
-                        if (!model.getCurrentPlayer().getGodStrategy().canMove(model.getBoard(), model.getCurrentPlayer())) {
-                            model.onPlayerLose(model.getCurrentPlayer());
-
-                            if(model.getPlayers().size() != 1) {
-                                model.boardUpdate();
-                            }
-                        }
+                        checkLoseConditionsMove();
 
                     } else {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
@@ -298,6 +291,43 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
         }
     }
+
+    private void checkLoseConditionsMove() {
+        if (!model.getCurrentPlayer().getGodStrategy().canMove(model.getBoard(), model.getCurrentPlayer())) {
+            model.onPlayerLose(model.getCurrentPlayer());
+
+            if(model.getPlayers().size() != 1) {
+                model.boardUpdate();
+            }
+        } else {
+            if(!checkCanMoveOtherGodsConstraints(model.getCurrentPlayer())) {
+                model.onPlayerLose(model.getCurrentPlayer());
+
+                if(model.getPlayers().size() != 1) {
+                    model.boardUpdate();
+                }
+            }
+        }
+    }
+
+    private void checkLoseConditionsBuild(PlayerCommand playerCommand) {
+        if (!model.getCurrentPlayer().getGodStrategy().canBuild(model.getBoard(), playerCommand.getWorker())) {
+            model.onPlayerLose(model.getCurrentPlayer());
+
+            if(model.getPlayers().size() != 1) { // 2 players remaining
+                model.boardUpdate();
+            }
+        } else {
+            if(!checkCanBuildOtherGodsConstraints(model.getCurrentPlayer())) {
+                model.onPlayerLose(model.getCurrentPlayer());
+
+                if(model.getPlayers().size() != 1) {
+                    model.boardUpdate();
+                }
+            }
+        }
+    }
+
 
     /**
      * This methods checks all Players God's Win Constraints to check if there is a power which
@@ -310,6 +340,25 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
         for (Player p : model.getPlayers()) {
             if (!p.equals(playerCommand.getPlayer()) && !p.getGodStrategy().checkWinConstraints(playerCommand.getWorker(), playerCommand.getCell())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean checkAllGamePreparationConstraints(GamePreparationCommand gamePreparationCommand) {
+
+        for (Player p : model.getPlayers()) {
+            if (!p.equals(gamePreparationCommand.getPlayer()) &&
+
+                    !p.getGodStrategy().checkGamePreparationConstraints(
+                            gamePreparationCommand.getPlayer().getWorkerFirst(),
+                            gamePreparationCommand.getWorkerFirstCell(),
+                            gamePreparationCommand.getPlayer().getWorkerSecond(),
+                            gamePreparationCommand.getWorkerSecondCell())
+
+            ) {
                 return false;
             }
         }
@@ -353,6 +402,91 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         return true;
     }
 
+    private boolean checkAllEndTurnConstraints(PlayerCommand playerCommand) {
+
+        for (Player p : model.getPlayers()) {
+            if (!p.equals(playerCommand.getPlayer()) && !p.getGodStrategy().checkEndTurnConstraints(playerCommand.getPlayer())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean checkCanMoveOtherGodsConstraints(Player player) { // todo necessary or reuse checkAllMoveConstraints
+        List<Cell> availableMoveCellsWorkerFirst = model.getBoard().getAvailableMoveCells(player.getWorkerFirst());
+        List<Cell> availableMoveCellsWorkerSecond = model.getBoard().getAvailableMoveCells(player.getWorkerSecond());
+
+
+        for(Cell moveCell : availableMoveCellsWorkerFirst) {
+            boolean feasible = true;
+            for(Player p : model.getPlayers()) {
+                if(!p.equals(player)) {
+                    if(!p.getGodStrategy().checkMoveConstraints(player.getWorkerFirst(), moveCell)) {
+                        feasible = false;
+                        break;
+                    }
+                }
+            }
+
+            if(feasible) return true;
+        }
+
+        for(Cell moveCell : availableMoveCellsWorkerSecond) {
+            boolean feasible = true;
+            for(Player p : model.getPlayers()) {
+                if(!p.equals(player)) {
+                    if(!p.getGodStrategy().checkMoveConstraints(player.getWorkerSecond(), moveCell)) {
+                        feasible = false;
+                        break;
+                    }
+                }
+            }
+
+            if(feasible) return true;
+        }
+
+
+        return false;
+    }
+
+    private boolean checkCanBuildOtherGodsConstraints(Player player) {
+        List<Cell> availableBuildCellsWorkerFirst = model.getBoard().getAvailableBuildCells(player.getWorkerFirst());
+        List<Cell> availableBuildCellsWorkerSecond = model.getBoard().getAvailableBuildCells(player.getWorkerSecond());
+
+
+        for(Cell buildCell : availableBuildCellsWorkerFirst) {
+            boolean feasible = true;
+            for(Player p : model.getPlayers()) {
+                if(!p.equals(player)) {
+                    if(!p.getGodStrategy().checkBuildConstraints(player.getWorkerFirst(), buildCell, null)) {
+                        feasible = false;
+                        break;
+                    }
+                }
+            }
+
+            if(feasible) return true;
+        }
+
+        for(Cell buildCell : availableBuildCellsWorkerSecond) {
+            boolean feasible = true;
+            for(Player p : model.getPlayers()) {
+                if(!p.equals(player)) {
+                    if(!p.getGodStrategy().checkBuildConstraints(player.getWorkerSecond(), buildCell, null)) {
+                        feasible = false;
+                        break;
+                    }
+                }
+            }
+
+            if(feasible) return true;
+        }
+
+
+        return false;
+    }
+
 
     // Entry point from Server class
     public void initialPhase() {
@@ -391,13 +525,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         model.matchStartedUpdate();
 
         // check if the first currentPlayer can move
-        if (!model.getCurrentPlayer().getGodStrategy().canMove(model.getBoard(), model.getCurrentPlayer())) {
-            model.onPlayerLose(model.getCurrentPlayer());
-
-            if(model.getPlayers().size() != 1) {
-                model.boardUpdate();
-            }
-        }
+        checkLoseConditionsMove();
     }
 
     public void onPlayerDisconnected(String playerID) {

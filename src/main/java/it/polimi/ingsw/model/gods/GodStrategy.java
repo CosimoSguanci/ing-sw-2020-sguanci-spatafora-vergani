@@ -3,6 +3,8 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.utils.GodsUtils;
 
+import java.util.List;
+
 /**
  * This is the abstract class all the gods must extend in order to be playable in the game.
  * This abstract class allows the use of Strategy Pattern, the God only knows it has a GodStrategy,
@@ -97,7 +99,7 @@ public abstract class GodStrategy {
         return selectedWorker != null && selectedWorker.hasMoved() && selectedWorker.hasBuilt();
     }
 
-    public boolean checkEndTurnConstraints() {
+    public boolean checkEndTurnConstraints(Player player) {
         return true;
     }
 
@@ -209,7 +211,7 @@ public abstract class GodStrategy {
     }
 
     public boolean canMove(Board board, Player player) {
-        return board.canMove(player);
+       return board.canMove(player);
     }
 
     public boolean canBuild(Board board, Worker worker) {

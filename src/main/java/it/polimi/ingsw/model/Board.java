@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.exceptions.InvalidCellException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Board is the class that keeps information about the "Island Board" (mentioned in game
@@ -16,7 +19,7 @@ import it.polimi.ingsw.exceptions.InvalidCellException;
 public class Board {
     public final static int WIDTH_SIZE = 5;
     public final static int HEIGHT_SIZE = 5;
-    private Cell[][] board;
+    private final Cell[][] board;
 
     /**
      * The constructor creates the game board: in Santorini, it is a 5x5 space where
@@ -73,6 +76,21 @@ public class Board {
         return (possibleOne || possibleTwo);
     }
 
+    public List<Cell> getAvailableMoveCells(Worker worker) {
+
+        List<Cell> availableMoveCells = new ArrayList<>();
+
+        for (int i = 0; i < Board.WIDTH_SIZE; i++) {
+            for (int j = 0; j < Board.HEIGHT_SIZE; j++) {
+                if ((worker.getPosition().isAdjacentTo(board[i][j]) && worker.getPosition().isLevelDifferenceOk(board[i][j]) && board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()))
+                    availableMoveCells.add(board[i][j]);
+            }
+        }
+
+
+        return availableMoveCells;
+    }
+
     /**
      * The method controls if a building is possible for a considered worker. Santorini
      * rules explain that a worker in a cell can build (in normal situations) in an
@@ -91,6 +109,22 @@ public class Board {
             }
         }
         return false;
+    }
+
+    public List<Cell> getAvailableBuildCells(Worker worker) {
+
+        List<Cell> availableBuildCells = new ArrayList<>();
+
+        for (int i = 0; i < Board.WIDTH_SIZE; i++) {
+            for (int j = 0; j < Board.HEIGHT_SIZE; j++) {
+                if (board[i][j].isAdjacentTo(worker.getPosition()) && board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()) {
+                    availableBuildCells.add(board[i][j]);
+                }
+            }
+        }
+
+
+        return availableBuildCells;
     }
 
     /**

@@ -26,6 +26,8 @@ public abstract class Command implements Serializable {
 
     public final CommandType commandType;
     protected transient Player player;
+
+    protected String playerNickname;
     protected String playerID;
 
     protected Command(CommandType commandType) {
@@ -46,6 +48,14 @@ public abstract class Command implements Serializable {
 
     public String getPlayerID() {
         return this.playerID;
+    }
+
+    public void setPlayerNickname(String playerNickname) {
+        this.playerNickname = playerNickname;
+    }
+
+    public String getPlayerNickname() {
+        return this.playerNickname;
     }
 
     public abstract void handleCommand(CommandHandler handler);

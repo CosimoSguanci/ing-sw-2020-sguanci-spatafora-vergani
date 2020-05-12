@@ -719,6 +719,11 @@ public class Cli extends View implements Observer<Update> {
 
     String playerWithColor(String nickname) {
         if(playersColors != null) {
+
+            if(!playersColors.containsKey(nickname) && nickname.equals("Player")) {
+                return nickname;
+            }
+
             return convertColorToAnsi(playersColors.get(nickname)) + nickname + PrintableColor.RESET;
         }
         return null;

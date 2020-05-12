@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.CannotIncreaseLevelException;
+import it.polimi.ingsw.exceptions.CellNotEmptyException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -35,28 +36,34 @@ public class CellTest {
         assertEquals(BlockType.LEVEL_THREE, cell.getLevel());
         cell.increaseLevel();
         assertEquals(BlockType.DOME, cell.getLevel());
-    }
-
-    @Disabled  //because we haven't decided what to do in "dome case" (exception or not) yet
-    @Test
-    public void increaseLevelDomeTest() /**/ {
-        Cell cell = new Cell(2,1);
-        cell.increaseLevel();
-        assertEquals(BlockType.LEVEL_ONE, cell.getLevel());
-        cell.increaseLevel();
-        assertEquals(BlockType.LEVEL_TWO, cell.getLevel());
-        cell.increaseLevel();
-        assertEquals(BlockType.LEVEL_THREE, cell.getLevel());
-        cell.increaseLevel();
-        assertEquals(BlockType.DOME, cell.getLevel());
         assertThrows(CannotIncreaseLevelException.class, cell::increaseLevel);
     }
 
     @Test
     public void setLevelTest() {
         Cell cell = new Cell(3,3);
+        cell.setLevel(BlockType.LEVEL_ONE);
+        assertEquals(BlockType.LEVEL_ONE, cell.getLevel());
+        cell.setLevel(BlockType.LEVEL_TWO);
+        assertEquals(BlockType.LEVEL_TWO, cell.getLevel());
+        cell.setLevel(BlockType.LEVEL_THREE);
+        assertEquals(BlockType.LEVEL_THREE, cell.getLevel());
         cell.setLevel(BlockType.DOME);
         assertEquals(BlockType.DOME, cell.getLevel());
+
+        cell.setLevel(BlockType.GROUND);
+        Worker worker = new Worker(null,null, null);
+
+        cell.setWorker(worker);
+
+        assertThrows(CellNotEmptyException.class,
+                () -> cell.setLevel(BlockType.LEVEL_ONE));
+        assertThrows(CellNotEmptyException.class,
+                () -> cell.setLevel(BlockType.LEVEL_TWO));
+        assertThrows(CellNotEmptyException.class,
+                () -> cell.setLevel(BlockType.LEVEL_THREE));
+        assertThrows(CellNotEmptyException.class,
+                () -> cell.setLevel(BlockType.DOME));
     }
 
     @Test
