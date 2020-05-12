@@ -156,6 +156,8 @@ class PlayerCommandTest {
         assertThrows(BadCommandException.class,
                 () -> PlayerCommand.parseInput("move w2 B2 tree"));
         assertThrows(BadCommandException.class,
+                () -> PlayerCommand.parseInput("build w1 a1 done"));
+        assertThrows(BadCommandException.class,
                 () -> PlayerCommand.parseInput(" "));
         assertThrows(BadCommandException.class,
                 () -> PlayerCommand.parseInput(""));
