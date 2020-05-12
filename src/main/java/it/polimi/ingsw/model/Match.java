@@ -23,10 +23,10 @@ import java.util.List;
  * @author Cosimo Sguanci
  */
 public class Match {
-    private ArrayList<Player> players;
-    private Board matchBoard;
+    private final ArrayList<Player> players;
+    private final Board matchBoard;
     private int turn;
-    private int playersNumber;
+    private final int playersNumber;
     private GamePhase currentGamePhase;
 
     /**

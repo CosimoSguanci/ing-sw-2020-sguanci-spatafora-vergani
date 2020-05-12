@@ -195,7 +195,7 @@ public class Cli extends View implements Observer<Update> {
                     command = command.toLowerCase();
 
                     if(command.equals("yes")) {
-                        break;
+                        continue;// todo test
                     }
                     else if(command.equals("no")) {
                         this.currentGamePhase = GamePhase.MATCH_ENDED;

@@ -68,7 +68,7 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     public void handle(BoardUpdate update) {
-        
+
         if(update.getExecutedCommand() == null || update.getExecutedCommand().commandType != CommandType.END_TURN) {
             cliInstance.printBoard(update.board);
         }
