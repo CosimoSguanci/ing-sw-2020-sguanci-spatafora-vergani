@@ -98,7 +98,7 @@ public class Model extends Observable<Update> {
 
     public void boardUpdate(PlayerCommand executedCommand) {
         BoardUpdate boardUpdate = new BoardUpdate(match.getMatchBoard().toString());
-        executedCommand.setPlayerNickname(getCurrentPlayer().getNickname());
+        executedCommand.setPlayerNickname(executedCommand.getPlayer().getNickname());
         boardUpdate.setExecutedCommand(executedCommand);
         notify(boardUpdate);
     }
