@@ -61,8 +61,6 @@ public class Server implements Observer<Controller> {
 
         if (suitableConnections.size() == playersNum) {
 
-            //   try {
-
             Match match = new Match(playersNum);
             Model model = new Model(match);
             Controller controller = new Controller(model);
@@ -82,12 +80,6 @@ public class Server implements Observer<Controller> {
 
             // todo start a new thread for the match
             controller.initialPhase();
-
-
-      /*      } catch (Exception e) {
-                e.printStackTrace();
-            } */
-
         }
     }
 

@@ -32,11 +32,7 @@ public class UpdateListener extends Observable<Update> implements ObjectListener
 
     @Override
     public void forwardNotify(Object update) {
-        try {
-            notify((Update) update);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        notify((Update) update);
     }
 
     @Override

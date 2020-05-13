@@ -44,48 +44,37 @@ public class Controller extends Observable<Update> implements Observer<Object> {
         } else {
 
             if (!(message instanceof Command)) {
-                return; // Or throw?
+                return; // todo Or throw?
             }
 
             if (!clientPlayerID.equals(currentPlayerID)) {
                 ErrorUpdate err = new ErrorUpdate(clientPlayerID, ((Command) message).commandType);
                 notify(err);
-            }
-            else {
-                if (message instanceof PlayerCommand) {
-                    try {
+            } else {
+
+                try {
+                    if (message instanceof PlayerCommand) {
                         PlayerCommand playerCommand = (PlayerCommand) message;
                         playerCommand.setPlayerID(clientPlayerID);
                         client.sendCommand(playerCommand);
 
-                    } catch (IOException e) {
-                        e.printStackTrace(); // todo Handle this
-                    }
-                } else if (message instanceof GodChoiceCommand) {
-                    try {
+                    } else if (message instanceof GodChoiceCommand) {
                         GodChoiceCommand godChoiceCommand = (GodChoiceCommand) message;
                         godChoiceCommand.setPlayerID(clientPlayerID);
                         client.sendCommand(godChoiceCommand);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else if (message instanceof GamePreparationCommand) {
-                    try {
+
+                    } else if (message instanceof GamePreparationCommand) {
                         GamePreparationCommand gamePreparationCommand = (GamePreparationCommand) message;
                         gamePreparationCommand.setPlayerID(clientPlayerID);
                         client.sendCommand(gamePreparationCommand);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else if (message instanceof InitialInfoCommand) {
-                    try {
+
+                    } else if (message instanceof InitialInfoCommand) {
+
                         InitialInfoCommand initialInfoCommand = (InitialInfoCommand) message;
                         initialInfoCommand.setPlayerID(clientPlayerID);
                         client.sendCommand(initialInfoCommand);
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-                }
+                } catch (IOException ignored) {} // todo handle ignored exceptions
             }
         }
     }

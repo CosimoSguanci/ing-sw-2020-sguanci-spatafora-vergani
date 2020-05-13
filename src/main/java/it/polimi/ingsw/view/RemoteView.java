@@ -7,6 +7,8 @@ import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.network.server.ClientHandler;
 
+import java.io.IOException;
+
 
 public class RemoteView extends Observable<Command> implements Observer<Update>{
 
@@ -50,8 +52,8 @@ public class RemoteView extends Observable<Command> implements Observer<Update>{
                 clientHandler.sendUpdate(update);
             }
 
-        } catch(Exception e) {
-            e.printStackTrace();
+        } catch(IOException ignored) {
+
         }
     }
 }

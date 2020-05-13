@@ -28,7 +28,6 @@ public class ObjectListenerDelegate {
                   }
 
                 }
-
             }
         } catch (IOException | ClassNotFoundException e){
             objectListener.setIsActive(false);
