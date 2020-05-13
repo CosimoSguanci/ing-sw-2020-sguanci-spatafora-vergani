@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.ObjectListener;
 import it.polimi.ingsw.network.ObjectListenerDelegate;
 import it.polimi.ingsw.observer.Observable;
 
+import java.io.IOException;
 import java.net.Socket;
 
 public class CommandListener extends Observable<Command> implements ObjectListener, Runnable {

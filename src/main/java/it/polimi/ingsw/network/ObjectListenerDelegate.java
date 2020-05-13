@@ -1,8 +1,9 @@
 package it.polimi.ingsw.network;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 public class ObjectListenerDelegate {
     private final Socket socket;
@@ -14,12 +15,23 @@ public class ObjectListenerDelegate {
     public void listen(ObjectListener objectListener) {
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-            while (objectListener.isActive()) { // todo use Client.isActive() and Server.isActive() ?
-                Object inputObject = objectInputStream.readObject();
-                objectListener.forwardNotify(inputObject);
+            while (objectListener.isActive()) {
+
+              try {
+                    Object inputObject = objectInputStream.readObject();
+                    objectListener.forwardNotify(inputObject);
+
+                } catch(SocketTimeoutException e) {
+
+                  if(!objectListener.isActive()) {
+                      socket.close();
+                  }
+
+                }
+
             }
-        } catch (Exception e){ // TODO catch SocketException?
-            objectListener.setIsActive(false); //-> java.net.SocketException: Connection, reset java.net.SocketException: Socket closed
+        } catch (IOException | ClassNotFoundException e){
+            objectListener.setIsActive(false);
             objectListener.handleConnectionReset();
         }
     }

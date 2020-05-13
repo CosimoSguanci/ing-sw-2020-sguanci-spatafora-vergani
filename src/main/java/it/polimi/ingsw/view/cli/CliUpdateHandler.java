@@ -9,9 +9,7 @@ import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.view.UpdateHandler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CliUpdateHandler implements UpdateHandler {
     private final Cli cliInstance;
@@ -78,6 +76,7 @@ public class CliUpdateHandler implements UpdateHandler {
 
         if(update.getExecutedCommand() != null && (update.getExecutedCommand().commandType == CommandType.BUILD || update.getExecutedCommand().commandType == CommandType.MOVE)) {
             PlayerCommand executedCommand = update.getExecutedCommand();
+
 
             cliInstance.newLine();
 
@@ -260,9 +259,9 @@ public class CliUpdateHandler implements UpdateHandler {
         String nicknameToShow = update.disconnectedPlayerNickname != null ? update.disconnectedPlayerNickname : "A player";
         cliInstance.print(nicknameToShow + " disconnected!");
         cliInstance.newLine();
-        cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
-        cliInstance.print("Do you want to play another match?");
 
+       /* cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
+        cliInstance.print("Do you want to play another match?"); */
     }
 
 

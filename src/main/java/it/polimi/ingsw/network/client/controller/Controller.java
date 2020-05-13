@@ -56,7 +56,7 @@ public class Controller extends Observable<Update> implements Observer<Object> {
                     try {
                         PlayerCommand playerCommand = (PlayerCommand) message;
                         playerCommand.setPlayerID(clientPlayerID);
-                        client.sendPlayerCommand(playerCommand);
+                        client.sendCommand(playerCommand);
 
                     } catch (IOException e) {
                         e.printStackTrace(); // todo Handle this
@@ -65,7 +65,7 @@ public class Controller extends Observable<Update> implements Observer<Object> {
                     try {
                         GodChoiceCommand godChoiceCommand = (GodChoiceCommand) message;
                         godChoiceCommand.setPlayerID(clientPlayerID);
-                        client.sendGodChoiceCommand(godChoiceCommand);
+                        client.sendCommand(godChoiceCommand);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -73,7 +73,7 @@ public class Controller extends Observable<Update> implements Observer<Object> {
                     try {
                         GamePreparationCommand gamePreparationCommand = (GamePreparationCommand) message;
                         gamePreparationCommand.setPlayerID(clientPlayerID);
-                        client.sendGamePreparationCommand(gamePreparationCommand);
+                        client.sendCommand(gamePreparationCommand);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -81,15 +81,12 @@ public class Controller extends Observable<Update> implements Observer<Object> {
                     try {
                         InitialInfoCommand initialInfoCommand = (InitialInfoCommand) message;
                         initialInfoCommand.setPlayerID(clientPlayerID);
-                        client.sendInitialInfoCommand(initialInfoCommand);
+                        client.sendCommand(initialInfoCommand);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
-
-
         }
     }
-
 }

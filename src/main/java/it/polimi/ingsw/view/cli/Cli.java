@@ -62,6 +62,8 @@ public class Cli extends View implements Observer<Update> {
 
     private boolean soundPlayed = false;
 
+    private UpdateListener updateListener;
+
     /**
      * Cli is the builder of the class. At the moment of the Cli creation
      * a client and a controller of the client are associated to it
@@ -71,10 +73,12 @@ public class Cli extends View implements Observer<Update> {
      * @param controller indicates clientSideController implements client-side checks
      * in order to avoid repeated and unnecessary interactions with the server.
      */
-    public Cli(Client client, Controller controller) {
+    public Cli(Client client, Controller controller, UpdateListener updateListener) {
         this.client = client;
         this.controller = controller; // WIP
         this.cliUpdateHandler = new CliUpdateHandler(this);
+
+        this.updateListener = updateListener;
     }
 
     /**
@@ -172,10 +176,11 @@ public class Cli extends View implements Observer<Update> {
                     if(command.equals("yes")) {
 
                         try {
-                            client.closeConnection();
+
+                            updateListener.setIsActive(false);
                             client.reinitializeConnection();
 
-                            UpdateListener updateListener = new UpdateListener(client.getSocket());
+                            updateListener = new UpdateListener(client.getSocket());
                             new Thread(updateListener).start();
                             updateListener.addObserver(this);
 
@@ -209,7 +214,6 @@ public class Cli extends View implements Observer<Update> {
                     else if(command.equals("no")) {
                         this.currentGamePhase = GamePhase.MATCH_ENDED;
                         print("Do you want to play another match?");
-
                     }
                     else throw new BadCommandException(); // todo add multiple exception
 
@@ -553,6 +557,10 @@ public class Cli extends View implements Observer<Update> {
                 break;
             case REAL_GAME:
                 // real game
+                break;
+            case MATCH_ENDED:
+                print("Do you want to play another match?");
+                newLine();
                 break;
         }
     }
