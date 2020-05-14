@@ -64,6 +64,8 @@ public class Cli extends View implements Observer<Update> {
 
     private UpdateListener updateListener;
 
+    private String currentBoard;  //Gson representation of current board of the match
+
     /**
      * Cli is the builder of the class. At the moment of the Cli creation
      * a client and a controller of the client are associated to it
@@ -93,7 +95,7 @@ public class Cli extends View implements Observer<Update> {
     }
 
     /**
-     * This is a method useful to avoid code repetitions
+     * This is a method useful to avoid code repetitions.
      * It simply prints a white line
      */
     void newLine() {
@@ -296,6 +298,14 @@ public class Cli extends View implements Observer<Update> {
                         print("It is not the right moment for this command. Retry after match started");
                     }
                 }
+                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.BOARD  && splitCommand.length == 1) {
+                    if(currentGamePhase == GamePhase.REAL_GAME || currentGamePhase == GamePhase.GAME_PREPARATION) {  //it's interesting to see the board only in these phases
+                        printBoard(currentBoard);
+                    }
+                    else {
+                        print("It is not the right moment for this command. Retry after match started");
+                    }
+                }
 
 
                 else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.INFO) {
@@ -447,6 +457,7 @@ public class Cli extends View implements Observer<Update> {
                 print("Command example: place w1 A1 w2 B2");
                 print("Want to know who is playing in this moment? Type 'turn'");
                 print("Don't remember the association player <-> god? Type 'god'");
+                print("Got lost and want to see the current situation of the board? Type 'board'");
                 break;
             case REAL_GAME:
                 print("In this phase, you play!");
@@ -459,6 +470,7 @@ public class Cli extends View implements Observer<Update> {
                 print("End example: end");
                 print("Want to know who is playing in this moment? Type 'turn'");
                 print("Don't remember the association player <-> god? Type 'god'");
+                print("Got lost and want to see the current situation of the board? Type 'board'");
                 break;
             default:
                 throw new BadCommandException();
@@ -586,6 +598,8 @@ public class Cli extends View implements Observer<Update> {
      *              and workers if there are on that cell).
      */
     void printBoard(String board) {
+        this.currentBoard = board;  //new Gson version of board is saved
+
         GsonBuilder builder = new GsonBuilder();
 
         Gson gson = builder.create();
