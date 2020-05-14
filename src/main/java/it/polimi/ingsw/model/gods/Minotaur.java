@@ -94,7 +94,6 @@ public class Minotaur extends GodStrategy {
      */
     private Cell computeBackwardCell(Board board, Cell workerCell, Cell moveCell) throws InvalidCellException {
 
-
         int backwardRow;
         int backwardCol;
 
@@ -151,16 +150,16 @@ public class Minotaur extends GodStrategy {
 
         for (int i = 0; i < Board.WIDTH_SIZE; i++) {
             for (int j = 0; j < Board.HEIGHT_SIZE; j++) {
-                if (cell.isLevelDifferenceOk(board.getCell(i, j)) && board.getCell(i, j).getLevel() != BlockType.DOME) {
+                if (cell.isAdjacentTo(board.getCell(i, j)) && cell.isLevelDifferenceOk(board.getCell(i, j)) && board.getCell(i, j).getLevel() != BlockType.DOME) {
 
                     if (board.getCell(i, j).isEmpty())
                         return true;
                     else {
                         try {
                             return computeBackwardCell(board, cell, board.getCell(i, j)).isEmpty();
-                        } catch (InvalidCellException e) {
-                            return false;
+                        } catch (InvalidCellException ignored) {
                         }
+
                     }
                 }
             }

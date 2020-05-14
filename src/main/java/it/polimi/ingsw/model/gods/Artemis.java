@@ -87,7 +87,7 @@ public class Artemis extends GodStrategy {
 
         for (int i = 0; i < Board.WIDTH_SIZE; i++) {
             for (int j = 0; j < Board.HEIGHT_SIZE; j++) {
-                if (worker.getPosition().isLevelDifferenceOk(board.getCell(i, j)) && board.getCell(i, j).getLevel() != BlockType.DOME && board.getCell(i, j).isEmpty()) {
+                if (worker.getPosition().isAdjacentTo(board.getCell(i, j)) && worker.getPosition().isLevelDifferenceOk(board.getCell(i, j)) && board.getCell(i, j).getLevel() != BlockType.DOME && board.getCell(i, j).isEmpty()) {
 
                     if (buildPossibleFromCell(board, board.getCell(i, j))) {
                         return true;
