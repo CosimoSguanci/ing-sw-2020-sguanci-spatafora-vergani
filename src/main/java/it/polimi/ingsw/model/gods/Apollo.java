@@ -40,9 +40,14 @@ public class Apollo extends GodStrategy {
      */
     @Override
     public boolean checkMove(Worker worker, Cell moveCell) {
-        return (selectedWorker == null || isUsingSelectedWorker(worker))
-                && !worker.hasMoved() && !worker.hasBuilt() && worker.getPosition().isAdjacentTo(moveCell)
+        if(selectedWorker != null) return false;
+
+        // todo check move in opponentworkermoverdelegate
+        Worker otherWorker = worker.equals(worker.player.getWorkerFirst()) ? worker.player.getWorkerSecond() : worker.player.getWorkerFirst();
+
+        return !worker.hasMoved() && !worker.hasBuilt() && worker.getPosition().isAdjacentTo(moveCell)
                 && worker.getPosition().isLevelDifferenceOk(moveCell)
+                && (moveCell.isEmpty() || !moveCell.getWorker().equals(otherWorker)) // todo use super.checkMove
                 && moveCell.getLevel() != BlockType.DOME;
     }
 

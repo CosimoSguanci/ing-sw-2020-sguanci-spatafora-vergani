@@ -44,12 +44,14 @@ public class Minotaur extends GodStrategy {
             return super.checkMove(worker, moveCell);
 
         else {
+            Worker otherWorker = worker.equals(worker.player.getWorkerFirst()) ? worker.player.getWorkerSecond() : worker.player.getWorkerFirst();
             try {
                 backwardCell = computeBackwardCell(worker.board, worker.getPosition(), moveCell);
 
                 return  (selectedWorker == null || isUsingSelectedWorker(selectedWorker)) &&
                         !worker.hasMoved() &&
                         !worker.hasBuilt() &&
+                        ( moveCell.isEmpty() || !moveCell.getWorker().equals(otherWorker)) &&
                         worker.getPosition().isAdjacentTo(moveCell) &&
                         backwardCell.getRowIdentifier() < Board.WIDTH_SIZE &&
                         backwardCell.getColIdentifier() < Board.HEIGHT_SIZE &&
