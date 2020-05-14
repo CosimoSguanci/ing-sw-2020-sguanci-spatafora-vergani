@@ -45,6 +45,9 @@ public class Prometheus extends GodStrategy {
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
 
+        if(selectedWorker != null && !worker.equals(selectedWorker))
+            return false;
+
         if (!worker.hasBuilt() && !worker.hasMoved()) { // First build (before moving)
             return worker.getPosition().isAdjacentTo(buildCell) &&
                     (buildCell.getLevel() != BlockType.DOME) &&

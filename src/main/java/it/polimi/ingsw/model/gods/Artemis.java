@@ -21,7 +21,7 @@ public class Artemis extends GodStrategy {
      * Constant representing the max number of times this God can move.
      */
     final int ARTEMIS_MAX_MOVE_NUM = 2;
-    private MultipleMovementDelegate multipleMovementDelegate;
+    private final MultipleMovementDelegate multipleMovementDelegate;
     private final PreviousCellNeededDelegate previousCellNeededDelegate;
 
 

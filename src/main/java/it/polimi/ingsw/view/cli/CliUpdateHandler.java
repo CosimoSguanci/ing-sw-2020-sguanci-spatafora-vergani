@@ -258,7 +258,7 @@ public class CliUpdateHandler implements UpdateHandler {
     public void handle(DisconnectedPlayerUpdate update) {
         String nicknameToShow = update.disconnectedPlayerNickname != null ? update.disconnectedPlayerNickname : "A player";
         cliInstance.print(nicknameToShow + " disconnected!");
-        cliInstance.newLine();
+        //cliInstance.newLine();
 
        /* cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
         cliInstance.print("Do you want to play another match?"); */
