@@ -37,6 +37,7 @@ public class Zeus extends GodStrategy {
                 !worker.hasBuilt() &&
                 (worker.getPosition().isAdjacentTo(buildCell) || worker.getPosition().equals(buildCell)) &&
                 (buildCell.getLevel() != BlockType.DOME) &&
+                (!worker.getPosition().equals(buildCell) || buildCell.getLevel() != BlockType.LEVEL_THREE) &&
                 (buildCellBlockType == null || buildCellBlockType.getLevelNumber() == buildCell.getLevel().getLevelNumber() + 1);
     }
 
