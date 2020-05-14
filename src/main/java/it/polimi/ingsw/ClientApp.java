@@ -22,7 +22,8 @@ public class ClientApp {
             cli.start();
 
         } catch(IOException e) {
-            System.err.println("The Game couldn't start, maybe there was some network error or the server isn't available.");
+            System.err.println("The Game couldn't start, maybe there was some network error " +
+                    "or the server isn't available.");
         }
     }
 }

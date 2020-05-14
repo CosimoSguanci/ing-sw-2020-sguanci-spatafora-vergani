@@ -32,6 +32,8 @@ public class CliUpdateHandler implements UpdateHandler {
 
         if (update.isGodChooser) {
             cliInstance.setInitialGodChooser(true);
+            cliInstance.print(Cli.toBold("You are the God Chooser!"));
+            cliInstance.newLine();
             cliInstance.print(Cli.toBold("Choose ") + cliInstance.getPlayersNum() + " gods. For a perfect match, choose the ones you like most!    Command " + Cli.toBold("format") + " expected: select [god(1)] ... [god(n)]");
             cliInstance.newLine();
             cliInstance.print("Available gods are: " + availableGods());
