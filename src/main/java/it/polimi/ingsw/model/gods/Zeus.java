@@ -42,6 +42,6 @@ public class Zeus extends GodStrategy {
 
     @Override
     public boolean canBuild(Board board, Worker worker) {
-        return worker.getPosition().getLevel() != BlockType.LEVEL_THREE;
+        return super.canBuild(board, worker) || worker.getPosition().getLevel() != BlockType.LEVEL_THREE;
     }
 }

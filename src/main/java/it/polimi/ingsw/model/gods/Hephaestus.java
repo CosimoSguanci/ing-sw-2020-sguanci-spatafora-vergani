@@ -57,7 +57,7 @@ public class Hephaestus extends GodStrategy {
 
         Cell prevBuildCell = previousCellNeededDelegate.getPreviousCell();
 
-        return multipleBuildDelegate.checkBuild(worker, buildCell, buildCellBlockType, selectedWorker) && buildCell.equals(prevBuildCell) && buildCellBlockType != BlockType.DOME;
+        return multipleBuildDelegate.checkBuild(worker, buildCell, buildCellBlockType, selectedWorker) && buildCell.equals(prevBuildCell) && buildCellBlockType != BlockType.DOME && prevBuildCell.getLevel() != BlockType.LEVEL_THREE;
     }
 
     /**

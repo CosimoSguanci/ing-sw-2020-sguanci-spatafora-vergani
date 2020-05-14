@@ -40,7 +40,8 @@ public class Apollo extends GodStrategy {
      */
     @Override
     public boolean checkMove(Worker worker, Cell moveCell) {
-        return !worker.hasMoved() && !worker.hasBuilt() && worker.getPosition().isAdjacentTo(moveCell)
+        return (selectedWorker == null || isUsingSelectedWorker(worker))
+                && !worker.hasMoved() && !worker.hasBuilt() && worker.getPosition().isAdjacentTo(moveCell)
                 && worker.getPosition().isLevelDifferenceOk(moveCell)
                 && moveCell.getLevel() != BlockType.DOME;
     }

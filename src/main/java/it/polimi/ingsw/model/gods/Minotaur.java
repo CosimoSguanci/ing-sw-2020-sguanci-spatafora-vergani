@@ -47,7 +47,8 @@ public class Minotaur extends GodStrategy {
             try {
                 backwardCell = computeBackwardCell(worker.board, worker.getPosition(), moveCell);
 
-                return !worker.hasMoved() &&
+                return  (selectedWorker == null || isUsingSelectedWorker(selectedWorker)) &&
+                        !worker.hasMoved() &&
                         !worker.hasBuilt() &&
                         worker.getPosition().isAdjacentTo(moveCell) &&
                         backwardCell.getRowIdentifier() < Board.WIDTH_SIZE &&
