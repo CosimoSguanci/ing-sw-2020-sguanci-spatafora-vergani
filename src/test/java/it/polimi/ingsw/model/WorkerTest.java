@@ -162,7 +162,7 @@ public class WorkerTest {
         testWorker.move(board.getCell(0,1));
         assertTrue(testWorker.standardCheckBuild(board.getCell(0,2)));
         Cell previousPosition = testWorker.getPosition();
-        testWorker.build(board.getCell(0,2));
+        testWorker.build(board.getCell(0,2), null);
         assertEquals(BlockType.LEVEL_ONE , board.getCell(0,2).getLevel());
         assertNull(board.getCell(0,2).getWorker());
         assertSame(testWorker.getPosition(), previousPosition);
@@ -171,7 +171,7 @@ public class WorkerTest {
         testWorker.setHasMoved();
         assertTrue(testWorker.standardCheckBuild(board.getCell(0,2)));
         previousPosition = testWorker.getPosition();
-        testWorker.build(board.getCell(0,2));
+        testWorker.build(board.getCell(0,2), null);
         assertEquals(BlockType.LEVEL_TWO, board.getCell(0,2).getLevel());
         assertNull(board.getCell(0,2).getWorker());
         assertSame(testWorker.getPosition(), previousPosition);
@@ -180,7 +180,7 @@ public class WorkerTest {
         testWorker.setHasMoved();
         assertTrue(testWorker.standardCheckBuild(board.getCell(0,2)));
         previousPosition = testWorker.getPosition();
-        testWorker.build(board.getCell(0,2));
+        testWorker.build(board.getCell(0,2), null);
         assertEquals(BlockType.LEVEL_THREE, board.getCell(0,2).getLevel());
         assertNull(board.getCell(0,2).getWorker());
         assertSame(testWorker.getPosition(), previousPosition);
@@ -189,7 +189,7 @@ public class WorkerTest {
         testWorker.setHasMoved();
         assertTrue(testWorker.standardCheckBuild(board.getCell(0,2)));
         previousPosition = testWorker.getPosition();
-        testWorker.build(board.getCell(0,2));
+        testWorker.build(board.getCell(0,2), null);
         assertEquals(BlockType.DOME, board.getCell(0,2).getLevel());
         assertNull(board.getCell(0,2).getWorker());
         assertSame(testWorker.getPosition(), previousPosition);

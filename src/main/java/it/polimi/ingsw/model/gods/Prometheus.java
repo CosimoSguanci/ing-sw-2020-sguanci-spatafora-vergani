@@ -40,17 +40,20 @@ public class Prometheus extends GodStrategy {
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
      * @return true if the Build passed as parameter can be performed, false otherwise.
-     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, Worker)
+     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, BlockType, Worker)
      */
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
 
         if (!worker.hasBuilt() && !worker.hasMoved()) { // First build (before moving)
-            return worker.getPosition().isAdjacentTo(buildCell) && (buildCell.getLevel() != BlockType.DOME) && (buildCell.isEmpty());
+            return worker.getPosition().isAdjacentTo(buildCell) &&
+                    (buildCell.getLevel() != BlockType.DOME) &&
+                    (buildCell.isEmpty()) &&
+                    (buildCellBlockType == null || buildCellBlockType.getLevelNumber() == buildCell.getLevel().getLevelNumber() + 1);
         }
 
         return builtBeforeMoving
-                ? multipleBuildDelegate.checkBuild(worker, buildCell, selectedWorker) // TODO ADD buildCellBlockType Checks
+                ? multipleBuildDelegate.checkBuild(worker, buildCell, buildCellBlockType, selectedWorker)
                 : super.checkBuild(worker, buildCell, buildCellBlockType);
     }
 
@@ -97,7 +100,6 @@ public class Prometheus extends GodStrategy {
 
         if (!worker.hasMoved()) {
             builtBeforeMoving = true;
-
             this.selectedWorker = worker;
         }
 
@@ -133,7 +135,6 @@ public class Prometheus extends GodStrategy {
                                 }
                             }
                         }
-
                         return actuallyFeasible;
                     }).collect(Collectors.toList());
 
@@ -141,8 +142,6 @@ public class Prometheus extends GodStrategy {
                 }
 
             }
-
-            //worker.player.model.onPlayerLose(worker.player); // or Player.lose etc
         }
     }
 

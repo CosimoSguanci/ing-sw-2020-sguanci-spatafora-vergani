@@ -103,7 +103,6 @@ public class Cell {
     }
 
 
-    //may be useful for Gods that can build a dome everywhere
     public void setLevel(BlockType level) {
         if (this.isEmpty()) {
             this.level = level;

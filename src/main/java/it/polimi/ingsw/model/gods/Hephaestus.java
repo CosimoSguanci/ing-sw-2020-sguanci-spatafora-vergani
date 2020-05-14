@@ -22,12 +22,12 @@ public class Hephaestus extends GodStrategy {
     public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build one additional block (not dome) on top of your first block.";
 
     final int HEPHAESTUS_MAX_BUILD_NUM = 2;
-    private MultipleBuildDelegate multipleBuildDelegate;
+    private final MultipleBuildDelegate multipleBuildDelegate;
 
     /**
      * Used to save the previous cell where Hephaestus built a level.
      */
-    private PreviousCellNeededDelegate previousCellNeededDelegate;
+    private final PreviousCellNeededDelegate previousCellNeededDelegate;
 
 
     public Hephaestus() {
@@ -46,7 +46,7 @@ public class Hephaestus extends GodStrategy {
      * @param buildCell the cell in which the Player want to build a new level.
      * @return true if the Build passed as parameter can be performed, false otherwise.
      * @see GodStrategy#checkBuild(Worker, Cell, BlockType)
-     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, Worker)
+     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, BlockType, Worker)
      */
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
@@ -57,7 +57,7 @@ public class Hephaestus extends GodStrategy {
 
         Cell prevBuildCell = previousCellNeededDelegate.getPreviousCell();
 
-        return multipleBuildDelegate.checkBuild(worker, buildCell, selectedWorker) && buildCell.equals(prevBuildCell) && buildCellBlockType != BlockType.DOME;
+        return multipleBuildDelegate.checkBuild(worker, buildCell, buildCellBlockType, selectedWorker) && buildCell.equals(prevBuildCell) && buildCellBlockType != BlockType.DOME;
     }
 
     /**

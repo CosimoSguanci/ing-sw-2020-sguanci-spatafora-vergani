@@ -22,7 +22,7 @@ public class Artemis extends GodStrategy {
      */
     final int ARTEMIS_MAX_MOVE_NUM = 2;
     private MultipleMovementDelegate multipleMovementDelegate;
-    private PreviousCellNeededDelegate previousCellNeededDelegate;
+    private final PreviousCellNeededDelegate previousCellNeededDelegate;
 
 
     public Artemis() {

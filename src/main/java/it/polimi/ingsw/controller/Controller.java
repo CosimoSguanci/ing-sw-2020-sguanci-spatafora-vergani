@@ -28,13 +28,13 @@ import java.util.Random;
  * @author Cosimo Sguanci
  * @author Roberto Spatafora
  */
-public class Controller extends Observable<Model> implements Observer<Command> { // TODO Refactor Controller in submodules ?
+public class Controller extends Observable<Controller> implements Observer<Command> { // TODO Refactor Controller in submodules ?
     private final Model model; // todo handle attribute visibility and immutability
+    private final CommandHandler commandHandler;
     private Player godChooserPlayer;
     private List<String> selectableGods;
     private List<String> selectedNicknames;
     private List<PrintableColor> selectableColors;
-    private final CommandHandler commandHandler;
 
 
     /**
@@ -182,8 +182,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
                             gamePreparationCommand.getWorkerSecondCell())
             ) {
                 currentPlayer.getGodStrategy().executeGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell());
-            }
-            else {
+            } else {
                 model.reportError(currentPlayer, CommandType.PLACE);
                 return;
             }
@@ -226,14 +225,14 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                         model.boardUpdate(playerCommand);
 
-                        if(hasWon) {
+                        if (hasWon) {
                             model.nextGamePhase();
                             model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
                             model.winUpdate(currentPlayer);
 
-                            return; // end match
-                        }
-                        else {
+                            onMatchWon();
+
+                        } else {
                             // if !hasWon check if the new currentPlayer can build
 
                             checkLoseConditionsBuild(playerCommand);
@@ -255,12 +254,12 @@ public class Controller extends Observable<Model> implements Observer<Command> {
 
                         model.boardUpdate(playerCommand);
 
-                        if(hasWon) {
+                        if (hasWon) {
                             model.nextGamePhase();
                             model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
                             model.winUpdate(currentPlayer);
 
-                            return; // end match
+                            onMatchWon();
                         }
 
                     } else {
@@ -296,15 +295,17 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         if (!model.getCurrentPlayer().getGodStrategy().canMove(model.getBoard(), model.getCurrentPlayer())) {
             model.onPlayerLose(model.getCurrentPlayer());
 
-            if(model.getPlayers().size() != 1) {
+            if (model.getPlayers().size() != 1) {
                 model.boardUpdate();
             }
         } else {
-            if(!checkCanMoveOtherGodsConstraints(model.getCurrentPlayer())) {
+            if (!checkCanMoveOtherGodsConstraints(model.getCurrentPlayer())) {
                 model.onPlayerLose(model.getCurrentPlayer());
 
-                if(model.getPlayers().size() != 1) {
+                if (model.getPlayers().size() != 1) {
                     model.boardUpdate();
+                } else {
+                    onMatchWon();
                 }
             }
         }
@@ -314,15 +315,17 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         if (!model.getCurrentPlayer().getGodStrategy().canBuild(model.getBoard(), playerCommand.getWorker())) {
             model.onPlayerLose(model.getCurrentPlayer());
 
-            if(model.getPlayers().size() != 1) { // 2 players remaining
+            if (model.getPlayers().size() != 1) { // 2 players remaining
                 model.boardUpdate();
             }
         } else {
-            if(!checkCanBuildOtherGodsConstraints(model.getCurrentPlayer())) {
+            if (!checkCanBuildOtherGodsConstraints(model.getCurrentPlayer())) {
                 model.onPlayerLose(model.getCurrentPlayer());
 
-                if(model.getPlayers().size() != 1) {
+                if (model.getPlayers().size() != 1) {
                     model.boardUpdate();
+                } else {
+                    onMatchWon();
                 }
             }
         }
@@ -418,32 +421,32 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         List<Cell> availableMoveCellsWorkerSecond = model.getBoard().getAvailableMoveCells(player.getWorkerSecond());
 
 
-        for(Cell moveCell : availableMoveCellsWorkerFirst) {
+        for (Cell moveCell : availableMoveCellsWorkerFirst) {
             boolean feasible = true;
-            for(Player p : model.getPlayers()) {
-                if(!p.equals(player)) {
-                    if(!p.getGodStrategy().checkMoveConstraints(player.getWorkerFirst(), moveCell)) {
+            for (Player p : model.getPlayers()) {
+                if (!p.equals(player)) {
+                    if (!p.getGodStrategy().checkMoveConstraints(player.getWorkerFirst(), moveCell)) {
                         feasible = false;
                         break;
                     }
                 }
             }
 
-            if(feasible) return true;
+            if (feasible) return true;
         }
 
-        for(Cell moveCell : availableMoveCellsWorkerSecond) {
+        for (Cell moveCell : availableMoveCellsWorkerSecond) {
             boolean feasible = true;
-            for(Player p : model.getPlayers()) {
-                if(!p.equals(player)) {
-                    if(!p.getGodStrategy().checkMoveConstraints(player.getWorkerSecond(), moveCell)) {
+            for (Player p : model.getPlayers()) {
+                if (!p.equals(player)) {
+                    if (!p.getGodStrategy().checkMoveConstraints(player.getWorkerSecond(), moveCell)) {
                         feasible = false;
                         break;
                     }
                 }
             }
 
-            if(feasible) return true;
+            if (feasible) return true;
         }
 
 
@@ -455,32 +458,32 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         List<Cell> availableBuildCellsWorkerSecond = model.getBoard().getAvailableBuildCells(player.getWorkerSecond());
 
 
-        for(Cell buildCell : availableBuildCellsWorkerFirst) {
+        for (Cell buildCell : availableBuildCellsWorkerFirst) {
             boolean feasible = true;
-            for(Player p : model.getPlayers()) {
-                if(!p.equals(player)) {
-                    if(!p.getGodStrategy().checkBuildConstraints(player.getWorkerFirst(), buildCell, null)) {
+            for (Player p : model.getPlayers()) {
+                if (!p.equals(player)) {
+                    if (!p.getGodStrategy().checkBuildConstraints(player.getWorkerFirst(), buildCell, null)) {
                         feasible = false;
                         break;
                     }
                 }
             }
 
-            if(feasible) return true;
+            if (feasible) return true;
         }
 
-        for(Cell buildCell : availableBuildCellsWorkerSecond) {
+        for (Cell buildCell : availableBuildCellsWorkerSecond) {
             boolean feasible = true;
-            for(Player p : model.getPlayers()) {
-                if(!p.equals(player)) {
-                    if(!p.getGodStrategy().checkBuildConstraints(player.getWorkerSecond(), buildCell, null)) {
+            for (Player p : model.getPlayers()) {
+                if (!p.equals(player)) {
+                    if (!p.getGodStrategy().checkBuildConstraints(player.getWorkerSecond(), buildCell, null)) {
                         feasible = false;
                         break;
                     }
                 }
             }
 
-            if(feasible) return true;
+            if (feasible) return true;
         }
 
 
@@ -531,7 +534,7 @@ public class Controller extends Observable<Model> implements Observer<Command> {
     public void onPlayerDisconnected(String playerID) {
         Player disconnectedPlayer = model.getPlayers().stream().filter((player) -> player.ID.equals(playerID)).findFirst().orElse(null);
 
-        if (disconnectedPlayer == null) return;
+        if (disconnectedPlayer == null) return; // todo throw unknownplayerexception
 
         if (disconnectedPlayer.getWorkerFirst().getPosition() != null) {
             disconnectedPlayer.getWorkerFirst().getPosition().setWorker(null);
@@ -544,10 +547,14 @@ public class Controller extends Observable<Model> implements Observer<Command> {
         model.removePlayer(disconnectedPlayer);
         model.disconnectedPlayerUpdate(disconnectedPlayer);
 
-        if (model.getPlayers().size() > 1 && model.getCurrentPlayer().equals(disconnectedPlayer)) {
-            model.turnUpdate(model.getCurrentPlayer());
-        }
+        // model.setC();
+        // model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
 
+        model.gamePhaseChangedUpdate(GamePhase.MATCH_ENDED);
+    }
+
+    private void onMatchWon() {
+        notify(this);
     }
 
 }

@@ -45,8 +45,14 @@ class MultipleBuildDelegate {
      * @param selectedWorker    to check if the worker that is trying to build is the same worker that performed movement.
      * @return true if the buildCount is less than the max number of times that the God can build each turn and other standard check are satisfied, false otherwise.
      */
-    boolean checkBuild(Worker worker, Cell buildCell, Worker selectedWorker) {
-        return worker.equals(selectedWorker) && worker.hasMoved() && canBuildAgain() && worker.getPosition().isAdjacentTo(buildCell) && (buildCell.getLevel() != BlockType.DOME) && (buildCell.isEmpty());
+    boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType, Worker selectedWorker) {
+        return worker.equals(selectedWorker) &&
+                worker.hasMoved() &&
+                (buildCellBlockType == null || buildCellBlockType.getLevelNumber() == buildCell.getLevel().getLevelNumber() + 1) &&
+                canBuildAgain() &&
+                worker.getPosition().isAdjacentTo(buildCell) &&
+                (buildCell.getLevel() != BlockType.DOME) &&
+                (buildCell.isEmpty());
     }
 
 }

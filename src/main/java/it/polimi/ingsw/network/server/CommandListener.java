@@ -35,11 +35,7 @@ public class CommandListener extends Observable<Command> implements ObjectListen
 
     @Override
     public void forwardNotify(Object update) {
-        try {
-            notify((Command) update);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        notify((Command) update);
     }
 
     @Override

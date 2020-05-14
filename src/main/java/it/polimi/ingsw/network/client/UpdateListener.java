@@ -10,7 +10,6 @@ import java.net.Socket;
 
 public class UpdateListener extends Observable<Update> implements ObjectListener, Runnable {
     private final ObjectListenerDelegate objectListenerDelegate;
-
     private boolean isActive;
 
     public boolean isActive() {
@@ -33,20 +32,14 @@ public class UpdateListener extends Observable<Update> implements ObjectListener
 
     @Override
     public void forwardNotify(Object update) {
-        try {
-            notify((Update) update);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        notify((Update) update);
     }
 
     @Override
     public void handleConnectionReset() {
 
-        if(!Client.isServerReachable()) {
-            ServerUnreachableUpdate serverUnreachableUpdate = new ServerUnreachableUpdate();
-            notify(serverUnreachableUpdate); // notify the view
-        }
+        ServerUnreachableUpdate serverUnreachableUpdate = new ServerUnreachableUpdate();
+        notify(serverUnreachableUpdate); // notify the view
 
     }
 }

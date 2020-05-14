@@ -32,7 +32,12 @@ public class Zeus extends GodStrategy {
      */
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        return isUsingSelectedWorker(worker) && worker.hasMoved() && !worker.hasBuilt() && (worker.getPosition().isAdjacentTo(buildCell) || worker.getPosition().equals(buildCell)) && (buildCell.getLevel() != BlockType.DOME);
+        return isUsingSelectedWorker(worker) &&
+                worker.hasMoved() &&
+                !worker.hasBuilt() &&
+                (worker.getPosition().isAdjacentTo(buildCell) || worker.getPosition().equals(buildCell)) &&
+                (buildCell.getLevel() != BlockType.DOME) &&
+                (buildCellBlockType == null || buildCellBlockType.getLevelNumber() == buildCell.getLevel().getLevelNumber() + 1);
     }
 
     @Override

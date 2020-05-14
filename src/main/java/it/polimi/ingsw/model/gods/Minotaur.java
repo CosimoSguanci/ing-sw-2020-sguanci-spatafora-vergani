@@ -56,7 +56,6 @@ public class Minotaur extends GodStrategy {
                         backwardCell.getLevel() != BlockType.DOME;
 
             } catch (InvalidCellException e) {
-                e.printStackTrace();
                 return false;
             }
 
@@ -159,7 +158,6 @@ public class Minotaur extends GodStrategy {
                         try {
                             return computeBackwardCell(board, cell, board.getCell(i, j)).isEmpty();
                         } catch (InvalidCellException e) {
-                            e.printStackTrace();
                             return false;
                         }
                     }

@@ -1,7 +1,5 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.commands;
 
-import it.polimi.ingsw.controller.commands.CommandType;
-import it.polimi.ingsw.controller.commands.PlayerCommand;
 import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.BlockType;
 import org.junit.jupiter.api.Disabled;

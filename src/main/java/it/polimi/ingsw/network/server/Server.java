@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Player;
@@ -15,9 +16,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-public class Server implements Observer<Model> {
-    private static final int PORT = 12345;
+public class Server implements Observer<Controller> {
 
+    private static final int PORT = 12345;
+    private static final int MAX_PLAYERS_NUM = 3;
     private static boolean isActive;
 
     public static boolean isActive() {
@@ -29,58 +31,55 @@ public class Server implements Observer<Model> {
     }
 
     private final ServerSocket serverSocket;
+    private final ExecutorService executor = Executors.newFixedThreadPool(128); // todo test what happens if n+1 clients connects
 
-    private final ExecutorService executor = Executors.newFixedThreadPool(128);
-
-    private final Map<Socket, ClientHandler> clientHandlersMap = new HashMap<>();
-
-    private final Map<Socket, String> waitingConnectionTwoPlayers = new HashMap<>(); // associates clientSocket with corresponding clientID
-    private final Map<Socket, String> waitingConnectionThreePlayers = new HashMap<>();
-    private final Map<Socket, String> playingConnections = new HashMap<>();
-
-    private final Map<Model, Controller> modelsControllersMap = new HashMap<>();
+    private final Set<ClientHandler> waitingConnections = new HashSet<>();
+    private final Set<ClientHandler> playingConnections = new HashSet<>();
+    private final Map<Controller, Set<ClientHandler>> controllerClientsMap = new HashMap<>();
 
 
-    public synchronized void lobby(ClientHandler c, String clientId, int playersNum) {
-        Map<Socket, String> waitingConnection = playersNum == 2 ? waitingConnectionTwoPlayers : waitingConnectionThreePlayers;
+    public static boolean isValidPlayerNumber(int playersNum) {
+        return playersNum > 1 && playersNum <= MAX_PLAYERS_NUM;
+    }
 
-        waitingConnection.put(c.getClientSocket(), clientId);
-
-        if (waitingConnection.size() == playersNum) {
-
-            try {
-
-                Match match = new Match(playersNum);
-                Model model = new Model(match);
-                Controller controller = new Controller(model);
-
-                modelsControllersMap.put(model, controller); // todo REMOVE when match ends
-
-                List<Socket> keys = new ArrayList<>(waitingConnection.keySet());
-
-                int i = 0;
-                for (Socket key : keys) {
-                    ClientHandler clientHandler = clientHandlersMap.get(key);
-                    Player player = new Player(waitingConnection.get(keys.get(i++)), model, match);
-
-                    playingConnections.put(key, player.ID); // todo REMOVE when match ends
-
-                    waitingConnection.remove(key);
-
-                    match.addPlayer(player);
-                    RemoteView remoteView = new RemoteView(player, clientHandler);
-                    model.addObserver(remoteView);
-                    remoteView.addObserver(controller);
-                    model.playerUpdate(player);
-                }
-                // todo start a new thread for the match
-                controller.initialPhase();
+    private Set<ClientHandler> getSuitableConnectionsForMatch(int playersNum) {
+        return this.waitingConnections.stream().filter((connection) -> connection.playersNum == playersNum).collect(Collectors.toSet());
+    }
 
 
-            } catch (Exception e) {
-                e.printStackTrace();
+    public synchronized void lobby(ClientHandler newClientHandler) {
+
+        if (!isValidPlayerNumber(newClientHandler.playersNum)) {
+            throw new InvalidPlayerNumberException();
+        }
+
+        int playersNum = newClientHandler.playersNum;
+
+        waitingConnections.add(newClientHandler);
+
+        Set<ClientHandler> suitableConnections = getSuitableConnectionsForMatch(playersNum);
+
+        if (suitableConnections.size() == playersNum) {
+
+            Match match = new Match(playersNum);
+            Model model = new Model(match);
+            Controller controller = new Controller(model);
+
+            for (ClientHandler clientHandler : suitableConnections) {
+                Player player = new Player(clientHandler.clientID, model, match);
+                playingConnections.add(clientHandler);
+                waitingConnections.remove(clientHandler);
+                match.addPlayer(player);
+                RemoteView remoteView = new RemoteView(player, clientHandler);
+                model.addObserver(remoteView);
+                remoteView.addObserver(controller);
+                model.playerUpdate(player);
             }
 
+            controllerClientsMap.put(controller, suitableConnections);
+
+            // todo start a new thread for the match
+            controller.initialPhase();
         }
     }
 
@@ -96,48 +95,49 @@ public class Server implements Observer<Model> {
                 System.out.println("Player connected " + socket.getInetAddress() + " : " + socket.getPort());
                 ClientHandler clientHandler = new ClientHandler(this, socket);
                 executor.submit(clientHandler);
-                clientHandlersMap.put(socket, clientHandler);
             } catch (IOException e) {
                 System.err.println("Connection error");
             }
         }
     }
 
-    void handleConnectionReset(Socket clientSocket) { // Removes client form waiting Maps
-        clientHandlersMap.remove(clientSocket);
+    void handleConnectionReset(Socket clientSocket) {
 
-        String clientPlayerID = playingConnections.remove(clientSocket);
+        Optional<ClientHandler> clientHandlerToRemoveOpt = this.playingConnections.stream().filter((clientHandler -> clientHandler.clientSocket.equals(clientSocket))).findFirst();
 
-        if(clientPlayerID != null) {
-            searchAndRemovePlayerInMatch(clientPlayerID);
+        if (clientHandlerToRemoveOpt.isPresent()) {
+            // need to end the match
 
-            playingConnections.remove(clientSocket);
-        }
-        else {
-            waitingConnectionTwoPlayers.remove(clientSocket);
-            waitingConnectionThreePlayers.remove(clientSocket);
-        }
+            ClientHandler clientHandlerToRemove = clientHandlerToRemoveOpt.get();
 
-    }
+            Optional<Controller> controllerToRemoveOpt = this.controllerClientsMap.entrySet().stream().filter((mapping) -> mapping.getValue().contains(clientHandlerToRemove)).map(Map.Entry::getKey).findFirst();
 
-    private void searchAndRemovePlayerInMatch(String playerID) {
+            if (controllerToRemoveOpt.isPresent()) {
 
-        modelsControllersMap.entrySet().parallelStream().forEach((entry) -> {
-            Model model = entry.getKey();
-            Controller matchController = entry.getValue();
+                Controller controllerToRemove = controllerToRemoveOpt.get();
+                Set<String> clientsIDToRemove = this.controllerClientsMap.get(controllerToRemove).stream().map(clientHandler -> clientHandler.clientID).collect(Collectors.toSet());
+                this.playingConnections.removeIf((clientHandler -> clientsIDToRemove.contains(clientHandler.clientID)));
+                this.controllerClientsMap.remove(controllerToRemove);
 
-            List<Player> players = model.getPlayers().stream().filter((player) -> player.ID.equals(playerID)).collect(Collectors.toList());
-
-            if(players.size() > 0) { // Match found
-                matchController.onPlayerDisconnected(playerID);
+                controllerToRemove.onPlayerDisconnected(clientHandlerToRemove.clientID); // Notify users through Controller
             }
 
-        });
+        } else {
+            this.waitingConnections.removeIf((clientHandler -> clientHandler.clientSocket.equals(clientSocket)));
+        }
 
     }
 
+
     @Override
-    public void update(Model model) {
-        modelsControllersMap.remove(model);
+    public void update(Controller controller) { // Notify by the Controller when a match ends, so a Player won
+
+        Set<ClientHandler> clientHandlers = controllerClientsMap.get(controller);
+
+        for (ClientHandler clientHandler : clientHandlers) {
+            playingConnections.remove(clientHandler);
+        }
+
+        controllerClientsMap.remove(controller);
     }
 }

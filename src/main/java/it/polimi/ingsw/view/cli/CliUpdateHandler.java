@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.view.UpdateHandler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class CliUpdateHandler implements UpdateHandler {
@@ -24,7 +23,7 @@ public class CliUpdateHandler implements UpdateHandler {
 
         cliInstance.print(Cli.toBold("MATCH STARTED!"));
         cliInstance.newLine();
-        cliInstance.print(Cli.toBold("Tip") + ": type 'help " + cliInstance.getCurrentPhaseString() + "' to know command format");
+        cliInstance.print(Cli.toBold("Tip") + ": type 'help " + cliInstance.currentPhaseString + "' to know command format");
         cliInstance.newLine();
         cliInstance.printCurrentTurn();
     }
@@ -69,12 +68,15 @@ public class CliUpdateHandler implements UpdateHandler {
 
     public void handle(BoardUpdate update) {
 
-        if(update.getExecutedCommand() == null || update.getExecutedCommand().commandType != CommandType.END_TURN) {
+        if(cliInstance.getCurrentPhase().equals(GamePhase.MATCH_LOST) && !cliInstance.wantsToContinueToWatch()) return;
+
+        if((update.getExecutedCommand() == null || update.getExecutedCommand().commandType != CommandType.END_TURN)) {
             cliInstance.printBoard(update.board);
         }
 
         if(update.getExecutedCommand() != null && (update.getExecutedCommand().commandType == CommandType.BUILD || update.getExecutedCommand().commandType == CommandType.MOVE)) {
             PlayerCommand executedCommand = update.getExecutedCommand();
+
 
             cliInstance.newLine();
 
@@ -140,7 +142,7 @@ public class CliUpdateHandler implements UpdateHandler {
                 cliInstance.print(Cli.toBold("Gods Choose Error") + ": maybe it's not your turn and/or you typed something incorrectly");
                 break;
         }
-        cliInstance.print("For more information about commands or rules, type 'help " + cliInstance.getCurrentPhaseString() + "' or 'rules'");
+        cliInstance.print("For more information about commands or rules, type 'help " + cliInstance.currentPhaseString + "' or 'rules'");
         cliInstance.newLine();
     }
 
@@ -257,9 +259,9 @@ public class CliUpdateHandler implements UpdateHandler {
         String nicknameToShow = update.disconnectedPlayerNickname != null ? update.disconnectedPlayerNickname : "A player";
         cliInstance.print(nicknameToShow + " disconnected!");
         cliInstance.newLine();
-        cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
-        cliInstance.print("Do you want to play another match?");
 
+       /* cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
+        cliInstance.print("Do you want to play another match?"); */
     }
 
 
@@ -275,8 +277,7 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     private StringBuilder availableGods() {
-        HashMap<String, HashMap<String, String>> godsInfo = new HashMap(GodsUtils.getGodsInfo());  //all info about available gods
-        ArrayList<String> godNames = new ArrayList<>(godsInfo.keySet());  //list of gods' names
+        ArrayList<String> godNames = new ArrayList<>(GodsUtils.getGodsInfo().keySet());  //list of gods' names
         StringBuilder result = new StringBuilder(godNames.get(0).toUpperCase());
         for(int i = 1; i < godNames.size(); i++) {
             result.append(", ").append(godNames.get(i).toUpperCase());

@@ -16,8 +16,13 @@ import it.polimi.ingsw.view.Manual;
 import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,14 +43,14 @@ public class Cli extends View implements Observer<Update> {
 
     // TODO Put currentGamePhase in common superclass with GUI
 
-
     private GamePhase currentGamePhase;
-    private final String currentPhaseString = "current_phase";
+    final String currentPhaseString = "current_phase";
 
     private List<String> selectedNicknames;
     private List<PrintableColor> selectableColors;
 
     private boolean isInitialGodChooser = false;
+    private boolean continueToWatch = false;
 
     private List<String> selectableGods;
     private Map<String, String> playersGods;
@@ -54,6 +59,10 @@ public class Cli extends View implements Observer<Update> {
     private final UpdateHandler cliUpdateHandler;
 
     final Controller controller; /// WIP
+
+    private boolean soundPlayed = false;
+
+    private UpdateListener updateListener;
 
     /**
      * Cli is the builder of the class. At the moment of the Cli creation
@@ -64,10 +73,12 @@ public class Cli extends View implements Observer<Update> {
      * @param controller indicates clientSideController implements client-side checks
      * in order to avoid repeated and unnecessary interactions with the server.
      */
-    public Cli(Client client, Controller controller) {
+    public Cli(Client client, Controller controller, UpdateListener updateListener) {
         this.client = client;
         this.controller = controller; // WIP
         this.cliUpdateHandler = new CliUpdateHandler(this);
+
+        this.updateListener = updateListener;
     }
 
     /**
@@ -165,14 +176,16 @@ public class Cli extends View implements Observer<Update> {
                     if(command.equals("yes")) {
 
                         try {
-                            client.closeConnection();
+
+                            updateListener.setIsActive(false);
                             client.reinitializeConnection();
 
-                            UpdateListener updateListener = new UpdateListener(client.getSocket());
+                            updateListener = new UpdateListener(client.getSocket());
                             new Thread(updateListener).start();
                             updateListener.addObserver(this);
 
                             this.playersNum = 0;
+                            this.continueToWatch = false;
 
                         } catch(IOException e) {
                             e.printStackTrace();
@@ -195,12 +208,12 @@ public class Cli extends View implements Observer<Update> {
                     command = command.toLowerCase();
 
                     if(command.equals("yes")) {
+                        this.continueToWatch = true;
                         continue;// todo test
                     }
                     else if(command.equals("no")) {
                         this.currentGamePhase = GamePhase.MATCH_ENDED;
                         print("Do you want to play another match?");
-
                     }
                     else throw new BadCommandException(); // todo add multiple exception
 
@@ -545,6 +558,10 @@ public class Cli extends View implements Observer<Update> {
             case REAL_GAME:
                 // real game
                 break;
+            case MATCH_ENDED:
+                print("Do you want to play another match?");
+                newLine();
+                break;
         }
     }
 
@@ -732,17 +749,36 @@ public class Cli extends View implements Observer<Update> {
     void printCurrentTurn() {
         String currentPlayerNickname = controller.getCurrentPlayerNickname();
         if(currentPlayerNickname != null && playerWithColor(currentPlayerNickname) != null) {
+
             if (!controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {  //not player's turn
+                soundPlayed = false;
                 print("It's " + playerWithColor(currentPlayerNickname) + "'s turn!");
             } else {  //client's turn
                 print("It's" + convertColorToAnsi(playersColors.get(currentPlayerNickname)) + " your " + PrintableColor.RESET + "turn!");
+
+                if(!soundPlayed) {
+                    try {
+                        URL defaultSound = getClass().getResource("/turn.wav");
+                        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(defaultSound);
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(audioInputStream);
+                        clip.start( );
+
+                        soundPlayed = true;
+                    } catch (Exception ignored) {}
+                }
+
             }
             newLine();
         }
     }
 
-    String getCurrentPhaseString() {
-        return this.currentPhaseString;
+    GamePhase getCurrentPhase() {
+        return this.currentGamePhase;
+    }
+
+    boolean wantsToContinueToWatch() {
+        return this.continueToWatch;
     }
 
     static String toBold(String s) {

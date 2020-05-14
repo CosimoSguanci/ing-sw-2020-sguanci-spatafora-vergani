@@ -28,7 +28,7 @@ public class Hestia extends GodStrategy {
      * Otherwise, if it's the first build, the method returns true, while if it's the second Build action, an additional control is
      * done to allow second builds only on cells that are not on the Board perimeter.
      *
-     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, Worker)
+     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, BlockType, Worker)
      * @see Hestia#isPerimeterCell(Cell)
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
@@ -37,7 +37,7 @@ public class Hestia extends GodStrategy {
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
 
-        if (!multipleBuildDelegate.checkBuild(worker, buildCell, selectedWorker))
+        if (!multipleBuildDelegate.checkBuild(worker, buildCell, buildCellBlockType, selectedWorker))
             return false;
         return multipleBuildDelegate.getBuildCount() != HESTIA_MAX_BUILD_NUM - 1 || !isPerimeterCell(buildCell);
     }
