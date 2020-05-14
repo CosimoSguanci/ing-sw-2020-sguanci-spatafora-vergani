@@ -94,8 +94,9 @@ public class ControllerTest {
         Worker w2B = p2.getWorkerSecond();
 
         GodStrategy divinity = new Apollo();
+        GodStrategy divine = new Artemis();
         p1.setGodStrategy(divinity);
-        p2.setGodStrategy(divinity);
+        p2.setGodStrategy(divine);
 
         w1A.setInitialPosition(1,3);
         w1B.setInitialPosition(3,1);
@@ -137,6 +138,11 @@ public class ControllerTest {
         assertEquals(match.getMatchBoard().getCell(3,1), w1B.getPosition());
         assertEquals(match.getMatchBoard().getCell(4,4), w2A.getPosition());
         assertEquals(match.getMatchBoard().getCell(1,3), w2B.getPosition());
+
+        match.nextTurn();  //Andrea's turn
+        assertEquals(p1, model.getCurrentPlayer());
+        match.nextTurn();  //Cosimo's turn
+        assertEquals(p2, model.getCurrentPlayer());
 
         playerCommand = PlayerCommand.parseInput("move w2 e4");
         playerCommand.setPlayer(p2);
