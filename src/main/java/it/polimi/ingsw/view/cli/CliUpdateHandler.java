@@ -211,7 +211,7 @@ public class CliUpdateHandler implements UpdateHandler {
         cliInstance.print(cliInstance.playerWithColor(update.winnerPlayerNickname) + " wins!");
 
         cliInstance.newLine();
-        cliInstance.print("Do you want to play another match?");
+        //cliInstance.print("Do you want to play another match?");
 
         //cliInstance.handleMatchEnded();
     }
@@ -226,7 +226,7 @@ public class CliUpdateHandler implements UpdateHandler {
 
             if(update.onePlayerRemaining) {
                 cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED); // todo method to avoid duplicate
-                cliInstance.print("Do you want to play another match?");
+                //cliInstance.print("Do you want to play another match?");
             }
             else {
                 cliInstance.print("Do you want to continue to watch this match?");
@@ -239,7 +239,7 @@ public class CliUpdateHandler implements UpdateHandler {
             cliInstance.print(Cli.toBold("You Win!"));
             cliInstance.newLine();
             cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
-            cliInstance.print("Do you want to play another match?");
+            //cliInstance.print("Do you want to play another match?");
         }
         else {
             cliInstance.newLine();

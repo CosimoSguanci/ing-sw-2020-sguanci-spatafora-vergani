@@ -211,6 +211,7 @@ public class Cli extends View implements Observer<Update> {
 
                     if(command.equals("yes")) {
                         this.continueToWatch = true;
+                        newLine();
                         continue;// todo test
                     }
                     else if(command.equals("no")) {
