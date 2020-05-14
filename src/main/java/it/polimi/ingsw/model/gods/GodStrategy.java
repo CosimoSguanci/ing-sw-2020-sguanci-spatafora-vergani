@@ -73,7 +73,7 @@ public abstract class GodStrategy {
      * @return true if the move passed as parameter can be performed, false otherwise.
      */
     public boolean checkMove(Worker worker, Cell moveCell) { // abstract ?
-        return worker.standardCheckMove(moveCell);
+        return worker.standardCheckMove(moveCell) && (selectedWorker == null || isUsingSelectedWorker(worker));
     }
 
     /**
@@ -151,6 +151,7 @@ public abstract class GodStrategy {
      * @param player    Player corresponding to the current turn.
      */
     public void endPlayerTurn(Player player) {
+        this.selectedWorker = null;
         player.getWorkerFirst().reinitializeBuiltMoved();
         player.getWorkerSecond().reinitializeBuiltMoved();
     }
