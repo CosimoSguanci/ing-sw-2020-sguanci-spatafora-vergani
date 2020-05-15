@@ -81,13 +81,13 @@ public abstract class GodStrategy {
      * It checks if the build action which the player requested to do is allowed.
      * It can be extended by Gods which alter the standard build rules.
      *
-     * @see Worker#standardCheckBuild(Cell)
+     * @see Worker#standardCheckBuild(Cell, BlockType)
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
      * @return true if the Build passed as parameter can be performed, false otherwise.
      */
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        return isUsingSelectedWorker(worker) && (buildCellBlockType == null || buildCellBlockType.getLevelNumber() == buildCell.getLevel().getLevelNumber() + 1) && worker.standardCheckBuild(buildCell);
+        return isUsingSelectedWorker(worker) && (buildCellBlockType == null || buildCellBlockType.getLevelNumber() == buildCell.getLevel().getLevelNumber() + 1) && worker.standardCheckBuild(buildCell, buildCellBlockType);
     }
 
     /**
@@ -207,8 +207,8 @@ public abstract class GodStrategy {
      * @param worker    Player's selected Worker corresponding to the current turn.
      * @return true if Worker's position level is 3 and it comes from level 2 (standard Win Condition triggered), false otherwise.
      */
-    public boolean checkWinCondition(Worker worker) { // TODO hasMoved()?
-        return !worker.hasBuilt() && worker.getPosition().getLevel() == BlockType.LEVEL_THREE && worker.getPreviousPositionBlockType() == BlockType.LEVEL_TWO; // TODO Win condition, if I go up two levels in a move?
+    public boolean checkWinCondition(Worker worker) { // TODO TEST hasMoved()
+        return worker.hasMoved() && !worker.hasBuilt() && worker.getPosition().getLevel() == BlockType.LEVEL_THREE && worker.getPreviousPositionBlockType() == BlockType.LEVEL_TWO; // TODO Win condition, if I go up two levels in a move?
     }
 
     public boolean canMove(Board board, Player player) {
@@ -218,7 +218,6 @@ public abstract class GodStrategy {
     public boolean canBuild(Board board, Worker worker) {
         return board.canBuild(worker); // selected worker ?
     }
-
 
     public static GodStrategy instantiateGod(String god) {
         return GodsUtils.godsFactory(god);

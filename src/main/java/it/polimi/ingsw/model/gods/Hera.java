@@ -25,10 +25,10 @@ public class Hera extends GodStrategy {
     /**
      * Implements Hera Win Constraints to other players.
      *
-     * @see Hera#isPerimeterCell(Cell)
-     * @param opponentWorker    the opponent selected worker for the current turn.
-     * @param moveCell          the cell in which the opponent Player moved the selected worker.
+     * @param opponentWorker the opponent selected worker for the current turn.
+     * @param moveCell       the cell in which the opponent Player moved the selected worker.
      * @return true if the Cell where the opposite Worker moved is not a perimeter Cell, false otherwise
+     * @see Hera#isPerimeterCell(Cell)
      */
     @Override
     public boolean checkWinConstraints(Worker opponentWorker, Cell moveCell) {
@@ -38,7 +38,7 @@ public class Hera extends GodStrategy {
     /**
      * Checks if the Cell passed is on the perimeter of the game Board.
      *
-     * @param cell    the Cell in which the Opponent Worker was moved
+     * @param cell the Cell in which the Opponent Worker was moved
      * @return true if the Cell is in the perimeter of the game Board, false otherwise.
      */
     private boolean isPerimeterCell(Cell cell) {

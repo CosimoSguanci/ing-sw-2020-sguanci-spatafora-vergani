@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.Worker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +44,7 @@ public class Prometheus extends GodStrategy {
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
 
-        if(selectedWorker != null && !worker.equals(selectedWorker))
+        if (selectedWorker != null && !worker.equals(selectedWorker))
             return false;
 
         if (!worker.hasBuilt() && !worker.hasMoved()) { // First build (before moving)
@@ -83,7 +82,7 @@ public class Prometheus extends GodStrategy {
     public void executeMove(Worker worker, Cell moveCell) {
         worker.move(moveCell);
 
-        if(!builtBeforeMoving) { // not setting selectedWorker if builtBeforeMoving (it is set in executeBuild otherwise)
+        if (!builtBeforeMoving) { // not setting selectedWorker if builtBeforeMoving (it is set in executeBuild otherwise)
             this.selectedWorker = worker;
         }
     }
@@ -110,7 +109,7 @@ public class Prometheus extends GodStrategy {
 
         if (builtBeforeMoving && multipleBuildDelegate.getBuildCount() == 1) {
 
-            if(!worker.canMove()) worker.player.model.onPlayerLose(worker.player); // or: if availableCells.size() == 0
+            if (!worker.canMove()) worker.player.model.onPlayerLose(worker.player); // or: if availableCells.size() == 0
 
             else {
                 List<Cell> availableCells = worker.board.getAvailableMoveCells(worker);
@@ -118,21 +117,21 @@ public class Prometheus extends GodStrategy {
                 List<Cell> feasibleMoveCells = new ArrayList<>();
 
                 availableCells.forEach((moveCell) -> {
-                    if(moveCell.getLevel().getLevelNumber() <= worker.getPosition().getLevel().getLevelNumber()) {
+                    if (moveCell.getLevel().getLevelNumber() <= worker.getPosition().getLevel().getLevelNumber()) {
                         feasibleMoveCells.add(moveCell);
                     }
                 });
 
-                if(feasibleMoveCells.size() == 0)  worker.player.model.onPlayerLose(worker.player);
+                if (feasibleMoveCells.size() == 0) worker.player.model.onPlayerLose(worker.player);
 
                 else {
                     List<Player> players = worker.player.model.getPlayers();
 
                     List<Cell> actualFeasibleMoveCells = feasibleMoveCells.stream().filter((moveCell) -> {
                         boolean actuallyFeasible = true;
-                        for(Player p : players) {
-                            if(!p.equals(worker.player)) {
-                                if(!p.getGodStrategy().checkMoveConstraints(worker, moveCell)) {
+                        for (Player p : players) {
+                            if (!p.equals(worker.player)) {
+                                if (!p.getGodStrategy().checkMoveConstraints(worker, moveCell)) {
                                     actuallyFeasible = false;
                                     break;
                                 }
@@ -141,7 +140,7 @@ public class Prometheus extends GodStrategy {
                         return actuallyFeasible;
                     }).collect(Collectors.toList());
 
-                    if(actualFeasibleMoveCells.size() == 0)  worker.player.model.onPlayerLose(worker.player);
+                    if (actualFeasibleMoveCells.size() == 0) worker.player.model.onPlayerLose(worker.player);
                 }
 
             }

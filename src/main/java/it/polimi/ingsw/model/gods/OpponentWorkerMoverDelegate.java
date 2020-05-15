@@ -28,4 +28,9 @@ class OpponentWorkerMoverDelegate {
         opponent.move(opponentNewPosition);
         opponent.reinitializeBuiltMoved();
     }
+
+    boolean isNotOtherPlayerWorkerPosition(Worker worker, Cell moveCell) {
+        Worker otherWorker = worker.equals(worker.player.getWorkerFirst()) ? worker.player.getWorkerSecond() : worker.player.getWorkerFirst();
+        return !moveCell.getWorker().equals(otherWorker);
+    }
 }

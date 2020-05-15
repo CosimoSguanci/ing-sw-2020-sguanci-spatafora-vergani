@@ -17,7 +17,7 @@ public class Hestia extends GodStrategy {
 
     final int HESTIA_MAX_BUILD_NUM = 2;
     private final MultipleBuildDelegate multipleBuildDelegate;
-    
+
     public Hestia() {
         super(NAME, DESCRIPTION, POWER_DESCRIPTION);
         multipleBuildDelegate = new MultipleBuildDelegate(HESTIA_MAX_BUILD_NUM);
@@ -28,15 +28,14 @@ public class Hestia extends GodStrategy {
      * Otherwise, if it's the first build, the method returns true, while if it's the second Build action, an additional control is
      * done to allow second builds only on cells that are not on the Board perimeter.
      *
-     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, BlockType, Worker)
-     * @see Hestia#isPerimeterCell(Cell)
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
      * @return true if the Build passed as parameter can be performed, false otherwise.
+     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, BlockType, Worker)
+     * @see Hestia#isPerimeterCell(Cell)
      */
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-
         if (!multipleBuildDelegate.checkBuild(worker, buildCell, buildCellBlockType, selectedWorker))
             return false;
         return multipleBuildDelegate.getBuildCount() != HESTIA_MAX_BUILD_NUM - 1 || !isPerimeterCell(buildCell);
@@ -45,9 +44,9 @@ public class Hestia extends GodStrategy {
     /**
      * Decorates the standard executeBuild increasing the build count of {@link MultipleBuildDelegate}
      *
-     * @see GodStrategy#executeBuild(Worker, Cell, BlockType)
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
+     * @see GodStrategy#executeBuild(Worker, Cell, BlockType)
      */
     @Override
     public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
@@ -58,7 +57,7 @@ public class Hestia extends GodStrategy {
     /**
      * Checks if the Cell passed is on the perimeter of the game Board.
      *
-     * @param cell    the Cell in which the Opponent Worker was moved
+     * @param cell the Cell in which the Opponent Worker was moved
      * @return true if the Cell is in the perimeter of the game Board, false otherwise.
      */
     private boolean isPerimeterCell(Cell cell) {
@@ -69,8 +68,8 @@ public class Hestia extends GodStrategy {
     /**
      * This method calls superclass endTurn, then resets build count at the end of Player's turn.
      *
+     * @param player Player corresponding to the current turn.
      * @see GodStrategy#endPlayerTurn(Player)
-     * @param player    Player corresponding to the current turn.
      */
     @Override
     public void endPlayerTurn(Player player) {

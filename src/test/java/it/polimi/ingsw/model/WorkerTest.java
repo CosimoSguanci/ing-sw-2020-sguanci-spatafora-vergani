@@ -160,7 +160,7 @@ public class WorkerTest {
         testWorker.setInitialPosition(0,0);
 
         testWorker.move(board.getCell(0,1));
-        assertTrue(testWorker.standardCheckBuild(board.getCell(0,2)));
+        assertTrue(testWorker.standardCheckBuild(board.getCell(0,2), null));
         Cell previousPosition = testWorker.getPosition();
         testWorker.build(board.getCell(0,2), null);
         assertEquals(BlockType.LEVEL_ONE , board.getCell(0,2).getLevel());
@@ -169,7 +169,7 @@ public class WorkerTest {
 
         testWorker.reinitializeBuiltMoved();
         testWorker.setHasMoved();
-        assertTrue(testWorker.standardCheckBuild(board.getCell(0,2)));
+        assertTrue(testWorker.standardCheckBuild(board.getCell(0,2), null));
         previousPosition = testWorker.getPosition();
         testWorker.build(board.getCell(0,2), null);
         assertEquals(BlockType.LEVEL_TWO, board.getCell(0,2).getLevel());
@@ -178,7 +178,7 @@ public class WorkerTest {
 
         testWorker.reinitializeBuiltMoved();
         testWorker.setHasMoved();
-        assertTrue(testWorker.standardCheckBuild(board.getCell(0,2)));
+        assertTrue(testWorker.standardCheckBuild(board.getCell(0,2), null));
         previousPosition = testWorker.getPosition();
         testWorker.build(board.getCell(0,2), null);
         assertEquals(BlockType.LEVEL_THREE, board.getCell(0,2).getLevel());
@@ -187,7 +187,7 @@ public class WorkerTest {
 
         testWorker.reinitializeBuiltMoved();
         testWorker.setHasMoved();
-        assertTrue(testWorker.standardCheckBuild(board.getCell(0,2)));
+        assertTrue(testWorker.standardCheckBuild(board.getCell(0,2), null));
         previousPosition = testWorker.getPosition();
         testWorker.build(board.getCell(0,2), null);
         assertEquals(BlockType.DOME, board.getCell(0,2).getLevel());
@@ -224,7 +224,7 @@ public class WorkerTest {
         testWorker.setInitialPosition(0,0);
         BlockType previousLevel = board.getCell(0,1).getLevel();
 
-        assertFalse(testWorker.standardCheckBuild(board.getCell(0,2)));
+        assertFalse(testWorker.standardCheckBuild(board.getCell(0,2), null));
         assertSame(board.getCell(0,1).getLevel(), previousLevel);
         System.out.println("Test successfully completed.");
     }
@@ -235,8 +235,7 @@ public class WorkerTest {
     public void testCellNotEmptyBuild()  {
 
         int playersNum = 2;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Board board = match.getMatchBoard();
         Player testPlayer = new Player("Roberto",  new Model(match), match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
@@ -248,7 +247,7 @@ public class WorkerTest {
         BlockType previousLevel = board.getCell(0,1).getLevel();
         testSecondWorker.setInitialPosition(0,1);
 
-        assertFalse(testWorker.standardCheckBuild(board.getCell(0,1)));
+        assertFalse(testWorker.standardCheckBuild(board.getCell(0,1), null));
         assertSame(board.getCell(0,1).getLevel(), previousLevel);
         System.out.println("Test successfully completed.");
     }
@@ -258,8 +257,7 @@ public class WorkerTest {
     public void testDomeBuild()  {
 
         int playersNum = 2;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Board board = match.getMatchBoard();
         Player testPlayer = new Player("Roberto", new Model(match), match);
         Worker testWorker = new Worker(testPlayer, board, Command.WORKER_FIRST);
@@ -269,7 +267,7 @@ public class WorkerTest {
         testWorker.setInitialPosition(0,0);
         board.getCell(0,1).setLevel(BlockType.DOME);
 
-        assertFalse(testWorker.standardCheckBuild(board.getCell(0,1)));
+        assertFalse(testWorker.standardCheckBuild(board.getCell(0,1), null));
         assertSame(board.getCell(0,1).getLevel(), BlockType.DOME);
         System.out.println("Test successfully completed.");
     }

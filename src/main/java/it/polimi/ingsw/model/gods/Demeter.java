@@ -43,8 +43,7 @@ public class Demeter extends GodStrategy {
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
         return multipleBuildDelegate.checkBuild(worker, buildCell, buildCellBlockType, selectedWorker) &&
-                (!previousCellNeededDelegate.hasPreviousCell() ||
-                        !(previousCellNeededDelegate.getPreviousCell().equals(buildCell)));
+                (!previousCellNeededDelegate.hasPreviousCell() || !previousCellNeededDelegate.getPreviousCell().equals(buildCell));
     }
 
     /**

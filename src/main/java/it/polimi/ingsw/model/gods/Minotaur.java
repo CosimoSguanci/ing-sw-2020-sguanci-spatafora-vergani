@@ -48,10 +48,10 @@ public class Minotaur extends GodStrategy {
             try {
                 backwardCell = computeBackwardCell(worker.board, worker.getPosition(), moveCell);
 
-                return  (selectedWorker == null || isUsingSelectedWorker(selectedWorker)) &&
+                return (selectedWorker == null || isUsingSelectedWorker(selectedWorker)) &&
                         !worker.hasMoved() &&
                         !worker.hasBuilt() &&
-                        ( moveCell.isEmpty() || !moveCell.getWorker().equals(otherWorker)) &&
+                        (moveCell.isEmpty() || !moveCell.getWorker().equals(otherWorker)) &&
                         worker.getPosition().isAdjacentTo(moveCell) &&
                         backwardCell.getRowIdentifier() < Board.WIDTH_SIZE &&
                         backwardCell.getColIdentifier() < Board.HEIGHT_SIZE &&
@@ -159,7 +159,7 @@ public class Minotaur extends GodStrategy {
                     else {
                         try {
                             return computeBackwardCell(board, cell, board.getCell(i, j)).isEmpty();
-                        } catch (InvalidCellException ignored) {
+                        } catch (InvalidCellException ignored) { // todo handle
                         }
 
                     }

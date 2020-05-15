@@ -82,10 +82,12 @@ public class Worker {
      * - The new Cell level is not DOME.
      */
     public boolean standardCheckMove(Cell moveCell) {
-        if (!this.hasMoved && !this.hasBuilt && this.position.isAdjacentTo(moveCell) && (moveCell.isEmpty()) && (moveCell.getLevel() != BlockType.DOME)) {
-            return this.position.isLevelDifferenceOk(moveCell);
-        }
-        return false;
+        return  !this.hasMoved &&
+                !this.hasBuilt &&
+                this.position.isAdjacentTo(moveCell) &&
+                moveCell.isEmpty() &&
+                moveCell.getLevel() != BlockType.DOME &&
+                this.position.isLevelDifferenceOk(moveCell);
     }
 
     /**
@@ -99,10 +101,13 @@ public class Worker {
      * - The build Cell is empty;
      * - The build Cell level is not DOME.
      */
-    public boolean standardCheckBuild(Cell buildCell) {
-
-        // Workers can build if the cell level is not the maximum and if the cell has not another Worker in it.
-        return this.hasMoved && !this.hasBuilt && this.position.isAdjacentTo(buildCell) && (buildCell.getLevel() != BlockType.DOME) && (buildCell.isEmpty());
+    public boolean standardCheckBuild(Cell buildCell, BlockType buildCellBlockType) {
+        return  this.hasMoved &&
+                !this.hasBuilt &&
+                this.position.isAdjacentTo(buildCell) &&
+                buildCell.getLevel() != BlockType.DOME &&
+                (buildCellBlockType == null || buildCellBlockType.getLevelNumber() == buildCell.getLevel().getLevelNumber() + 1) &&
+                buildCell.isEmpty();
     }
 
     /**

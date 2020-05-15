@@ -29,25 +29,11 @@ public class Atlas extends GodStrategy {
             return super.checkBuild(worker, buildCell, buildCellBlockType);
         }
 
-        return isUsingSelectedWorker(worker) && worker.standardCheckBuild(buildCell);
+        return  isUsingSelectedWorker(worker) &&
+                worker.hasMoved() &&
+                !worker.hasBuilt() &&
+                worker.getPosition().isAdjacentTo(buildCell) &&
+                buildCell.getLevel() != BlockType.DOME &&
+                buildCell.isEmpty();
     }
-
-    /**
-     * This method overrides executeBuild using Cell setLevel method to force the construction of a Dome at any level.
-     * If another level is being built, it forward the call to superclass executeBuild.
-     *
-     * @param worker    the worker who want to build a new level.
-     * @param buildCell the cell in which the Player want to build a new level.
-     * @see GodStrategy#executeMove(Worker, Cell)
-     */
-   /* @Override
-    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        if (buildCellBlockType == BlockType.DOME) {
-            buildCell.setLevel(buildCellBlockType);
-            worker.setHasBuilt();
-        } else {
-            super.executeBuild(worker, buildCell, buildCellBlockType);
-        }
-
-    } */
 }
