@@ -216,6 +216,7 @@ public class Cli extends View implements Observer<Update> {
                     }
                     else if(command.equals("no")) {
                         this.currentGamePhase = GamePhase.MATCH_ENDED;
+                        newLine();
                         print("Do you want to play another match?");
                     }
                     else throw new BadCommandException(); // todo add multiple exception
