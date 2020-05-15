@@ -4,6 +4,10 @@ import it.polimi.ingsw.controller.commands.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 public class Client {
@@ -16,6 +20,12 @@ public class Client {
     private Socket socket;
     private DataOutputStream dataOutputStream;
     private ObjectOutputStream objectOutputStream;
+    private UpdateListener updateListener;
+
+    private final ExecutorService executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+            0L, TimeUnit.SECONDS,
+            new SynchronousQueue<>());
+
 
     public Client() throws IOException {
         initConnection();
@@ -26,6 +36,9 @@ public class Client {
         this.socket.setSoTimeout(TIMEOUT_MS);
         this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
         this.objectOutputStream = null;
+
+        this.updateListener = new UpdateListener(socket);
+        executor.execute(updateListener);
     }
 
     public void reinitializeConnection() throws IOException {
@@ -49,6 +62,10 @@ public class Client {
 
     public Socket getSocket() {
         return this.socket;
+    }
+
+    public UpdateListener getUpdateListener() {
+        return this.updateListener;
     }
 
 }

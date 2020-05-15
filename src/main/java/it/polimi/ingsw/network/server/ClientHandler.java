@@ -11,14 +11,23 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class ClientHandler extends Observable<Command> implements Runnable, Observer<Command> {
 
     private final Server server;
     private ObjectOutputStream objectOutputStream;
     final Socket clientSocket;
-    final String clientID;
+    public final String clientID;
     int playersNum;
+
+    private final ExecutorService executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+            0L, TimeUnit.SECONDS,
+            new SynchronousQueue<>());
+
 
     ClientHandler(Server server, Socket clientSocket) {
         this.server = server;
@@ -47,8 +56,8 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
             this.playersNum = input.readInt();
 
             CommandListener commandListener = new CommandListener(clientSocket, server);
-            new Thread(commandListener).start();
             commandListener.addObserver(this);
+            executor.execute(commandListener);
 
             server.lobby(this);
 

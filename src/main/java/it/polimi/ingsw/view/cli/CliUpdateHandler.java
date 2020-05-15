@@ -149,8 +149,8 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     public void handle(GamePhaseChangedUpdate update) {
-        cliInstance.newLine();
-        cliInstance.newLine();
+     /*   cliInstance.newLine();
+        cliInstance.newLine(); */
         cliInstance.newLine();
         if(update.newGamePhase.isPrintable()) {
             //cliInstance.print(Cli.toBold(update.newGamePhase.toString()));

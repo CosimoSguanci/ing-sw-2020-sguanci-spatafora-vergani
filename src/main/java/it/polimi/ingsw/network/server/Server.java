@@ -13,7 +13,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Server implements Observer<Controller> {
@@ -21,6 +23,22 @@ public class Server implements Observer<Controller> {
     private static final int PORT = 12345;
     private static final int MAX_PLAYERS_NUM = 3;
     private static boolean isActive;
+    private final ServerSocket serverSocket;
+
+    /**
+     * Cached ThreadPool without idle threads termination
+     */
+    private final ExecutorService executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+            0L, TimeUnit.SECONDS,
+            new SynchronousQueue<>()); // Todo use everywhere to handle termination?
+
+    private final Set<ClientHandler> waitingConnections = new HashSet<>();
+    private final Set<ClientHandler> playingConnections = new HashSet<>();
+    private final Map<Controller, Set<ClientHandler>> controllerClientsMap = new HashMap<>();
+
+    public Server() throws IOException {
+        this.serverSocket = new ServerSocket(PORT);
+    }
 
     public static boolean isActive() {
         return isActive;
@@ -30,14 +48,6 @@ public class Server implements Observer<Controller> {
         isActive = active;
     }
 
-    private final ServerSocket serverSocket;
-    private final ExecutorService executor = Executors.newFixedThreadPool(128); // todo test what happens if n+1 clients connects
-
-    private final Set<ClientHandler> waitingConnections = new HashSet<>();
-    private final Set<ClientHandler> playingConnections = new HashSet<>();
-    private final Map<Controller, Set<ClientHandler>> controllerClientsMap = new HashMap<>();
-
-
     public static boolean isValidPlayerNumber(int playersNum) {
         return playersNum > 1 && playersNum <= MAX_PLAYERS_NUM;
     }
@@ -45,7 +55,6 @@ public class Server implements Observer<Controller> {
     private Set<ClientHandler> getSuitableConnectionsForMatch(int playersNum) {
         return this.waitingConnections.stream().filter((connection) -> connection.playersNum == playersNum).collect(Collectors.toSet());
     }
-
 
     public synchronized void lobby(ClientHandler newClientHandler) {
 
@@ -83,10 +92,6 @@ public class Server implements Observer<Controller> {
         }
     }
 
-    public Server() throws IOException {
-        this.serverSocket = new ServerSocket(PORT);
-    }
-
     public void runServer() {
         System.out.println("Waiting for incoming connections...");
         while (isActive()) {
@@ -94,7 +99,7 @@ public class Server implements Observer<Controller> {
                 Socket socket = serverSocket.accept();
                 System.out.println("Player connected " + socket.getInetAddress() + " : " + socket.getPort());
                 ClientHandler clientHandler = new ClientHandler(this, socket);
-                executor.submit(clientHandler);
+                executor.execute(clientHandler);
             } catch (IOException e) {
                 System.err.println("Connection error");
             }

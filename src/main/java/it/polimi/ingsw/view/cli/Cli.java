@@ -58,11 +58,9 @@ public class Cli extends View implements Observer<Update> {
 
     private final UpdateHandler cliUpdateHandler;
 
-    final Controller controller; /// WIP
+    final Controller controller;
 
     private boolean soundPlayed = false;
-
-    private UpdateListener updateListener;
 
     private String currentBoard;  //Gson representation of current board of the match
 
@@ -75,12 +73,12 @@ public class Cli extends View implements Observer<Update> {
      * @param controller indicates clientSideController implements client-side checks
      * in order to avoid repeated and unnecessary interactions with the server.
      */
-    public Cli(Client client, Controller controller, UpdateListener updateListener) {
+    public Cli(Client client, Controller controller) {
         this.client = client;
-        this.controller = controller; // WIP
+        this.controller = controller;
         this.cliUpdateHandler = new CliUpdateHandler(this);
 
-        this.updateListener = updateListener;
+        client.getUpdateListener().addObserver(this); // Register to UpdateListener
     }
 
     /**
@@ -179,12 +177,12 @@ public class Cli extends View implements Observer<Update> {
 
                         try {
 
-                            updateListener.setIsActive(false);
+                            client.getUpdateListener().setIsActive(false);
                             client.reinitializeConnection();
 
-                            updateListener = new UpdateListener(client.getSocket());
+                            /*updateListener = new UpdateListener(client.getSocket());
                             new Thread(updateListener).start();
-                            updateListener.addObserver(this);
+                            updateListener.addObserver(this);*/
 
                             this.playersNum = 0;
                             this.continueToWatch = false;

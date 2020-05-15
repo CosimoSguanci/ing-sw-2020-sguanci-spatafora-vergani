@@ -35,7 +35,7 @@ class CliTest {
         } catch (IOException e){
             e.printStackTrace();
         }
-        Cli cli = new Cli(client, null, null);
+        Cli cli = new Cli(client, null);
 
         boolean isGodChooser = true;
         ChooseGodsUpdate chooseGodsUpdate = new ChooseGodsUpdate(p.ID, isGodChooser,null);

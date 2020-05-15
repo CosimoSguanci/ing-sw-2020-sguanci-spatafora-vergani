@@ -12,11 +12,8 @@ public class ClientApp {
         try {
 
             Client client = new Client();
-            UpdateListener updateListener = new UpdateListener(client.getSocket());
-            new Thread(updateListener).start();
             Controller controller = new Controller(client);
-            Cli cli = new Cli(client, controller, updateListener);
-            updateListener.addObserver(cli);
+            Cli cli = new Cli(client, controller);
             cli.addObserver(controller);
             controller.addObserver(cli);
             cli.start();

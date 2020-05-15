@@ -85,11 +85,9 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     void handleInitialInfoCommand(InitialInfoCommand initialInfoCommand) {
 
-
         if (!initialInfoCommand.getPlayer().equals(model.getCurrentPlayer())) {
             throw new WrongPlayerException();
         }
-
 
         String nickname = initialInfoCommand.nickname;
 
