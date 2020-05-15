@@ -42,10 +42,12 @@ public class ControllerTest {
         Worker w3A = p3.getWorkerFirst();
         Worker w3B = p3.getWorkerSecond();
 
-        GodStrategy divinity = new Apollo();
-        p1.setGodStrategy(divinity);
-        p2.setGodStrategy(divinity);
-        p3.setGodStrategy(divinity);
+        GodStrategy divinity1 = new Apollo();
+        GodStrategy divinity2 = new Athena();
+        GodStrategy divinity3 = new Demeter();
+        p1.setGodStrategy(divinity1);
+        p2.setGodStrategy(divinity2);
+        p3.setGodStrategy(divinity3);
 
         w1A.setInitialPosition(1,2);
         w1B.setInitialPosition(0,4);
@@ -275,10 +277,12 @@ public class ControllerTest {
         Worker w3B = p3.getWorkerSecond();
 
 
-        GodStrategy divinity = new Apollo(); // todo gods private constructor ?
-        p1.setGodStrategy(divinity);
-        p2.setGodStrategy(divinity);
-        p3.setGodStrategy(divinity);
+        GodStrategy divinity1 = new Apollo(); // todo gods private constructor ?
+        GodStrategy divinity2 = new Poseidon();
+        GodStrategy divinity3 = new Zeus();
+        p1.setGodStrategy(divinity1);
+        p2.setGodStrategy(divinity2);
+        p3.setGodStrategy(divinity3);
 
         w1A.setInitialPosition(1,2);
         w1B.setInitialPosition(0,4);
