@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Observable<T> {
 
-    private List<Observer<T>> observers = new ArrayList<>();
+    private final List<Observer<T>> observers = new ArrayList<>();
 
     /**
      * This method attaches the parameter object (an observer) to the list

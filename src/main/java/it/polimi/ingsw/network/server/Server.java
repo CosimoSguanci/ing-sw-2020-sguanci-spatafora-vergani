@@ -87,7 +87,7 @@ public class Server implements Observer<Controller> {
 
             controllerClientsMap.put(controller, suitableConnections);
 
-            // todo start a new thread for the match
+            // todo start a new thread for the match ? -> useful only to separate code, not for performance
             controller.initialPhase();
         }
     }
