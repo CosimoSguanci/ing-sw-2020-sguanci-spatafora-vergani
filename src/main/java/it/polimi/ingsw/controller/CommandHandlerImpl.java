@@ -50,7 +50,7 @@ class CommandHandlerImpl implements CommandHandler {
         }
     }
 
-    public void handle(GamePreparationCommand command) {
+    public synchronized void handle(GamePreparationCommand command) {
         if (controllerInstance.getCurrentGamePhase() == GamePhase.GAME_PREPARATION) {
 
             setCommandPlayerInstance(command);

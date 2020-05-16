@@ -171,7 +171,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     }
 
 
-     void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) {
+     synchronized void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) {
         Player currentPlayer = model.getCurrentPlayer();
         if (!gamePreparationCommand.getPlayer().equals(model.getCurrentPlayer())) { // todo uniform use of model.getCurrentPlayer() / command.getPlayer()
             throw new WrongPlayerException();
