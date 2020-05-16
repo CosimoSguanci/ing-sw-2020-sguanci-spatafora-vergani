@@ -2,8 +2,12 @@ package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.model.PrintableColor;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class InitialInfo extends JPanel {
     private JTextField nicknameTextField;
@@ -24,7 +28,8 @@ public class InitialInfo extends JPanel {
         //button1.addActionListener(playerNumberChooseRadioButtonListener);
         //button2.addActionListener(playerNumberChooseRadioButtonListener);
 
-        JButton continueButton = new JButton("Continue");
+        //JButton continueButton = new JButton("Continue");
+        JButton continueButton = new JButton(new ImageIcon("resources/images/InitialInfo/button-play-normal.png"));
         JPanel innerPanel = new JPanel();
         JPanel innerPanel2 = new JPanel();
         JPanel buttonPanel = new JPanel();

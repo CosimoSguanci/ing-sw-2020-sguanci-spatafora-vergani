@@ -24,9 +24,10 @@ public class Gui {
         frame.add(new PlayerNumberChoice());
 
         frame.pack();
-        frame.setSize(400, 250);
+        frame.setSize(450, 300);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
 }
