@@ -1,8 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.view.gui.components.InitialInfo;
-import it.polimi.ingsw.view.gui.components.PlayerNumberChoose;
-import it.polimi.ingsw.view.gui.components.WaitingForAMatch;
+import it.polimi.ingsw.view.gui.components.PlayerNumberChoice;
 
 import javax.swing.*;
 
@@ -22,7 +21,7 @@ public class Gui {
     private static void showGui(){
         frame = new JFrame("Santorini");
 
-        frame.add(new InitialInfo());
+        frame.add(new PlayerNumberChoice());
 
         frame.pack();
         frame.setSize(400, 250);
