@@ -62,6 +62,9 @@ public class InitialInfo extends JPanel {
         panelNickname.add(Box.createVerticalGlue());
         panelColor.add(this.color);
 
+        panelNickname.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
+        //panelColor.setBorder(BorderFactory.createEmptyBorder(5,0,0,0));
+
         nicknameColorPanel.add(panelNickname, BorderLayout.NORTH);
         nicknameColorPanel.add(panelColor, BorderLayout.SOUTH);
         this.add(nicknameColorPanel, BorderLayout.NORTH);
