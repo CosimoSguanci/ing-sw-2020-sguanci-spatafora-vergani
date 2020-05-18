@@ -24,8 +24,8 @@ public class Gui {
         frame = new JFrame("Santorini");
 
         //frame.add(new PlayerNumberChoice());
-        //frame.add(new WaitingForAMatch());
-        frame.add(new InitialInfo());
+        frame.add(new WaitingForAMatch());
+        //frame.add(new InitialInfo());
 
         frame.pack();
         frame.setSize(450, 300);
