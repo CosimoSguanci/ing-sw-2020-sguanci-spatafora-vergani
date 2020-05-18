@@ -28,7 +28,7 @@ public class Gui {
         //frame.add(new InitialInfo());
 
         frame.pack();
-        frame.setSize(450, 300);
+        frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

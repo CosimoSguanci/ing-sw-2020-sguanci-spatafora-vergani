@@ -14,10 +14,11 @@ public class InitialInfo extends JPanel {
     private JTextField nicknameTextField;
     private JComboBox<PrintableColor> color;
     private String standardImgPath = "src/main/resources/images/InitialInfo/";
+    private String externalImgPath = "src/main/resources/images/";
     private Image backgroundImage = new ImageIcon(standardImgPath + "backgroundTemple.png").getImage();
     private Font font = new Font(Font.SERIF, Font.BOLD, 14);
     private Color textColor = Color.WHITE;
-    int buttonWidth = 60;
+    private int buttonWidth = 60;
 
 
     public InitialInfo() {
@@ -35,14 +36,16 @@ public class InitialInfo extends JPanel {
         JPanel panelNickname = new JPanel();
         panelNickname.setLayout(new BoxLayout(panelNickname, BoxLayout.Y_AXIS));
         panelNickname.setOpaque(false);
-        JPanel centredLabelNickname = new JPanel();
-        centredLabelNickname.setOpaque(false);
+        JPanel centredNickname = new JPanel();
+        centredNickname.setOpaque(false);
         JLabel labelNickname = new JLabel("Insert a nickname:   (1 word)");
         labelNickname.setForeground(textColor);
         labelNickname.setFont(font);
-        centredLabelNickname.add(labelNickname);
+        centredNickname.add(labelNickname);
         this.nicknameTextField = new JTextField();
-        panelNickname.add(centredLabelNickname);
+        this.nicknameTextField.setFont(this.font);
+        this.nicknameTextField.setHorizontalAlignment(JTextField.CENTER);
+        panelNickname.add(centredNickname);
         panelNickname.add(Box.createVerticalGlue());
         panelNickname.add(this.nicknameTextField);
 
@@ -50,15 +53,16 @@ public class InitialInfo extends JPanel {
         JPanel panelColor = new JPanel();
         panelColor.setLayout(new BoxLayout(panelColor, BoxLayout.Y_AXIS));
         panelColor.setOpaque(false);
-        JPanel centredLabelColor = new JPanel();
-        centredLabelColor.setOpaque(false);
+        JPanel centredColor = new JPanel();
+        centredColor.setOpaque(false);
         JLabel labelColor = new JLabel("Choose a color: ");
         labelColor.setForeground(textColor);
         labelColor.setFont(font);
-        centredLabelColor.add(labelColor);
+        centredColor.add(labelColor);
         PrintableColor[] colors = {PrintableColor.GREEN, PrintableColor.BLUE};
         this.color = new JComboBox<>(colors);
-        panelColor.add(centredLabelColor);
+        ((JLabel)this.color.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);  //centred alignment for JComboBox alternatives
+        panelColor.add(centredColor);
         panelNickname.add(Box.createVerticalGlue());
         panelColor.add(this.color);
 
@@ -72,7 +76,7 @@ public class InitialInfo extends JPanel {
 
 
         //button to continue must be south-east
-        ImageIcon continueImg = new ImageIcon(standardImgPath + "button-play-normal.png");
+        ImageIcon continueImg = new ImageIcon(this.standardImgPath + "button-play-normal.png");
         continueImg = new ImageIcon(continueImg.getImage().getScaledInstance(this.buttonWidth, -1, Image.SCALE_DEFAULT));
         JButton continueButton = new JButton(continueImg);
         JPanel innerPanel = new JPanel();
@@ -82,6 +86,13 @@ public class InitialInfo extends JPanel {
         innerPanel2.setLayout(new BorderLayout());
         innerPanel2.setOpaque(false);
         innerPanel2.add(continueButton, BorderLayout.EAST);
+
+        //button to quit must be south-west
+        ImageIcon quitImg = new ImageIcon(this.externalImgPath + "exit.png");
+        quitImg = new ImageIcon(quitImg.getImage().getScaledInstance(this.buttonWidth, -1, Image.SCALE_DEFAULT));
+        JButton quitButton = new JButton(quitImg);
+        innerPanel2.add(quitButton, BorderLayout.WEST);
+
         innerPanel.add(innerPanel2);
         this.add(innerPanel, BorderLayout.SOUTH);
 
