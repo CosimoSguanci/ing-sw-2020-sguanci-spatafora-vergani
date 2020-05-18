@@ -15,8 +15,8 @@ public class InitialInfo extends JPanel {
     private JComboBox<PrintableColor> color;
     private String standardImgPath = "src/main/resources/images/InitialInfo/";
     private Image backgroundImage = new ImageIcon(standardImgPath + "backgroundTemple.png").getImage();
-    Font font = new Font(Font.SERIF, Font.BOLD, 14);
-    Color textColor = Color.WHITE;
+    private Font font = new Font(Font.SERIF, Font.BOLD, 14);
+    private Color textColor = Color.WHITE;
     int buttonWidth = 60;
 
 

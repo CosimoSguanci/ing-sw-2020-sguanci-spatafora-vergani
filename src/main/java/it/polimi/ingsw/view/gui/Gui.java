@@ -23,8 +23,8 @@ public class Gui {
     private static void showGui(){
         frame = new JFrame("Santorini");
 
-        //frame.add(new PlayerNumberChoice());
-        frame.add(new WaitingForAMatch());
+        frame.add(new PlayerNumberChoice());
+        //frame.add(new WaitingForAMatch());
         //frame.add(new InitialInfo());
 
         frame.pack();

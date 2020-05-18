@@ -6,7 +6,7 @@ import java.awt.*;
 public class WaitingForAMatch extends JPanel {
     private String standardImgPath = "src/main/resources/images/WaitingForAMatch/";
     private Image backgroundImage = new ImageIcon(standardImgPath + "title_FG_grass.png").getImage();
-    Font font = new Font(Font.SERIF, Font.BOLD, 14);
+    private Font font = new Font(Font.SERIF, Font.BOLD, 14);
 
     public WaitingForAMatch() {
         LayoutManager layoutManager = new BorderLayout();
