@@ -32,11 +32,12 @@ public class Gui {
     private static void showGui() throws IOException {
         frame = new JFrame("Santorini");
 
-        frame.add(new PlayerNumberChoice());
+        frame.add(new WaitingForAMatch());
         //frame.add(new WaitingForAMatch());
         //frame.add(new InitialInfo());
 
         frame.pack();
+        frame.setIconImage(ImageIO.read(Gui.class.getResource("/images/InitialInfo/santorini-logo.png")));
         frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
