@@ -20,9 +20,9 @@ public class InitialInfo extends JPanel {
         this.nicknameTextField = new JTextField();
         PrintableColor[] colors = {PrintableColor.GREEN, PrintableColor.BLUE};
         this.color = new JComboBox<>(colors);
-        //this.playerNumberChooseRadioButtonListener = new PlayerNumberChooseRadioButtonListener(this);
-        //button1.addActionListener(playerNumberChooseRadioButtonListener);
-        //button2.addActionListener(playerNumberChooseRadioButtonListener);
+        //this.playerNumberChoiceRadioButtonListener = new PlayerNumberChoiceRadioButtonListener(this);
+        //button1.addActionListener(playerNumberChoiceRadioButtonListener);
+        //button2.addActionListener(playerNumberChoiceRadioButtonListener);
 
         JButton continueButton = new JButton("Continue");
         JPanel innerPanel = new JPanel();

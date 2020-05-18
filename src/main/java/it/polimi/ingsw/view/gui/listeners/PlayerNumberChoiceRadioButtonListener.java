@@ -7,15 +7,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PlayerNumberChoiceRadioButtonListener implements ActionListener {
-    private PlayerNumberChoice playerNumberChoose;
+    private PlayerNumberChoice playerNumberChoice;
 
-    public PlayerNumberChoiceRadioButtonListener(PlayerNumberChoice playerNumberChoose) {
-        this.playerNumberChoose = playerNumberChoose;
+    public PlayerNumberChoiceRadioButtonListener(PlayerNumberChoice playerNumberChoice) {
+        this.playerNumberChoice = playerNumberChoice;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         JRadioButton btn = (JRadioButton) e.getSource();
-        playerNumberChoose.setPlayerNumberSelected(btn);
+        playerNumberChoice.setPlayerNumberSelected(btn);
     }
 }
