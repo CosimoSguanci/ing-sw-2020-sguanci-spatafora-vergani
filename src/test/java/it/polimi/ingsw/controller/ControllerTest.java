@@ -380,7 +380,7 @@ public class ControllerTest {
         chosenGods.add("hestia");
         //controller.prepareMatch(); // todo FIX Test with new InitialPhase
         ArrayList<Player> players = new ArrayList<>(model.getPlayers());
-        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
+        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods);
         godChoiceCommand.setPlayer(model.getCurrentPlayer());
         model.getCurrentPlayer().setAsGodChooser();
 
@@ -393,13 +393,13 @@ public class ControllerTest {
 
         List<String> godPlayer = new ArrayList<>();
         godPlayer.add("hestia");
-        godChoiceCommand = new GodChoiceCommand(godPlayer, false);
+        godChoiceCommand = new GodChoiceCommand(godPlayer);
         godChoiceCommand.setPlayer(model.getCurrentPlayer());
         controller.update(godChoiceCommand);
 
         godPlayer= new ArrayList<>();
         godPlayer.add("apollo");
-        godChoiceCommand = new GodChoiceCommand(godPlayer, false);
+        godChoiceCommand = new GodChoiceCommand(godPlayer);
         godChoiceCommand.setPlayer(model.getCurrentPlayer());
         controller.update(godChoiceCommand);
 
@@ -442,7 +442,7 @@ public class ControllerTest {
         chosenGods.add("minotaur");
         //controller.prepareMatch(); // todo FIX Test with new InitialPhase
         ArrayList<Player> players = new ArrayList<>(model.getPlayers());
-        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
+        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods);
         godChoiceCommand.setPlayer(model.getCurrentPlayer());
         model.getCurrentPlayer().setAsGodChooser();
 
@@ -455,7 +455,7 @@ public class ControllerTest {
 
         List<String> godPlayer = new ArrayList<>();
         godPlayer.add("eros");
-        godChoiceCommand = new GodChoiceCommand(godPlayer, false);
+        godChoiceCommand = new GodChoiceCommand(godPlayer);
         godChoiceCommand.setPlayer(model.getCurrentPlayer());
         controller.update(godChoiceCommand);
 

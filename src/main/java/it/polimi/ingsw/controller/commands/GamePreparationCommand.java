@@ -19,7 +19,7 @@ public class GamePreparationCommand extends Command {
     public final int workerSecondRow;
     public final int workerSecondCol;
 
-    public GamePreparationCommand(int workerFirstRow, int workerFirstCol, int workerSecondRow, int workerSecondCol) {
+    public GamePreparationCommand(int workerFirstRow, int workerFirstCol, int workerSecondRow, int workerSecondCol) { // todo command -> private constructors (updates package protected)
 
         super(CommandType.PLACE);
 

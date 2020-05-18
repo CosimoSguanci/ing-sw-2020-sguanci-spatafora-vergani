@@ -16,6 +16,7 @@ public class PlayerNumberChoiceRadioButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         JRadioButton btn = (JRadioButton) e.getSource();
-        playerNumberChoice.setPlayerNumberSelected(btn);
+        playerNumberChoose.setPlayerNumberSelected(btn);
+        playerNumberChoose.refresh();
     }
 }

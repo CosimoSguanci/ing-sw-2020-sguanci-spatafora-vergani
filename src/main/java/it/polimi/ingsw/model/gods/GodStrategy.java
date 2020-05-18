@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.utils.GodsUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This is the abstract class all the gods must extend in order to be playable in the game.
@@ -222,4 +223,15 @@ public abstract class GodStrategy {
     public static GodStrategy instantiateGod(String god) {
         return GodsUtils.godsFactory(god);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GodStrategy that = (GodStrategy) o;
+        return Objects.equals(NAME, that.NAME) &&
+                Objects.equals(DESCRIPTION, that.DESCRIPTION) &&
+                Objects.equals(POWER_DESCRIPTION, that.POWER_DESCRIPTION);
+    }
+
 }

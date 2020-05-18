@@ -13,7 +13,7 @@ class CommandHandlerImpl implements CommandHandler {
         this.controllerInstance = controllerInstance;
     }
 
-    public void handle(InitialInfoCommand command) {
+    public synchronized void handle(InitialInfoCommand command) {
         if (controllerInstance.getCurrentGamePhase() == GamePhase.INITIAL_INFO) {
             setCommandPlayerInstance(command);
             controllerInstance.handleInitialInfoCommand(command);
@@ -22,7 +22,7 @@ class CommandHandlerImpl implements CommandHandler {
         }
     }
 
-    public void handle(PlayerCommand command) {
+    public synchronized void handle(PlayerCommand command) {
         if (controllerInstance.getCurrentGamePhase() == GamePhase.REAL_GAME) {
 
             setCommandPlayerInstance(command);
@@ -41,7 +41,7 @@ class CommandHandlerImpl implements CommandHandler {
         }
     }
 
-    public void handle(GodChoiceCommand command) {
+    public synchronized void handle(GodChoiceCommand command) {
         if (controllerInstance.getCurrentGamePhase() == GamePhase.CHOOSE_GODS) {
             setCommandPlayerInstance(command);
             controllerInstance.handleGodChoiceCommand(command);
@@ -50,7 +50,7 @@ class CommandHandlerImpl implements CommandHandler {
         }
     }
 
-    public void handle(GamePreparationCommand command) {
+    public synchronized void handle(GamePreparationCommand command) {
         if (controllerInstance.getCurrentGamePhase() == GamePhase.GAME_PREPARATION) {
 
             setCommandPlayerInstance(command);

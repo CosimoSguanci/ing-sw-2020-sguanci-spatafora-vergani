@@ -380,7 +380,7 @@ public class Cli extends View implements Observer<Update> {
 
                     //enableGodChoose = false;
 
-                    GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods, true);
+                    GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods); // true
                     notify(godChoiceCommand);
 
                     print("Wait for other players to choose their gods...");
@@ -392,7 +392,6 @@ public class Cli extends View implements Observer<Update> {
                     }
 
                     String god = splitCommand[1];
-//todo if selectableGods...
                     if (selectableGods != null) {
                         if (!selectableGods.contains(god)) {
                             throw new BadCommandException();
@@ -401,7 +400,7 @@ public class Cli extends View implements Observer<Update> {
 
                     ArrayList<String> selected = new ArrayList<>();
                     selected.add(god);
-                    GodChoiceCommand godChoiceCommand = new GodChoiceCommand(selected, false);
+                    GodChoiceCommand godChoiceCommand = new GodChoiceCommand(selected); // false
                     notify(godChoiceCommand);
 
                     print("Wait for other players to choose their gods...");

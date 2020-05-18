@@ -83,7 +83,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         }
     }
 
-    void handleInitialInfoCommand(InitialInfoCommand initialInfoCommand) {
+    synchronized void handleInitialInfoCommand(InitialInfoCommand initialInfoCommand) {
 
         if (!initialInfoCommand.getPlayer().equals(model.getCurrentPlayer())) {
             throw new WrongPlayerException();
@@ -101,6 +101,10 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         if (!selectableColors.contains(color)) {
             throw new InvalidColorException();
         }
+
+        /*if(!initialInfoCommand.getPlayer().equals(model.getCurrentPlayer())) {
+           System.out.println("___________");
+        }*/
 
         model.getCurrentPlayer().setNickname(nickname);
         model.getCurrentPlayer().setColor(color);
@@ -127,15 +131,16 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         }
     }
 
-    void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {
+    synchronized void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {
         List<String> chosenGods = godChoiceCommand.getChosenGods();
-        boolean isGodChooser = godChoiceCommand.isGodChooser();
+       // boolean isGodChooser = godChoiceCommand.isGodChooser();
 
         if (!godChoiceCommand.getPlayer().equals(model.getCurrentPlayer())) {
             throw new WrongPlayerException();
         }
 
-        if (isGodChooser) {
+        //if (isGodChooser) {
+        if (model.getCurrentPlayer().equals(this.godChooserPlayer)) { // todo collapse if
             this.selectableGods = chosenGods;
 
         } else {
@@ -166,11 +171,15 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     }
 
 
-    void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) {
+     synchronized void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) {
         Player currentPlayer = model.getCurrentPlayer();
-        if (!gamePreparationCommand.getPlayer().equals(currentPlayer)) {
+        if (!gamePreparationCommand.getPlayer().equals(model.getCurrentPlayer())) { // todo uniform use of model.getCurrentPlayer() / command.getPlayer()
             throw new WrongPlayerException();
         } else {
+
+            /*if(!currentPlayer.equals(model.getCurrentPlayer())) {
+                System.out.println();
+            }*/
 
             if (checkAllGamePreparationConstraints(gamePreparationCommand) &&
                     currentPlayer.getGodStrategy().checkGamePreparation(
@@ -179,6 +188,9 @@ public class Controller extends Observable<Controller> implements Observer<Comma
                             currentPlayer.getWorkerSecond(),
                             gamePreparationCommand.getWorkerSecondCell())
             ) {
+                /*if(!currentPlayer.equals(model.getCurrentPlayer())) {
+                    System.out.println();
+                }*/
                 currentPlayer.getGodStrategy().executeGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell());
             } else {
                 model.reportError(currentPlayer, CommandType.PLACE);
@@ -192,7 +204,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
                 startMatch();
             } else {
                 model.boardUpdate();
-                model.gamePreparationUpdate(model.getCurrentPlayer());
+                model.gamePreparationUpdate(currentPlayer);
             }
 
         }
@@ -208,7 +220,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * @param playerCommand player command from View
      * @throws InvalidPlayerNumberException when command's player is not current player
      */
-    void handlePlayerCommand(PlayerCommand playerCommand) throws WrongPlayerException {
+    synchronized void handlePlayerCommand(PlayerCommand playerCommand) throws WrongPlayerException {
         Player currentPlayer = model.getCurrentPlayer();
         if (!playerCommand.getPlayer().equals(currentPlayer)) {
             throw new WrongPlayerException();
