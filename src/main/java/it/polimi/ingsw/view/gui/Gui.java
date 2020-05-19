@@ -29,14 +29,6 @@ public class Gui {
         //frame.add(new PlayerNumberChoice());
         //frame.add(new WaitingForAMatch());
         //frame.add(new InitialInfo());
-        frame.add(new GodChoice(3));
-        //frame.add(new GodChoice(3, ArrayList));
-
-        /*try {
-            frame.add(new GodChoice(3));
-        } catch(IOException e) {
-            e.printStackTrace();
-        }*/
 
         frame.pack();
         frame.setSize(600, 400);

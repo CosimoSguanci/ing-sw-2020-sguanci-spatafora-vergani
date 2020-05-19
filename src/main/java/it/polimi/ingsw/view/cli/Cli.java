@@ -67,6 +67,7 @@ public class Cli extends View implements Observer<Update> {
     private GamePreparation gamePreparation = new GamePreparation(this);
     private CliPlayerHelper cliPlayerHelper = new CliPlayerHelper(this);
     private WaitingForAMatch waitingForAMatch = new WaitingForAMatch(this);
+    private BoardDelegate boardDelegate = new BoardDelegate(this);
 
     /**
      * Cli is the builder of the class. At the moment of the Cli creation
@@ -474,5 +475,9 @@ public class Cli extends View implements Observer<Update> {
 
     private boolean computeCommand(String[] splitCommand) {
         return (splitCommand.length == 0) || (splitCommand[0].equals("") && splitCommand.length == 1);
+    }
+
+    public void printBoard(String board) {
+        this.boardDelegate.printBoard(board);
     }
 }
