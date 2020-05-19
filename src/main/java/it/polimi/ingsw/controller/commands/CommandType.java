@@ -27,6 +27,15 @@ public enum CommandType {
                throw new BadCommandException();
            }
         }
+    }
 
+    public static boolean isHelperCommandType(String command) {
+        CommandType enumCommand;
+        try {
+            enumCommand = Enum.valueOf(CommandType.class, command.toUpperCase());
+        } catch(IllegalArgumentException e) {
+            return false;
+        }
+        return enumCommand.equals(CommandType.HELP) || enumCommand.equals(CommandType.INFO) || enumCommand.equals(CommandType.QUIT) || enumCommand.equals(CommandType.TURN) || enumCommand.equals(CommandType.RULES) || enumCommand.equals(CommandType.GOD) || enumCommand.equals(CommandType.BOARD);
     }
 }

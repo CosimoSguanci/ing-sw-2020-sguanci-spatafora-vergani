@@ -23,7 +23,7 @@ public class CliUpdateHandler implements UpdateHandler {
 
         cliInstance.print(Cli.toBold("MATCH STARTED!"));
         cliInstance.newLine();
-        cliInstance.print(Cli.toBold("Tip") + ": type 'help " + cliInstance.currentPhaseString + "' to know command format");
+        cliInstance.print(Cli.toBold("Tip") + ": type 'help " + cliInstance.getCurrentPhaseString() + "' to know command format");
         cliInstance.newLine();
         cliInstance.printCurrentTurn();
     }
@@ -144,16 +144,13 @@ public class CliUpdateHandler implements UpdateHandler {
                 cliInstance.print(Cli.toBold("Gods Choose Error") + ": maybe it's not your turn and/or you typed something incorrectly");
                 break;
         }
-        cliInstance.print("For more information about commands or rules, type 'help " + cliInstance.currentPhaseString + "' or 'rules'");
+        cliInstance.print("For more information about commands or rules, type 'help " + cliInstance.getCurrentPhaseString() + "' or 'rules'");
         cliInstance.newLine();
     }
 
     public void handle(GamePhaseChangedUpdate update) {
-     /*   cliInstance.newLine();
-        cliInstance.newLine(); */
         cliInstance.newLine();
         if(update.newGamePhase.isPrintable()) {
-            //cliInstance.print(Cli.toBold(update.newGamePhase.toString()));
             switch(update.newGamePhase) {
                 case INITIAL_INFO:
                     cliInstance.print(Cli.toBold("INITIAL INFORMATION PHASE"));
@@ -213,9 +210,6 @@ public class CliUpdateHandler implements UpdateHandler {
         cliInstance.print(cliInstance.playerWithColor(update.winnerPlayerNickname) + " wins!");
 
         cliInstance.newLine();
-        //cliInstance.print("Do you want to play another match?");
-
-        //cliInstance.handleMatchEnded();
     }
 
     public void handle(LoseUpdate update) {
@@ -228,7 +222,6 @@ public class CliUpdateHandler implements UpdateHandler {
 
             if(update.onePlayerRemaining) {
                 cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED); // todo method to avoid duplicate
-                //cliInstance.print("Do you want to play another match?");
             }
             else {
                 cliInstance.print("Do you want to continue to watch this match?");
@@ -260,10 +253,6 @@ public class CliUpdateHandler implements UpdateHandler {
     public void handle(DisconnectedPlayerUpdate update) {
         String nicknameToShow = update.disconnectedPlayerNickname != null ? update.disconnectedPlayerNickname : "A player";
         cliInstance.print(nicknameToShow + " disconnected!");
-        //cliInstance.newLine();
-
-       /* cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
-        cliInstance.print("Do you want to play another match?"); */
     }
 
 

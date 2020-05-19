@@ -19,7 +19,7 @@ public class ClientApp {
             controller.addObserver(cli);
             cli.start();
 
-          //  Gui gui = new Gui();
+            //Gui gui = new Gui();
 
         } catch(Exception e) { //IOException
             System.err.println("The Game couldn't start, maybe there was some network error " +
