@@ -61,7 +61,7 @@ public class GodChoice extends JPanel {
     }
 
     //public GodChoice(int playersNumber, List<String> chosenGods) throws IOException {
-    public GodChoice(int playersNumber, String[] chosenGods) throws IOException {
+    public GodChoice(int playersNumber, List<String> chosenGods) throws IOException {
         LayoutManager layoutManager = new BorderLayout();
         this.setLayout(layoutManager);
 
@@ -83,12 +83,12 @@ public class GodChoice extends JPanel {
             ImageIcon imageIcon;
             JButton button = new JButton();
             for (int i = 0; i < playersNumber; i++) {
-                imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + chosenGods[i] + ".png")));
+                imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + chosenGods.get(i) + ".png")));
                 imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(30,-1, Image.SCALE_SMOOTH));
                 iconGods.add(imageIcon);
                 //possibleGodsPanel.add(new JButton(chosenGods[i], iconGods.get(i)));
 
-                this.buttons.add(new JButton(chosenGods[i], iconGods.get(i)));
+                this.buttons.add(new JButton(chosenGods.get(i), iconGods.get(i)));
                 this.buttons.get(i).addActionListener(godChoiceJButtonListener);
                 possibleGodsPanel.add(this.buttons.get(i));
             }
@@ -100,11 +100,11 @@ public class GodChoice extends JPanel {
             ArrayList<ImageIcon> iconGods = new ArrayList<>();
             ImageIcon imageIcon;
             for (int i = 0; i < playersNumber; i++) {
-                imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + chosenGods[i] + ".png")));
+                imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + chosenGods.get(i) + ".png")));
                 imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(30,-1, Image.SCALE_SMOOTH));
                 iconGods.add(imageIcon);
                 //possibleGodsPanel.add(new JButton(chosenGods[i], iconGods.get(i)));+
-                this.buttons.add(new JButton(chosenGods[i], iconGods.get(i)));
+                this.buttons.add(new JButton(chosenGods.get(i), iconGods.get(i)));
                 this.buttons.get(i).addActionListener(godChoiceJButtonListener);
                 possibleGodsPanel.add(this.buttons.get(i));
             }
