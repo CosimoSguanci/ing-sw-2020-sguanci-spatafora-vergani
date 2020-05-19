@@ -98,13 +98,13 @@ public class PlayerNumberChoice extends JPanel {
 
 
     public void setPlayerNumberSelected(JRadioButton button) {
-        if(button.equals(button1)) {
-            button1.setSelected(true);
-            button2.setSelected(false);
+        if(button.equals(this.button1)) {
+            this.button1.setSelected(true);
+            this.button2.setSelected(false);
         }
         else{
-            button1.setSelected(false);
-            button2.setSelected(true);
+            this.button1.setSelected(false);
+            this.button2.setSelected(true);
         }
     }
 
