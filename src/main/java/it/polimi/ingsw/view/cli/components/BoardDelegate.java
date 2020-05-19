@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.cli.component;
+package it.polimi.ingsw.view.cli.components;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

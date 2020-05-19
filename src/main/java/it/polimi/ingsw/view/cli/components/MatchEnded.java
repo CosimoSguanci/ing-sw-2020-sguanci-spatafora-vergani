@@ -1,12 +1,11 @@
-package it.polimi.ingsw.view.cli.component;
+package it.polimi.ingsw.view.cli.components;
 
-import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.view.cli.Cli;
 
 import java.io.IOException;
 
 public class MatchEnded {
-    private Cli cli;
+    private final Cli cli;
 
     public MatchEnded(Cli cli){
         this.cli = cli;

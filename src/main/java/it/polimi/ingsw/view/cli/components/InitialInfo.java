@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.cli.component;
+package it.polimi.ingsw.view.cli.components;
 
 import it.polimi.ingsw.controller.commands.CommandType;
 import it.polimi.ingsw.controller.commands.InitialInfoCommand;

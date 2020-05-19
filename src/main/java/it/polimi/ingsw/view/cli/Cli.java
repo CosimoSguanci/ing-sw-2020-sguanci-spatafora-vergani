@@ -1,7 +1,5 @@
 package it.polimi.ingsw.view.cli;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.exceptions.*;
@@ -12,7 +10,7 @@ import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.cli.component.*;
+import it.polimi.ingsw.view.cli.components.*;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
