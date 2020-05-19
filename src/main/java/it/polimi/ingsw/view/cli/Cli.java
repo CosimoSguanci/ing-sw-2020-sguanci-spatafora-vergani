@@ -184,6 +184,8 @@ public class Cli extends View implements Observer<Update> {
                             new Thread(updateListener).start();
                             updateListener.addObserver(this);*/
 
+                            client.getUpdateListener().addObserver(this);
+
                             this.playersNum = 0;
                             this.continueToWatch = false;
 

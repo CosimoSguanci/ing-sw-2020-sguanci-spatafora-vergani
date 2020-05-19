@@ -32,7 +32,7 @@ public class Gui {
     private static void showGui() throws IOException {
         frame = new JFrame("Santorini");
 
-        frame.add(new WaitingForAMatch());
+        frame.add(new PlayerNumberChoice());
         //frame.add(new WaitingForAMatch());
         //frame.add(new InitialInfo());
 
