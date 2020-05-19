@@ -1,11 +1,13 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.PrintableColor;
+import it.polimi.ingsw.view.gui.components.GodChoice;
 import it.polimi.ingsw.view.gui.components.InitialInfo;
 import it.polimi.ingsw.view.gui.components.PlayerNumberChoice;
 import it.polimi.ingsw.view.gui.components.WaitingForAMatch;
 
 import javax.swing.*;
+import java.io.IOException;
 
 public class Gui {
 
@@ -23,9 +25,15 @@ public class Gui {
     private static void showGui(){
         frame = new JFrame("Santorini");
 
-        frame.add(new PlayerNumberChoice());
+        //frame.add(new PlayerNumberChoice());
         //frame.add(new WaitingForAMatch());
         //frame.add(new InitialInfo());
+
+        /*try {
+            frame.add(new GodChoice(3));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }*/
 
         frame.pack();
         frame.setSize(600, 400);
