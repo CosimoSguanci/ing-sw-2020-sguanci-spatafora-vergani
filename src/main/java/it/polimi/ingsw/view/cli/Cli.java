@@ -15,6 +15,7 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.Manual;
 import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.cli.component.*;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -44,7 +45,6 @@ public class Cli extends View implements Observer<Update> {
     // TODO Put currentGamePhase in common superclass with GUI
 
     private GamePhase currentGamePhase;
-    final String currentPhaseString = "current_phase";
 
     private List<String> selectedNicknames;
     private List<PrintableColor> selectableColors;
@@ -55,7 +55,7 @@ public class Cli extends View implements Observer<Update> {
     private List<String> selectableGods;
     private Map<String, String> playersGods;
     private Map<String, PrintableColor> playersColors;
-
+    private final String currentPhaseString = "current_phase";
     private final UpdateHandler cliUpdateHandler;
 
     final Controller controller;
@@ -63,6 +63,13 @@ public class Cli extends View implements Observer<Update> {
     private boolean soundPlayed = false;
 
     private String currentBoard;  //Gson representation of current board of the match
+
+    private RealGame realGame = new RealGame(this);
+    private GodChoice godChoice = new GodChoice(this);
+    private InitialInfo initialInfo = new InitialInfo(this);
+    private MatchEnded matchEnded = new MatchEnded(this);
+    private GamePreparation gamePreparation = new GamePreparation(this);
+    private CliPlayerHelper cliPlayerHelper = new CliPlayerHelper(this);
 
     /**
      * Cli is the builder of the class. At the moment of the Cli creation
@@ -86,7 +93,7 @@ public class Cli extends View implements Observer<Update> {
      * It is an abbreviation of stdout.println
      * @param string id the string printed by this method.
      */
-    void print(String string) {
+    public void print(String string) {
         if (stdout == null)
             return;
         stdout.println(string);
@@ -96,7 +103,7 @@ public class Cli extends View implements Observer<Update> {
      * This is a method useful to avoid code repetitions.
      * It simply prints a white line
      */
-    void newLine() {
+    public void newLine() {
         if (stdout == null)
             return;
         stdout.println();
@@ -139,6 +146,10 @@ public class Cli extends View implements Observer<Update> {
 
     }
 
+    private boolean computeCommand(String[] splitCommand) {
+        return (splitCommand.length == 0) || (splitCommand[0].equals("") && splitCommand.length == 1);
+    }
+
     /**
      * This method manages every possible interaction with the client.
      * All the commands received by the client are parsed in this method
@@ -159,9 +170,7 @@ public class Cli extends View implements Observer<Update> {
 
             String[] splitCommand = command.toLowerCase().split("\\s+");
 
-            if ((splitCommand.length == 0) || (splitCommand[0].equals("") && splitCommand.length == 1)) {
-                continue;
-            }
+            if (computeCommand(splitCommand)) { continue; }
 
             if (splitCommand[0].length() == 0) {  // command starting with space
                 splitCommand = Arrays.copyOfRange(splitCommand, 1, splitCommand.length);
@@ -170,30 +179,10 @@ public class Cli extends View implements Observer<Update> {
             try {
 
                 if (currentGamePhase == GamePhase.MATCH_ENDED) {
-
                     command = command.toLowerCase();
 
                     if(command.equals("yes")) {
-
-                        try {
-
-                            client.getUpdateListener().setIsActive(false);
-                            client.reinitializeConnection();
-
-                            /*updateListener = new UpdateListener(client.getSocket());
-                            new Thread(updateListener).start();
-                            updateListener.addObserver(this);*/
-
-                            this.playersNum = 0;
-                            this.continueToWatch = false;
-
-                        } catch(IOException e) {
-                            e.printStackTrace();
-                            System.err.println("The Game couldn't start, maybe there was some network error or the server isn't available.");
-                            System.exit(0);
-                        }
-
-                        start();
+                        matchEnded.handle();
                         break;
                     }
                     else if(command.equals("no")) {
@@ -218,208 +207,24 @@ public class Cli extends View implements Observer<Update> {
                         print("Do you want to play another match?");
                     }
                     else throw new BadCommandException(); // todo add multiple exception
-
                 }
-                else if(CommandType.parseCommandType(splitCommand[0]) == CommandType.RULES && splitCommand.length == 1) {
-                    newLine();
-                    print(toBold("MANUAL"));
-                    print(Manual.manual());
-                }
-                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 1)) { // todo extend help
-                    print("If you want information about a specific game-phase: help <game-phase>");
-                    print("Game-phases are: " + GamePhase.toStringBuilder());
-                    print("Help Specific-Phase Example: help initial_info");
-                    print("Help Current-Phase Example: help " + currentPhaseString);
-                    print("(If a match hasn't started yet, help for current-phase may not be recognized, since there is no current phase!)");
-                    print("help -> print command list and tutorial");
-                    print("rules -> print game manual");
-                    print("info <god> -> get info about a god");
-                    print("Info Example: info Apollo");
-                    /*print("Here are commands of real_game phase (you will need this more often than others):");
-                    print("build w1/w2 [letter, number] [optional: blockType {one, two, three, dome}] -> tries to build with the chosen Worker in the specified position");
-                    print("move  w1/w2 [letter, number] -> tries to move with the chosen Worker to the specified position\"");
-                    print("end -> tries to end the current turn");
-                    print("Move Example : move w1 a1");
-                    print("Build Example: build w1 a2 dome");*/
-                }
-                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 2)  && (GamePhase.isGamePhase(splitCommand[1]) || infoAboutGamePhase(splitCommand[1]))) {
-                    if(infoAboutGamePhase(splitCommand[1])){
-                        helpString(currentGamePhase);
-                    }
-                    else{
-                        helpString(GamePhase.parseGamePhase(splitCommand[1]));
-                    }
-                    /*
-                    if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.INITIAL_INFO || (infoAboutGamePhase(splitCommand[1]) && currentGamePhase == GamePhase.INITIAL_INFO)) {
-                        print("In this phase, you decide your nickname and your workers' colour");
-                        print("Command format: pick <nickname> <colour>");
-                        print("Command example: pick Mike green");
-                    }
-                    else if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.CHOOSE_GODS || (infoAboutGamePhase(splitCommand[1]) && currentGamePhase == GamePhase.CHOOSE_GODS)) {
-                        print("In this phase, you select your god");
-                        print("Command format: select <god>");
-                        print("Command example: select Apollo");
-                    }
-                    else if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.GAME_PREPARATION || (infoAboutGamePhase(splitCommand[1]) && currentGamePhase == GamePhase.GAME_PREPARATION)) {
-                        print("In this phase, you place your workers over the board");
-                        print("Command format: place w1 [letter, number] w2 [letter, number]");
-                        print("Command example: place w1 A1 w2 B2");
-                    }
-                    else if(GamePhase.parseGamePhase(splitCommand[1]) == GamePhase.REAL_GAME || (infoAboutGamePhase(splitCommand[1]) && currentGamePhase == GamePhase.REAL_GAME)) {
-                        print("In this phase, you play!");
-                        print("Move format: move w1/w2 [letter, number] -> tries to move with the chosen Worker to the specified position");
-                        print("Move example: move w1 A1");
-                        print("Build format: build w1/w2 [letter, number] [optional: blockType {one, two, three, dome}] -> tries to build with the chosen Worker in the specified position");
-                        print("Build example: build w1 A2");
-                        print("Build example: build w1 A2 dome");
-                        print("End format: end -> tries to end the current turn");
-                        print("End example: end");
-                    }
-                    else{
-                        throw new BadCommandException();
-                    }
-                    */
-                }
-
-                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.TURN  && splitCommand.length == 1) {
-                    if(currentGamePhase == GamePhase.REAL_GAME || currentGamePhase == GamePhase.GAME_PREPARATION) {  //it's interesting to know who is playing only in these phases
-                        printCurrentTurn();
-                    }
-                    else {
-                        print("It is not the right moment for this command. Retry after match started");
-                    }
-                }
-
-                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.GOD  && splitCommand.length == 1) {
-                    if(currentGamePhase == GamePhase.REAL_GAME || currentGamePhase == GamePhase.GAME_PREPARATION) {  //it's interesting to know players-gods mapping only in these phases
-                        printPlayerGods();
-                    }
-                    else {
-                        print("It is not the right moment for this command. Retry after match started");
-                    }
-                }
-                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.BOARD  && splitCommand.length == 1) {
-                    if(currentGamePhase == GamePhase.REAL_GAME || currentGamePhase == GamePhase.GAME_PREPARATION) {  //it's interesting to see the board only in these phases
-                        printBoard(currentBoard);
-                    }
-                    else {
-                        print("It is not the right moment for this command. Retry after match started");
-                    }
-                }
-
-
-                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.INFO) {
-                    if (splitCommand.length != 2) {
-                        throw new BadCommandException();
-                    }
-                    String god = splitCommand[1];
-
-                    printGodInfo(god);
-                }
-                else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.QUIT) {
-                    if (splitCommand.length > 1) {
-                        throw new BadCommandException();
-                    }
-                    print("Quitting...");
-                    System.exit(0);
+                else if (CommandType.isHelperCommandType(splitCommand[0])){
+                    cliPlayerHelper.helperHandle(splitCommand);
                 }
                 else if (currentGamePhase == GamePhase.INITIAL_INFO) {
-                    if (CommandType.parseCommandType(splitCommand[0]) != CommandType.PICK || splitCommand.length != 3) {
-                        throw new BadCommandException();
-                    }
-
-                    String nickname = splitCommand[1];
-
-                    if (selectedNicknames != null) {
-                        if (selectedNicknames.stream().map(String::toLowerCase).collect(Collectors.toList()).contains(nickname)) {
-                            //print("This nickname was already taken for this match");
-                            throw new NicknameAlreadyTakenException();
-                        }
-                    } else {
-                        throw new WrongPlayerException();
-                    }
-
-                    String color = splitCommand[2];
-
-                    if(!PrintableColor.isValidColor(color)) {
-                        print("Not a valid color");
-                        throw new BadCommandException();
-                    }
-
-                    PrintableColor actualColor = Enum.valueOf(PrintableColor.class, color.toUpperCase());
-
-                    if(!selectableColors.contains(actualColor)) {
-                        throw new InvalidColorException();
-                    }
-
-                    InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nickname, actualColor);
-                    notify(initialInfoCommand);
-
-                    newLine();
-                    print("Wait for other players to choose their nicknames and colors...");
-                    newLine();
-
-                } else if (currentGamePhase == GamePhase.CHOOSE_GODS && isInitialGodChooser) {
-
-                    if (CommandType.parseCommandType(splitCommand[0]) != CommandType.SELECT || splitCommand.length != playersNum + 1) {
-                        print("You have to use the SELECT command, and type " + playersNum + " names of gods separated by spaces");
-                        throw new BadCommandException();
-                    }
-
-                    ArrayList<String> chosenGods = new ArrayList<>();
-
-                    for (int i = 0; i < playersNum; i++) {
-                        String god = splitCommand[i + 1];
-
-                        if (!isValidGod(god, chosenGods)) {
-                            throw new BadCommandException();
-                        }
-
-                        chosenGods.add(god);
-                    }
-
-                    //enableGodChoose = false;
-
-                    GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods); // true
-                    notify(godChoiceCommand);
-
-                    print("Wait for other players to choose their gods...");
-
-                } else if (currentGamePhase == GamePhase.CHOOSE_GODS) { // but not initial god chooser
-
-                    if (CommandType.parseCommandType(splitCommand[0]) != CommandType.SELECT || splitCommand.length > 2) {
-                        throw new BadCommandException();
-                    }
-
-                    String god = splitCommand[1];
-                    if (selectableGods != null) {
-                        if (!selectableGods.contains(god)) {
-                            throw new BadCommandException();
-                        }
-                    } else {throw new WrongPlayerException();}
-
-                    ArrayList<String> selected = new ArrayList<>();
-                    selected.add(god);
-                    GodChoiceCommand godChoiceCommand = new GodChoiceCommand(selected); // false
-                    notify(godChoiceCommand);
-
-                    print("Wait for other players to choose their gods...");
-                } else if (currentGamePhase == GamePhase.GAME_PREPARATION) {
-
-                    GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput(command);
-                    notify(gamePreparationCommand);
-
-                    print("Wait for other players to place their Workers...");
-
-
-                } else if (currentGamePhase == GamePhase.REAL_GAME) {
-
-                    PlayerCommand playerCommand = PlayerCommand.parseInput(command);
-                    notify(playerCommand);
-
-                   // print("Wait for other players to choose their gods...");
-
-
+                    this.initialInfo.handleInitialInfoCommand(splitCommand);
+                }
+                else if (currentGamePhase == GamePhase.CHOOSE_GODS && isInitialGodChooser) {
+                    this.godChoice.handleIsGodChooserGodsChoice(splitCommand);
+                }
+                else if (currentGamePhase == GamePhase.CHOOSE_GODS) { // but not initial god chooser
+                    this.godChoice.handleGodChoice(splitCommand);
+                }
+                else if (currentGamePhase == GamePhase.GAME_PREPARATION) {
+                    this.gamePreparation.handle(command);
+                }
+                else if (currentGamePhase == GamePhase.REAL_GAME) {
+                    this.realGame.handleRealGame(command);
                 }
                 else {
                     print("Unknown Command");
@@ -438,47 +243,6 @@ public class Cli extends View implements Observer<Update> {
         }
     }
 
-    private void helpString(GamePhase gamePhase) {
-        switch (gamePhase) {
-            case INITIAL_INFO:
-                print("In this phase, you decide your nickname and your workers' color");
-                print("Command format: pick <nickname> <color>");
-                print("Command example: pick Mike green");
-                break;
-            case CHOOSE_GODS:
-                print("In this phase, you select your god");
-                print("Command format: select <god>");
-                print("Command example: select Apollo");
-                break;
-            case GAME_PREPARATION:
-                print("In this phase, you place your workers on the board");
-                print("Command format: place w1 [letter][number] w2 [letter][number]");
-                print("Command example: place w1 A1 w2 B2");
-                print("Want to know who is playing in this moment? Type 'turn'");
-                print("Don't remember the association player <-> god? Type 'god'");
-                print("Got lost and want to see the current situation of the board? Type 'board'");
-                break;
-            case REAL_GAME:
-                print("In this phase, you play!");
-                print("Move format: move w1/w2 [letter][number] -> tries to move with the chosen Worker to the specified position");
-                print("Move example: move w1 A1");
-                print("Build format: build w1/w2 [letter][number] [optional: blockType {one, two, three, dome}] -> tries to build with the chosen Worker in the specified position");
-                print("Build example: build w1 A2");
-                print("Build example: build w1 A2 dome");
-                print("End format: end -> tries to end the current turn");
-                print("End example: end");
-                print("Want to know who is playing in this moment? Type 'turn'");
-                print("Don't remember the association player <-> god? Type 'god'");
-                print("Got lost and want to see the current situation of the board? Type 'board'");
-                break;
-            default:
-                throw new BadCommandException();
-        }
-    }
-
-    private boolean infoAboutGamePhase(String input) {
-        return input.equals(currentPhaseString);
-    }
 
 
     void forwardNotify(Update update) { // forwards update to client-side Controller
@@ -505,12 +269,20 @@ public class Cli extends View implements Observer<Update> {
         this.selectableGods = selectableGods;
     }
 
+    public List<String> getSelectableGods() {
+        return this.selectableGods;
+    }
+
     /**
      * This method let clients choose a nickname unique in the match.
      * @param selectedNicknames is a list of all nickname already chosen from players.
      */
     void setSelectedNicknames(List<String> selectedNicknames) {
         this.selectedNicknames = selectedNicknames;
+    }
+
+    public List<String> getSelectedNicknames() {
+        return this.selectedNicknames;
     }
 
     /**
@@ -521,12 +293,20 @@ public class Cli extends View implements Observer<Update> {
         this.selectableColors = selectableColors;
     }
 
+    public List<PrintableColor> getSelectableColors() {
+        return this.selectableColors;
+    }
+
     /**
      * This getter method gives information about the number of player involved in a match
      * @return the number of player involved in the match
      */
-    int getPlayersNum() {
+    public int getPlayersNum() {
         return this.playersNum;
+    }
+
+    public void setPlayersNum(int playersNum) {
+        this.playersNum = playersNum;
     }
 
     /**
@@ -596,7 +376,7 @@ public class Cli extends View implements Observer<Update> {
      *              It contains references to each cell (including their level
      *              and workers if there are on that cell).
      */
-    void printBoard(String board) {
+    public void printBoard(String board) {
         this.currentBoard = board;  //new Gson version of board is saved
 
         GsonBuilder builder = new GsonBuilder();
@@ -696,41 +476,11 @@ public class Cli extends View implements Observer<Update> {
     }
 
     /**
-     * This method is used to print information about a specific requested God.
-     * @param god is the God whom information is requested.
-     */
-    private void printGodInfo(String god) {
-
-        try {
-            Map<String, String> godInfo = GodsUtils.parseGodName(god);
-            print("Name: " + godInfo.get(GodsUtils.GOD_NAME));
-            print("Description: " + godInfo.get(GodsUtils.GOD_DESCRIPTION));
-            print("Power: " + godInfo.get(GodsUtils.POWER_DESCRIPTION));
-        } catch(UnknownGodException e) {
-            print("Unknown God Typed");
-            throw new BadCommandException(); // todo ok ?
-        }
-    }
-
-    /**
-     * This method checks if a God chosen by a Client is a valid one.
-     * There is a check for the correct name of a God received. Moreover
-     * there is a check in order to control if God received is already chosen
-     * from a different player.
-     * @param god is a String which indicates the name of a God chosen by a client
-     * @param chosenGods contains different Gods chosen by other players of the match
-     * @return true if the God received is a selectable God and was not already chosen from another player.
-     */
-    private boolean isValidGod(String god, ArrayList<String> chosenGods) {
-        return GodsUtils.isValidGod(god) && (chosenGods == null || !chosenGods.contains(god));
-    }
-
-    /**
      * This method is used to print Gods chosen by users.
      * Its format is [nickname] has [God Name] and it is
      * printed for each player involved in the match
      */
-    void printPlayerGods() {
+    public void printPlayerGods() {
         this.playersGods.keySet().forEach((key) -> {
             print(playerWithColor(key) + " has " + playersGods.get(key));
         });
@@ -759,7 +509,7 @@ public class Cli extends View implements Observer<Update> {
         return null;
     }
 
-    void printCurrentTurn() {
+    public void printCurrentTurn() {
         String currentPlayerNickname = controller.getCurrentPlayerNickname();
         if(currentPlayerNickname != null && playerWithColor(currentPlayerNickname) != null) {
 
@@ -786,7 +536,7 @@ public class Cli extends View implements Observer<Update> {
         }
     }
 
-    GamePhase getCurrentPhase() {
+    public GamePhase getCurrentPhase() {
         return this.currentGamePhase;
     }
 
@@ -794,8 +544,23 @@ public class Cli extends View implements Observer<Update> {
         return this.continueToWatch;
     }
 
-    static String toBold(String s) {
+    public void setContinueToWatch(boolean continueToWatch) {
+        this.continueToWatch = continueToWatch;
+    }
+
+    public static String toBold(String s) {
         return PrintableColor.BOLD + s + PrintableColor.RESET;
     }
 
+    public Client getClient(){
+        return this.client;
+    }
+
+    public String getCurrentBoard() {
+        return this.currentBoard;
+    }
+
+    public String getCurrentPhaseString() {
+        return this.currentPhaseString;
+    }
 }

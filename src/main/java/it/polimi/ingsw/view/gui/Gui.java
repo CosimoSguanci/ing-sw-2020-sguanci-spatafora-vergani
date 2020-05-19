@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Gui {
 
@@ -32,9 +33,11 @@ public class Gui {
     private static void showGui() throws IOException {
         frame = new JFrame("Santorini");
 
-        frame.add(new WaitingForAMatch());
+        //frame.add(new PlayerNumberChoice());
         //frame.add(new WaitingForAMatch());
         //frame.add(new InitialInfo());
+        frame.add(new GodChoice(3));
+        //frame.add(new GodChoice(3, ArrayList));
 
         frame.pack();
         frame.setIconImage(ImageIO.read(Gui.class.getResource("/images/InitialInfo/santorini-logo.png")));
