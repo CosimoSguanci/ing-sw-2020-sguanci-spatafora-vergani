@@ -17,6 +17,8 @@ public class MatchEnded {
             cli.getClient().getUpdateListener().setIsActive(false);
             cli.getClient().reinitializeConnection();
 
+            cli.getClient().getUpdateListener().addObserver(cli);
+
             cli.setPlayersNum(0);
             cli.setContinueToWatch(false);
 
