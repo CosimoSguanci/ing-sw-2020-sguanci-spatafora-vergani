@@ -27,6 +27,9 @@ public enum CommandType {
                throw new BadCommandException();
            }
         }
+    }
 
+    public static boolean isHelperCommandType(String command) {
+        return command.equals(CommandType.HELP) || command.equals(CommandType.INFO) || command.equals(CommandType.QUIT) || command.equals(CommandType.TURN) || command.equals(CommandType.RULES) || command.equals(CommandType.GOD) || command.equals(CommandType.BOARD);
     }
 }
