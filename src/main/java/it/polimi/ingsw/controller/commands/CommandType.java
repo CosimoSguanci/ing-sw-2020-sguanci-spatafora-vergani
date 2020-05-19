@@ -30,6 +30,12 @@ public enum CommandType {
     }
 
     public static boolean isHelperCommandType(String command) {
-        return command.equals(CommandType.HELP) || command.equals(CommandType.INFO) || command.equals(CommandType.QUIT) || command.equals(CommandType.TURN) || command.equals(CommandType.RULES) || command.equals(CommandType.GOD) || command.equals(CommandType.BOARD);
+        CommandType enumCommand;
+        try {
+            enumCommand = Enum.valueOf(CommandType.class, command.toUpperCase());
+        } catch(IllegalArgumentException e) {
+            return false;
+        }
+        return enumCommand.equals(CommandType.HELP) || enumCommand.equals(CommandType.INFO) || enumCommand.equals(CommandType.QUIT) || enumCommand.equals(CommandType.TURN) || enumCommand.equals(CommandType.RULES) || enumCommand.equals(CommandType.GOD) || enumCommand.equals(CommandType.BOARD);
     }
 }

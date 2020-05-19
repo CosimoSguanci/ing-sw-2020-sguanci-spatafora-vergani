@@ -6,13 +6,10 @@ import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.model.updates.*;
-import it.polimi.ingsw.network.client.UpdateListener;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.view.Manual;
 import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.cli.component.*;
@@ -20,12 +17,10 @@ import it.polimi.ingsw.view.cli.component.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**
@@ -35,6 +30,7 @@ import java.util.stream.Collectors;
  *
  * @author Cosimo Sguanci
  * @author Roberto Spatafora
+ * @author Andrea Vergani
  */
 public class Cli extends View implements Observer<Update> {
     private final Client client;
@@ -70,6 +66,7 @@ public class Cli extends View implements Observer<Update> {
     private MatchEnded matchEnded = new MatchEnded(this);
     private GamePreparation gamePreparation = new GamePreparation(this);
     private CliPlayerHelper cliPlayerHelper = new CliPlayerHelper(this);
+    private WaitingForAMatch waitingForAMatch = new WaitingForAMatch(this);
 
     /**
      * Cli is the builder of the class. At the moment of the Cli creation
@@ -114,12 +111,10 @@ public class Cli extends View implements Observer<Update> {
      * is established, every game phase is managed.
      */
     public void start() { // todo Command Pattern?
-
         stdin = new Scanner(System.in);
         stdout = System.out;
 
         try {
-
             do {
                 print("How many players do you want in your match? ");
                 String playersNumString = stdin.nextLine();
@@ -146,9 +141,6 @@ public class Cli extends View implements Observer<Update> {
 
     }
 
-    private boolean computeCommand(String[] splitCommand) {
-        return (splitCommand.length == 0) || (splitCommand[0].equals("") && splitCommand.length == 1);
-    }
 
     /**
      * This method manages every possible interaction with the client.
@@ -156,12 +148,7 @@ public class Cli extends View implements Observer<Update> {
      * grouped by game phases.
      */
     private void gameLoop() {
-        print("Waiting for a match...");
-        newLine();
-        print("HIGHLY RECOMMENDED: type '" + Cli.toBold("help") + "' in any moment to have information about game-phases, commands, ...");
-        print("RECOMMENDED: if it's the first time you play or have any doubt during the game, type '" + Cli.toBold("rules") + "' to read a short version of Santorini's manual");
-        newLine();
-
+        waitingForAMatch.handleWaiting();
         String command;
 
         while (true) {
@@ -370,95 +357,12 @@ public class Cli extends View implements Observer<Update> {
     }
 
     /**
-     * This method contains an algorithm to print the board game Cli version.
-     * Every cell is printed as a 5x5; there are boarders which delimit each cell.
-     * @param board indicates the board which is used in the relative match.
-     *              It contains references to each cell (including their level
-     *              and workers if there are on that cell).
-     */
-    public void printBoard(String board) {
-        this.currentBoard = board;  //new Gson version of board is saved
-
-        GsonBuilder builder = new GsonBuilder();
-
-        Gson gson = builder.create();
-        Board gameBoard = gson.fromJson(board, Board.class);
-
-
-        char rowIdentifier = 'A';
-
-        print("");
-        print("");
-        print("");
-
-        for (int i = 0; i < 5; i++) {    //Single cell printed as 5x5: +---+ boarders; " "/"1"/"2" if worker is inside; BlockType specified.
-            System.out.println("\t+  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +");
-            System.out.println("\t|         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 0).getLevel()) + " | " +
-                    " |         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 1).getLevel()) + " | " +
-                    " |         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 2).getLevel()) + " | " +
-                    " |         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 3).getLevel()) + " | " +
-                    " |         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 4).getLevel()) + " | ");
-
-            System.out.print(rowIdentifier + "\t");
-            rowIdentifier++;
-
-            for (int j = 0; j < 5; j++) {
-                System.out.print("|    ");
-                if (!gameBoard.getCell(i, j).isEmpty()) {
-
-                    Worker printableWorker = gameBoard.getCell(i, j).getWorker();
-                    if (printableWorker.workerType.equals(Command.WORKER_FIRST)) {
-                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + " W1" + PrintableColor.RESET);
-                    } else {
-                        System.out.print(convertColorToAnsi(printableWorker.player.getColor()) + " W2" + PrintableColor.RESET);
-                    }
-                } else {
-                    System.out.print("   ");
-                }
-                System.out.print("    |  ");
-
-            }
-
-            System.out.println();
-            System.out.println("\t|           |  |           |  |           |  |           |  |           |");
-            System.out.println("\t+  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +");
-
-        }
-
-
-        System.out.println("\t      1              2              3              4              5    ");
-
-
-        print("");
-        print("");
-        print("");
-    }
-
-    //TODO eliminate: getLevelNumber() is a BlockType method.
-    static String convertBlockTypeToUnicode(BlockType level) { // todo move to BlockType
-        switch (level) {
-            case GROUND:
-                return "0";
-            case LEVEL_ONE:
-                return "1";
-            case LEVEL_TWO:
-                return "2";
-            case LEVEL_THREE:
-                return "3";
-            case DOME:
-                return "D";
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
-    /**
      * This method converts a color given as parameter according to enum
      * defined, and it is used to have the correct correspondence Ansi color.
      * @param color is the PrintableColor you want to calculate the Ansi code
      * @return the string of the respective Ansi color.
      */
-    static String convertColorToAnsi (PrintableColor color) { // todo move to PrintableColor
+    public static String convertColorToAnsi (PrintableColor color) { // todo move to PrintableColor
         switch (color) {
             case RED:
                 return "\u001B[31m";
@@ -560,7 +464,15 @@ public class Cli extends View implements Observer<Update> {
         return this.currentBoard;
     }
 
+    public void setCurrentBoard(String board) {
+        this.currentBoard = board;
+    }
+
     public String getCurrentPhaseString() {
         return this.currentPhaseString;
+    }
+
+    private boolean computeCommand(String[] splitCommand) {
+        return (splitCommand.length == 0) || (splitCommand[0].equals("") && splitCommand.length == 1);
     }
 }
