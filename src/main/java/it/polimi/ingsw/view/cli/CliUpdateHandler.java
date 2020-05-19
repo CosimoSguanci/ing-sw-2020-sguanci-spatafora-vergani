@@ -19,7 +19,7 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     public void handle(MatchStartedUpdate update) {
-        cliInstance.printBoard(update.board);
+        cliInstance.printBoard(update.getBoard());
 
         cliInstance.print(Cli.toBold("MATCH STARTED!"));
         cliInstance.newLine();
@@ -29,6 +29,8 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     public void handle(ChooseGodsUpdate update) {
+
+        if (!update.getCurrentPlayerID().equals(cliInstance.controller.getClientPlayerID())) return;
 
         if (update.isGodChooser) {
             cliInstance.setInitialGodChooser(true);
@@ -43,7 +45,7 @@ public class CliUpdateHandler implements UpdateHandler {
             cliInstance.setInitialGodChooser(false);
             cliInstance.setSelectableGods(update.selectableGods);
             cliInstance.print(Cli.toBold("Choose ") + "your god.    Command " + Cli.toBold("format") + " expected: select [god]");
-            if(listToStringBuilder(update.selectableGods) != null) {
+            if (listToStringBuilder(update.selectableGods) != null) {
                 cliInstance.newLine();
                 cliInstance.print("Available choices are: " + listToStringBuilder(update.selectableGods));
             }
@@ -64,19 +66,21 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     public void handle(GamePreparationUpdate update) {
+        if (!update.getCurrentPlayerID().equals(cliInstance.controller.getClientPlayerID())) return;
+
         cliInstance.print("Game Preparation: place your " + Cli.toBold("workers") + ".    Command " + Cli.toBold("format") + " expected: place W1 [row1][col1]  W2 [row2][col2]");
         cliInstance.newLine();
     }
 
     public void handle(BoardUpdate update) {
 
-        if(cliInstance.getCurrentPhase().equals(GamePhase.MATCH_LOST) && !cliInstance.wantsToContinueToWatch()) return;
+        if (cliInstance.getCurrentPhase().equals(GamePhase.MATCH_LOST) && !cliInstance.wantsToContinueToWatch()) return;
 
-        if((update.getExecutedCommand() == null || update.getExecutedCommand().commandType != CommandType.END_TURN)) {
-            cliInstance.printBoard(update.board);
+        if ((update.getExecutedCommand() == null || update.getExecutedCommand().commandType != CommandType.END_TURN)) {
+            cliInstance.printBoard(update.getBoard());
         }
 
-        if(update.getExecutedCommand() != null && (update.getExecutedCommand().commandType == CommandType.BUILD || update.getExecutedCommand().commandType == CommandType.MOVE)) {
+        if (update.getExecutedCommand() != null && (update.getExecutedCommand().commandType == CommandType.BUILD || update.getExecutedCommand().commandType == CommandType.MOVE)) {
             PlayerCommand executedCommand = update.getExecutedCommand();
 
 
@@ -85,7 +89,7 @@ public class CliUpdateHandler implements UpdateHandler {
             String nickname = executedCommand.getPlayerNickname() != null ? executedCommand.getPlayerNickname() : "Player";
             String rowChar = "";
 
-            switch(executedCommand.row) {
+            switch (executedCommand.row) {
                 case 0:
                     rowChar = "A";
                     break;
@@ -103,10 +107,9 @@ public class CliUpdateHandler implements UpdateHandler {
                     break;
             }
 
-            if(executedCommand.commandType == CommandType.MOVE) {
+            if (executedCommand.commandType == CommandType.MOVE) {
                 cliInstance.print(cliInstance.playerWithColor(nickname) + " moved " + executedCommand.workerID.toUpperCase() + " to " + rowChar + (executedCommand.col + 1));
-            }
-            else {
+            } else {
                 cliInstance.print(cliInstance.playerWithColor(nickname) + " built with " + executedCommand.workerID.toUpperCase() + " in " + rowChar + (executedCommand.col + 1));
             }
 
@@ -119,6 +122,9 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     public void handle(ErrorUpdate update) {
+
+        if (!update.getCurrentPlayerID().equals(cliInstance.controller.getClientPlayerID())) return;
+
         switch (update.command) {
             case MOVE:
                 cliInstance.print(Cli.toBold("Move Error") + ": maybe you can't perform this move or it's not time for a move. Try with another command or wait for your turn!");
@@ -129,7 +135,7 @@ public class CliUpdateHandler implements UpdateHandler {
                 break;
 
             case END_TURN:
-                cliInstance.print("You " + Cli.toBold("can't end") +" your turn now");
+                cliInstance.print("You " + Cli.toBold("can't end") + " your turn now");
                 break;
 
             case PICK:
@@ -150,8 +156,8 @@ public class CliUpdateHandler implements UpdateHandler {
 
     public void handle(GamePhaseChangedUpdate update) {
         cliInstance.newLine();
-        if(update.newGamePhase.isPrintable()) {
-            switch(update.newGamePhase) {
+        if (update.newGamePhase.isPrintable()) {
+            switch (update.newGamePhase) {
                 case INITIAL_INFO:
                     cliInstance.print(Cli.toBold("INITIAL INFORMATION PHASE"));
                     break;
@@ -170,39 +176,37 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     public void handle(InitialInfoUpdate update) {
-       cliInstance.print("Type your " + Cli.toBold("nickname and color") + " separated by a space.    Command " + Cli.toBold("format") + " expected: pick [nickname] [color]");
 
-       if(!update.selectedNicknames.isEmpty()) {
-           cliInstance.newLine();
-           cliInstance.print("Nicknames already taken are: " + listToStringBuilder(update.selectedNicknames));
-       }
+        if(!update.getCurrentPlayerID().equals(cliInstance.controller.getClientPlayerID())) return;
 
-       cliInstance.newLine();
 
-       cliInstance.setSelectedNicknames(update.selectedNicknames);
-       cliInstance.print("Available colors are: ");
+        cliInstance.print("Type your " + Cli.toBold("nickname and color") + " separated by a space.    Command " + Cli.toBold("format") + " expected: pick [nickname] [color]");
 
-       update.selectableColors.forEach((color) -> {
+        if (!update.selectedNicknames.isEmpty()) {
+            cliInstance.newLine();
+            cliInstance.print("Nicknames already taken are: " + listToStringBuilder(update.selectedNicknames));
+        }
+
+        cliInstance.newLine();
+
+        cliInstance.setSelectedNicknames(update.selectedNicknames);
+        cliInstance.print("Available colors are: ");
+
+        update.selectableColors.forEach((color) -> {
             cliInstance.print(Cli.convertColorToAnsi(color) + color + PrintableColor.RESET);
         });
 
 
-       cliInstance.setSelectableColors(update.selectableColors);
-       cliInstance.newLine();
+        cliInstance.setSelectableColors(update.selectableColors);
+        cliInstance.newLine();
     }
 
-    public void handle(PlayerUpdate update) {
+    public void handle(PlayersIdentifiersUpdate update) {
         cliInstance.forwardNotify(update);
     }
 
     public void handle(TurnUpdate update) {
-        /*if(cliInstance.controller.getClientPlayerID().equals(update.currentPlayerID)) {
-            cliInstance.print("Your Turn");
-        } else {
-            cliInstance.print("Turn ended. Wait for your turn...");
-        }*/
         cliInstance.forwardNotify(update);
-        //cliInstance.printCurrentTurn();
     }
 
     public void handle(WinUpdate update) {
@@ -214,29 +218,25 @@ public class CliUpdateHandler implements UpdateHandler {
 
     public void handle(LoseUpdate update) {
 
-        if(cliInstance.controller.getClientPlayerID().equals(update.loserPlayerID)) {
+        if (cliInstance.controller.getClientPlayerID().equals(update.loserPlayerID)) {
             cliInstance.newLine();
             cliInstance.print(Cli.toBold("You lost!"));
             cliInstance.newLine();
             cliInstance.setCurrentGamePhase(GamePhase.MATCH_LOST);
 
-            if(update.onePlayerRemaining) {
+            if (update.onePlayerRemaining) {
                 cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED); // todo method to avoid duplicate
-            }
-            else {
+            } else {
                 cliInstance.print("Do you want to continue to watch this match?");
             }
-        }
-
-        else if(update.onePlayerRemaining) {
+        } else if (update.onePlayerRemaining) {
             cliInstance.newLine();
             cliInstance.print(cliInstance.playerWithColor(update.loserPlayerNickname) + " lost!");
             cliInstance.print(Cli.toBold("You Win!"));
             cliInstance.newLine();
             cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
             //cliInstance.print("Do you want to play another match?");
-        }
-        else {
+        } else {
             cliInstance.newLine();
             cliInstance.print(cliInstance.playerWithColor(update.loserPlayerNickname) + " lost!");
         }
@@ -257,11 +257,11 @@ public class CliUpdateHandler implements UpdateHandler {
 
 
     private StringBuilder listToStringBuilder(List<String> value) {
-        if(value.size() == 0) {
+        if (value.size() == 0) {
             return null;
         }
         StringBuilder result = new StringBuilder(value.get(0));
-        for(int i = 1; i < value.size(); i++) {
+        for (int i = 1; i < value.size(); i++) {
             result.append(", ").append(value.get(i));
         }
         return result;
@@ -270,7 +270,7 @@ public class CliUpdateHandler implements UpdateHandler {
     private StringBuilder availableGods() {
         ArrayList<String> godNames = new ArrayList<>(GodsUtils.getGodsInfo().keySet());  //list of gods' names
         StringBuilder result = new StringBuilder(godNames.get(0).toUpperCase());
-        for(int i = 1; i < godNames.size(); i++) {
+        for (int i = 1; i < godNames.size(); i++) {
             result.append(", ").append(godNames.get(i).toUpperCase());
         }
         return result;

@@ -4,11 +4,11 @@ import it.polimi.ingsw.view.UpdateHandler;
 
 import java.util.Map;
 
-public class SelectedGodsUpdate extends BroadcastUpdate {
+public class SelectedGodsUpdate extends Update {
     public final Map<String, String> selectedGods; // Nickname : GodName
 
     public SelectedGodsUpdate(Map<String, String> selectedGods) {
-        super(null);
+        super(null, null);
         this.selectedGods = selectedGods;
     }
 

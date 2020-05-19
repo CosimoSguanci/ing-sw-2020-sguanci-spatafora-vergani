@@ -2,14 +2,16 @@ package it.polimi.ingsw.network.client.controller;
 
 import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.model.updates.ErrorUpdate;
-import it.polimi.ingsw.model.updates.PlayerUpdate;
+import it.polimi.ingsw.model.updates.PlayersIdentifiersUpdate;
 import it.polimi.ingsw.model.updates.TurnUpdate;
 import it.polimi.ingsw.model.updates.Update;
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.utils.NetworkUtils;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class Controller extends Observable<Update> implements Observer<Object> {
 
@@ -36,10 +38,20 @@ public class Controller extends Observable<Update> implements Observer<Object> {
 
     @Override
     public void update(Object message) { // todo Visitor?
-        if (message instanceof PlayerUpdate) {
-            this.clientPlayerID = ((PlayerUpdate) message).playerID;
+        if (message instanceof PlayersIdentifiersUpdate) {
+            Map<String, String> identifiers = ((PlayersIdentifiersUpdate) message).getIdentifiers();
+            String id = NetworkUtils.getNetworkIdentifier(client.getSocket(), NetworkUtils.LOCAL_PORT);
+
+            //client.getSocket().getLocalPort()
+
+            if(identifiers == null || !identifiers.containsKey(id)) {
+                throw new IllegalArgumentException(); // todo new exception
+            }
+
+            this.clientPlayerID = identifiers.get(id);
+
         } else if (message instanceof TurnUpdate) {
-            this.currentPlayerID = ((TurnUpdate) message).currentPlayerID;
+            this.currentPlayerID = ((TurnUpdate) message).getCurrentPlayerID();
             this.currentPlayerNickname = ((TurnUpdate) message).currentPlayerNickname;
         } else {
 

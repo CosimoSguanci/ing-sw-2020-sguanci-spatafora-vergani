@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.updates;
 
 import it.polimi.ingsw.view.UpdateHandler;
 
-public class DisconnectedPlayerUpdate extends BroadcastUpdate {
+public class DisconnectedPlayerUpdate extends Update {
 
     public final String disconnectedPlayerID;
     public final String disconnectedPlayerNickname;
@@ -13,7 +13,7 @@ public class DisconnectedPlayerUpdate extends BroadcastUpdate {
     public final boolean onePlayerRemaining; // todo remove
 
     public DisconnectedPlayerUpdate(String disconnectedPlayerID, String disconnectedPlayerNickname, boolean onePlayerRemaining, String board) {
-        super(board);
+        super(null, board);
         this.disconnectedPlayerID = disconnectedPlayerID;
         this.disconnectedPlayerNickname = disconnectedPlayerNickname;
         this.onePlayerRemaining = onePlayerRemaining;

@@ -5,12 +5,12 @@ import it.polimi.ingsw.view.UpdateHandler;
 
 import java.io.Serializable;
 
-public class ErrorUpdate extends PlayerSpecificUpdate {
+public class ErrorUpdate extends Update {
     public final CommandType command;
     // todo add error type enum
 
     public ErrorUpdate(String playerID, CommandType command) {
-        super(playerID);
+        super(playerID, null);
         this.command = command;
     }
 

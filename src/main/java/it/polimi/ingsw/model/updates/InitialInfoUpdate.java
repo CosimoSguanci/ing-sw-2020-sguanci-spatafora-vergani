@@ -5,13 +5,13 @@ import it.polimi.ingsw.view.UpdateHandler;
 
 import java.util.List;
 
-public class InitialInfoUpdate extends PlayerSpecificUpdate {
+public class InitialInfoUpdate extends Update {
 
     public final List<String> selectedNicknames;
     public final List<PrintableColor> selectableColors;
 
     public InitialInfoUpdate(String playerID, List<String> selectedNicknames, List<PrintableColor> selectableColors) {
-        super(playerID);
+        super(playerID, null);
         this.selectedNicknames = selectedNicknames;
         this.selectableColors = selectableColors;
     }

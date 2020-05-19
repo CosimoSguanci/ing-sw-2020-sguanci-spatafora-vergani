@@ -60,6 +60,10 @@ public class Client {
         objectOutputStream.flush();
     }
 
+    public Socket getSocket() {
+        return this.socket;
+    }
+
     public UpdateListener getUpdateListener() {
         return this.updateListener;
     }

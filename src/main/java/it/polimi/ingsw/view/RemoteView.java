@@ -12,7 +12,6 @@ import java.io.IOException;
 
 public class RemoteView extends Observable<Command> implements Observer<Update>{
 
-    private final Player player;
     private final ClientHandler clientHandler;
 
     void handleCommand(Command command) {
@@ -29,8 +28,7 @@ public class RemoteView extends Observable<Command> implements Observer<Update>{
     }
 
 
-    public RemoteView(Player player, ClientHandler clientHandler) {
-        this.player = player;
+    public RemoteView(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
         clientHandler.addObserver(new CommandReceiver());
     }
@@ -39,19 +37,7 @@ public class RemoteView extends Observable<Command> implements Observer<Update>{
     @Override
     public void update(Update update) {
         try {
-
-            if(update instanceof PlayerSpecificUpdate) {
-                PlayerSpecificUpdate playerSpecificUpdate = (PlayerSpecificUpdate) update;
-
-                if (player.ID.equals(playerSpecificUpdate.playerID)) {
-                    clientHandler.sendUpdate(update);
-                }
-            }
-
-            else if (update instanceof BroadcastUpdate) {
-                clientHandler.sendUpdate(update);
-            }
-
+            clientHandler.sendUpdate(update);
         } catch(IOException ignored) {
 
         }

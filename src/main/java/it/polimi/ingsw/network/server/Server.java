@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.network.utils.NetworkUtils;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.RemoteView;
 
@@ -74,16 +75,22 @@ public class Server implements Observer<Controller> {
             Model model = new Model(match);
             Controller controller = new Controller(model);
 
+            Map<String, String> playersIdentifiers = new HashMap<>();
+
             for (ClientHandler clientHandler : suitableConnections) {
                 Player player = new Player(clientHandler.clientID, model, match);
                 playingConnections.add(clientHandler);
                 waitingConnections.remove(clientHandler);
                 match.addPlayer(player);
-                RemoteView remoteView = new RemoteView(player, clientHandler);
+                RemoteView remoteView = new RemoteView(clientHandler);
                 model.addObserver(remoteView);
                 remoteView.addObserver(controller);
-                model.playerUpdate(player);
+
+                playersIdentifiers.put(NetworkUtils.getNetworkIdentifier(clientHandler.clientSocket, NetworkUtils.REMOTE_PORT), clientHandler.clientID);
             }
+
+
+            model.playerUpdate(playersIdentifiers);
 
             controllerClientsMap.put(controller, suitableConnections);
 

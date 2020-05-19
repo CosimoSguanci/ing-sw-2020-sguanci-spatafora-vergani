@@ -2,12 +2,10 @@ package it.polimi.ingsw.model.updates;
 
 import it.polimi.ingsw.view.UpdateHandler;
 
-public class GamePreparationUpdate extends PlayerSpecificUpdate {
-    public final String board;
+public class GamePreparationUpdate extends Update {
 
     public GamePreparationUpdate(String playerID, String board) {
-        super(playerID);
-        this.board = board;
+        super(playerID, board);
     }
 
     @Override

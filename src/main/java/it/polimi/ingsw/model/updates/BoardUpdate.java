@@ -3,12 +3,12 @@ package it.polimi.ingsw.model.updates;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
 import it.polimi.ingsw.view.UpdateHandler;
 
-public class BoardUpdate extends BroadcastUpdate {
+public class BoardUpdate extends Update {
 
     private PlayerCommand executedCommand;
 
     public BoardUpdate(String board) {
-        super(board);
+        super(null, board);
     }
 
     public void setExecutedCommand(PlayerCommand executedCommand) {

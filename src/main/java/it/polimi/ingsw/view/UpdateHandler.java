@@ -12,7 +12,7 @@ public interface UpdateHandler { // Implements Visitor Pattern
     void handle(GamePreparationUpdate update);
     void handle(BoardUpdate update);
     void handle(ErrorUpdate update);
-    void handle(PlayerUpdate update);
+    void handle(PlayersIdentifiersUpdate update);
     void handle(TurnUpdate update);
     void handle(WinUpdate update);
     void handle(LoseUpdate update);

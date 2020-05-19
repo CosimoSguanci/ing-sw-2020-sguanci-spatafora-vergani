@@ -2,13 +2,11 @@ package it.polimi.ingsw.model.updates;
 
 import it.polimi.ingsw.view.UpdateHandler;
 
-public class TurnUpdate extends BroadcastUpdate {
-    public final String currentPlayerID;
+public class TurnUpdate extends Update {
     public final String currentPlayerNickname;
 
     public TurnUpdate(String playerID, String playerNickname) {
-        super(null);
-        this.currentPlayerID = playerID;
+        super(playerID, null);
         this.currentPlayerNickname = playerNickname;
     }
 
