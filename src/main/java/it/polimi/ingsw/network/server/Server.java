@@ -86,11 +86,13 @@ public class Server implements Observer<Controller> {
                 model.addObserver(remoteView);
                 remoteView.addObserver(controller);
 
-                playersIdentifiers.put(NetworkUtils.getNetworkIdentifier(clientHandler.clientSocket, NetworkUtils.REMOTE_PORT), clientHandler.clientID);
+                clientHandler.clientSocket.getRemoteSocketAddress();
+
+                playersIdentifiers.put(NetworkUtils.getNetworkIdentifier(clientHandler.clientSocket, NetworkUtils.SERVER_MODE), clientHandler.clientID);
             }
 
 
-            model.playerUpdate(playersIdentifiers);
+       //     model.playerUpdate(playersIdentifiers);
 
             controllerClientsMap.put(controller, suitableConnections);
 

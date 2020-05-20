@@ -7,6 +7,8 @@ import java.util.List;
 
 public class InitialInfoUpdate extends Update {
 
+    private static final long serialVersionUID = 7676143030084758028L;
+
     public final List<String> selectedNicknames;
     public final List<PrintableColor> selectableColors;
 

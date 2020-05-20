@@ -4,16 +4,16 @@ import java.net.Socket;
 
 public final class NetworkUtils {
 
-    public static final int LOCAL_PORT = 0;
-    public static final int REMOTE_PORT = 1;
+    public static final int SERVER_MODE = 0;
+    public static final int CLIENT_MODE = 1;
 
     private NetworkUtils(){}
 
-    public static String getNetworkIdentifier(Socket socket, int portMode) {
-        if(portMode == LOCAL_PORT) {
-            return socket.getLocalPort() + "@" + socket.getInetAddress();
+    public static String getNetworkIdentifier(Socket socket, int mode) {
+        if(mode == CLIENT_MODE) {
+            return socket.getLocalPort() + "@" + socket.getLocalAddress();
         }
-        else if(portMode == REMOTE_PORT) {
+        else if(mode == SERVER_MODE) {
             return socket.getPort() + "@" + socket.getInetAddress();
         }
         else throw new IllegalArgumentException();

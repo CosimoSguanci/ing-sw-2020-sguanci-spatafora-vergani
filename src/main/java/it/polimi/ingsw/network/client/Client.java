@@ -12,13 +12,14 @@ import java.util.concurrent.TimeUnit;
 
 public class Client {
 
-    private final static String IP = "127.0.0.1";
-    //private final static String IP = "cosimosguanci.ddns.net";
+    //private final static String IP = "127.0.0.1";
+    private final static String IP = "cosimosguanci.ddns.net";
     private final static int PORT = 12345;
     private final static int TIMEOUT_MS = 2000;
 
     private Socket socket;
     private DataOutputStream dataOutputStream;
+    private DataInputStream dataInputStream;
     private ObjectOutputStream objectOutputStream;
     private UpdateListener updateListener;
 
@@ -35,19 +36,27 @@ public class Client {
         this.socket = new Socket(IP, PORT);
         this.socket.setSoTimeout(TIMEOUT_MS);
         this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        this.dataInputStream = new DataInputStream(socket.getInputStream());
         this.objectOutputStream = null;
-
-        this.updateListener = new UpdateListener(socket);
-        executor.execute(updateListener);
     }
 
     public void reinitializeConnection() throws IOException {
         initConnection();
     }
 
-    public void sendInt(int message) throws IOException {
-        dataOutputStream.writeInt(message);
+    public void setupUpdateListener() {
+        this.updateListener = new UpdateListener(socket);
+        executor.execute(updateListener);
+    }
+
+
+    public void sendPlayersNumber(int playersNum) throws IOException {
+        dataOutputStream.writeInt(playersNum);
         dataOutputStream.flush();
+    }
+
+    public String readPlayerID() throws IOException {
+        return dataInputStream.readUTF();
     }
 
     public void sendCommand(Command command) throws IOException {

@@ -49,7 +49,6 @@ public class Cli extends View implements Observer<Update> {
     private List<String> selectableGods;
     private Map<String, String> playersGods;
     private Map<String, PrintableColor> playersColors;
-    private final String currentPhaseString = "current_phase";
     private final UpdateHandler cliUpdateHandler;
 
     final Controller controller;
@@ -58,14 +57,14 @@ public class Cli extends View implements Observer<Update> {
 
     private String currentBoard;  //Gson representation of current board of the match
 
-    private RealGame realGame = new RealGame(this);
-    private GodChoice godChoice = new GodChoice(this);
-    private InitialInfo initialInfo = new InitialInfo(this);
-    private MatchEnded matchEnded = new MatchEnded(this);
-    private GamePreparation gamePreparation = new GamePreparation(this);
-    private CliPlayerHelper cliPlayerHelper = new CliPlayerHelper(this);
-    private WaitingForAMatch waitingForAMatch = new WaitingForAMatch(this);
-    private BoardDelegate boardDelegate = new BoardDelegate(this);
+    private final RealGame realGame = new RealGame(this);
+    private final GodChoice godChoice = new GodChoice(this);
+    private final InitialInfo initialInfo = new InitialInfo(this);
+    private final MatchEnded matchEnded = new MatchEnded(this);
+    private final GamePreparation gamePreparation = new GamePreparation(this);
+    private final CliPlayerHelper cliPlayerHelper = new CliPlayerHelper(this);
+    private final WaitingForAMatch waitingForAMatch = new WaitingForAMatch(this);
+    private final BoardDelegate boardDelegate = new BoardDelegate(this);
 
     /**
      * Cli is the builder of the class. At the moment of the Cli creation
@@ -81,7 +80,7 @@ public class Cli extends View implements Observer<Update> {
         this.controller = controller;
         this.cliUpdateHandler = new CliUpdateHandler(this);
 
-        client.getUpdateListener().addObserver(this); // Register to UpdateListener
+        //client.getUpdateListener().addObserver(this); // Register to UpdateListener
     }
 
     /**
@@ -128,7 +127,15 @@ public class Cli extends View implements Observer<Update> {
 
             } while (playersNum != 2 && playersNum != 3);
 
-            client.sendInt(playersNum);
+            client.sendPlayersNumber(playersNum);
+
+            String clientID = client.readPlayerID();
+
+            controller.setClientPlayerID(clientID);
+
+            client.setupUpdateListener();
+
+            client.getUpdateListener().addObserver(this); // Register to UpdateListener
 
             gameLoop();
 
@@ -468,7 +475,8 @@ public class Cli extends View implements Observer<Update> {
     }
 
     public String getCurrentPhaseString() {
-        return this.currentPhaseString;
+        String currentPhaseString = "current_phase";
+        return currentPhaseString;
     }
 
     private boolean computeCommand(String[] splitCommand) {

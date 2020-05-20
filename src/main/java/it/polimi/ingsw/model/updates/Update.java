@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.UpdateHandler;
 import java.io.Serializable;
 
 public abstract class Update implements Serializable {
+    private static final long serialVersionUID = 8108733601179952266L;
     private final String currentPlayerID;
 
     /**

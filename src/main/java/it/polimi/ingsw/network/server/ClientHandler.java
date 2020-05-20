@@ -4,8 +4,10 @@ import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.model.updates.Update;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.view.cli.components.InitialInfo;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -36,6 +38,7 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
     }
 
     public void sendUpdate(Update update) throws IOException {
+        objectOutputStream.reset(); //a void cached objects
         objectOutputStream.writeObject(update);
         objectOutputStream.flush();
     }
@@ -47,13 +50,16 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
 
     @Override
     public void run() {
-        DataInputStream input;
         try {
+            DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
+            DataInputStream input = new DataInputStream(clientSocket.getInputStream());
+
+            this.playersNum = input.readInt();
+
+            output.writeUTF(this.clientID);
 
             this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream()); // NB SE NON APRI LO STREAM IN OUTPUT DA SERVER A CLIENT LA GETINPUTSTREAM DEL CLIENT SI BLOCCA -> e va in timeoutexception se c'è un timeout
 
-            input = new DataInputStream(clientSocket.getInputStream());
-            this.playersNum = input.readInt();
 
             CommandListener commandListener = new CommandListener(clientSocket, server);
             commandListener.addObserver(this);

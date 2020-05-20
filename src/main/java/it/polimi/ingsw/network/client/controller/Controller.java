@@ -36,13 +36,15 @@ public class Controller extends Observable<Update> implements Observer<Object> {
         return this.currentPlayerID;
     }
 
+    public void setClientPlayerID(String clientPlayerID) {
+        this.clientPlayerID = clientPlayerID;
+    }
+
     @Override
     public void update(Object message) { // todo Visitor?
         if (message instanceof PlayersIdentifiersUpdate) {
             Map<String, String> identifiers = ((PlayersIdentifiersUpdate) message).getIdentifiers();
-            String id = NetworkUtils.getNetworkIdentifier(client.getSocket(), NetworkUtils.LOCAL_PORT);
-
-            //client.getSocket().getLocalPort()
+            String id = NetworkUtils.getNetworkIdentifier(client.getSocket(), NetworkUtils.CLIENT_MODE);
 
             if(identifiers == null || !identifiers.containsKey(id)) {
                 throw new IllegalArgumentException(); // todo new exception

@@ -102,9 +102,6 @@ public class Controller extends Observable<Controller> implements Observer<Comma
             throw new InvalidColorException();
         }
 
-        /*if(!initialInfoCommand.getPlayer().equals(model.getCurrentPlayer())) {
-           System.out.println("___________");
-        }*/
 
         model.getCurrentPlayer().setNickname(nickname);
         model.getCurrentPlayer().setColor(color);
