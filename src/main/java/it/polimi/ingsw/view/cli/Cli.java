@@ -1,8 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.controller.GamePhase;
-import it.polimi.ingsw.controller.commands.*;
-import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.model.updates.*;
@@ -11,13 +9,8 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.cli.components.*;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.net.URL;
 import java.util.*;
 
 
@@ -39,13 +32,10 @@ public class Cli extends View implements Observer<Update> {
     // TODO Put currentGamePhase in common superclass with GUI
 
     private GamePhase currentGamePhase;
-
     private List<String> selectedNicknames;
     private List<PrintableColor> selectableColors;
-
     private boolean isInitialGodChooser = false;
     private boolean continueToWatch = false;
-
     private List<String> selectableGods;
     private Map<String, String> playersGods;
     private Map<String, PrintableColor> playersColors;
@@ -53,18 +43,10 @@ public class Cli extends View implements Observer<Update> {
 
     final Controller controller;
 
-    private boolean soundPlayed = false;
-
     private String currentBoard;  //Gson representation of current board of the match
 
-    private final RealGame realGame = new RealGame(this);
-    private final GodChoice godChoice = new GodChoice(this);
-    private final InitialInfo initialInfo = new InitialInfo(this);
-    private final MatchEnded matchEnded = new MatchEnded(this);
-    private final GamePreparation gamePreparation = new GamePreparation(this);
-    private final CliPlayerHelper cliPlayerHelper = new CliPlayerHelper(this);
-    private final WaitingForAMatch waitingForAMatch = new WaitingForAMatch(this);
-    private final BoardDelegate boardDelegate = new BoardDelegate(this);
+    private final GamePhaseCommandHandler gamePhaseCommandHandler = new GamePhaseCommandHandler(this);
+    private final OtherInfoHandler otherInfoHandler = new OtherInfoHandler(this);
 
     /**
      * Cli is the builder of the class. At the moment of the Cli creation
@@ -111,12 +93,10 @@ public class Cli extends View implements Observer<Update> {
     public void start() { // todo Command Pattern?
         stdin = new Scanner(System.in);
         stdout = System.out;
-
         try {
             do {
                 print("How many players do you want in your match? ");
                 String playersNumString = stdin.nextLine();
-
                 if (playersNumString.equals("2")) {
                     playersNum = 2;
                 } else if (playersNumString.equals("3")) {
@@ -124,119 +104,19 @@ public class Cli extends View implements Observer<Update> {
                 } else {
                     print("Invalid Players number: 2 or 3 players matches are available.");
                 }
-
             } while (playersNum != 2 && playersNum != 3);
-
             client.sendPlayersNumber(playersNum);
-
             String clientID = client.readPlayerID();
-
             controller.setClientPlayerID(clientID);
-
             client.setupUpdateListener();
-
             client.getUpdateListener().addObserver(this); // Register to UpdateListener
-
-            gameLoop();
-
+            this.gamePhaseCommandHandler.gameLoop();
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("The Game couldn't start, maybe there was some network error or the server isn't available.");
             System.exit(0);
         }
-
     }
-
-
-    /**
-     * This method manages every possible interaction with the client.
-     * All the commands received by the client are parsed in this method
-     * grouped by game phases.
-     */
-    private void gameLoop() {
-        waitingForAMatch.handleWaiting();
-        String command;
-
-        while (true) {
-
-            command = stdin.nextLine();
-
-            String[] splitCommand = command.toLowerCase().split("\\s+");
-
-            if (computeCommand(splitCommand)) { continue; }
-
-            if (splitCommand[0].length() == 0) {  // command starting with space
-                splitCommand = Arrays.copyOfRange(splitCommand, 1, splitCommand.length);
-            }
-
-            try {
-
-                if (currentGamePhase == GamePhase.MATCH_ENDED) {
-                    command = command.toLowerCase();
-
-                    if(command.equals("yes")) {
-                        matchEnded.handle();
-                        break;
-                    }
-                    else if(command.equals("no")) {
-                        print("Quitting...");
-                        System.exit(0);
-                    }
-                    else throw new BadCommandException();
-
-                }
-                else if (currentGamePhase == GamePhase.MATCH_LOST) {
-
-                    command = command.toLowerCase();
-
-                    if(command.equals("yes")) {
-                        this.continueToWatch = true;
-                        newLine();
-                        continue;// todo test
-                    }
-                    else if(command.equals("no")) {
-                        this.currentGamePhase = GamePhase.MATCH_ENDED;
-                        newLine();
-                        print("Do you want to play another match?");
-                    }
-                    else throw new BadCommandException(); // todo add multiple exception
-                }
-                else if (CommandType.isHelperCommandType(splitCommand[0])){
-                    cliPlayerHelper.helperHandle(splitCommand);
-                }
-                else if (currentGamePhase == GamePhase.INITIAL_INFO) {
-                    this.initialInfo.handleInitialInfoCommand(splitCommand);
-                }
-                else if (currentGamePhase == GamePhase.CHOOSE_GODS && isInitialGodChooser) {
-                    this.godChoice.handleIsGodChooserGodsChoice(splitCommand);
-                }
-                else if (currentGamePhase == GamePhase.CHOOSE_GODS) { // but not initial god chooser
-                    this.godChoice.handleGodChoice(splitCommand);
-                }
-                else if (currentGamePhase == GamePhase.GAME_PREPARATION) {
-                    this.gamePreparation.handle(command);
-                }
-                else if (currentGamePhase == GamePhase.REAL_GAME) {
-                    this.realGame.handleRealGame(command);
-                }
-                else {
-                    print("Unknown Command");
-                }
-            } catch (BadCommandException e) {
-                print("Bad command generated, please repeat it.");
-            } catch (NicknameAlreadyTakenException e) {
-                print("Nickname already taken for this match, please select another nickname.");
-            } catch (InvalidColorException e) {
-                print ("Invalid color requested: another player already chose it or this color is not available in this game.");
-            } catch (WrongPlayerException e) {
-                print ("Invalid command: please check if it's your turn!");
-            }
-
-            newLine();
-        }
-    }
-
-
 
     void forwardNotify(Update update) { // forwards update to client-side Controller
         notify(update);
@@ -250,6 +130,10 @@ public class Cli extends View implements Observer<Update> {
      */
     void setInitialGodChooser(boolean value) {
         this.isInitialGodChooser = value;
+    }
+
+    public boolean getInitialGodChooser() {
+        return this.isInitialGodChooser;
     }
 
     /**
@@ -318,37 +202,20 @@ public class Cli extends View implements Observer<Update> {
         this.playersColors = playersColors;
     }
 
+    public Map<String, PrintableColor> getPlayersColors() {
+        return this.playersColors;
+    }
+
     /**
      * This setter method is used to set a specific game phase.
      * It is necessary to have this method to change different phase during the match.
      * @param newGamePhase is the new phase that it is set with the invocation of this method.
      */
-    void setCurrentGamePhase(GamePhase newGamePhase) {
+    public void setCurrentGamePhase(GamePhase newGamePhase) {
         this.currentGamePhase = newGamePhase;
 
-        switch(this.currentGamePhase) {
-            case INITIAL_INFO:
-                print("Players are choosing nickname and color... Wait for your turn.");
-                newLine();
-                break;
-            case CHOOSE_GODS:
-                print("Players are choosing their gods... Wait for your turn.");
-                newLine();
-                break;
-            case GAME_PREPARATION:
-                print("Players are placing their Workers... Wait for your turn.");
-                newLine();
-                break;
-            case REAL_GAME:
-                // real game
-                break;
-            case MATCH_ENDED:
-                print("Do you want to play another match?");
-                newLine();
-                break;
-        }
+        this.otherInfoHandler.printGamePhase(this.currentGamePhase);
     }
-
 
     /**
      * This method manages all the message received from the server.
@@ -391,9 +258,7 @@ public class Cli extends View implements Observer<Update> {
      * printed for each player involved in the match
      */
     public void printPlayerGods() {
-        this.playersGods.keySet().forEach((key) -> {
-            print(playerWithColor(key) + " has " + playersGods.get(key));
-        });
+        this.playersGods.keySet().forEach((key) -> print(playerWithColor(key) + " has " + playersGods.get(key)));
     }
 
     /**
@@ -402,12 +267,10 @@ public class Cli extends View implements Observer<Update> {
      * printed for each player involved in the match
      */
     void printPlayersColors() {
-        this.playersColors.keySet().forEach((key) -> {
-            print(key + " is " + convertColorToAnsi(playersColors.get(key)) + playersColors.get(key) + PrintableColor.RESET);
-        });
+        this.playersColors.keySet().forEach((key) -> print(key + " is " + convertColorToAnsi(playersColors.get(key)) + playersColors.get(key) + PrintableColor.RESET));
     }
 
-    String playerWithColor(String nickname) {
+    public String playerWithColor(String nickname) {
         if(playersColors != null) {
 
             if(!playersColors.containsKey(nickname) && nickname.equals("Player")) {
@@ -420,30 +283,7 @@ public class Cli extends View implements Observer<Update> {
     }
 
     public void printCurrentTurn() {
-        String currentPlayerNickname = controller.getCurrentPlayerNickname();
-        if(currentPlayerNickname != null && playerWithColor(currentPlayerNickname) != null) {
-
-            if (!controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {  //not player's turn
-                soundPlayed = false;
-                print("It's " + playerWithColor(currentPlayerNickname) + "'s turn!");
-            } else {  //client's turn
-                print("It's" + convertColorToAnsi(playersColors.get(currentPlayerNickname)) + " your " + PrintableColor.RESET + "turn!");
-
-                if(!soundPlayed) {
-                    try {
-                        URL defaultSound = getClass().getResource("/turn.wav");
-                        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(defaultSound);
-                        Clip clip = AudioSystem.getClip();
-                        clip.open(audioInputStream);
-                        clip.start( );
-
-                        soundPlayed = true;
-                    } catch (Exception ignored) {}
-                }
-
-            }
-            newLine();
-        }
+        this.otherInfoHandler.printCurrentTurn();
     }
 
     public GamePhase getCurrentPhase() {
@@ -475,15 +315,18 @@ public class Cli extends View implements Observer<Update> {
     }
 
     public String getCurrentPhaseString() {
-        String currentPhaseString = "current_phase";
-        return currentPhaseString;
-    }
-
-    private boolean computeCommand(String[] splitCommand) {
-        return (splitCommand.length == 0) || (splitCommand[0].equals("") && splitCommand.length == 1);
+        return "current_phase";
     }
 
     public void printBoard(String board) {
-        this.boardDelegate.printBoard(board);
+        this.gamePhaseCommandHandler.printBoard(board);
+    }
+
+    public Scanner getStdin() {
+        return this.stdin;
+    }
+
+    public Controller getController() {
+        return this.controller;
     }
 }

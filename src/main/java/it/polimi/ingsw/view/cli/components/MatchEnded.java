@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.cli.components;
 
+import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.view.cli.Cli;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ public class MatchEnded {
         this.cli = cli;
     }
 
-    public void handle(){
+    private void manage(){
         try {
             cli.getClient().getUpdateListener().setIsActive(false);
             cli.getClient().reinitializeConnection();
@@ -28,4 +29,18 @@ public class MatchEnded {
         }
         cli.start();
     }
+
+    public boolean handle(String command) {
+        if(command.equals("yes")) {
+            manage();
+            return true;        //break while in cli
+        }
+        else if(command.equals("no")) {
+            cli.print("Quitting...");
+            System.exit(0);
+        }
+        else throw new BadCommandException();
+        return false;
+    }
+
 }
