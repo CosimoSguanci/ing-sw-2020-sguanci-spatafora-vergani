@@ -18,6 +18,8 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import static it.polimi.ingsw.network.server.Server.TIMEOUT_MS;
+
 public class ClientHandler extends Observable<Command> implements Runnable, Observer<Command> {
 
     private final Server server;
@@ -58,10 +60,12 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
 
             output.writeUTF(this.clientID);
 
+            this.clientSocket.setSoTimeout(TIMEOUT_MS);
+
             this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream()); // NB SE NON APRI LO STREAM IN OUTPUT DA SERVER A CLIENT LA GETINPUTSTREAM DEL CLIENT SI BLOCCA -> e va in timeoutexception se c'è un timeout
 
 
-            CommandListener commandListener = new CommandListener(clientSocket, server);
+            CommandListener commandListener = new CommandListener(clientSocket, objectOutputStream, server);
             commandListener.addObserver(this);
             executor.execute(commandListener);
 

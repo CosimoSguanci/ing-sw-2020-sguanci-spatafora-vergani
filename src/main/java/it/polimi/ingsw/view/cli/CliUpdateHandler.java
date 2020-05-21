@@ -201,10 +201,6 @@ public class CliUpdateHandler implements UpdateHandler {
         cliInstance.newLine();
     }
 
-    public void handle(PlayersIdentifiersUpdate update) {
-        cliInstance.forwardNotify(update);
-    }
-
     public void handle(TurnUpdate update) {
         cliInstance.forwardNotify(update);
     }

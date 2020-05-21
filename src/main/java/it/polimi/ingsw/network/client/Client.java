@@ -43,8 +43,11 @@ public class Client {
         initConnection();
     }
 
-    public void setupUpdateListener() {
-        this.updateListener = new UpdateListener(socket);
+    public void setupUpdateListener() throws IOException{
+        if (this.objectOutputStream == null) {
+            this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        }
+        this.updateListener = new UpdateListener(socket, objectOutputStream);
         executor.execute(updateListener);
     }
 

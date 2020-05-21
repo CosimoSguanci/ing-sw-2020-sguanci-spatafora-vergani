@@ -25,6 +25,9 @@ public class Server implements Observer<Controller> {
     private static final int MAX_PLAYERS_NUM = 3;
     private static boolean isActive;
     private final ServerSocket serverSocket;
+    public final static int TIMEOUT_MS = 2000;
+    public final static String PING_MSG = "PING";
+    public final static String PONG_MSG = "PONG";
 
     /**
      * Cached ThreadPool without idle threads termination
@@ -36,6 +39,8 @@ public class Server implements Observer<Controller> {
     private final Set<ClientHandler> waitingConnections = new HashSet<>();
     private final Set<ClientHandler> playingConnections = new HashSet<>();
     private final Map<Controller, Set<ClientHandler>> controllerClientsMap = new HashMap<>();
+
+    private final Set<Socket> pingWaitingList = new HashSet<>();
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
@@ -75,8 +80,6 @@ public class Server implements Observer<Controller> {
             Model model = new Model(match);
             Controller controller = new Controller(model);
 
-            Map<String, String> playersIdentifiers = new HashMap<>();
-
             for (ClientHandler clientHandler : suitableConnections) {
                 Player player = new Player(clientHandler.clientID, model, match);
                 playingConnections.add(clientHandler);
@@ -87,12 +90,8 @@ public class Server implements Observer<Controller> {
                 remoteView.addObserver(controller);
 
                 clientHandler.clientSocket.getRemoteSocketAddress();
-
-                playersIdentifiers.put(NetworkUtils.getNetworkIdentifier(clientHandler.clientSocket, NetworkUtils.SERVER_MODE), clientHandler.clientID);
             }
 
-
-       //     model.playerUpdate(playersIdentifiers);
 
             controllerClientsMap.put(controller, suitableConnections);
 
@@ -113,6 +112,18 @@ public class Server implements Observer<Controller> {
                 System.err.println("Connection error");
             }
         }
+    }
+
+    public synchronized void addToPingWaitingList(Socket socket) {
+        this.pingWaitingList.add(socket);
+    }
+
+    public synchronized void removeFromPingWaitingList(Socket socket) {
+        this.pingWaitingList.remove(socket);
+    }
+
+    public synchronized boolean waitingPingFrom(Socket socket) {
+        return this.pingWaitingList.contains(socket);
     }
 
     void handleConnectionReset(Socket clientSocket) {

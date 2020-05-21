@@ -66,11 +66,6 @@ public class Model extends Observable<Update> {
         notify(errorUpdate);
     }
 
-    public void playerUpdate(Map<String, String> playersIdentifiers) {
-        PlayersIdentifiersUpdate playersIdentifiersUpdate = new PlayersIdentifiersUpdate(playersIdentifiers);
-        notify(playersIdentifiersUpdate);
-    }
-
     public void chooseGodsUpdate(Player player, List<String> selectableGods) {
         ChooseGodsUpdate chooseGodsUpdate = new ChooseGodsUpdate(player.ID, player.isGodChooser(), selectableGods);
         notify(chooseGodsUpdate);

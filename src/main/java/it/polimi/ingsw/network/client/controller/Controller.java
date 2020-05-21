@@ -2,7 +2,6 @@ package it.polimi.ingsw.network.client.controller;
 
 import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.model.updates.ErrorUpdate;
-import it.polimi.ingsw.model.updates.PlayersIdentifiersUpdate;
 import it.polimi.ingsw.model.updates.TurnUpdate;
 import it.polimi.ingsw.model.updates.Update;
 import it.polimi.ingsw.network.client.Client;
@@ -15,10 +14,10 @@ import java.util.Map;
 
 public class Controller extends Observable<Update> implements Observer<Object> {
 
+    private final Client client;
     private String clientPlayerID;
     private String currentPlayerID;
     private String currentPlayerNickname;
-    private final Client client;
 
     public Controller(Client client) {
         this.client = client;
@@ -26,6 +25,10 @@ public class Controller extends Observable<Update> implements Observer<Object> {
 
     public String getClientPlayerID() { /// WIP
         return this.clientPlayerID;
+    }
+
+    public void setClientPlayerID(String clientPlayerID) {
+        this.clientPlayerID = clientPlayerID;
     }
 
     public String getCurrentPlayerNickname() {
@@ -36,23 +39,10 @@ public class Controller extends Observable<Update> implements Observer<Object> {
         return this.currentPlayerID;
     }
 
-    public void setClientPlayerID(String clientPlayerID) {
-        this.clientPlayerID = clientPlayerID;
-    }
-
     @Override
     public void update(Object message) { // todo Visitor?
-        if (message instanceof PlayersIdentifiersUpdate) {
-            Map<String, String> identifiers = ((PlayersIdentifiersUpdate) message).getIdentifiers();
-            String id = NetworkUtils.getNetworkIdentifier(client.getSocket(), NetworkUtils.CLIENT_MODE);
 
-            if(identifiers == null || !identifiers.containsKey(id)) {
-                throw new IllegalArgumentException(); // todo new exception
-            }
-
-            this.clientPlayerID = identifiers.get(id);
-
-        } else if (message instanceof TurnUpdate) {
+        if (message instanceof TurnUpdate) {
             this.currentPlayerID = ((TurnUpdate) message).getCurrentPlayerID();
             this.currentPlayerNickname = ((TurnUpdate) message).currentPlayerNickname;
         } else {
@@ -88,7 +78,8 @@ public class Controller extends Observable<Update> implements Observer<Object> {
                         initialInfoCommand.setPlayerID(clientPlayerID);
                         client.sendCommand(initialInfoCommand);
                     }
-                } catch (IOException ignored) {} // todo handle ignored exceptions
+                } catch (IOException ignored) {
+                } // todo handle ignored exceptions
             }
         }
     }
