@@ -2,11 +2,15 @@ package it.polimi.ingsw.view.gui.components;
 
 import javax.swing.*;
 
-public class NicknameAlreadyUsed extends JDialog {
+public class NicknameAlreadyUsed {
+    public static final String title = "Message";
 
+    public static String getMessage() {
+        return "You can't use this nickname!" + System.lineSeparator() +
+                "Nicknames already used are: ";
+    }
 
-    public NicknameAlreadyUsed(JFrame frame) {
-        super(frame, "Message");
+    /*public NicknameAlreadyUsed() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         JLabel message = new JLabel("You can't use this nickname!");
@@ -19,5 +23,5 @@ public class NicknameAlreadyUsed extends JDialog {
         this.add(panel);
         this.setSize(350, 200);
         this.setVisible(true);
-    }
+    }*/
 }
