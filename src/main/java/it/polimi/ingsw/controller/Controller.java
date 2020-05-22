@@ -558,8 +558,6 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         model.nextGamePhase();
         model.gamePhaseUpdate(model.getCurrentGamePhase());
         model.boardUpdate();
-
-        //model.gamePreparationUpdate(model.getCurrentPlayer());
     }
 
     private void startMatch() {

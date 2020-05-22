@@ -52,8 +52,15 @@ public class OtherInfoHandler {
                 this.cli.newLine();
                 break;
             case GAME_PREPARATION:
-                this.cli.println("Players are placing their Workers... Wait for your turn.");
-                this.cli.newLine();
+
+                if(this.cli.getController().getCurrentPlayerID().equals(this.cli.getController().getClientPlayerID())) {
+                    this.cli.printGamePreparationInfo();
+                }
+                else {
+                    this.cli.println("Players are placing their Workers... Wait for your turn.");
+                    this.cli.newLine();
+                }
+
                 break;
             case MATCH_ENDED:
                 this.cli.println("Do you want to play another match?");
