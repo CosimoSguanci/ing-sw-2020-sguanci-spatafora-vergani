@@ -16,9 +16,6 @@ public class MatchEnded {
         try {
             cli.getClient().getUpdateListener().setIsActive(false);
             cli.getClient().reinitializeConnection();
-
-         //   cli.getClient().getUpdateListener().addObserver(cli);
-
             cli.setPlayersNum(0);
             cli.setContinueToWatch(false);
 
@@ -36,7 +33,7 @@ public class MatchEnded {
             return true;        //break while in cli
         }
         else if(command.equals("no")) {
-            cli.print("Quitting...");
+            cli.println("Quitting...");
             System.exit(0);
         }
         else throw new BadCommandException();

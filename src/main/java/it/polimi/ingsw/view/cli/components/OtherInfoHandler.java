@@ -23,9 +23,9 @@ public class OtherInfoHandler {
         if(currentPlayerNickname != null && this.cli.playerWithColor(currentPlayerNickname) != null) {
             if (!this.cli.getController().getCurrentPlayerID().equals(this.cli.getController().getClientPlayerID())) {  //not player's turn
                 soundPlayed = false;
-                this.cli.print("It's " + this.cli.playerWithColor(currentPlayerNickname) + "'s turn!");
+                this.cli.println("It's " + this.cli.playerWithColor(currentPlayerNickname) + "'s turn!");
             } else {  //client's turn
-                this.cli.print("It's" + Cli.convertColorToAnsi(this.cli.getPlayersColors().get(currentPlayerNickname)) + " your " + PrintableColor.RESET + "turn!");
+                this.cli.println("It's" + Cli.convertColorToAnsi(this.cli.getPlayersColors().get(currentPlayerNickname)) + " your " + PrintableColor.RESET + "turn!");
                 if(!soundPlayed) {
                     try {
                         URL defaultSound = getClass().getResource("/turn.wav");
@@ -44,22 +44,19 @@ public class OtherInfoHandler {
     public void printGamePhase(GamePhase currentGamePhase) {
         switch(currentGamePhase) {
             case INITIAL_INFO:
-                this.cli.print("Players are choosing nickname and color... Wait for your turn.");
+                this.cli.println("Players are choosing nickname and color... Wait for your turn.");
                 this.cli.newLine();
                 break;
             case CHOOSE_GODS:
-                this.cli.print("Players are choosing their gods... Wait for your turn.");
+                this.cli.println("Players are choosing their gods... Wait for your turn.");
                 this.cli.newLine();
                 break;
             case GAME_PREPARATION:
-                this.cli.print("Players are placing their Workers... Wait for your turn.");
+                this.cli.println("Players are placing their Workers... Wait for your turn.");
                 this.cli.newLine();
                 break;
-            case REAL_GAME:
-                // real game
-                break;
             case MATCH_ENDED:
-                this.cli.print("Do you want to play another match?");
+                this.cli.println("Do you want to play another match?");
                 this.cli.newLine();
                 break;
         }

@@ -35,9 +35,9 @@ public class BoardDelegate {
 
         char rowIdentifier = 'A';
 
-        cli.print("");
-        cli.print("");
-        cli.print("");
+        cli.println("");
+        cli.println("");
+        cli.println("");
 
         for (int i = 0; i < 5; i++) {    //Single cell printed as 5x5: +---+ boarders; " "/"1"/"2" if worker is inside; BlockType specified.
             System.out.println("\t+  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +");
@@ -77,9 +77,9 @@ public class BoardDelegate {
         System.out.println("\t      1              2              3              4              5    ");
 
 
-        cli.print("");
-        cli.print("");
-        cli.print("");
+        cli.println("");
+        cli.println("");
+        cli.println("");
     }
 
     private //TODO eliminate: getLevelNumber() is a BlockType method.

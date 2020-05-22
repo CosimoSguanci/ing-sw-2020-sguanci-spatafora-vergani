@@ -38,6 +38,7 @@ public class Player implements Serializable {
         this.workerSecond = new Worker(this, match.getMatchBoard(), Command.WORKER_SECOND);
     }
 
+
     /**
      * This getter method gives information about the color the player has
      * chosen for its workers.

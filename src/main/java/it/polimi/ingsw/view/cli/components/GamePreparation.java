@@ -16,6 +16,6 @@ public class GamePreparation {
         GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput(command);
         cli.notify(gamePreparationCommand);
 
-        cli.print("Wait for other players to place their Workers...");
+        cli.println("Wait for other players to place their Workers...");
     }
 }

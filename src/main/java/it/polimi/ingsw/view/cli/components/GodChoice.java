@@ -18,7 +18,7 @@ public class GodChoice {
 
     public void handleIsGodChooserGodsChoice(String[] splitCommand) {
         if (CommandType.parseCommandType(splitCommand[0]) != CommandType.SELECT || splitCommand.length != (cli.getPlayersNum() + 1)) {
-            cli.print("You have to use the SELECT command, and type " + cli.getPlayersNum() + " names of gods separated by spaces");
+            cli.println("You have to use the SELECT command, and type " + cli.getPlayersNum() + " names of gods separated by spaces");
             throw new BadCommandException();
         }
 
@@ -37,7 +37,7 @@ public class GodChoice {
         GodChoiceCommand godChoiceCommand = new GodChoiceCommand(chosenGods); // true
         cli.notify(godChoiceCommand);
 
-        cli.print("Wait for other players to choose their gods...");
+        cli.println("Wait for other players to choose their gods...");
     }
 
     public void handleGodChoice(String[] splitCommand) {
@@ -57,7 +57,7 @@ public class GodChoice {
         GodChoiceCommand godChoiceCommand = new GodChoiceCommand(selected); // false
         cli.notify(godChoiceCommand);
 
-        cli.print("Wait for other players to choose their gods...");
+        cli.println("Wait for other players to choose their gods...");
     }
 
 

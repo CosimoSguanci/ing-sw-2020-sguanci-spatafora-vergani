@@ -20,7 +20,7 @@ public class MatchLost {
         else if(command.equals("no")) {
             cli.setCurrentGamePhase(GamePhase.MATCH_ENDED);
             cli.newLine();
-            cli.print("Do you want to play another match?");
+            cli.println("Do you want to play another match?");
         }
         else throw new BadCommandException(); // todo add multiple exception
         return false;

@@ -56,8 +56,8 @@ public class Model extends Observable<Update> {
         notify(gamePhaseUpdate);
     }
 
-    public void reportError(Player player, CommandType commandType) {
-        ErrorUpdate errorUpdate = new ErrorUpdate(player, commandType);
+    public void reportError(Player player, CommandType commandType, ErrorType errorType, Map<String, String> inhibitorGod ) {
+        ErrorUpdate errorUpdate = new ErrorUpdate(player, commandType, errorType, inhibitorGod);
         notify(errorUpdate);
     }
 
@@ -101,9 +101,9 @@ public class Model extends Observable<Update> {
         notify(winUpdate);
     }
 
-    public void loseUpdate(Player loserPlayer) {
+    public void loseUpdate(Player loserPlayer, LoseUpdate.LoseCause loseCause) {
         boolean onePlayerRemaining = getPlayers().size() == 1;
-        LoseUpdate loseUpdate = new LoseUpdate(loserPlayer, onePlayerRemaining, match.getMatchBoard().toString());
+        LoseUpdate loseUpdate = new LoseUpdate(loserPlayer, loseCause, onePlayerRemaining, match.getMatchBoard().toString());
         notify(loseUpdate);
     }
 
@@ -122,12 +122,12 @@ public class Model extends Observable<Update> {
     }
 
 
-    public void onPlayerLose(Player loserPlayer) {
+    public void onPlayerLose(Player loserPlayer, LoseUpdate.LoseCause loseCause) {
         loserPlayer.getWorkerFirst().getPosition().setWorker(null);
         loserPlayer.getWorkerSecond().getPosition().setWorker(null);
 
         removePlayer(loserPlayer);
-        loseUpdate(loserPlayer);
+        loseUpdate(loserPlayer, loseCause);
 
         turnUpdate(getCurrentPlayer());
 

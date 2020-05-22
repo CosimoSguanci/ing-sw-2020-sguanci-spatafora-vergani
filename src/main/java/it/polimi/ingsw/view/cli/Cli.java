@@ -41,9 +41,12 @@ public class Cli extends View implements Observer<Update> {
     private Map<String, PrintableColor> playersColors;
     private final UpdateHandler cliUpdateHandler;
 
-    final Controller controller;
+    private final Controller controller;
 
-    private String currentBoard;  //Gson representation of current board of the match
+    /**
+     *  JSON representation of current board of the match
+     */
+    private String currentBoard;
 
     private final GamePhaseCommandHandler gamePhaseCommandHandler = new GamePhaseCommandHandler(this);
     private final OtherInfoHandler otherInfoHandler = new OtherInfoHandler(this);
@@ -60,9 +63,7 @@ public class Cli extends View implements Observer<Update> {
     public Cli(Client client, Controller controller) {
         this.client = client;
         this.controller = controller;
-        this.cliUpdateHandler = new CliUpdateHandler(this);
-
-        //client.getUpdateListener().addObserver(this); // Register to UpdateListener
+        this.cliUpdateHandler = new CliUpdateHandler(this, controller);
     }
 
     /**
@@ -70,7 +71,7 @@ public class Cli extends View implements Observer<Update> {
      * It is an abbreviation of stdout.println
      * @param string id the string printed by this method.
      */
-    public void print(String string) {
+    public void println(String string) {
         if (stdout == null)
             return;
         stdout.println(string);
@@ -95,14 +96,14 @@ public class Cli extends View implements Observer<Update> {
         stdout = System.out;
         try {
             do {
-                print("How many players do you want in your match? ");
+                println("How many players do you want in your match? ");
                 String playersNumString = stdin.nextLine();
                 if (playersNumString.equals("2")) {
                     playersNum = 2;
                 } else if (playersNumString.equals("3")) {
                     playersNum = 3;
                 } else {
-                    print("Invalid Players number: 2 or 3 players matches are available.");
+                    println("Invalid Players number: 2 or 3 players matches are available.");
                 }
             } while (playersNum != 2 && playersNum != 3);
             client.sendPlayersNumber(playersNum);
@@ -258,7 +259,7 @@ public class Cli extends View implements Observer<Update> {
      * printed for each player involved in the match
      */
     public void printPlayerGods() {
-        this.playersGods.keySet().forEach((key) -> print(playerWithColor(key) + " has " + playersGods.get(key)));
+        this.playersGods.keySet().forEach((key) -> println(playerWithColor(key) + " has " + playersGods.get(key)));
     }
 
     /**
@@ -267,7 +268,7 @@ public class Cli extends View implements Observer<Update> {
      * printed for each player involved in the match
      */
     void printPlayersColors() {
-        this.playersColors.keySet().forEach((key) -> print(key + " is " + convertColorToAnsi(playersColors.get(key)) + playersColors.get(key) + PrintableColor.RESET));
+        this.playersColors.keySet().forEach((key) -> println(key + " is " + convertColorToAnsi(playersColors.get(key)) + playersColors.get(key) + PrintableColor.RESET));
     }
 
     public String playerWithColor(String nickname) {
@@ -287,7 +288,7 @@ public class Cli extends View implements Observer<Update> {
     }
 
     public void printGamePreparationInfo() {
-        print("Game Preparation: place your " + Cli.toBold("workers") + ".    Command " + Cli.toBold("format") + " expected: place W1 [row1][col1]  W2 [row2][col2]");
+        println("Game Preparation: place your " + Cli.toBold("workers") + ".    Command " + Cli.toBold("format") + " expected: place W1 [row1][col1]  W2 [row2][col2]");
         newLine();
     }
 

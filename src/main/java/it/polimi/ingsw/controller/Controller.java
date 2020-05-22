@@ -4,11 +4,16 @@ import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.GodStrategy;
+import it.polimi.ingsw.model.gods.Prometheus;
+import it.polimi.ingsw.model.updates.LoseUpdate;
+import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static it.polimi.ingsw.model.utils.GodsUtils.*;
 
 
 /**
@@ -71,13 +76,13 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         try {
             command.handleCommand(this.commandHandler);
         } catch (WrongGamePhaseException e) {
-            model.reportError(command.getPlayer(), command.commandType);
+            model.reportError(command.getPlayer(), command.commandType, ErrorType.WRONG_GAME_PHASE, null);
         } catch (WrongPlayerException e) {  //TODO -> modify reportError
-            model.reportError(command.getPlayer(), command.commandType);
+            model.reportError(command.getPlayer(), command.commandType, ErrorType.WRONG_TURN, null);
         } catch (NicknameAlreadyTakenException e) {
-            model.reportError(command.getPlayer(), command.commandType);
+            model.reportError(command.getPlayer(), command.commandType, ErrorType.ALREADY_TAKEN_NICKNAME, null);
         } catch (InvalidColorException e) {
-            model.reportError(command.getPlayer(), command.commandType);
+            model.reportError(command.getPlayer(), command.commandType, ErrorType.INVALID_COLOR, null);
         }
     }
 
@@ -135,6 +140,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
         } else {
             String god = chosenGods.get(0);
+            // todo exception if chosen gods it's not selectable
             model.getCurrentPlayer().setGodStrategy(GodStrategy.instantiateGod(god));
             this.selectableGods.remove(god);
         }
@@ -170,8 +176,16 @@ public class Controller extends Observable<Controller> implements Observer<Comma
             throw new WrongPlayerException();
         } else {
 
-            if (checkAllGamePreparationConstraints(gamePreparationCommand) &&
-                    currentPlayer.getGodStrategy().checkGamePreparation(
+            Map<String, String> inhibitorGod = new HashMap<>();
+
+            if(!checkAllGamePreparationConstraints(gamePreparationCommand, inhibitorGod)) {
+                model.reportError(currentPlayer, CommandType.PLACE, ErrorType.DENIED_BY_OPPONENT_GOD, inhibitorGod);
+                return;
+            }
+
+            else
+            
+            if (currentPlayer.getGodStrategy().checkGamePreparation(
                             currentPlayer.getWorkerFirst(),
                             gamePreparationCommand.getWorkerFirstCell(),
                             currentPlayer.getWorkerSecond(),
@@ -179,7 +193,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
             ) {
                 currentPlayer.getGodStrategy().executeGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell());
             } else {
-                model.reportError(currentPlayer, CommandType.PLACE);
+                model.reportError(currentPlayer, CommandType.PLACE, ErrorType.DENIED_BY_PLAYER_GOD, null);
                 return;
             }
 
@@ -208,9 +222,16 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         if (!playerCommand.getPlayer().equals(currentPlayer)) {
             throw new WrongPlayerException();
         } else {
+            Map<String, String> inhibitorGod = new HashMap<>();
             switch (playerCommand.commandType) {
                 case MOVE:
-                    if (checkAllMoveConstraints(playerCommand) && currentPlayer.getGodStrategy().checkMove(playerCommand.getWorker(), playerCommand.getCell())) {
+
+                    if(!checkAllMoveConstraints(playerCommand, inhibitorGod)) {
+                        model.reportError(playerCommand.getPlayer(), playerCommand.commandType, ErrorType.DENIED_BY_OPPONENT_GOD, inhibitorGod);
+                        return;
+                    }
+
+                    if (currentPlayer.getGodStrategy().checkMove(playerCommand.getWorker(), playerCommand.getCell())) {
 
                         currentPlayer.getGodStrategy().executeMove(playerCommand.getWorker(), playerCommand.getCell());
 
@@ -227,16 +248,21 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
                         } else {
                             // if !hasWon check if the new currentPlayer can build
-
                             checkLoseConditionsBuild(playerCommand);
                         }
 
                     } else {
-                        model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
+                        model.reportError(playerCommand.getPlayer(), CommandType.MOVE, ErrorType.DENIED_BY_PLAYER_GOD, null);
                     }
                     break;
                 case BUILD:
-                    if (checkAllBuildConstraints(playerCommand) && currentPlayer.getGodStrategy().checkBuild(playerCommand.getWorker(), playerCommand.getCell(), playerCommand.cellBlockType)) {
+
+                    if(!checkAllBuildConstraints(playerCommand, inhibitorGod)) {
+                        model.reportError(playerCommand.getPlayer(), playerCommand.commandType, ErrorType.DENIED_BY_OPPONENT_GOD, inhibitorGod) ;
+                        return;
+                    }
+
+                    if (currentPlayer.getGodStrategy().checkBuild(playerCommand.getWorker(), playerCommand.getCell(), playerCommand.cellBlockType)) {
                         currentPlayer.getGodStrategy().executeBuild(playerCommand.getWorker(), playerCommand.getCell(), playerCommand.cellBlockType);
 
                         /*
@@ -256,12 +282,17 @@ public class Controller extends Observable<Controller> implements Observer<Comma
                         }
 
                     } else {
-                        model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
+                        model.reportError(playerCommand.getPlayer(), CommandType.BUILD, ErrorType.DENIED_BY_PLAYER_GOD, null);
                     }
                     break;
                 case END_TURN:
 
-                    if (checkAllEndTurnConstraints(playerCommand) && currentPlayer.getGodStrategy().checkEndTurn()) {
+                    if(!checkAllEndTurnConstraints(playerCommand, inhibitorGod)) {
+                        model.reportError(playerCommand.getPlayer(), playerCommand.commandType, ErrorType.DENIED_BY_OPPONENT_GOD, inhibitorGod);
+                        return;
+                    }
+
+                    if (currentPlayer.getGodStrategy().checkEndTurn()) {
 
                         currentPlayer.getGodStrategy().endPlayerTurn(currentPlayer);
 
@@ -275,7 +306,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
                         checkLoseConditionsMove();
 
                     } else {
-                        model.reportError(playerCommand.getPlayer(), playerCommand.commandType);
+                        model.reportError(playerCommand.getPlayer(), CommandType.END_TURN, ErrorType.DENIED_BY_PLAYER_GOD, null);
                     }
 
                     break;
@@ -286,14 +317,14 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     private void checkLoseConditionsMove() {
         if (!model.getCurrentPlayer().getGodStrategy().canMove(model.getBoard(), model.getCurrentPlayer())) {
-            model.onPlayerLose(model.getCurrentPlayer());
+            model.onPlayerLose(model.getCurrentPlayer(), LoseUpdate.LoseCause.CANT_MOVE);
 
             if (model.getPlayers().size() != 1) {
                 model.boardUpdate();
             }
         } else {
             if (!checkCanMoveOtherGodsConstraints(model.getCurrentPlayer())) {
-                model.onPlayerLose(model.getCurrentPlayer());
+                model.onPlayerLose(model.getCurrentPlayer(), LoseUpdate.LoseCause.CANT_MOVE);
 
                 if (model.getPlayers().size() != 1) {
                     model.boardUpdate();
@@ -306,14 +337,14 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     private void checkLoseConditionsBuild(PlayerCommand playerCommand) {
         if (!model.getCurrentPlayer().getGodStrategy().canBuild(model.getBoard(), playerCommand.getWorker())) {
-            model.onPlayerLose(model.getCurrentPlayer());
+            model.onPlayerLose(model.getCurrentPlayer(), LoseUpdate.LoseCause.CANT_BUILD);
 
             if (model.getPlayers().size() != 1) { // 2 players remaining
                 model.boardUpdate();
             }
         } else {
             if (!checkCanBuildOtherGodsConstraints(model.getCurrentPlayer())) {
-                model.onPlayerLose(model.getCurrentPlayer());
+                model.onPlayerLose(model.getCurrentPlayer(), LoseUpdate.LoseCause.CANT_BUILD);
 
                 if (model.getPlayers().size() != 1) {
                     model.boardUpdate();
@@ -343,7 +374,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         return true;
     }
 
-    private boolean checkAllGamePreparationConstraints(GamePreparationCommand gamePreparationCommand) {
+    private boolean checkAllGamePreparationConstraints(GamePreparationCommand gamePreparationCommand, Map<String, String> inhibitor) {
 
         for (Player p : model.getPlayers()) {
             if (!p.equals(gamePreparationCommand.getPlayer()) &&
@@ -355,13 +386,17 @@ public class Controller extends Observable<Controller> implements Observer<Comma
                             gamePreparationCommand.getWorkerSecondCell())
 
             ) {
+                inhibitor.put(GOD_NAME, p.getGodStrategy().NAME);
+                inhibitor.put(GOD_DESCRIPTION, p.getGodStrategy().DESCRIPTION);
+                inhibitor.put(POWER_DESCRIPTION, p.getGodStrategy().POWER_DESCRIPTION);
                 return false;
             }
         }
 
         return true;
     }
-
+    
+    
     /**
      * This methods checks all Players God's Move Constraints to check if there is a power which
      * prevents the Player which executed the PlayerCommand given to move.
@@ -369,10 +404,13 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * @param playerCommand player command from View
      * @return true if move is permitted, false otherwise.
      */
-    private boolean checkAllMoveConstraints(PlayerCommand playerCommand) {
+    private boolean checkAllMoveConstraints(PlayerCommand playerCommand, Map<String, String> inhibitor) {
 
         for (Player p : model.getPlayers()) {
             if (!p.equals(playerCommand.getPlayer()) && !p.getGodStrategy().checkMoveConstraints(playerCommand.getWorker(), playerCommand.getCell())) {
+                inhibitor.put(GOD_NAME, p.getGodStrategy().NAME);
+                inhibitor.put(GOD_DESCRIPTION, p.getGodStrategy().DESCRIPTION);
+                inhibitor.put(POWER_DESCRIPTION, p.getGodStrategy().POWER_DESCRIPTION);
                 return false;
             }
         }
@@ -387,10 +425,13 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * @param playerCommand player command from View
      * @return true if build is permitted, false otherwise.
      */
-    private boolean checkAllBuildConstraints(PlayerCommand playerCommand) {
+    private boolean checkAllBuildConstraints(PlayerCommand playerCommand, Map<String, String> inhibitor) {
 
         for (Player p : model.getPlayers()) {
             if (!p.equals(playerCommand.getPlayer()) && !p.getGodStrategy().checkBuildConstraints(playerCommand.getWorker(), playerCommand.getCell(), playerCommand.cellBlockType)) {
+                inhibitor.put(GOD_NAME, p.getGodStrategy().NAME);
+                inhibitor.put(GOD_DESCRIPTION, p.getGodStrategy().DESCRIPTION);
+                inhibitor.put(POWER_DESCRIPTION, p.getGodStrategy().POWER_DESCRIPTION);
                 return false;
             }
         }
@@ -398,10 +439,13 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         return true;
     }
 
-    private boolean checkAllEndTurnConstraints(PlayerCommand playerCommand) {
+    private boolean checkAllEndTurnConstraints(PlayerCommand playerCommand, Map<String, String> inhibitor) {
 
         for (Player p : model.getPlayers()) {
             if (!p.equals(playerCommand.getPlayer()) && !p.getGodStrategy().checkEndTurnConstraints(playerCommand.getPlayer())) {
+                inhibitor.put(GOD_NAME, p.getGodStrategy().NAME);
+                inhibitor.put(GOD_DESCRIPTION, p.getGodStrategy().DESCRIPTION);
+                inhibitor.put(POWER_DESCRIPTION, p.getGodStrategy().POWER_DESCRIPTION);
                 return false;
             }
         }
@@ -409,7 +453,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         return true;
     }
 
-    private boolean checkCanMoveOtherGodsConstraints(Player player) { // todo necessary or reuse checkAllMoveConstraints
+    private boolean checkCanMoveOtherGodsConstraints(Player player) {
         List<Cell> availableMoveCellsWorkerFirst = model.getBoard().getAvailableMoveCells(player.getWorkerFirst());
         List<Cell> availableMoveCellsWorkerSecond = model.getBoard().getAvailableMoveCells(player.getWorkerSecond());
 

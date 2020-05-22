@@ -86,16 +86,16 @@ public class GamePhaseCommandHandler {
                     this.realGame.handleRealGame(command);
                 }
                 else {
-                    this.cli.print("Unknown Command");
+                    this.cli.println("Unknown Command");
                 }
             } catch (BadCommandException e) {
-                this.cli.print("Bad command generated, please repeat it.");
+                this.cli.println("Bad command generated, please repeat it.");
             } catch (NicknameAlreadyTakenException e) {
-                this.cli.print("Nickname already taken for this match, please select another nickname.");
+                this.cli.println("Nickname already taken for this match, please select another nickname.");
             } catch (InvalidColorException e) {
-                this.cli.print ("Invalid color requested: another player already chose it or this color is not available in this game.");
+                this.cli.println("Invalid color requested: another player already chose it or this color is not available in this game.");
             } catch (WrongPlayerException e) {
-                this.cli.print ("Invalid command: please check if it's your turn!");
+                this.cli.println("Invalid command: please check if it's your turn!");
             }
 
             this.cli.newLine();

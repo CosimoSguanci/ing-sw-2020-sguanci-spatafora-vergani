@@ -37,7 +37,7 @@ public class InitialInfo {
         String color = splitCommand[2];
 
         if(!PrintableColor.isValidColor(color)) {
-            cli.print("Not a valid color");
+            cli.println("Not a valid color");
             throw new BadCommandException();
         }
 
@@ -51,7 +51,7 @@ public class InitialInfo {
         cli.notify(initialInfoCommand);
 
         cli.newLine();
-        cli.print("Wait for other players to choose their nicknames and colors...");
+        cli.println("Wait for other players to choose their nicknames and colors...");
         cli.newLine();
     }
 }

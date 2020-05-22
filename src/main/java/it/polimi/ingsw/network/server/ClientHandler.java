@@ -40,7 +40,7 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
     }
 
     public void sendUpdate(Update update) throws IOException {
-        objectOutputStream.reset(); //a void cached objects
+        objectOutputStream.reset(); // avoid cached objects
         objectOutputStream.writeObject(update);
         objectOutputStream.flush();
     }

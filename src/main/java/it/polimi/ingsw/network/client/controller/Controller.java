@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.client.controller;
 
 import it.polimi.ingsw.controller.commands.*;
+import it.polimi.ingsw.model.ErrorType;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.updates.ErrorUpdate;
 import it.polimi.ingsw.model.updates.TurnUpdate;
@@ -17,7 +18,8 @@ public class Controller extends Observable<Update> implements Observer<Object> {
 
     private final Client client;
     private String clientPlayerID;
-    private boolean isClientPlayerGodChooser;
+    private Player clientPlayer;
+    //private boolean isClientPlayerGodChooser;
     private String currentPlayerID;
     private String currentPlayerNickname;
 
@@ -42,7 +44,7 @@ public class Controller extends Observable<Update> implements Observer<Object> {
     }
 
     public boolean isClientPlayerGodChooser() {
-        return this.isClientPlayerGodChooser;
+        return this.clientPlayer.isGodChooser();
     }
 
     @Override
@@ -54,7 +56,8 @@ public class Controller extends Observable<Update> implements Observer<Object> {
             this.currentPlayerNickname = currentPlayer.getNickname();
 
             if(currentPlayerID.equals(clientPlayerID)) {
-                this.isClientPlayerGodChooser = currentPlayer.isGodChooser();
+                this.clientPlayer = currentPlayer;
+               // this.isClientPlayerGodChooser = currentPlayer.isGodChooser();
             }
         } else {
 
@@ -63,7 +66,7 @@ public class Controller extends Observable<Update> implements Observer<Object> {
             }
 
             if (!clientPlayerID.equals(currentPlayerID)) {
-                ErrorUpdate err = new ErrorUpdate(new Player(clientPlayerID, null, null), ((Command) message).commandType);
+                ErrorUpdate err = new ErrorUpdate(clientPlayer, ((Command) message).commandType, ErrorType.WRONG_TURN, null);
                 notify(err);
             } else {
 

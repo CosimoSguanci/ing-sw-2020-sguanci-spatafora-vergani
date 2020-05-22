@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.updates.LoseUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +110,7 @@ public class Prometheus extends GodStrategy {
 
         if (builtBeforeMoving && multipleBuildDelegate.getBuildCount() == 1) {
 
-            if (!worker.canMove()) worker.player.getModel().onPlayerLose(worker.player); // or: if availableCells.size() == 0
+            if (!worker.canMove()) worker.player.getModel().onPlayerLose(worker.player, LoseUpdate.LoseCause.CANT_MOVE); // or: if availableCells.size() == 0
 
             else {
                 List<Cell> availableCells = worker.board.getAvailableMoveCells(worker);
@@ -122,7 +123,7 @@ public class Prometheus extends GodStrategy {
                     }
                 });
 
-                if (feasibleMoveCells.size() == 0) worker.player.getModel().onPlayerLose(worker.player);
+                if (feasibleMoveCells.size() == 0) worker.player.getModel().onPlayerLose(worker.player, LoseUpdate.LoseCause.CANT_MOVE);
 
                 else {
                     List<Player> players = worker.player.getModel().getPlayers();
@@ -140,7 +141,7 @@ public class Prometheus extends GodStrategy {
                         return actuallyFeasible;
                     }).collect(Collectors.toList());
 
-                    if (actualFeasibleMoveCells.size() == 0) worker.player.getModel().onPlayerLose(worker.player);
+                    if (actualFeasibleMoveCells.size() == 0) worker.player.getModel().onPlayerLose(worker.player, LoseUpdate.LoseCause.CANT_MOVE);
                 }
 
             }
