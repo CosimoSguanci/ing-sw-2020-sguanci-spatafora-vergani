@@ -7,19 +7,16 @@ import it.polimi.ingsw.model.updates.ErrorUpdate;
 import it.polimi.ingsw.model.updates.TurnUpdate;
 import it.polimi.ingsw.model.updates.Update;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.utils.NetworkUtils;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class Controller extends Observable<Update> implements Observer<Object> {
 
     private final Client client;
     private String clientPlayerID;
     private Player clientPlayer;
-    //private boolean isClientPlayerGodChooser;
     private String currentPlayerID;
     private String currentPlayerNickname;
 
@@ -48,7 +45,7 @@ public class Controller extends Observable<Update> implements Observer<Object> {
     }
 
     @Override
-    public void update(Object message) { // todo Visitor?
+    public void update(Object message) {
 
         if (message instanceof TurnUpdate) {
             Player currentPlayer = ((TurnUpdate) message).getCurrentPlayer();
@@ -57,8 +54,8 @@ public class Controller extends Observable<Update> implements Observer<Object> {
 
             if(currentPlayerID.equals(clientPlayerID)) {
                 this.clientPlayer = currentPlayer;
-               // this.isClientPlayerGodChooser = currentPlayer.isGodChooser();
             }
+
         } else {
 
             if (!(message instanceof Command)) {
@@ -69,29 +66,10 @@ public class Controller extends Observable<Update> implements Observer<Object> {
                 ErrorUpdate err = new ErrorUpdate(clientPlayer, ((Command) message).commandType, ErrorType.WRONG_TURN, null);
                 notify(err);
             } else {
-
                 try {
-                    if (message instanceof PlayerCommand) {
-                        PlayerCommand playerCommand = (PlayerCommand) message;
-                        playerCommand.setPlayerID(clientPlayerID);
-                        client.sendCommand(playerCommand);
-
-                    } else if (message instanceof GodChoiceCommand) {
-                        GodChoiceCommand godChoiceCommand = (GodChoiceCommand) message;
-                        godChoiceCommand.setPlayerID(clientPlayerID);
-                        client.sendCommand(godChoiceCommand);
-
-                    } else if (message instanceof GamePreparationCommand) {
-                        GamePreparationCommand gamePreparationCommand = (GamePreparationCommand) message;
-                        gamePreparationCommand.setPlayerID(clientPlayerID);
-                        client.sendCommand(gamePreparationCommand);
-
-                    } else if (message instanceof InitialInfoCommand) {
-
-                        InitialInfoCommand initialInfoCommand = (InitialInfoCommand) message;
-                        initialInfoCommand.setPlayerID(clientPlayerID);
-                        client.sendCommand(initialInfoCommand);
-                    }
+                    Command command = (Command) message;
+                    command.setPlayerID(clientPlayerID);
+                    client.sendCommand(command);
                 } catch (IOException ignored) {
                 } // todo handle ignored exceptions
             }

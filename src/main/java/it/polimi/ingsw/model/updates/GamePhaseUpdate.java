@@ -7,7 +7,7 @@ public class GamePhaseUpdate extends Update {
     public final GamePhase newGamePhase;
 
     public GamePhaseUpdate(GamePhase newGamePhase) {
-        super(null, null);
+        super( null);
         this.newGamePhase = newGamePhase;
     }
 

@@ -5,7 +5,7 @@ import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.network.utils.NetworkUtils;
+import it.polimi.ingsw.network.CustomThreadPoolExecutor;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.RemoteView;
 
@@ -14,9 +14,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Server implements Observer<Controller> {
@@ -32,9 +29,7 @@ public class Server implements Observer<Controller> {
     /**
      * Cached ThreadPool without idle threads termination
      */
-    private final ExecutorService executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
-            0L, TimeUnit.SECONDS,
-            new SynchronousQueue<>()); // Todo use everywhere to handle termination?
+    private final ExecutorService executor = CustomThreadPoolExecutor.createNew();
 
     private final Set<ClientHandler> waitingConnections = new HashSet<>();
     private final Set<ClientHandler> playingConnections = new HashSet<>();
@@ -95,7 +90,6 @@ public class Server implements Observer<Controller> {
 
             controllerClientsMap.put(controller, suitableConnections);
 
-            // todo start a new thread for the match ? -> useful only to separate code, not for performance
             controller.initialPhase();
         }
     }

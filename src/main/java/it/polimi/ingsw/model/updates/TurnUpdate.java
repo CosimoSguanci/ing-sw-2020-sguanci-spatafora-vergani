@@ -5,8 +5,15 @@ import it.polimi.ingsw.view.UpdateHandler;
 
 public class TurnUpdate extends Update {
 
+    private final Player currentPlayer;
+
     public TurnUpdate(Player currentPlayer) {
-        super(currentPlayer, null);
+        super(null);
+        this.currentPlayer = currentPlayer;
+    }
+
+    public Player getCurrentPlayer() {
+        return this.currentPlayer;
     }
 
     @Override

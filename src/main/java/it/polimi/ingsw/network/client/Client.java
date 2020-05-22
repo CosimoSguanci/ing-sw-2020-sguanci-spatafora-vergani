@@ -1,14 +1,15 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.controller.commands.*;
+import it.polimi.ingsw.controller.commands.Command;
+import it.polimi.ingsw.network.CustomThreadPoolExecutor;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 
 public class Client {
@@ -17,9 +18,7 @@ public class Client {
     //private final static String IP = "cosimosguanci.ddns.net";
     private final static int PORT = 12345;
     private final static int TIMEOUT_MS = 2000;
-    private final ExecutorService executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
-            0L, TimeUnit.SECONDS,
-            new SynchronousQueue<>());
+    private final ExecutorService executor = CustomThreadPoolExecutor.createNew();
     private Socket socket;
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
@@ -43,7 +42,7 @@ public class Client {
         initConnection();
     }
 
-    public void setupUpdateListener() throws IOException{
+    public void setupUpdateListener() throws IOException {
         if (this.objectOutputStream == null) {
             this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         }

@@ -4,7 +4,7 @@ import it.polimi.ingsw.view.UpdateHandler;
 
 public class ServerUnreachableUpdate extends Update {
     public ServerUnreachableUpdate() {
-        super(null, null);
+        super( null);
     }
 
     @Override

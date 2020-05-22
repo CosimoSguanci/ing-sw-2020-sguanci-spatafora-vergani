@@ -126,7 +126,7 @@ public class Worker {
      */
     public void move(Cell moveCell) {
 
-        if(this.position.getWorker().equals(this)) // todo OK ?
+        if(this.position.getWorker().equals(this))
             this.position.setWorker(null);
 
         this.previousPositionBlockType = position.getLevel();

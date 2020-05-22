@@ -77,12 +77,14 @@ public class Controller extends Observable<Controller> implements Observer<Comma
             command.handleCommand(this.commandHandler);
         } catch (WrongGamePhaseException e) {
             model.reportError(command.getPlayer(), command.commandType, ErrorType.WRONG_GAME_PHASE, null);
-        } catch (WrongPlayerException e) {  //TODO -> modify reportError
+        } catch (WrongPlayerException e) {
             model.reportError(command.getPlayer(), command.commandType, ErrorType.WRONG_TURN, null);
         } catch (NicknameAlreadyTakenException e) {
             model.reportError(command.getPlayer(), command.commandType, ErrorType.ALREADY_TAKEN_NICKNAME, null);
         } catch (InvalidColorException e) {
             model.reportError(command.getPlayer(), command.commandType, ErrorType.INVALID_COLOR, null);
+        } catch (InvalidGodException e) {
+            model.reportError(command.getPlayer(), command.commandType, ErrorType.INVALID_GOD, null);
         }
     }
 
@@ -135,12 +137,16 @@ public class Controller extends Observable<Controller> implements Observer<Comma
             throw new WrongPlayerException();
         }
 
-        if (model.getCurrentPlayer().equals(this.godChooserPlayer)) { // todo collapse if
+        if (model.getCurrentPlayer().equals(this.godChooserPlayer)) {
             this.selectableGods = chosenGods;
 
         } else {
             String god = chosenGods.get(0);
-            // todo exception if chosen gods it's not selectable
+
+            if(!selectableGods.contains(god)) {
+                throw new InvalidGodException();
+            }
+
             model.getCurrentPlayer().setGodStrategy(GodStrategy.instantiateGod(god));
             this.selectableGods.remove(god);
         }

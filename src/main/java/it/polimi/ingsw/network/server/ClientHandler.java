@@ -2,9 +2,9 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.model.updates.Update;
+import it.polimi.ingsw.network.CustomThreadPoolExecutor;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.view.cli.components.InitialInfo;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -14,24 +14,17 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import static it.polimi.ingsw.network.server.Server.TIMEOUT_MS;
 
 public class ClientHandler extends Observable<Command> implements Runnable, Observer<Command> {
 
-    private final Server server;
-    private ObjectOutputStream objectOutputStream;
-    final Socket clientSocket;
     public final String clientID;
+    final Socket clientSocket;
+    private final Server server;
+    private final ExecutorService executor = CustomThreadPoolExecutor.createNew();
     int playersNum;
-
-    private final ExecutorService executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
-            0L, TimeUnit.SECONDS,
-            new SynchronousQueue<>());
-
+    private ObjectOutputStream objectOutputStream;
 
     ClientHandler(Server server, Socket clientSocket) {
         this.server = server;
@@ -72,9 +65,8 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
             server.lobby(this);
 
         } catch (IOException | NoSuchElementException e) {
-            // todo remove from clientHandlersMap
             server.handleConnectionReset(clientSocket);
-            System.err.println("Error! " + e.getMessage());
+            //System.err.println("Error! " + e.getMessage());
         }
     }
 }

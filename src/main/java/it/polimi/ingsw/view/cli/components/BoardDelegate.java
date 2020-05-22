@@ -82,21 +82,7 @@ public class BoardDelegate {
         cli.println("");
     }
 
-    private //TODO eliminate: getLevelNumber() is a BlockType method.
-    static String convertBlockTypeToUnicode(BlockType level) { // todo move to BlockType
-        switch (level) {
-            case GROUND:
-                return "0";
-            case LEVEL_ONE:
-                return "1";
-            case LEVEL_TWO:
-                return "2";
-            case LEVEL_THREE:
-                return "3";
-            case DOME:
-                return "D";
-            default:
-                throw new IllegalArgumentException();
-        }
+    private static String convertBlockTypeToUnicode(BlockType level) {
+        return BlockType.convertBlockTypeToUnicode(level);
     }
 }

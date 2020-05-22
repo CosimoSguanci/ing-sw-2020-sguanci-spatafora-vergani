@@ -9,7 +9,7 @@ public class InitialInfoUpdate extends Update {
     private final Map<String, PrintableColor> initialInfo; // Nickname : Color
 
     public InitialInfoUpdate(Map<String, PrintableColor> initialInfo) {
-        super(null, null);
+        super( null);
         this.initialInfo = initialInfo;
     }
 

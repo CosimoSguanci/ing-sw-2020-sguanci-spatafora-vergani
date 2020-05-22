@@ -208,7 +208,7 @@ public abstract class GodStrategy {
      * @param worker    Player's selected Worker corresponding to the current turn.
      * @return true if Worker's position level is 3 and it comes from level 2 (standard Win Condition triggered), false otherwise.
      */
-    public boolean checkWinCondition(Worker worker) { // TODO TEST hasMoved()
+    public boolean checkWinCondition(Worker worker) {
         return worker.hasMoved() && !worker.hasBuilt() && worker.getPosition().getLevel() == BlockType.LEVEL_THREE && worker.getPreviousPositionBlockType() == BlockType.LEVEL_TWO; // TODO Win condition, if I go up two levels in a move?
     }
 

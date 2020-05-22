@@ -108,8 +108,7 @@ public class Model extends Observable<Update> {
     }
 
     public void disconnectedPlayerUpdate(Player disconnectedPlayer) {
-        boolean onePlayerRemaining = getPlayers().size() == 1;
-        DisconnectedPlayerUpdate disconnectedPlayerUpdate = new DisconnectedPlayerUpdate(disconnectedPlayer, onePlayerRemaining, match.getMatchBoard().toString());
+        DisconnectedPlayerUpdate disconnectedPlayerUpdate = new DisconnectedPlayerUpdate(disconnectedPlayer, match.getMatchBoard().toString());
         notify(disconnectedPlayerUpdate);
     }
 

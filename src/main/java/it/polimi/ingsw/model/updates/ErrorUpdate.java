@@ -9,21 +9,26 @@ import java.io.Serializable;
 import java.util.Map;
 
 public class ErrorUpdate extends Update {
+    private Player currentPlayer;
     public final CommandType command;
     public final ErrorType errorType;
     private final Map<String, String> inhibitorGod; // [Optional] God who forbids the action attempted
 
     public ErrorUpdate(Player currentPlayer, CommandType command, ErrorType errorType, Map<String, String> inhibitorGod ) {
-        super(currentPlayer, null);
+        super(null);
+        this.currentPlayer = currentPlayer;
         this.command = command;
         this.errorType = errorType;
         this.inhibitorGod = inhibitorGod;
     }
 
+    public Player getCurrentPlayer() {
+        return this.currentPlayer;
+    }
+
     public Map<String, String> getInhibitorGod() {
         return this.inhibitorGod;
     }
-
 
     @Override
     public void handleUpdate(UpdateHandler handler) {

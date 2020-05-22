@@ -33,4 +33,21 @@ public enum BlockType {
         return this.levelNumber;
     }
 
+    public static String convertBlockTypeToUnicode(BlockType level) {
+        switch (level) {
+            case GROUND:
+                return "0";
+            case LEVEL_ONE:
+                return "1";
+            case LEVEL_TWO:
+                return "2";
+            case LEVEL_THREE:
+                return "3";
+            case DOME:
+                return "D";
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
 }

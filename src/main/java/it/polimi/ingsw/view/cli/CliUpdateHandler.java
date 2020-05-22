@@ -160,8 +160,6 @@ public class CliUpdateHandler implements UpdateHandler {
 
         if (!update.getCurrentPlayer().getPlayerID().equals(controller.getClientPlayerID())) return;
 
-        
-
         switch (update.command) {
             case MOVE:
 
@@ -258,6 +256,9 @@ public class CliUpdateHandler implements UpdateHandler {
                 }
                 else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Gods Choice Phase");
+                }
+                else if(update.errorType == ErrorType.INVALID_GOD) {
+                    cliInstance.println(Cli.toBold("God Error") + ": invalid God selected, it's not in selectable Gods list!");
                 }
                 break;
         }

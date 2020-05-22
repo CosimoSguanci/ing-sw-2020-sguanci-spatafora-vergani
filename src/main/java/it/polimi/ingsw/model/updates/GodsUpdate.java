@@ -11,7 +11,7 @@ public class GodsUpdate extends Update {
 
 
     public GodsUpdate(List<String> selectableGods, Map<String, String> selectedGods) {
-        super(null, null);
+        super( null);
         this.selectableGods = selectableGods;
         this.selectedGods = selectedGods;
     }

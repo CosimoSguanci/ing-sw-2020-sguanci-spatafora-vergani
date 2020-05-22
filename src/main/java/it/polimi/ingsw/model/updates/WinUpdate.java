@@ -8,7 +8,7 @@ public class WinUpdate extends Update {
     private final Player winnerPlayer;
 
     public WinUpdate(Player winnerPlayer) {
-        super(null, null);
+        super( null);
         this.winnerPlayer = winnerPlayer;
     }
 

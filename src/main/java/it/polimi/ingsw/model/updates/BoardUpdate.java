@@ -8,7 +8,7 @@ public class BoardUpdate extends Update {
     private PlayerCommand executedCommand;
 
     public BoardUpdate(String board) {
-        super(null, board);
+        super(board);
     }
 
     public void setExecutedCommand(PlayerCommand executedCommand) {

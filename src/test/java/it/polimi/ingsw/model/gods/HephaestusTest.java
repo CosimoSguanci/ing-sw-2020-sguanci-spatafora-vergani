@@ -91,7 +91,6 @@ public class HephaestusTest {
     public void hephaestusEndTurnTest() { // TODO Add tests to check previousCell was reset?
 
 
-
         Hephaestus hephaestus = new Hephaestus();
 
         Match match = new Match(2);

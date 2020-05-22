@@ -7,15 +7,10 @@ public class DisconnectedPlayerUpdate extends Update {
 
     private final Player disconnectedPlayer;
 
-    /**
-     * Flag which indicates if the only one player is still playing, in this case it automatically wins.
-     */
-    public final boolean onePlayerRemaining; // todo remove
 
-    public DisconnectedPlayerUpdate(Player disconnectedPlayer, boolean onePlayerRemaining, String board) {
-        super(null, board);
+    public DisconnectedPlayerUpdate(Player disconnectedPlayer, String board) {
+        super(board);
         this.disconnectedPlayer = disconnectedPlayer;
-        this.onePlayerRemaining = onePlayerRemaining;
     }
 
     public Player getDisconnectedPlayer() {

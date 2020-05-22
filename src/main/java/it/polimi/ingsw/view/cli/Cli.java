@@ -236,21 +236,8 @@ public class Cli extends View implements Observer<Update> {
      * @param color is the PrintableColor you want to calculate the Ansi code
      * @return the string of the respective Ansi color.
      */
-    public static String convertColorToAnsi (PrintableColor color) { // todo move to PrintableColor
-        switch (color) {
-            case RED:
-                return "\u001B[31m";
-            case BLUE:
-                return "\u001B[34m";
-            case GREEN:
-                return "\u001B[32m";
-            case YELLOW:
-                return "\u001B[33m";
-            case PURPLE:
-                return "\u001B[35m";
-            default:
-                throw new IllegalArgumentException();
-        }
+    public static String convertColorToAnsi (PrintableColor color) {
+        return PrintableColor.convertColorToAnsi(color);
     }
 
     /**

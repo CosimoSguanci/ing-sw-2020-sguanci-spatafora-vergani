@@ -19,7 +19,7 @@ public class LoseUpdate extends Update {
     public final boolean onePlayerRemaining;
 
     public LoseUpdate(Player loserPlayer, LoseCause loseCause, boolean onePlayerRemaining, String board) {
-        super(null, board);
+        super(board);
         this.loserPlayer = loserPlayer;
         this.onePlayerRemaining = onePlayerRemaining;
         this.loseCause = loseCause;
