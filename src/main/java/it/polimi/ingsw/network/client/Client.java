@@ -58,12 +58,9 @@ public class Client {
     }
 
     public String readPlayerID() throws IOException {
-
         while (true) {
             try {
-
                 return dataInputStream.readUTF();
-
             } catch (SocketTimeoutException e) {
                 if (!isServerReachable()) {
                     socket.close();
@@ -71,9 +68,7 @@ public class Client {
                 }
             }
         }
-
         throw new IOException();
-
     }
 
     public void sendCommand(Command command) throws IOException {

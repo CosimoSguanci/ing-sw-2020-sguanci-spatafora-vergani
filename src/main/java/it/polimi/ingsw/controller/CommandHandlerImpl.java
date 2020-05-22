@@ -68,7 +68,7 @@ class CommandHandlerImpl implements CommandHandler {
 
     private void setCommandPlayerInstance(Command command) {
         for (Player player : controllerInstance.getPlayers()) {
-            if (player.ID.equals(command.getPlayerID())) {
+            if (player.getPlayerID().equals(command.getPlayerID())) {
                 command.setPlayer(player);
                 break;
             }

@@ -1,16 +1,19 @@
 package it.polimi.ingsw.model.updates;
 
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.view.UpdateHandler;
 
 public class WinUpdate extends Update {
 
-    public final String winnerPlayerID;
-    public final String winnerPlayerNickname;
+    private final Player winnerPlayer;
 
-    public WinUpdate(String winnerPlayerID, String winnerPlayerNickname) {
+    public WinUpdate(Player winnerPlayer) {
         super(null, null);
-        this.winnerPlayerID = winnerPlayerID;
-        this.winnerPlayerNickname = winnerPlayerNickname;
+        this.winnerPlayer = winnerPlayer;
+    }
+
+    public Player getWinnerPlayer() {
+        return winnerPlayer;
     }
 
     @Override

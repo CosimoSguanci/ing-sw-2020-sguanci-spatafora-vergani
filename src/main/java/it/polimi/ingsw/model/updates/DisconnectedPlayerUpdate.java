@@ -1,22 +1,25 @@
 package it.polimi.ingsw.model.updates;
 
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.view.UpdateHandler;
 
 public class DisconnectedPlayerUpdate extends Update {
 
-    public final String disconnectedPlayerID;
-    public final String disconnectedPlayerNickname;
+    private final Player disconnectedPlayer;
 
     /**
      * Flag which indicates if the only one player is still playing, in this case it automatically wins.
      */
     public final boolean onePlayerRemaining; // todo remove
 
-    public DisconnectedPlayerUpdate(String disconnectedPlayerID, String disconnectedPlayerNickname, boolean onePlayerRemaining, String board) {
+    public DisconnectedPlayerUpdate(Player disconnectedPlayer, boolean onePlayerRemaining, String board) {
         super(null, board);
-        this.disconnectedPlayerID = disconnectedPlayerID;
-        this.disconnectedPlayerNickname = disconnectedPlayerNickname;
+        this.disconnectedPlayer = disconnectedPlayer;
         this.onePlayerRemaining = onePlayerRemaining;
+    }
+
+    public Player getDisconnectedPlayer() {
+        return this.disconnectedPlayer;
     }
 
     @Override

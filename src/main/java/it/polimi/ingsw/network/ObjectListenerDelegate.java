@@ -22,7 +22,7 @@ public class ObjectListenerDelegate {
                     objectListener.forwardNotify(inputObject);
 
                 } catch(SocketTimeoutException e) {
-                  objectListener.handleConnectionTimeoutExpired();
+                    objectListener.handleConnectionTimeoutExpired();
                 }
             }
         } catch (IOException | ClassNotFoundException e){

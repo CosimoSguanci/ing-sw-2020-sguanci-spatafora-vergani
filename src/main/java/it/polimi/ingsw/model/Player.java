@@ -3,6 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.model.gods.GodStrategy;
 
+import java.io.Serializable;
+
 /**
  * This class contains information about Players who are playing a match, including
  * a unique ID, nickname, the color of the chosen workers, a reference to two different
@@ -12,15 +14,15 @@ import it.polimi.ingsw.model.gods.GodStrategy;
  *
  * @author Roberto Spatafora
  */
-public class Player {
-    public final String ID;
-    public final transient Match match;
-    public final transient Model model;
+public class Player implements Serializable {
+    private final String ID;
+    private final transient Match match;
+    private final transient Model model;
     private String nickname;
     private PrintableColor color;
     private final transient Worker workerFirst; // circular dependency if not transient
     private final transient Worker workerSecond;
-    private transient boolean isGodChooser;
+    private boolean isGodChooser;
     private transient GodStrategy godStrategy;
 
     /**
@@ -106,5 +108,17 @@ public class Player {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getPlayerID() {
+        return this.ID;
+    }
+
+    public Match getMatch() {
+        return this.match;
+    }
+
+    public Model getModel() {
+        return this.model;
     }
 }

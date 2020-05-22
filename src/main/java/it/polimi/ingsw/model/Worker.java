@@ -184,9 +184,4 @@ public class Worker {
     public boolean canMove() {
         return this.board.movementPossibleFromCell(this.position);
     }
-
-   /* public boolean canBuild() {
-
-    } */
-
 }

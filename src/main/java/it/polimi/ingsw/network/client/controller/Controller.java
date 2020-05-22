@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.client.controller;
 
 import it.polimi.ingsw.controller.commands.*;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.updates.ErrorUpdate;
 import it.polimi.ingsw.model.updates.TurnUpdate;
 import it.polimi.ingsw.model.updates.Update;
@@ -16,6 +17,7 @@ public class Controller extends Observable<Update> implements Observer<Object> {
 
     private final Client client;
     private String clientPlayerID;
+    private boolean isClientPlayerGodChooser;
     private String currentPlayerID;
     private String currentPlayerNickname;
 
@@ -39,12 +41,21 @@ public class Controller extends Observable<Update> implements Observer<Object> {
         return this.currentPlayerID;
     }
 
+    public boolean isClientPlayerGodChooser() {
+        return this.isClientPlayerGodChooser;
+    }
+
     @Override
     public void update(Object message) { // todo Visitor?
 
         if (message instanceof TurnUpdate) {
-            this.currentPlayerID = ((TurnUpdate) message).getCurrentPlayerID();
-            this.currentPlayerNickname = ((TurnUpdate) message).currentPlayerNickname;
+            Player currentPlayer = ((TurnUpdate) message).getCurrentPlayer();
+            this.currentPlayerID = currentPlayer.getPlayerID();
+            this.currentPlayerNickname = currentPlayer.getNickname();
+
+            if(currentPlayerID.equals(clientPlayerID)) {
+                this.isClientPlayerGodChooser = currentPlayer.isGodChooser();
+            }
         } else {
 
             if (!(message instanceof Command)) {
@@ -52,7 +63,7 @@ public class Controller extends Observable<Update> implements Observer<Object> {
             }
 
             if (!clientPlayerID.equals(currentPlayerID)) {
-                ErrorUpdate err = new ErrorUpdate(clientPlayerID, ((Command) message).commandType);
+                ErrorUpdate err = new ErrorUpdate(new Player(clientPlayerID, null, null), ((Command) message).commandType);
                 notify(err);
             } else {
 

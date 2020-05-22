@@ -286,6 +286,11 @@ public class Cli extends View implements Observer<Update> {
         this.otherInfoHandler.printCurrentTurn();
     }
 
+    public void printGamePreparationInfo() {
+        print("Game Preparation: place your " + Cli.toBold("workers") + ".    Command " + Cli.toBold("format") + " expected: place W1 [row1][col1]  W2 [row2][col2]");
+        newLine();
+    }
+
     public GamePhase getCurrentPhase() {
         return this.currentGamePhase;
     }

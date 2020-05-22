@@ -7,10 +7,8 @@ import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -111,32 +109,27 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
         model.endTurn();
 
-        // here getCurrentPlayer() is who just chose the info
-        if (!model.getCurrentPlayer().equals(godChooserPlayer)) {
-            model.initialInfoUpdate(model.getCurrentPlayer(), selectedNicknames, selectableColors);
-        } else {
-            // all the players chose the info
+        HashMap<String, PrintableColor> initialInfo = new HashMap<>();
 
-            HashMap<String, PrintableColor> initialInfo = new HashMap<>();
+        List<Player> initialInfoDonePlayers = model.getPlayers().stream().filter(player -> player.getNickname() != null && player.getColor() != null).collect(Collectors.toList());
 
-            model.getPlayers().forEach((player) -> initialInfo.put(player.getNickname(), player.getColor()));
+        initialInfoDonePlayers.forEach((player) -> initialInfo.put(player.getNickname(), player.getColor()));
 
-            model.selectedInitialInfoUpdate(initialInfo);
+        model.initialInfoUpdate(initialInfo);
 
+        if(initialInfoDonePlayers.size() == model.getPlayersNumber()) {
             godChoosePhase();
-
         }
+
     }
 
     synchronized void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {
         List<String> chosenGods = godChoiceCommand.getChosenGods();
-       // boolean isGodChooser = godChoiceCommand.isGodChooser();
 
         if (!godChoiceCommand.getPlayer().equals(model.getCurrentPlayer())) {
             throw new WrongPlayerException();
         }
 
-        //if (isGodChooser) {
         if (model.getCurrentPlayer().equals(this.godChooserPlayer)) { // todo collapse if
             this.selectableGods = chosenGods;
 
@@ -148,23 +141,26 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
         model.endTurn();
 
-        if (!model.getCurrentPlayer().equals(godChooserPlayer)) {
-            model.chooseGodsUpdate(model.getCurrentPlayer(), selectableGods);
-        } else {
-            // The God Chooser picks the last gods
+        HashMap<String, String> selectedGods = new HashMap<>();
+
+        List<Player> godChosenPlayers = model.getPlayers().stream().filter(player -> player.getGodStrategy() != null).collect(Collectors.toList());
+
+        godChosenPlayers.forEach((player) -> selectedGods.put(player.getNickname(), player.getGodStrategy().NAME));
+
+        if(model.getCurrentPlayer().equals(godChooserPlayer)) { // The God Chooser is forced to pick the last remaining God
             String god = selectableGods.get(0);
             model.getCurrentPlayer().setGodStrategy(GodStrategy.instantiateGod(god));
-            HashMap<String, String> selectedGods = new HashMap<>();
 
-            model.getPlayers().forEach((player) -> selectedGods.put(player.getNickname(), player.getGodStrategy().NAME));
+            selectedGods.put(model.getCurrentPlayer().getNickname(), model.getCurrentPlayer().getGodStrategy().NAME);
+            model.godsUpdate(this.selectableGods, selectedGods);
 
-            model.selectedGodsUpdate(selectedGods);
             model.endTurn();
-
             gamePreparationPhase();
 
         }
-
+        else {
+            model.godsUpdate(this.selectableGods, selectedGods);
+        }
     }
 
 
@@ -174,10 +170,6 @@ public class Controller extends Observable<Controller> implements Observer<Comma
             throw new WrongPlayerException();
         } else {
 
-            /*if(!currentPlayer.equals(model.getCurrentPlayer())) {
-                System.out.println();
-            }*/
-
             if (checkAllGamePreparationConstraints(gamePreparationCommand) &&
                     currentPlayer.getGodStrategy().checkGamePreparation(
                             currentPlayer.getWorkerFirst(),
@@ -185,15 +177,11 @@ public class Controller extends Observable<Controller> implements Observer<Comma
                             currentPlayer.getWorkerSecond(),
                             gamePreparationCommand.getWorkerSecondCell())
             ) {
-                /*if(!currentPlayer.equals(model.getCurrentPlayer())) {
-                    System.out.println();
-                }*/
                 currentPlayer.getGodStrategy().executeGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell());
             } else {
                 model.reportError(currentPlayer, CommandType.PLACE);
                 return;
             }
-
 
             model.endTurn();
 
@@ -201,9 +189,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
                 startMatch();
             } else {
                 model.boardUpdate();
-                model.gamePreparationUpdate(currentPlayer);
             }
-
         }
     }
 
@@ -234,7 +220,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
                         if (hasWon) {
                             model.nextGamePhase();
-                            model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
+                            model.gamePhaseUpdate(model.getCurrentGamePhase());
                             model.winUpdate(currentPlayer);
 
                             onMatchWon();
@@ -263,7 +249,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
                         if (hasWon) {
                             model.nextGamePhase();
-                            model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
+                            model.gamePhaseUpdate(model.getCurrentGamePhase());
                             model.winUpdate(currentPlayer);
 
                             onMatchWon();
@@ -500,7 +486,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     // Entry point from Server class
     public void initialPhase() {
-        model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
+        model.gamePhaseUpdate(model.getCurrentGamePhase());
 
         List<Player> playerList = model.getPlayers();
         int initialTurn = new Random().nextInt((playerList.size()));
@@ -512,26 +498,29 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
         selectedNicknames = new ArrayList<>();
         selectableColors = PrintableColor.getColorList();
-        model.initialInfoUpdate(godChooserPlayer, selectedNicknames, selectableColors);
+
+        model.initialInfoUpdate(new HashMap<>());
 
     }
 
     private void godChoosePhase() {
         model.nextGamePhase();
-        model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
-        model.chooseGodsUpdate(godChooserPlayer, null);
+        model.gamePhaseUpdate(model.getCurrentGamePhase());
+
+        model.godsUpdate(new ArrayList<>(), new HashMap<>());
     }
 
     private void gamePreparationPhase() {
         model.nextGamePhase();
-        model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
+        model.gamePhaseUpdate(model.getCurrentGamePhase());
         model.boardUpdate();
-        model.gamePreparationUpdate(model.getCurrentPlayer());
+
+        //model.gamePreparationUpdate(model.getCurrentPlayer());
     }
 
     private void startMatch() {
         model.nextGamePhase();
-        model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
+        model.gamePhaseUpdate(model.getCurrentGamePhase());
         model.matchStartedUpdate();
 
         // check if the first currentPlayer can move
@@ -539,7 +528,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     }
 
     public void onPlayerDisconnected(String playerID) {
-        Player disconnectedPlayer = model.getPlayers().stream().filter((player) -> player.ID.equals(playerID)).findFirst().orElse(null);
+        Player disconnectedPlayer = model.getPlayers().stream().filter((player) -> player.getPlayerID().equals(playerID)).findFirst().orElse(null);
 
         if (disconnectedPlayer == null) return; // todo throw unknownplayerexception
 
@@ -554,10 +543,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         model.removePlayer(disconnectedPlayer);
         model.disconnectedPlayerUpdate(disconnectedPlayer);
 
-        // model.setC();
-        // model.gamePhaseChangedUpdate(model.getCurrentGamePhase());
-
-        model.gamePhaseChangedUpdate(GamePhase.MATCH_ENDED);
+        model.gamePhaseUpdate(GamePhase.MATCH_ENDED);
     }
 
     private void onMatchWon() {

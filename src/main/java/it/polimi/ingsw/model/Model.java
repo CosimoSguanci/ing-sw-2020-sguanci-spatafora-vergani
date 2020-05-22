@@ -51,39 +51,25 @@ public class Model extends Observable<Update> {
         match.setInitialTurn(initialTurn);
     }
 
-    public void gamePhaseChangedUpdate(GamePhase newGamePhase) {
-        GamePhaseChangedUpdate gamePhaseChangedUpdate = new GamePhaseChangedUpdate(newGamePhase);
-        notify(gamePhaseChangedUpdate);
-    }
-
-    public void initialInfoUpdate(Player player, List<String> selectedNicknames, List<PrintableColor> selectableColors) {
-        InitialInfoUpdate initialInfoUpdate = new InitialInfoUpdate(player.ID, selectedNicknames, selectableColors);
-        notify(initialInfoUpdate);
+    public void gamePhaseUpdate(GamePhase newGamePhase) {
+        GamePhaseUpdate gamePhaseUpdate = new GamePhaseUpdate(newGamePhase);
+        notify(gamePhaseUpdate);
     }
 
     public void reportError(Player player, CommandType commandType) {
-        ErrorUpdate errorUpdate = new ErrorUpdate(player.ID, commandType);
+        ErrorUpdate errorUpdate = new ErrorUpdate(player, commandType);
         notify(errorUpdate);
     }
 
-    public void chooseGodsUpdate(Player player, List<String> selectableGods) {
-        ChooseGodsUpdate chooseGodsUpdate = new ChooseGodsUpdate(player.ID, player.isGodChooser(), selectableGods);
-        notify(chooseGodsUpdate);
+
+    public void initialInfoUpdate(Map<String, PrintableColor> initialInfo) {
+        InitialInfoUpdate initialInfoUpdate = new InitialInfoUpdate(initialInfo);
+        notify(initialInfoUpdate);
     }
 
-    public void selectedInitialInfoUpdate(Map<String, PrintableColor> initialInfo) {
-        SelectedInitialInfoUpdate selectedInitialInfoUpdate = new SelectedInitialInfoUpdate(initialInfo);
-        notify(selectedInitialInfoUpdate);
-    }
-
-    public void selectedGodsUpdate(Map<String, String> selectedGods) {
-        SelectedGodsUpdate selectedGodsUpdate = new SelectedGodsUpdate(selectedGods);
-        notify(selectedGodsUpdate);
-    }
-
-    public void gamePreparationUpdate(Player player) {
-        GamePreparationUpdate gamePreparationUpdate = new GamePreparationUpdate(player.ID, match.getMatchBoard().toString());
-        notify(gamePreparationUpdate);
+    public void godsUpdate(List<String> selectableGods, Map<String, String> selectedGods) {
+        GodsUpdate godsUpdate = new GodsUpdate(selectableGods, selectedGods);
+        notify(godsUpdate);
     }
 
     public void boardUpdate() {
@@ -99,31 +85,31 @@ public class Model extends Observable<Update> {
     }
 
     public void matchStartedUpdate() {
-        TurnUpdate turnUpdate = new TurnUpdate(match.getCurrentPlayer().ID, match.getCurrentPlayer().getNickname());
+        TurnUpdate turnUpdate = new TurnUpdate(match.getCurrentPlayer());
         notify(turnUpdate);
         MatchStartedUpdate matchStartedUpdate = new MatchStartedUpdate(match.getMatchBoard().toString());
         notify(matchStartedUpdate);
     }
 
     public void turnUpdate(Player currentPlayer) {
-        TurnUpdate turnUpdate = new TurnUpdate(currentPlayer.ID, currentPlayer.getNickname());
+        TurnUpdate turnUpdate = new TurnUpdate(currentPlayer);
         notify(turnUpdate);
     }
 
     public void winUpdate(Player winnerPlayer) {
-        WinUpdate winUpdate = new WinUpdate(winnerPlayer.ID, winnerPlayer.getNickname());
+        WinUpdate winUpdate = new WinUpdate(winnerPlayer);
         notify(winUpdate);
     }
 
     public void loseUpdate(Player loserPlayer) {
         boolean onePlayerRemaining = getPlayers().size() == 1;
-        LoseUpdate loseUpdate = new LoseUpdate(loserPlayer.ID, loserPlayer.getNickname(), onePlayerRemaining, match.getMatchBoard().toString());
+        LoseUpdate loseUpdate = new LoseUpdate(loserPlayer, onePlayerRemaining, match.getMatchBoard().toString());
         notify(loseUpdate);
     }
 
     public void disconnectedPlayerUpdate(Player disconnectedPlayer) {
         boolean onePlayerRemaining = getPlayers().size() == 1;
-        DisconnectedPlayerUpdate disconnectedPlayerUpdate = new DisconnectedPlayerUpdate(disconnectedPlayer.ID, disconnectedPlayer.getNickname(), onePlayerRemaining, match.getMatchBoard().toString());
+        DisconnectedPlayerUpdate disconnectedPlayerUpdate = new DisconnectedPlayerUpdate(disconnectedPlayer, onePlayerRemaining, match.getMatchBoard().toString());
         notify(disconnectedPlayerUpdate);
     }
 
@@ -135,9 +121,6 @@ public class Model extends Observable<Update> {
         match.nextGamePhase();
     }
 
-    public void setGamePhase(GamePhase gamePhase) {
-    //    this.match.se
-    }
 
     public void onPlayerLose(Player loserPlayer) {
         loserPlayer.getWorkerFirst().getPosition().setWorker(null);
@@ -148,5 +131,9 @@ public class Model extends Observable<Update> {
 
         turnUpdate(getCurrentPlayer());
 
+    }
+
+    public int getPlayersNumber() {
+        return match.getPlayersNumber();
     }
 }

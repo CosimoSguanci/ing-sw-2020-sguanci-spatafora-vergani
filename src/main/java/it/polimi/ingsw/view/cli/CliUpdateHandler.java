@@ -10,6 +10,7 @@ import it.polimi.ingsw.view.UpdateHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CliUpdateHandler implements UpdateHandler {
     private final Cli cliInstance;
@@ -28,48 +29,75 @@ public class CliUpdateHandler implements UpdateHandler {
         cliInstance.printCurrentTurn();
     }
 
-    public void handle(ChooseGodsUpdate update) {
 
-        if (!update.getCurrentPlayerID().equals(cliInstance.controller.getClientPlayerID())) return;
+    public void handle(GodsUpdate update) {
 
-        if (update.isGodChooser) {
-            cliInstance.setInitialGodChooser(true);
-            cliInstance.print(Cli.toBold("You are the God Chooser!"));
-            cliInstance.newLine();
-            cliInstance.print(Cli.toBold("Choose ") + cliInstance.getPlayersNum() + " gods. For a perfect match, choose the ones you like most!    Command " + Cli.toBold("format") + " expected: select [god(1)] ... [god(n)]");
-            cliInstance.newLine();
-            cliInstance.print("Available gods are: " + availableGods());
-            cliInstance.newLine();
-            cliInstance.print("REMEMBER: if you need info about a god and his/her powers, type 'info [god]'");
+
+        if (update.getSelectedGods().size() == cliInstance.getPlayersNum()) {
+            cliInstance.setPlayersGods(update.getSelectedGods());
+            cliInstance.printPlayerGods();
         } else {
-            cliInstance.setInitialGodChooser(false);
-            cliInstance.setSelectableGods(update.selectableGods);
-            cliInstance.print(Cli.toBold("Choose ") + "your god.    Command " + Cli.toBold("format") + " expected: select [god]");
-            if (listToStringBuilder(update.selectableGods) != null) {
+            if (!cliInstance.controller.getCurrentPlayerID().equals(cliInstance.controller.getClientPlayerID())) return;
+
+            if (cliInstance.controller.isClientPlayerGodChooser()) {
+                cliInstance.setInitialGodChooser(true);
+                cliInstance.print(Cli.toBold("You are the God Chooser!"));
                 cliInstance.newLine();
-                cliInstance.print("Available choices are: " + listToStringBuilder(update.selectableGods));
+                cliInstance.print(Cli.toBold("Choose ") + cliInstance.getPlayersNum() + " gods. For a perfect match, choose the ones you like most!    Command " + Cli.toBold("format") + " expected: select [god(1)] ... [god(n)]");
+                cliInstance.newLine();
+                cliInstance.print("Available gods are: " + availableGods());
+                cliInstance.newLine();
+                cliInstance.print("REMEMBER: if you need info about a god and his/her powers, type 'info [god]'");
+            } else {
+                cliInstance.setInitialGodChooser(false);
+                cliInstance.setSelectableGods(update.getSelectableGods());
+                cliInstance.print(Cli.toBold("Choose ") + "your god.    Command " + Cli.toBold("format") + " expected: select [god]");
+                if (listToStringBuilder(update.getSelectableGods()) != null) {
+                    cliInstance.newLine();
+                    cliInstance.print("Available choices are: " + listToStringBuilder(update.getSelectableGods()));
+                }
+                cliInstance.newLine();
+                cliInstance.print("REMEMBER: if you need info about a god, type 'info [god]'");
             }
             cliInstance.newLine();
-            cliInstance.print("REMEMBER: if you need info about a god, type 'info [god]'");
         }
-        cliInstance.newLine();
     }
 
-    public void handle(SelectedGodsUpdate update) {
-        cliInstance.setPlayersGods(update.selectedGods);
-        cliInstance.printPlayerGods();
-    }
+    public void handle(InitialInfoUpdate update) {
 
-    public void handle(SelectedInitialInfoUpdate update) {
-        cliInstance.setPlayersColors(update.initialInfo);
-        cliInstance.printPlayersColors();
-    }
+        if (update.getInitialInfo().size() == cliInstance.getPlayersNum()) {
+            cliInstance.setPlayersColors(update.getInitialInfo());
+            cliInstance.printPlayersColors();
+        } else {
+            if (!cliInstance.controller.getCurrentPlayerID().equals(cliInstance.controller.getClientPlayerID())) return;
 
-    public void handle(GamePreparationUpdate update) {
-        if (!update.getCurrentPlayerID().equals(cliInstance.controller.getClientPlayerID())) return;
+            cliInstance.print("Type your " + Cli.toBold("nickname and color") + " separated by a space.    Command " + Cli.toBold("format") + " expected: pick [nickname] [color]");
 
-        cliInstance.print("Game Preparation: place your " + Cli.toBold("workers") + ".    Command " + Cli.toBold("format") + " expected: place W1 [row1][col1]  W2 [row2][col2]");
-        cliInstance.newLine();
+            List<String> selectedNicknames = new ArrayList<>(update.getInitialInfo().keySet());
+            List<PrintableColor> selectedColors = new ArrayList<>(update.getInitialInfo().values());
+            List<PrintableColor> selectableColors = PrintableColor.getColorList().stream().filter(color -> !selectedColors.contains(color)).collect(Collectors.toList());
+
+
+            if (!selectedNicknames.isEmpty()) {
+                cliInstance.newLine();
+                cliInstance.print("Nicknames already taken are: " + listToStringBuilder(selectedNicknames));
+            }
+
+            cliInstance.newLine();
+
+            cliInstance.setSelectedNicknames(selectedNicknames);
+            cliInstance.print("Available colors are: ");
+
+            selectableColors.forEach((color) -> {
+                cliInstance.print(Cli.convertColorToAnsi(color) + color + PrintableColor.RESET);
+            });
+
+
+            cliInstance.setSelectableColors(selectableColors);
+            cliInstance.newLine();
+        }
+
+
     }
 
     public void handle(BoardUpdate update) {
@@ -123,7 +151,7 @@ public class CliUpdateHandler implements UpdateHandler {
 
     public void handle(ErrorUpdate update) {
 
-        if (!update.getCurrentPlayerID().equals(cliInstance.controller.getClientPlayerID())) return;
+        if (!update.getCurrentPlayer().getPlayerID().equals(cliInstance.controller.getClientPlayerID())) return;
 
         switch (update.command) {
             case MOVE:
@@ -154,7 +182,7 @@ public class CliUpdateHandler implements UpdateHandler {
         cliInstance.newLine();
     }
 
-    public void handle(GamePhaseChangedUpdate update) {
+    public void handle(GamePhaseUpdate update) {
         cliInstance.newLine();
         if (update.newGamePhase.isPrintable()) {
             switch (update.newGamePhase) {
@@ -175,46 +203,25 @@ public class CliUpdateHandler implements UpdateHandler {
         cliInstance.setCurrentGamePhase(update.newGamePhase);
     }
 
-    public void handle(InitialInfoUpdate update) {
-
-        if(!update.getCurrentPlayerID().equals(cliInstance.controller.getClientPlayerID())) return;
-
-
-        cliInstance.print("Type your " + Cli.toBold("nickname and color") + " separated by a space.    Command " + Cli.toBold("format") + " expected: pick [nickname] [color]");
-
-        if (!update.selectedNicknames.isEmpty()) {
-            cliInstance.newLine();
-            cliInstance.print("Nicknames already taken are: " + listToStringBuilder(update.selectedNicknames));
-        }
-
-        cliInstance.newLine();
-
-        cliInstance.setSelectedNicknames(update.selectedNicknames);
-        cliInstance.print("Available colors are: ");
-
-        update.selectableColors.forEach((color) -> {
-            cliInstance.print(Cli.convertColorToAnsi(color) + color + PrintableColor.RESET);
-        });
-
-
-        cliInstance.setSelectableColors(update.selectableColors);
-        cliInstance.newLine();
-    }
 
     public void handle(TurnUpdate update) {
         cliInstance.forwardNotify(update);
+
+        if (cliInstance.controller.getCurrentPlayerID().equals(cliInstance.controller.getClientPlayerID()) && cliInstance.getCurrentPhase() == GamePhase.GAME_PREPARATION) {
+            cliInstance.printGamePreparationInfo();
+        }
     }
 
     public void handle(WinUpdate update) {
         cliInstance.newLine();
-        cliInstance.print(cliInstance.playerWithColor(update.winnerPlayerNickname) + " wins!");
+        cliInstance.print(cliInstance.playerWithColor(update.getWinnerPlayer().getNickname()) + " wins!");
 
         cliInstance.newLine();
     }
 
     public void handle(LoseUpdate update) {
 
-        if (cliInstance.controller.getClientPlayerID().equals(update.loserPlayerID)) {
+        if (cliInstance.controller.getClientPlayerID().equals(update.getLoserPlayer().getPlayerID())) {
             cliInstance.newLine();
             cliInstance.print(Cli.toBold("You lost!"));
             cliInstance.newLine();
@@ -227,14 +234,13 @@ public class CliUpdateHandler implements UpdateHandler {
             }
         } else if (update.onePlayerRemaining) {
             cliInstance.newLine();
-            cliInstance.print(cliInstance.playerWithColor(update.loserPlayerNickname) + " lost!");
+            cliInstance.print(cliInstance.playerWithColor(update.getLoserPlayer().getNickname()) + " lost!");
             cliInstance.print(Cli.toBold("You Win!"));
             cliInstance.newLine();
             cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
-            //cliInstance.print("Do you want to play another match?");
         } else {
             cliInstance.newLine();
-            cliInstance.print(cliInstance.playerWithColor(update.loserPlayerNickname) + " lost!");
+            cliInstance.print(cliInstance.playerWithColor(update.getLoserPlayer().getNickname()) + " lost!");
         }
 
 
@@ -247,7 +253,7 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     public void handle(DisconnectedPlayerUpdate update) {
-        String nicknameToShow = update.disconnectedPlayerNickname != null ? update.disconnectedPlayerNickname : "A player";
+        String nicknameToShow = update.getDisconnectedPlayer().getNickname() != null ? update.getDisconnectedPlayer().getNickname() : "A player";
         cliInstance.print(nicknameToShow + " disconnected!");
     }
 
