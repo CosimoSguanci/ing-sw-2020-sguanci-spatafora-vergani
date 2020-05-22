@@ -68,7 +68,7 @@ public class GamePhaseCommandHandler {
                     if (continueWhile) { continue; }
                 }
                 else if (CommandType.isHelperCommandType(splitCommand[0])){
-                    cliPlayerHelper.helperHandle(splitCommand);
+                    this.cliPlayerHelper.helperHandle(splitCommand);
                 }
                 else if (this.cli.getCurrentPhase() == GamePhase.INITIAL_INFO) {
                     this.initialInfo.handleInitialInfoCommand(splitCommand);
