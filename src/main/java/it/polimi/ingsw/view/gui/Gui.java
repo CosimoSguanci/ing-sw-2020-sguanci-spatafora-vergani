@@ -26,7 +26,8 @@ public class Gui {
         //frame.add(new PlayerNumberChoice());
         //frame.add(new WaitingForAMatch());
         //frame.add(new InitialInfo());
-        JOptionPane.showMessageDialog(frame, NicknameAlreadyUsed.getMessage(), NicknameAlreadyUsed.title, JOptionPane.ERROR_MESSAGE);
+        frame.add(new GameManual());
+        //JOptionPane.showMessageDialog(frame, NicknameAlreadyUsed.getMessage(), NicknameAlreadyUsed.title, JOptionPane.ERROR_MESSAGE);
 
         frame.pack();
         frame.setSize(600, 400);
