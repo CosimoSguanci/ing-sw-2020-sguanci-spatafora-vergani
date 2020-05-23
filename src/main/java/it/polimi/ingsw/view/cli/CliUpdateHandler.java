@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.UpdateHandler;
+import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,9 +60,9 @@ public class CliUpdateHandler implements UpdateHandler {
                 cliInstance.setInitialGodChooser(false);
                 cliInstance.setSelectableGods(update.getSelectableGods());
                 cliInstance.println(Cli.toBold("Choose ") + "your god.    Command " + Cli.toBold("format") + " expected: select [god]");
-                if (listToStringBuilder(update.getSelectableGods()) != null) {
+                if (View.listToStringBuilder(update.getSelectableGods()) != null) {
                     cliInstance.newLine();
-                    cliInstance.println("Available choices are: " + listToStringBuilder(update.getSelectableGods()));
+                    cliInstance.println("Available choices are: " + View.listToStringBuilder(update.getSelectableGods()));
                 }
                 cliInstance.newLine();
                 cliInstance.println("REMEMBER: if you need info about a god, type 'info [god]'");
@@ -87,7 +88,7 @@ public class CliUpdateHandler implements UpdateHandler {
 
             if (!selectedNicknames.isEmpty()) {
                 cliInstance.newLine();
-                cliInstance.println("Nicknames already taken are: " + listToStringBuilder(selectedNicknames));
+                cliInstance.println("Nicknames already taken are: " + View.listToStringBuilder(selectedNicknames));
             }
 
             cliInstance.newLine();
@@ -358,19 +359,8 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
 
-    private StringBuilder listToStringBuilder(List<String> value) {
-        if (value.size() == 0) {
-            return null;
-        }
-        StringBuilder result = new StringBuilder(value.get(0));
-        for (int i = 1; i < value.size(); i++) {
-            result.append(", ").append(value.get(i));
-        }
-        return result;
-    }
-
     private StringBuilder availableGods() {
-        ArrayList<String> godNames = new ArrayList<>(GodsUtils.getGodsInfo().keySet());  //list of gods' names
+        List<String> godNames = View.getGodsNamesList();
         StringBuilder result = new StringBuilder(godNames.get(0).toUpperCase());
         for (int i = 1; i < godNames.size(); i++) {
             result.append(", ").append(godNames.get(i).toUpperCase());

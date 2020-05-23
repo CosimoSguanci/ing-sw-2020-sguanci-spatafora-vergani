@@ -57,7 +57,6 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
 
             this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream()); // NB SE NON APRI LO STREAM IN OUTPUT DA SERVER A CLIENT LA GETINPUTSTREAM DEL CLIENT SI BLOCCA -> e va in timeoutexception se c'è un timeout
 
-
             CommandListener commandListener = new CommandListener(clientSocket, objectOutputStream, server);
             commandListener.addObserver(this);
             executor.execute(commandListener);

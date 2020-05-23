@@ -9,8 +9,12 @@ public final class CustomThreadPoolExecutor {
     private CustomThreadPoolExecutor() {}
 
     public static ThreadPoolExecutor createNew() {
-        return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
-                0L, TimeUnit.SECONDS,
-                new SynchronousQueue<>());
+        return new ThreadPoolExecutor(
+                0,
+                Integer.MAX_VALUE,
+                0L,
+                TimeUnit.SECONDS,
+                new SynchronousQueue<>()
+        );
     }
 }

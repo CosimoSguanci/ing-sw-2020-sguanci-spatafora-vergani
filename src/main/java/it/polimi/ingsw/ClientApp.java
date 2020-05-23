@@ -12,14 +12,21 @@ public class ClientApp {
     public static void main(String[] args) {
         try {
 
-            /*Client client = new Client();
+           /* Client client = new Client();
             Controller controller = new Controller(client);
             Cli cli = new Cli(client, controller);
             cli.addObserver(controller);
             controller.addObserver(cli);
-            cli.start();*/
+            cli.start(); */
 
-            Gui gui = new Gui();
+            Client client = new Client();
+            Controller controller = new Controller(client);
+            //Gui gui = new Gui(client, controller);
+            Gui gui = Gui.getInstance(client, controller);
+            gui.addObserver(controller);
+            controller.addObserver(gui);
+
+            gui.start();
 
         } catch(Exception e) { //IOException
             System.err.println("The Game couldn't start, maybe there was some network error " +

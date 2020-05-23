@@ -1,11 +1,19 @@
 package it.polimi.ingsw.view.gui.components;
 
+import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.PlayerNumberChoiceRadioButtonListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class PlayerNumberChoice extends JPanel {
+public class PlayerNumberChoice extends JPanel implements ActionListener {
+
+
+
+
+
     private JRadioButton button1;
     private JRadioButton button2;
     private JLabel resumeNumber;  //this JLabel needs to be refreshed every time a button is clicked
@@ -82,6 +90,9 @@ public class PlayerNumberChoice extends JPanel {
         ImageIcon startImg = new ImageIcon(standardImgPath + "start.png");
         startImg = new ImageIcon(startImg.getImage().getScaledInstance(startButtonWidth, -1, Image.SCALE_DEFAULT));
         JButton startButton = new JButton(startImg);
+
+        startButton.addActionListener(this);
+
         JPanel innerPanel = new JPanel();
         innerPanel.setLayout(new BorderLayout());
         innerPanel.setOpaque(false);
@@ -127,5 +138,13 @@ public class PlayerNumberChoice extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(this.backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Gui gui = Gui.getInstance(null, null);
+        gui.setPlayersNumber(this.getPlayerNumberSelected());
+        gui.startWaitingForMatch();
     }
 }
