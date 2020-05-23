@@ -2,17 +2,18 @@ package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.PlayerNumberChoiceRadioButtonListener;
+import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PlayerNumberChoice extends JPanel implements ActionListener {
-
-
-
-
 
     private JRadioButton button1;
     private JRadioButton button2;
@@ -22,10 +23,10 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
     private int selectionButtonWidth = 50;
     private int startButtonWidth = 100;
     private Image backgroundImage = new ImageIcon(standardImgPath + "SantoriniBackground.jpg").getImage();
-    private Font font = new Font(Font.SERIF, Font.BOLD, 14);
-    private Font resumeNumberFont = new Font(Font.SERIF, Font.BOLD, 14);
+    private Font font = Gui.getFont(Gui.FONT_REGULAR, 20);
+    private Font resumeNumberFont = Gui.getFont(Gui.FONT_BOLD, 18);
     private Color textColor = Color.WHITE;
-    private Color resumeNumberTextColor = Color.BLACK;
+    private Color resumeNumberTextColor = Color.WHITE;
 
     public PlayerNumberChoice() {
         //LayoutManager layoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -45,15 +46,15 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         this.add(questionPanel, BorderLayout.NORTH);
 
         //button for selecting two players
-        ImageIcon buttonTwoPlayers = new ImageIcon(standardImgPath + "2players.png");
-        buttonTwoPlayers = new ImageIcon(buttonTwoPlayers.getImage().getScaledInstance(selectionButtonWidth, -1, Image.SCALE_DEFAULT));
+        ImageIcon buttonTwoPlayers = new ImageIcon(standardImgPath + "two.png");
+        buttonTwoPlayers = new ImageIcon(buttonTwoPlayers.getImage().getScaledInstance(selectionButtonWidth, -1, Image.SCALE_SMOOTH));
         this.button1 = new JRadioButton(buttonTwoPlayers, true);
         this.button1.setOpaque(false);
         //this.button1.setPreferredSize(new Dimension(30, 30));
 
         //button for selecting three players
-        ImageIcon buttonThreePlayers = new ImageIcon(standardImgPath + "3players.png");
-        buttonThreePlayers = new ImageIcon(buttonThreePlayers.getImage().getScaledInstance(selectionButtonWidth, -1, Image.SCALE_DEFAULT));
+        ImageIcon buttonThreePlayers = new ImageIcon(standardImgPath + "three.png");
+        buttonThreePlayers = new ImageIcon(buttonThreePlayers.getImage().getScaledInstance(selectionButtonWidth, -1, Image.SCALE_SMOOTH));
         this.button2 = new JRadioButton(buttonThreePlayers, false);
         this.button2.setOpaque(false);
 
@@ -69,13 +70,28 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         JPanel buttonPanel = new JPanel();  //in the centre
         buttonPanel.setOpaque(false);
         JPanel resumeNumberPanel = new JPanel();  //in the south
+
+
         resumeNumberPanel.setOpaque(false);
-        this.resumeNumber = new JLabel("Selected: " + getPlayerNumberSelected());
-        this.resumeNumber.setBackground(Color.YELLOW);
+        this.resumeNumber = new JLabel( getPlayerNumberSelected() + " Players");
+
+        this.resumeNumber.setBackground(Color.decode("0x6DAFE0"));
+
         this.resumeNumber.setOpaque(true);
+
+
+       Border border = BorderFactory.createLineBorder(Color.WHITE, 2, true);
+        this.resumeNumber.setBorder(BorderFactory.createCompoundBorder(border,
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+
+       //this.resumeNumber.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        //this.resumeNumber.setOpaque(true);
         this.resumeNumber.setForeground(this.resumeNumberTextColor);
         this.resumeNumber.setFont(this.resumeNumberFont);
         resumeNumberPanel.add(this.resumeNumber);
+
+        buttonPanel.setBorder(new EmptyBorder(30, 0, 0, 0));
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(button1);
@@ -87,9 +103,16 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         this.add(buttonAllInfoPanel, BorderLayout.CENTER);
 
         //this part must be south-east
-        ImageIcon startImg = new ImageIcon(standardImgPath + "start.png");
-        startImg = new ImageIcon(startImg.getImage().getScaledInstance(startButtonWidth, -1, Image.SCALE_DEFAULT));
-        JButton startButton = new JButton(startImg);
+        ImageIcon startImg = new ImageIcon("src/main/resources/images/next.png");
+        startImg = new ImageIcon(startImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        //JButton startButton = new JButton(startImg);
+
+        JRoundButton startButton = new JRoundButton(startImg);
+        /*startButton.setContentAreaFilled(false);
+        startButton.setOpaque(true);
+        startButton.setBorder(null);
+        startButton.setBorderPainted(false);*/
+
 
         startButton.addActionListener(this);
 
@@ -116,6 +139,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         else{
             this.button1.setSelected(false);
             this.button2.setSelected(true);
+
         }
     }
 
@@ -131,7 +155,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
 
 
     public void refresh() {
-        this.resumeNumber.setText("Selected: " + getPlayerNumberSelected());
+        this.resumeNumber.setText(getPlayerNumberSelected() + " Players");
     }
 
     @Override

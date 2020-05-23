@@ -11,10 +11,16 @@ import it.polimi.ingsw.view.gui.components.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class Gui extends View implements Observer<Update> {
+
+    public static final int FONT_REGULAR = 0;
+    public static final int FONT_BOLD = 1;
 
     private static JFrame frame;
     private static JPanel currentPanel;
@@ -167,6 +173,26 @@ public class Gui extends View implements Observer<Update> {
 
     void setSelectableGods(List<String> selectableGods) {
         this.godsChoiceComponent.setSelectableGods(selectableGods);
+    }
+
+    public static Font getFont(int fontMode, int size) {
+        try {
+            InputStream inputStream;
+
+            switch(fontMode) {
+                case FONT_BOLD:
+                    inputStream = Gui.class.getResourceAsStream("/fonts/Lato-Bold.ttf");
+                    break;
+                case FONT_REGULAR:
+                default:
+                    inputStream = Gui.class.getResourceAsStream("/fonts/Lato-Regular.ttf");
+                    break;
+            }
+
+            return Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(Font.PLAIN, size);
+        } catch (FontFormatException | IOException ex) {
+            return new Font(Font.SERIF, Font.BOLD, 14);
+        }
     }
 
 }
