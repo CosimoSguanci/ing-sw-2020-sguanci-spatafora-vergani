@@ -41,8 +41,6 @@ public class WaitingForAMatch extends JPanel {
         this.add(jPanel, BorderLayout.NORTH);
 
 
-
-
         this.setBorder(BorderFactory.createEmptyBorder(35,20,20,20));
     }
 

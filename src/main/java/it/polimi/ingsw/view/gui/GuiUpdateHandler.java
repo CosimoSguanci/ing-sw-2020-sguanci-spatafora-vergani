@@ -71,12 +71,11 @@ public class GuiUpdateHandler implements UpdateHandler {
             if(controller.isClientPlayerGodChooser()) {
                 List<String> selectableGods = View.getGodsNamesList();
                 guiInstance.setSelectableGods(selectableGods);
-                guiInstance.showGodsChoiceOnTurn();
             }
             else {
                 guiInstance.setSelectableGods(update.getSelectableGods());
-                guiInstance.showGodsChoiceOnTurn();
             }
+            guiInstance.showGodsChoiceOnTurn();
         }
     }
 

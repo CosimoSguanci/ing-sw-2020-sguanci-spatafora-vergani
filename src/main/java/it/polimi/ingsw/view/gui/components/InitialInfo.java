@@ -6,6 +6,7 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.Gui;
+import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -134,7 +135,7 @@ public class InitialInfo extends AbstractInitialChoice implements ActionListener
 
         //button to continue must be south-east
         ImageIcon continueImg = new ImageIcon(this.standardImgPath + "button-play-normal.png");
-        continueImg = new ImageIcon(continueImg.getImage().getScaledInstance(this.buttonWidth, -1, Image.SCALE_DEFAULT));
+        continueImg = new ImageIcon(continueImg.getImage().getScaledInstance(this.buttonWidth, -1, Image.SCALE_SMOOTH));
         JButton continueButton = new JButton(continueImg);
         continueButton.addActionListener(this);
         JPanel innerPanel = new JPanel();
@@ -147,8 +148,11 @@ public class InitialInfo extends AbstractInitialChoice implements ActionListener
 
         //button to quit must be south-west
         ImageIcon quitImg = new ImageIcon(this.externalImgPath + "exit.png");
-        quitImg = new ImageIcon(quitImg.getImage().getScaledInstance(this.buttonWidth, -1, Image.SCALE_DEFAULT));
-        JButton quitButton = new JButton(quitImg);
+        quitImg = new ImageIcon(quitImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        JRoundButton quitButton = new JRoundButton(quitImg);
+
+
+
         innerPanel2.add(quitButton, BorderLayout.WEST);
 
         innerPanel.add(innerPanel2);

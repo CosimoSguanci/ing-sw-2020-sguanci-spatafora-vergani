@@ -105,7 +105,6 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         //this part must be south-east
         ImageIcon startImg = new ImageIcon("src/main/resources/images/next.png");
         startImg = new ImageIcon(startImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
-        //JButton startButton = new JButton(startImg);
 
         JRoundButton startButton = new JRoundButton(startImg);
         /*startButton.setContentAreaFilled(false);
