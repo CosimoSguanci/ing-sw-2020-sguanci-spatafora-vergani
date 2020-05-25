@@ -2,9 +2,7 @@ package it.polimi.ingsw.view.gui.components;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.Gui;
 
 import javax.swing.*;
@@ -14,7 +12,7 @@ public class BoardScreen extends JPanel {
     private JButton[][] buttons = new JButton[Board.WIDTH_SIZE][Board.HEIGHT_SIZE];
 
     //public JPanel BoardScreen(String boardString) {
-    public BoardScreen(String boardString) {
+    public BoardScreen(String boardString) {        //This methods returns a JPanel. Now it is used to test it playing.
         GsonBuilder builder = new GsonBuilder();
 
         Gson gson = builder.create();
@@ -33,15 +31,16 @@ public class BoardScreen extends JPanel {
 
                 Worker printableWorker = gameBoard.getCell(i, j).getWorker();
                 BlockType blockLevel = gameBoard.getCell(i, j).getLevel();
-                Player playerPrintableWorker = printableWorker.player;
+                Player playerPrintableWorker;
 
-                //BackgroundButton btn = new BackgroundButton(blockLevel);
-                JButton btn = new JButton();
+                BackgroundButton btn = new BackgroundButton(blockLevel, i, j);
+                //JButton btn = new JButton();
                 btn.setLayout(new BorderLayout());
 
                 if (!gameBoard.getCell(i, j).isEmpty()) {
+                    playerPrintableWorker = printableWorker.player;
                     ImageIcon workerIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/"
-                            + playerPrintableWorker.getColor().toString().toLowerCase() + ".png"));
+                            + playerPrintableWorker.getColor().toString().toLowerCase() + "_circle.png"));
                     //+ playerPrintableWorker.getColor().toString().toLowerCase() + printableWorker.workerType + ".png"));
 
                     workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(40,40, Image.SCALE_DEFAULT));
@@ -49,6 +48,13 @@ public class BoardScreen extends JPanel {
                     JLabel overImage = new JLabel(workerIcon);
 
                     btn.add(overImage, BorderLayout.CENTER);            //Use btn.getComponents() to have access to JLabel
+                }
+
+                else if(blockLevel.equals(BlockType.DOME)) {
+                    ImageIcon domeIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/dome.png"));
+                    domeIcon = new ImageIcon(domeIcon.getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT));
+                    JLabel overImage = new JLabel(domeIcon);
+                    btn.add(overImage, BorderLayout.CENTER);
                 }
 
                 this.buttons[i][j] = btn;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.model.PrintableColor;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.updates.Update;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.controller.Controller;
@@ -80,8 +80,31 @@ public class Gui extends View implements Observer<Update> {
     private static void showGui() throws IOException {
         frame = new JFrame("Santorini");
 
-        currentPanel = new PlayerNumberChoice();
+        //USED FOR BOARD'S VISUALIZATION
+        /*Match match = new Match(2);
+        Model model = new Model(match);
+        Board board = match.getMatchBoard();
+        Player player1 = new Player("ID1", model, match);
+        player1.setColor(PrintableColor.BLUE);
+        Player player2 = new Player("ID2", model, match);
+        player2.setColor(PrintableColor.GREEN);
+        match.addPlayer(player1);
+        match.addPlayer(player2);
+        board.getCell(1,3).setLevel(BlockType.LEVEL_THREE);
+        board.getCell(4,4).setLevel(BlockType.LEVEL_ONE);
+        board.getCell(0,0).setLevel(BlockType.GROUND);
+        board.getCell(0,2).setLevel(BlockType.LEVEL_TWO);
+        board.getCell(2,4).setLevel(BlockType.DOME);
 
+        board.getCell(1,3).setWorker(player1.getWorkerFirst());
+        board.getCell(2,2).setWorker(player1.getWorkerSecond());
+        board.getCell(4,3).setWorker(player2.getWorkerFirst());
+        board.getCell(1,1).setWorker(player2.getWorkerSecond());
+
+        currentPanel = new BoardScreen(board.toString());*/
+
+
+        currentPanel = new PlayerNumberChoice();
         frame.add(currentPanel);
         //frame.add(new WaitingForAMatch());
         //frame.add(new InitialInfo());
@@ -91,7 +114,7 @@ public class Gui extends View implements Observer<Update> {
         //JOptionPane.showMessageDialog(frame, NicknameAlreadyUsed.getMessage(), NicknameAlreadyUsed.title, JOptionPane.ERROR_MESSAGE);
 
         frame.pack();
-        frame.setSize(600, 400);
+        frame.setSize(850, 840);
         frame.setIconImage(ImageIO.read(Gui.class.getResource("/images/InitialInfo/title_island.png")));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
