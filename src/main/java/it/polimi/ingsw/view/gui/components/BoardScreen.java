@@ -39,11 +39,10 @@ public class BoardScreen extends JPanel {
 
                 if (!gameBoard.getCell(i, j).isEmpty()) {
                     playerPrintableWorker = printableWorker.player;
-                    ImageIcon workerIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/"
-                            + playerPrintableWorker.getColor().toString().toLowerCase() + "_circle.png"));
+                    ImageIcon workerIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/worker_" + playerPrintableWorker.getColor().toString().toLowerCase() + ".png"));
                     //+ playerPrintableWorker.getColor().toString().toLowerCase() + printableWorker.workerType + ".png"));
 
-                    workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(40,40, Image.SCALE_DEFAULT));
+                    workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(80,80, Image.SCALE_SMOOTH));
 
                     JLabel overImage = new JLabel(workerIcon);
 
@@ -52,7 +51,7 @@ public class BoardScreen extends JPanel {
 
                 else if(blockLevel.equals(BlockType.DOME)) {
                     ImageIcon domeIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/dome.png"));
-                    domeIcon = new ImageIcon(domeIcon.getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT));
+                    domeIcon = new ImageIcon(domeIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH));
                     JLabel overImage = new JLabel(domeIcon);
                     btn.add(overImage, BorderLayout.CENTER);
                 }
