@@ -104,7 +104,7 @@ public class Gui extends View implements Observer<Update> {
         currentPanel = new BoardScreen(board.toString());
 
 
-       // currentPanel = new PlayerNumberChoice();
+        currentPanel = new PlayerNumberChoice();
         frame.add(currentPanel);
         //frame.add(new WaitingForAMatch());
         //frame.add(new InitialInfo());
