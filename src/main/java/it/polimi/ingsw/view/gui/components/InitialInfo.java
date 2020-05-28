@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InitialInfo extends AbstractInitialChoice implements ActionListener {
+public class InitialInfo extends JPanel implements ActionListener {
 
     private static final String loadingMsgBefore = "Waiting for other players...";
     private static final String loadingMsgAfter = "Waiting for other players...";
@@ -33,7 +33,7 @@ public class InitialInfo extends AbstractInitialChoice implements ActionListener
     private String standardImgPath = "src/main/resources/images/InitialInfo/";
     private String externalImgPath = "src/main/resources/images/";
     private Image backgroundImage = new ImageIcon(standardImgPath + "backgroundTemple.png").getImage();
-    private Font font = new Font(Font.SERIF, Font.BOLD, 14);
+    private Font font = Gui.getFont(Gui.FONT_REGULAR, 20);
     private Color textColor = Color.WHITE;
     private int buttonWidth = 60;
 
@@ -42,13 +42,13 @@ public class InitialInfo extends AbstractInitialChoice implements ActionListener
     private List<String> selectedNicknames;
 
 
-    public InitialInfo(Controller controller) {
-        //LayoutManager layoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
-        //this.setLayout(layoutManager);
-        super(controller);
+    private Gui gui;
 
+
+    public InitialInfo() { // Controller
+
+        this.gui = Gui.getInstance();
         this.add(new LoadingComponent(loadingMsgBefore));
-
     }
 
     public void setSelectableColors(List<PrintableColor> selectableColors) {
@@ -67,7 +67,7 @@ public class InitialInfo extends AbstractInitialChoice implements ActionListener
         g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
     }
 
-    @Override
+    // todo interface
     public void showGuiOnTurn() {
         // todo add actual GUI
 
@@ -158,12 +158,10 @@ public class InitialInfo extends AbstractInitialChoice implements ActionListener
         innerPanel.add(innerPanel2);
         this.add(innerPanel, BorderLayout.SOUTH);
 
-        //labelNickname.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
-        //labelColor.setBorder(BorderFactory.createEmptyBorder(20,0,10,0));
-
         this.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 
-        this.revalidate();
+        this.revalidate(); // Todo new component in CardLayout for Waiting?
+        this.repaint();
     }
 
 
@@ -175,7 +173,7 @@ public class InitialInfo extends AbstractInitialChoice implements ActionListener
         String nickname = nicknameTextField.getText().toLowerCase();
 
         if(this.selectedNicknames.stream().map(String::toLowerCase).collect(Collectors.toList()).contains(nickname)) {
-            JOptionPane.showMessageDialog(gui.getMainFrame(), errorDialogTitle, errorDialogMessage + View.listToStringBuilder(selectedNicknames), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(gui.getMainFrame(), errorDialogMessage + View.listToStringBuilder(selectedNicknames), errorDialogTitle, JOptionPane.ERROR_MESSAGE);
         }
         else {
             PrintableColor color = (PrintableColor) this.color.getSelectedItem();
@@ -192,5 +190,6 @@ public class InitialInfo extends AbstractInitialChoice implements ActionListener
         this.add(new LoadingComponent(loadingMsgAfter));
 
         this.revalidate();
+        this.repaint();
     }
 }

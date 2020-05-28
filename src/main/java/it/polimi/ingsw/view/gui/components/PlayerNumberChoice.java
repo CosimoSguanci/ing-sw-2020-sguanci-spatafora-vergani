@@ -168,6 +168,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Gui gui = Gui.getInstance(null, null);
         gui.setPlayersNumber(this.getPlayerNumberSelected());
+        System.out.println("171");
         gui.startWaitingForMatch();
     }
 }

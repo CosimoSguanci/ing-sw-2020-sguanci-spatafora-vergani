@@ -19,13 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GodChoice extends AbstractInitialChoice implements ActionListener {
+public class GodChoice extends JPanel implements ActionListener {
 
     private ArrayList<JButton> buttons = new ArrayList<>();
     private GodChoiceJButtonListener godChoiceJButtonListener;
-    private boolean isGodChooser;
+    //private boolean isGodChooser;
     private int selectedGodsNumber = 0;
+
     private int playersNumber;
+
+    private Gui gui;
 
     private List<String> selectedGods;
     private List<String> selectableGods;
@@ -34,10 +37,12 @@ public class GodChoice extends AbstractInitialChoice implements ActionListener {
         this.selectableGods = selectableGods;
     }
 
-    public GodChoice(int playersNumber, Controller controller, boolean isGodChooser){
-        super(controller);
-        this.isGodChooser = isGodChooser;
-        this.playersNumber = playersNumber;
+    public GodChoice(){
+
+        this.gui = Gui.getInstance();
+
+       // this.isGodChooser = isGodChooser;
+        this.playersNumber = gui.getPlayersNumber();
 
         this.selectedGods = new ArrayList<>();
 
@@ -94,7 +99,6 @@ public class GodChoice extends AbstractInitialChoice implements ActionListener {
 
         }
 
-        this.isGodChooser = false;
         this.add(possibleGodsPanel);
 
         this.add(innerPanel, BorderLayout.SOUTH);
@@ -106,7 +110,7 @@ public class GodChoice extends AbstractInitialChoice implements ActionListener {
     }
 
     public void setGodChoiceSelected(JButton button) {
-        if(isGodChooser){
+        if(gui.getController().isClientPlayerGodChooser()){
             if(!button.isSelected()){
                 if(selectedGodsNumber < playersNumber){
                     button.setSelected(true);
@@ -185,7 +189,7 @@ public class GodChoice extends AbstractInitialChoice implements ActionListener {
         innerPanel.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
     }
 
-    @Override
+    // todo add interface
     public void showGuiOnTurn() {
 
         this.removeAll();
@@ -193,7 +197,7 @@ public class GodChoice extends AbstractInitialChoice implements ActionListener {
         try {
 
 
-            if(isGodChooser) {
+            if(this.gui.getController().isClientPlayerGodChooser()) {
                 drawGodChoiceAsGodChooser();
             } else {
                 drawGodChoice();
@@ -209,7 +213,8 @@ public class GodChoice extends AbstractInitialChoice implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Gui gui = Gui.getInstance(null, null);
+
+        boolean isGodChooser = gui.getController().isClientPlayerGodChooser();
 
         if(isGodChooser && this.selectedGods.size() != playersNumber) {
             JOptionPane.showMessageDialog(gui.getMainFrame(), "Error", "You must select " + playersNumber + " gods!", JOptionPane.ERROR_MESSAGE);

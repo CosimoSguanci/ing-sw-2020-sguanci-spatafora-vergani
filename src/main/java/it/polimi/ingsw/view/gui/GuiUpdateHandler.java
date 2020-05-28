@@ -25,33 +25,28 @@ public class GuiUpdateHandler implements UpdateHandler {
 
     public void handle(GamePhaseUpdate update) {
 
+        System.out.println("GAME PHASE UPDATE");
 
-        try {
-
-            switch(update.newGamePhase) {
-                case INITIAL_INFO:
-                    guiInstance.startInitialInfoPhase();
-                    break;
-                case CHOOSE_GODS:
-                    guiInstance.startGodChoicePhase(controller.isClientPlayerGodChooser());
-                    break;
-            }
-
-        } catch(IOException e) {
-            // todo handle
+        switch(update.newGamePhase) {
+            case INITIAL_INFO:
+                guiInstance.startInitialInfoPhase();
+                break;
+            case CHOOSE_GODS:
+                guiInstance.startGodChoicePhase();
+                break;
         }
     }
 
     public void handle(TurnUpdate update) {
-        guiInstance.forwardNotify(update);
-    //    guiInstance.onTurnChanged();
+        System.out.println("TURN UPDATE");
 
-        /*if (controller.getCurrentPlayerID().equals(controller.getClientPlayerID()) && cliInstance.getCurrentPhase() == GamePhase.GAME_PREPARATION) {
-            cliInstance.printGamePreparationInfo();
-        }*/
+        guiInstance.forwardNotify(update);
     }
 
     public void handle(InitialInfoUpdate update) {
+
+        System.out.println("INITIAL INFO UPDATE");
+
 
         if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
             List<String> selectedNicknames = new ArrayList<>(update.getInitialInfo().keySet());
@@ -61,11 +56,15 @@ public class GuiUpdateHandler implements UpdateHandler {
             guiInstance.setSelectableColors(selectableColors);
             guiInstance.setSelectedNicknames(selectedNicknames);
 
+            System.out.println("57");
+
             guiInstance.showInitialInfoOnTurn();
         }
     }
 
     public void handle(GodsUpdate update) {
+        System.out.println("GODS UPDATE");
+
         // todo print God Mapping
         if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
             if(controller.isClientPlayerGodChooser()) {
