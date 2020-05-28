@@ -41,12 +41,11 @@ public class GodChoice extends JPanel implements ActionListener {
 
         this.gui = Gui.getInstance();
 
-       // this.isGodChooser = isGodChooser;
         this.playersNumber = gui.getPlayersNumber();
 
         this.selectedGods = new ArrayList<>();
 
-        this.add(new LoadingComponent("Waiting..."));
+        this.add(new LoadingComponent("Waiting...", Color.WHITE));
     }
 
     private void drawGodChoice() throws IOException {
@@ -234,7 +233,7 @@ public class GodChoice extends JPanel implements ActionListener {
     private void onGodChoiceSent() {
         this.removeAll();
 
-        this.add(new LoadingComponent("Waiting..."));
+        this.add(new LoadingComponent("Waiting...", Color.RED));
 
         this.revalidate();
     }

@@ -174,11 +174,11 @@ public class Gui extends View implements Observer<Update> {
         notify(update);
     }
 
-    void onTurnChanged() {
+    /*void onTurnChanged() {
         if(currentPanel instanceof AbstractInitialChoice) {
             ((AbstractInitialChoice) currentPanel).onTurnChanged();
         }
-    }
+    }*/
 
     public void startWaitingForMatch() {
 
@@ -212,7 +212,6 @@ public class Gui extends View implements Observer<Update> {
 
     void startGodChoicePhase() {
         this.mainCardLayout.show(mainPanel, GOD_CHOICE);
-
     }
 
     void showInitialInfoOnTurn() {
@@ -222,8 +221,6 @@ public class Gui extends View implements Observer<Update> {
     void showGodsChoiceOnTurn() {
         this.godsChoiceComponent.showGuiOnTurn();
     }
-
-
 
 
     void setSelectableColors(List<PrintableColor> selectableColors) {

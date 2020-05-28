@@ -48,7 +48,7 @@ public class InitialInfo extends JPanel implements ActionListener {
     public InitialInfo() { // Controller
 
         this.gui = Gui.getInstance();
-        this.add(new LoadingComponent(loadingMsgBefore));
+        this.add(new LoadingComponent(loadingMsgBefore, Color.WHITE));
     }
 
     public void setSelectableColors(List<PrintableColor> selectableColors) {
@@ -187,7 +187,7 @@ public class InitialInfo extends JPanel implements ActionListener {
     private void onInitialInfoSent() {
         this.removeAll();
 
-        this.add(new LoadingComponent(loadingMsgAfter));
+        this.add(new LoadingComponent(loadingMsgAfter, Color.WHITE));
 
         this.revalidate();
         this.repaint();
