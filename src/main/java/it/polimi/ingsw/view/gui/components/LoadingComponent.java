@@ -7,7 +7,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class LoadingComponent extends JPanel {
-    private Font font = Gui.getFont(Gui.FONT_REGULAR, 20);
 
     public LoadingComponent(String loadingMessage, Color textColor) {
         LayoutManager layoutManager = new BorderLayout();
@@ -19,7 +18,8 @@ public class LoadingComponent extends JPanel {
 
         JLabel label = new JLabel(loadingMessage);
         label.setForeground(textColor);
-        label.setFont(this.font);
+        Font font = Gui.getFont(Gui.FONT_REGULAR, 20);
+        label.setFont(font);
         label.setHorizontalAlignment(JLabel.CENTER);
 
         label.setAlignmentX(Component.CENTER_ALIGNMENT);

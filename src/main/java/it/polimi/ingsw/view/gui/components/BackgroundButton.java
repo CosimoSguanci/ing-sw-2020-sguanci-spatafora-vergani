@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BackgroundButton extends JButton {
-    private BlockType blockLevel;
+    private final BlockType blockLevel;
     int row, col;
 
     public BackgroundButton(BlockType blockLevel, int row, int col) {

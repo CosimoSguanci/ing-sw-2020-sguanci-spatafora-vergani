@@ -21,26 +21,23 @@ public class Gui extends View implements Observer<Update> {
     public static final int FONT_REGULAR = 0;
     public static final int FONT_BOLD = 1;
 
-    private JFrame frame;
-
-    private  JPanel currentPanel;
-
-    private UpdateHandler guiUpdateHandler;
-    private Client client;
-    private Controller controller;
-
-    private int playersNumber;
-
-
-    private CardLayout mainCardLayout;
-    private JPanel mainPanel;
-
     private final static String PLAYERS_NUMBER_CHOICE = "players_number_choice";
     private final static String WAITING_FOR_MATCH = "waiting_for_match";
     private final static String INITIAL_INFO = "initial_info";
     private final static String GOD_CHOICE = "god_choice";
     private final static String GAME_PREPARATION = "game_preparation";
     private final static String REAL_GAME = "real_game";
+
+    private JFrame frame;
+
+    private final UpdateHandler guiUpdateHandler;
+    private final Client client;
+    private final Controller controller;
+
+    private int playersNumber;
+
+    private CardLayout mainCardLayout;
+    private JPanel mainPanel;
 
 
     private PlayerNumberChoice playerNumberChoiceComponent;
@@ -166,7 +163,6 @@ public class Gui extends View implements Observer<Update> {
 
     @Override
     public void update(Update update) {
-        System.out.println("Update arrived: " + update);
         update.handleUpdate(this.guiUpdateHandler);
     }
 
@@ -174,11 +170,6 @@ public class Gui extends View implements Observer<Update> {
         notify(update);
     }
 
-    /*void onTurnChanged() {
-        if(currentPanel instanceof AbstractInitialChoice) {
-            ((AbstractInitialChoice) currentPanel).onTurnChanged();
-        }
-    }*/
 
     public void startWaitingForMatch() {
 

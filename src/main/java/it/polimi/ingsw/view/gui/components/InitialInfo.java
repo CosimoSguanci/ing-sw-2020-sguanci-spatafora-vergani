@@ -2,20 +2,14 @@ package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.controller.commands.InitialInfoCommand;
 import it.polimi.ingsw.model.PrintableColor;
-import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,22 +21,15 @@ public class InitialInfo extends JPanel implements ActionListener {
     private static final String errorDialogTitle = "Error";
     private static final String errorDialogMessage = "You can't use this nickname!" + System.lineSeparator() +
             "Nicknames already used are: ";
-
+    private final String standardImgPath = "src/main/resources/images/InitialInfo/";
+    private final Image backgroundImage = new ImageIcon(standardImgPath + "backgroundTemple.png").getImage();
+    private final Font font = Gui.getFont(Gui.FONT_REGULAR, 20);
+    private final Color textColor = Color.WHITE;
+    private final Gui gui;
     private JTextField nicknameTextField;
     private JComboBox<PrintableColor> color;
-    private String standardImgPath = "src/main/resources/images/InitialInfo/";
-    private String externalImgPath = "src/main/resources/images/";
-    private Image backgroundImage = new ImageIcon(standardImgPath + "backgroundTemple.png").getImage();
-    private Font font = Gui.getFont(Gui.FONT_REGULAR, 20);
-    private Color textColor = Color.WHITE;
-    private int buttonWidth = 60;
-
-
     private List<PrintableColor> selectableColors;
     private List<String> selectedNicknames;
-
-
-    private Gui gui;
 
 
     public InitialInfo() { // Controller
@@ -69,10 +56,8 @@ public class InitialInfo extends JPanel implements ActionListener {
 
     // todo interface
     public void showGuiOnTurn() {
-        // todo add actual GUI
 
         this.removeAll();
-
 
         LayoutManager layoutManager = new BorderLayout();
         this.setLayout(layoutManager);
@@ -88,7 +73,7 @@ public class InitialInfo extends JPanel implements ActionListener {
         panelNickname.setOpaque(false);
         JPanel centredNickname = new JPanel();
         centredNickname.setOpaque(false);
-        JLabel labelNickname = new JLabel("Insert a nickname:   (1 word)");
+        JLabel labelNickname = new JLabel("Insert a nickname:");
         labelNickname.setForeground(textColor);
         labelNickname.setFont(font);
         centredNickname.add(labelNickname);
@@ -110,23 +95,22 @@ public class InitialInfo extends JPanel implements ActionListener {
         labelColor.setFont(font);
         centredColor.add(labelColor);
 
-        if(selectableColors == null) {
+        if (selectableColors == null) {
             this.selectableColors = PrintableColor.getColorList();
         }
 
-        PrintableColor [] colors = new PrintableColor[selectableColors.size()];
+        PrintableColor[] colors = new PrintableColor[selectableColors.size()];
 
         colors = this.selectableColors.toArray(colors);
 
-        this.color = new JComboBox<PrintableColor>(colors);
+        this.color = new JComboBox<>(colors);
 
-        ((JLabel)this.color.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);  //centred alignment for JComboBox alternatives
+        ((JLabel) this.color.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
         panelColor.add(centredColor);
         panelNickname.add(Box.createVerticalGlue());
         panelColor.add(this.color);
 
-        panelNickname.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
-        //panelColor.setBorder(BorderFactory.createEmptyBorder(5,0,0,0));
+        panelNickname.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 
         nicknameColorPanel.add(panelNickname, BorderLayout.NORTH);
         nicknameColorPanel.add(panelColor, BorderLayout.SOUTH);
@@ -135,7 +119,8 @@ public class InitialInfo extends JPanel implements ActionListener {
 
         //button to continue must be south-east
         ImageIcon continueImg = new ImageIcon(this.standardImgPath + "button-play-normal.png");
-        continueImg = new ImageIcon(continueImg.getImage().getScaledInstance(this.buttonWidth, -1, Image.SCALE_SMOOTH));
+        int buttonWidth = 60;
+        continueImg = new ImageIcon(continueImg.getImage().getScaledInstance(buttonWidth, -1, Image.SCALE_SMOOTH));
         JButton continueButton = new JButton(continueImg);
         continueButton.addActionListener(this);
         JPanel innerPanel = new JPanel();
@@ -147,18 +132,17 @@ public class InitialInfo extends JPanel implements ActionListener {
         innerPanel2.add(continueButton, BorderLayout.EAST);
 
         //button to quit must be south-west
-        ImageIcon quitImg = new ImageIcon(this.externalImgPath + "exit.png");
+        String externalImgPath = "src/main/resources/images/";
+        ImageIcon quitImg = new ImageIcon(externalImgPath + "exit.png");
         quitImg = new ImageIcon(quitImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JRoundButton quitButton = new JRoundButton(quitImg);
-
-
 
         innerPanel2.add(quitButton, BorderLayout.WEST);
 
         innerPanel.add(innerPanel2);
         this.add(innerPanel, BorderLayout.SOUTH);
 
-        this.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         this.revalidate(); // Todo new component in CardLayout for Waiting?
         this.repaint();
@@ -168,14 +152,11 @@ public class InitialInfo extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        Gui gui = Gui.getInstance(null, null);
-
         String nickname = nicknameTextField.getText().toLowerCase();
 
-        if(this.selectedNicknames.stream().map(String::toLowerCase).collect(Collectors.toList()).contains(nickname)) {
+        if (this.selectedNicknames.stream().map(String::toLowerCase).collect(Collectors.toList()).contains(nickname)) {
             JOptionPane.showMessageDialog(gui.getMainFrame(), errorDialogMessage + View.listToStringBuilder(selectedNicknames), errorDialogTitle, JOptionPane.ERROR_MESSAGE);
-        }
-        else {
+        } else {
             PrintableColor color = (PrintableColor) this.color.getSelectedItem();
             InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nickname, color);
             gui.notify(initialInfoCommand);

@@ -114,14 +114,12 @@ public class GodChoice extends JPanel implements ActionListener {
                 if(selectedGodsNumber < playersNumber){
                     button.setSelected(true);
                     selectedGodsNumber++;
-                    System.out.println("Select true, " + selectedGodsNumber);
                     this.selectedGods.add(button.getText());
                 }//else{ //TooManyGodsSelectedException }
             }
             else {
                 button.setSelected(false);
                 selectedGodsNumber--;
-                System.out.println("Select true, " + selectedGodsNumber);
                 this.selectedGods.remove(button.getText());
             }
 
@@ -130,14 +128,12 @@ public class GodChoice extends JPanel implements ActionListener {
             if(!button.isSelected()){
                 if(selectedGodsNumber < 1) {
                     button.setSelected(true);
-                    System.out.println("Selected true");
                     selectedGodsNumber++;
                     this.selectedGods.add(button.getText());
                 }
             }
             else {
                 button.setSelected(false);
-                System.out.println("Selected false");
                 selectedGodsNumber--;
                 this.selectedGods.remove(button.getText());
             }

@@ -25,8 +25,6 @@ public class GuiUpdateHandler implements UpdateHandler {
 
     public void handle(GamePhaseUpdate update) {
 
-        System.out.println("GAME PHASE UPDATE");
-
         switch(update.newGamePhase) {
             case INITIAL_INFO:
                 guiInstance.startInitialInfoPhase();
@@ -38,16 +36,10 @@ public class GuiUpdateHandler implements UpdateHandler {
     }
 
     public void handle(TurnUpdate update) {
-        System.out.println("TURN UPDATE");
-
         guiInstance.forwardNotify(update);
     }
 
     public void handle(InitialInfoUpdate update) {
-
-        System.out.println("INITIAL INFO UPDATE");
-
-
         if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
             List<String> selectedNicknames = new ArrayList<>(update.getInitialInfo().keySet());
             List<PrintableColor> selectedColors = new ArrayList<>(update.getInitialInfo().values());
@@ -56,15 +48,11 @@ public class GuiUpdateHandler implements UpdateHandler {
             guiInstance.setSelectableColors(selectableColors);
             guiInstance.setSelectedNicknames(selectedNicknames);
 
-            System.out.println("57");
-
             guiInstance.showInitialInfoOnTurn();
         }
     }
 
     public void handle(GodsUpdate update) {
-        System.out.println("GODS UPDATE");
-
         // todo print God Mapping
         if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
             if(controller.isClientPlayerGodChooser()) {
