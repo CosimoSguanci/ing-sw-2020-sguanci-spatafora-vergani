@@ -22,5 +22,4 @@ public abstract class View extends Observable<Object> {
     public static List<String> getGodsNamesList() {
         return new ArrayList<>(GodsUtils.getGodsInfo().keySet());  //list of gods' names
     }
-
 }
