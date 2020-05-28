@@ -26,7 +26,7 @@ public class WaitingForAMatch extends JPanel {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         jPanel.add(label);
 
-        Icon imgIcon = new ImageIcon("src/main/resources/loading.gif");
+        Icon imgIcon = new ImageIcon("src/main/resources/images/loadings/loading.gif");
         JLabel label2 = new JLabel(imgIcon);
         label2.setBorder(new EmptyBorder(15, 0, 0, 0));
 

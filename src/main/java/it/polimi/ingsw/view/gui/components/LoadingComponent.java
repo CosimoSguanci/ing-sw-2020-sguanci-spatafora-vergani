@@ -25,7 +25,14 @@ public class LoadingComponent extends JPanel {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         jPanel.add(label);
 
-        ImageIcon imgIcon = new ImageIcon("src/main/resources/loading2.gif");
+        ImageIcon imgIcon;
+
+        if (textColor.equals(Color.BLACK)) {
+            imgIcon = new ImageIcon("src/main/resources/images/loadings/loading_infinity_black.gif");
+        }
+        else {
+            imgIcon = new ImageIcon("src/main/resources/images/loadings/loading_infinity_white.gif");
+        }
 
         JLabel label2 = new JLabel(imgIcon);
         label2.setBorder(new EmptyBorder(15, 0, 0, 0));

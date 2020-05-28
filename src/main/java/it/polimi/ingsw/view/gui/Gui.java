@@ -49,7 +49,6 @@ public class Gui extends View implements Observer<Update> {
     private static Gui guiInstance = null;
 
 
-
     public static Gui getInstance(Client client, Controller controller) {
 
         if(guiInstance == null) {

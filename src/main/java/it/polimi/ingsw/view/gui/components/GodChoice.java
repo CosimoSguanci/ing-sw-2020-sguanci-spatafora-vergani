@@ -21,9 +21,10 @@ import java.util.stream.Collectors;
 
 public class GodChoice extends JPanel implements ActionListener {
 
+    private final String standardImgPath = "src/main/resources/images/GodChoice/";
+    private final Image backgroundImage = new ImageIcon(standardImgPath + "olympus.png").getImage();
     private ArrayList<JButton> buttons = new ArrayList<>();
     private GodChoiceJButtonListener godChoiceJButtonListener;
-    //private boolean isGodChooser;
     private int selectedGodsNumber = 0;
 
     private int playersNumber;
@@ -37,6 +38,12 @@ public class GodChoice extends JPanel implements ActionListener {
         this.selectableGods = selectableGods;
     }
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
+    }
+
     public GodChoice(){
 
         this.gui = Gui.getInstance();
@@ -45,7 +52,7 @@ public class GodChoice extends JPanel implements ActionListener {
 
         this.selectedGods = new ArrayList<>();
 
-        this.add(new LoadingComponent("Waiting...", Color.WHITE));
+        this.add(new LoadingComponent("Waiting...", Color.BLACK));
     }
 
     private void drawGodChoice() throws IOException {
