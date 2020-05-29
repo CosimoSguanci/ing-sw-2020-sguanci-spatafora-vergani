@@ -122,11 +122,13 @@ public class Gui extends View implements Observer<Update> {
         mainPanel.add(initialInfoComponent, INITIAL_INFO);
         mainPanel.add(godsChoiceComponent, GOD_CHOICE);
 
+       // mainPanel.add(godsChoiceComponent, GOD_CHOICE);
+
         frame.add(mainPanel);
 
 
         //USED FOR BOARD'S VISUALIZATION
-      /*  Match match = new Match(2);
+        /*Match match = new Match(2);
         Model model = new Model(match);
         Board board = match.getMatchBoard();
         Player player1 = new Player("ID1", model, match);
@@ -146,10 +148,8 @@ public class Gui extends View implements Observer<Update> {
         board.getCell(4,3).setWorker(player2.getWorkerFirst());
         board.getCell(1,1).setWorker(player2.getWorkerSecond());
 
-        currentPanel = new BoardScreen(board.toString());*/
+        JPanel currentPanel = new BoardScreen(board.toString());
 
-
-        /*currentPanel = new PlayerNumberChoice();
         frame.add(currentPanel);*/
 
         frame.pack();
