@@ -15,32 +15,53 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class Gui extends View implements Observer<Update> {
 
     public static final int FONT_REGULAR = 0;
     public static final int FONT_BOLD = 1;
 
-    private static JFrame frame;
-    private static JPanel currentPanel;
+    private final static String PLAYERS_NUMBER_CHOICE = "players_number_choice";
+    private final static String WAITING_FOR_MATCH = "waiting_for_match";
+    private final static String INITIAL_INFO = "initial_info";
+    private final static String GOD_CHOICE = "god_choice";
+    private final static String GAME_PREPARATION = "game_preparation";
+    private final static String REAL_GAME = "real_game";
 
-    private UpdateHandler guiUpdateHandler;
-    private Client client;
-    private Controller controller;
+    private JFrame frame;
+
+    private final UpdateHandler guiUpdateHandler;
+    private final Client client;
+    private final Controller controller;
 
     private int playersNumber;
 
+    private CardLayout mainCardLayout;
+    private JPanel mainPanel;
+
+
+    private PlayerNumberChoice playerNumberChoiceComponent;
+    private WaitingForAMatch waitingForAMatchComponent;
     private InitialInfo initialInfoComponent;
     private GodChoice godsChoiceComponent;
     // etc
 
     private static Gui guiInstance = null;
 
+
     public static Gui getInstance(Client client, Controller controller) {
 
         if(guiInstance == null) {
             guiInstance = new Gui(client, controller);
+        }
+
+        return guiInstance;
+    }
+
+    public static Gui getInstance() {
+
+        if(guiInstance == null) {
+            return new Gui(null, null);
         }
 
         return guiInstance;
@@ -58,30 +79,56 @@ public class Gui extends View implements Observer<Update> {
         return this.client;
     }
 
+    public Controller getController() {
+        return this.controller;
+    }
+
+    public int getPlayersNumber() {
+        return this.playersNumber;
+    }
+
     private Gui(Client clientInstance, Controller controllerInstance){
         client = clientInstance;
         controller = controllerInstance;
         this.guiUpdateHandler = new GuiUpdateHandler(this, controller);
     }
 
-    public void start() throws IOException{
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    showGui();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    public void start() throws IOException {
+        SwingUtilities.invokeLater(() -> {
+            try {
+                showGui();
+            } catch(IOException e) {
+                //throw new IOException();
             }
+
         });
     }
 
-    private static void showGui() throws IOException {
+    private void showGui() throws IOException {
         frame = new JFrame("Santorini");
 
+        this.mainPanel = new JPanel();
+        this.mainCardLayout = new CardLayout();
+
+        mainPanel.setLayout(mainCardLayout);
+
+        this.playerNumberChoiceComponent = new PlayerNumberChoice();
+        this.waitingForAMatchComponent = new WaitingForAMatch();
+        this.initialInfoComponent = new InitialInfo();
+        this.godsChoiceComponent = new GodChoice();
+
+        mainPanel.add(playerNumberChoiceComponent, PLAYERS_NUMBER_CHOICE);
+        mainPanel.add(waitingForAMatchComponent, WAITING_FOR_MATCH);
+        mainPanel.add(initialInfoComponent, INITIAL_INFO);
+        mainPanel.add(godsChoiceComponent, GOD_CHOICE);
+
+       // mainPanel.add(godsChoiceComponent, GOD_CHOICE);
+
+        frame.add(mainPanel);
+
+
         //USED FOR BOARD'S VISUALIZATION
-      /*  Match match = new Match(2);
+        /*Match match = new Match(2);
         Model model = new Model(match);
         Board board = match.getMatchBoard();
         Player player1 = new Player("ID1", model, match);
@@ -101,23 +148,13 @@ public class Gui extends View implements Observer<Update> {
         board.getCell(4,3).setWorker(player2.getWorkerFirst());
         board.getCell(1,1).setWorker(player2.getWorkerSecond());
 
-        currentPanel = new BoardScreen(board.toString()); */
+        JPanel currentPanel = new BoardScreen(board.toString());
 
-
-        currentPanel = new PlayerNumberChoice();
-        //frame.add(currentPanel);
-        frame.add(new GamePreparation());
-        //frame.add(new Game());
-        //frame.add(new WaitingForAMatch());
-        //frame.add(new InitialInfo());
-        //frame.add(new GameManual());
-        //frame.add(new GodChoice(3));
-        //frame.add(new BoardScreen(null));
-        //JOptionPane.showMessageDialog(frame, NicknameAlreadyUsed.getMessage(), NicknameAlreadyUsed.title, JOptionPane.ERROR_MESSAGE);
+        frame.add(currentPanel);*/
 
         frame.pack();
-        frame.setSize(700, 700);
-        frame.setIconImage(ImageIO.read(Gui.class.getResource("/images/InitialInfo/title_island.png")));
+        frame.setSize(900, 700);
+        frame.setIconImage(ImageIO.read(Gui.class.getResource("/images/title_island.png")));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -132,43 +169,18 @@ public class Gui extends View implements Observer<Update> {
         notify(update);
     }
 
-    void onTurnChanged() {
-        if(currentPanel instanceof AbstractInitialChoice) {
-            ((AbstractInitialChoice) currentPanel).onTurnChanged();
-        }
-    }
-
-
-    void startInitialInfoPhase() {
-        frame.remove(currentPanel);
-        this.initialInfoComponent = new InitialInfo(this.controller);
-        currentPanel = this.initialInfoComponent;
-        frame.add(currentPanel);
-        frame.revalidate();
-    }
-
-    void startGodChoicePhase(boolean isGodChooser) throws IOException {
-        frame.remove(currentPanel);
-        this.godsChoiceComponent = new GodChoice(playersNumber, controller, isGodChooser);
-        currentPanel = this.godsChoiceComponent;
-        frame.add(currentPanel);
-        frame.revalidate();
-    }
-
-    void showInitialInfoOnTurn() {
-        this.initialInfoComponent.showGuiOnTurn();
-    }
-
-    void showGodsChoiceOnTurn() {
-        this.godsChoiceComponent.showGuiOnTurn();
-    }
 
     public void startWaitingForMatch() {
 
         try {
+
+            System.out.println("Players Number: " + playersNumber);
+
             client.sendPlayersNumber(playersNumber);
 
             String playerID = client.readPlayerID();
+
+            System.out.println("Player ID: " + playerID);
 
             controller.setClientPlayerID(playerID);
 
@@ -180,11 +192,24 @@ public class Gui extends View implements Observer<Update> {
         }
 
 
+        this.mainCardLayout.show(mainPanel, WAITING_FOR_MATCH);
+    }
 
-        frame.remove(currentPanel);
-        currentPanel = new WaitingForAMatch();
-        frame.add(currentPanel);
-        frame.revalidate();
+
+    void startInitialInfoPhase() {
+        this.mainCardLayout.show(mainPanel, INITIAL_INFO);
+    }
+
+    void startGodChoicePhase() {
+        this.mainCardLayout.show(mainPanel, GOD_CHOICE);
+    }
+
+    void showInitialInfoOnTurn() {
+        this.initialInfoComponent.showGuiOnTurn();
+    }
+
+    void showGodsChoiceOnTurn() {
+        this.godsChoiceComponent.showGuiOnTurn();
     }
 
 
