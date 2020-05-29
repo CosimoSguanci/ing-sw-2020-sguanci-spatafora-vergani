@@ -128,7 +128,7 @@ public class Gui extends View implements Observer<Update> {
 
 
         //USED FOR BOARD'S VISUALIZATION
-        /*Match match = new Match(2);
+        Match match = new Match(2);
         Model model = new Model(match);
         Board board = match.getMatchBoard();
         Player player1 = new Player("ID1", model, match);
@@ -148,9 +148,14 @@ public class Gui extends View implements Observer<Update> {
         board.getCell(4,3).setWorker(player2.getWorkerFirst());
         board.getCell(1,1).setWorker(player2.getWorkerSecond());
 
-        JPanel currentPanel = new BoardScreen(board.toString());
+        /*JPanel currentPanel = new BoardScreen(board.toString());
 
         frame.add(currentPanel);*/
+
+        //useful for testing WIP panels
+        JPanel currentPanel = new GamePreparation(board.toString());
+        frame.add(currentPanel);
+
 
         frame.pack();
         frame.setSize(900, 700);
