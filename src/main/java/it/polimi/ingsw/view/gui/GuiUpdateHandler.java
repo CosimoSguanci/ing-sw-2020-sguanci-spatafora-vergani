@@ -25,34 +25,21 @@ public class GuiUpdateHandler implements UpdateHandler {
 
     public void handle(GamePhaseUpdate update) {
 
-
-        try {
-
-            switch(update.newGamePhase) {
-                case INITIAL_INFO:
-                    guiInstance.startInitialInfoPhase();
-                    break;
-                case CHOOSE_GODS:
-                    guiInstance.startGodChoicePhase(controller.isClientPlayerGodChooser());
-                    break;
-            }
-
-        } catch(IOException e) {
-            // todo handle
+        switch(update.newGamePhase) {
+            case INITIAL_INFO:
+                guiInstance.startInitialInfoPhase();
+                break;
+            case CHOOSE_GODS:
+                guiInstance.startGodChoicePhase();
+                break;
         }
     }
 
     public void handle(TurnUpdate update) {
         guiInstance.forwardNotify(update);
-    //    guiInstance.onTurnChanged();
-
-        /*if (controller.getCurrentPlayerID().equals(controller.getClientPlayerID()) && cliInstance.getCurrentPhase() == GamePhase.GAME_PREPARATION) {
-            cliInstance.printGamePreparationInfo();
-        }*/
     }
 
     public void handle(InitialInfoUpdate update) {
-
         if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
             List<String> selectedNicknames = new ArrayList<>(update.getInitialInfo().keySet());
             List<PrintableColor> selectedColors = new ArrayList<>(update.getInitialInfo().values());

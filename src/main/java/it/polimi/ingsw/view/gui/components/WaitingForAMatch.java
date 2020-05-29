@@ -3,14 +3,12 @@ package it.polimi.ingsw.view.gui.components;
 import it.polimi.ingsw.view.gui.Gui;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class WaitingForAMatch extends JPanel {
-    private String standardImgPath = "src/main/resources/images/WaitingForAMatch/";
-    private Image backgroundImage = new ImageIcon(standardImgPath + "title_FG_grass.png").getImage();
-    private Font font = Gui.getFont(Gui.FONT_BOLD, 16);
+    private final String standardImgPath = "src/main/resources/images/WaitingForAMatch/";
+    private final Image backgroundImage = new ImageIcon(standardImgPath + "title_FG_grass.png").getImage();
 
     public WaitingForAMatch() {
         LayoutManager layoutManager = new BorderLayout();
@@ -21,13 +19,14 @@ public class WaitingForAMatch extends JPanel {
         jPanel.setLayout(panelLayoutManager);
 
         JLabel label = new JLabel("Waiting for a match...");
-        label.setFont(this.font);
+        Font font = Gui.getFont(Gui.FONT_BOLD, 16);
+        label.setFont(font);
         label.setHorizontalAlignment(JLabel.CENTER);
 
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         jPanel.add(label);
 
-        Icon imgIcon = new ImageIcon("src/main/resources/loading.gif");
+        Icon imgIcon = new ImageIcon("src/main/resources/images/loadings/loading.gif");
         JLabel label2 = new JLabel(imgIcon);
         label2.setBorder(new EmptyBorder(15, 0, 0, 0));
 
@@ -36,12 +35,9 @@ public class WaitingForAMatch extends JPanel {
 
         jPanel.setOpaque(false);
 
-
-
         this.add(jPanel, BorderLayout.NORTH);
 
-
-        this.setBorder(BorderFactory.createEmptyBorder(35,20,20,20));
+        this.setBorder(BorderFactory.createEmptyBorder(35, 20, 20, 20));
     }
 
     @Override
