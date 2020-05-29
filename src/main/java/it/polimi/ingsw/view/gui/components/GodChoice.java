@@ -9,7 +9,6 @@ import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.GodChoiceJButtonListener;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
-import javafx.geometry.HorizontalDirection;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
