@@ -126,7 +126,7 @@ public class Gui extends View implements Observer<Update> {
 
         frame.add(mainPanel);
 
-
+        /*
         //USED FOR BOARD'S VISUALIZATION
         Match match = new Match(2);
         Model model = new Model(match);
@@ -153,8 +153,8 @@ public class Gui extends View implements Observer<Update> {
         frame.add(currentPanel);*/
 
         //useful for testing WIP panels
-        JPanel currentPanel = new RealGame(board.toString());
-        frame.add(currentPanel);
+        //JPanel currentPanel = new RealGame(board.toString());
+        //frame.add(currentPanel);
 
 
         frame.pack();

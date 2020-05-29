@@ -14,6 +14,7 @@ public class Game extends JPanel {
     Image backgroundImage = new ImageIcon(stdImagePath + "background.png").getImage();
     private String externalImgPath = "src/main/resources/images/";
     private Font font = Gui.getFont(Gui.FONT_REGULAR, 18);
+    private Font turnFont = Gui.getFont(Gui.FONT_REGULAR, 22);
     private JLabel turn;
     private JRoundButton quitButton;
     private BoardScreen board;
@@ -37,14 +38,24 @@ public class Game extends JPanel {
         this.turn.setHorizontalAlignment(JLabel.CENTER);
         this.turn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         this.turn.setBackground(Color.YELLOW);
-        this.turn.setFont(this.font);
+        this.turn.setFont(this.turnFont);
         this.turn.setOpaque(true);
-        JLabel gods = new JLabel("x has A, y has B, z has C");
-        gods.setLayout(new BoxLayout(gods, BoxLayout.Y_AXIS));
         //todo get data from previous choices
+        //insert in gods an ArrayList<JLabel>
+        JPanel gods = new JPanel();
+        gods.setLayout(new BoxLayout(gods, BoxLayout.Y_AXIS));
+        JLabel one = new JLabel("x has A");
+        one.setFont(this.font);
+        JLabel two = new JLabel("y has B");
+        two.setFont(this.font);
+        JLabel three = new JLabel("z has C");
+        three.setFont(this.font);
+        gods.add(one);
+        gods.add(two);
+        gods.add(three);
+
         gods.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         gods.setBackground(Color.YELLOW);
-        gods.setFont(this.font);
         gods.setOpaque(true);
         playersGodsTurn.add(Box.createVerticalGlue());
         playersGodsTurn.add(this.turn);

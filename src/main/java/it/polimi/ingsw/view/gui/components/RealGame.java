@@ -7,9 +7,9 @@ import java.awt.*;
 
 public class RealGame extends Game {
     private String classImagePath = "src/main/resources/images/RealGame/";
-    private int dimension = 80;
-    private int buttonWidth = 180;
-    private int buttonHeight = 100;
+    private int dimension = 70;
+    private int buttonWidth = 170;
+    private int buttonHeight = 80;
 
     public RealGame(String boardString) {
         super(boardString);
