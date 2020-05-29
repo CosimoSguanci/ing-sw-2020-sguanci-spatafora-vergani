@@ -125,9 +125,17 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         if (button.equals(this.button1)) {
             this.button1.setSelected(true);
             this.button2.setSelected(false);
+
+            /*this.button1.setBorder(BorderFactory.createLineBorder(Color.RED, 2, true));
+            this.button2.setBorder(null);*/
+
         } else {
             this.button1.setSelected(false);
             this.button2.setSelected(true);
+
+            /*this.button2.setBorder(BorderFactory.createLineBorder(Color.RED, 2, true));
+            this.button1.setBorder(null);*/
+
 
         }
     }
@@ -145,7 +153,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Gui gui = Gui.getInstance(null, null);
+        Gui gui = Gui.getInstance();
         gui.setPlayersNumber(this.getPlayerNumberSelected());
         gui.startWaitingForMatch();
     }
