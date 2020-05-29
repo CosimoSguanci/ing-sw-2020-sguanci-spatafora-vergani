@@ -6,7 +6,7 @@ import it.polimi.ingsw.view.gui.ui.JRoundButton;
 import java.awt.*;
 
 public class GamePreparation extends Game {
-    private String classImagePath = "src/main/resources//images/GamePreparation/";
+    private String classImagePath = "src/main/resources/images/GamePreparation/";
     private JRoundButton continueButton;
 
     public GamePreparation(String boardString) {

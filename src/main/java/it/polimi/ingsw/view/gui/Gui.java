@@ -153,7 +153,7 @@ public class Gui extends View implements Observer<Update> {
         frame.add(currentPanel);*/
 
         //useful for testing WIP panels
-        JPanel currentPanel = new GamePreparation(board.toString());
+        JPanel currentPanel = new RealGame(board.toString());
         frame.add(currentPanel);
 
 
