@@ -105,7 +105,9 @@ public class Gui extends View implements Observer<Update> {
 
 
         currentPanel = new PlayerNumberChoice();
-        frame.add(currentPanel);
+        //frame.add(currentPanel);
+        frame.add(new GamePreparation());
+        //frame.add(new Game());
         //frame.add(new WaitingForAMatch());
         //frame.add(new InitialInfo());
         //frame.add(new GameManual());
@@ -114,7 +116,7 @@ public class Gui extends View implements Observer<Update> {
         //JOptionPane.showMessageDialog(frame, NicknameAlreadyUsed.getMessage(), NicknameAlreadyUsed.title, JOptionPane.ERROR_MESSAGE);
 
         frame.pack();
-        frame.setSize(850, 840);
+        frame.setSize(700, 700);
         frame.setIconImage(ImageIO.read(Gui.class.getResource("/images/InitialInfo/title_island.png")));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
