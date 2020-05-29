@@ -13,10 +13,14 @@ public class Game extends JPanel {
     private String stdImagePath = "src/main/resources//images/Game/";
     Image backgroundImage = new ImageIcon(stdImagePath + "background.png").getImage();
     private String externalImgPath = "src/main/resources/images/";
-    private Font font = Gui.getFont(Gui.FONT_REGULAR, 16);
+    private Font font = Gui.getFont(Gui.FONT_REGULAR, 18);
     private JLabel turn;
     private JRoundButton quitButton;
     private BoardScreen board;
+    private JPanel northernPanel;
+    JLabel title;
+    JLabel subtitle;
+    private Font titleFont = Gui.getFont(Gui.FONT_BOLD, 24);
     JPanel rightPanel = new JPanel();
     int buttonDim = 70;
 
@@ -68,10 +72,40 @@ public class Game extends JPanel {
         this.board.setOpaque(false);
         this.add(this.board, BorderLayout.CENTER);
 
-
+        //content of right panel will be specific for subclasses
         this.rightPanel.setOpaque(false);
         this.rightPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
         this.add(rightPanel, BorderLayout.EAST);
+
+
+        //northernPanel with title and subtitle, which will be specific for subclasses
+        this.northernPanel = new JPanel();
+        //this.northernPanel.setLayout(new BoxLayout(this.northernPanel, BoxLayout.Y_AXIS));
+        this.northernPanel.setOpaque(false);
+        this.northernPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+
+        JPanel insidePanel = new JPanel();
+        insidePanel.setLayout(new BoxLayout(insidePanel, BoxLayout.Y_AXIS));
+        insidePanel.setOpaque(false);
+        JPanel titlePanel = new JPanel();
+        titlePanel.setOpaque(false);
+        JPanel subtitlePanel = new JPanel();
+        subtitlePanel.setOpaque(false);
+        this.title = new JLabel();
+        this.title.setHorizontalAlignment(JLabel.CENTER);
+        this.title.setFont(this.titleFont);
+        this.title.setOpaque(false);
+        this.subtitle = new JLabel();
+        this.subtitle.setHorizontalAlignment(JLabel.CENTER);
+        this.subtitle.setFont(this.font);
+        this.subtitle.setOpaque(false);
+
+        titlePanel.add(this.title);
+        insidePanel.add(titlePanel);
+        subtitlePanel.add(this.subtitle);
+        insidePanel.add(subtitlePanel);
+        this.northernPanel.add(insidePanel);
+        this.add(this.northernPanel, BorderLayout.NORTH);
 
         this.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 

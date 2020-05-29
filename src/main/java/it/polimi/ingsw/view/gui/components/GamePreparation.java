@@ -24,6 +24,11 @@ public class GamePreparation extends Game {
         this.rightPanel.setLayout(new BorderLayout());
         this.rightPanel.add(innerPanel, BorderLayout.SOUTH);
 
+
+        //setting title and subtitle
+        this.title.setText("GAME PREPARATION");
+        this.subtitle.setText("Place your workers by selecting two cells");
+
         this.revalidate();
     }
 }
