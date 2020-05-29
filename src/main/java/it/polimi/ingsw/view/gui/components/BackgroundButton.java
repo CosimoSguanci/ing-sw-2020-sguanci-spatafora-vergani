@@ -32,7 +32,7 @@ public class BackgroundButton extends JButton {
     private Image computeImage() throws Exception{
         switch (blockLevel) {
             case GROUND:
-                return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + ".png")).getImage();
+                return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + "level.png")).getImage();
             case LEVEL_ONE:
                 return new ImageIcon(Gui.class.getResource("/images/BoardScreen/level1.png")).getImage();
             case LEVEL_TWO:
