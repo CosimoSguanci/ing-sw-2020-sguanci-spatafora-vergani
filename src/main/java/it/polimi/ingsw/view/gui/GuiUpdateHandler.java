@@ -25,6 +25,8 @@ public class GuiUpdateHandler implements UpdateHandler {
 
     public void handle(GamePhaseUpdate update) {
 
+        guiInstance.setCurrentGamePhase(update.newGamePhase);
+
         switch(update.newGamePhase) {
             case INITIAL_INFO:
                 guiInstance.startInitialInfoPhase();
@@ -32,15 +34,26 @@ public class GuiUpdateHandler implements UpdateHandler {
             case CHOOSE_GODS:
                 guiInstance.startGodChoicePhase();
                 break;
+            case GAME_PREPARATION:
+                guiInstance.startGamePreparation();
+                break;
+            case REAL_GAME:
+                guiInstance.startRealGame();
+                break;
         }
     }
 
     public void handle(TurnUpdate update) {
         guiInstance.forwardNotify(update);
+        guiInstance.onTurnChanged();
     }
 
     public void handle(InitialInfoUpdate update) {
-        if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
+
+        if (update.getInitialInfo().size() == guiInstance.getPlayersNumber()) {
+            guiInstance.setPlayersColors(update.getInitialInfo());
+        }
+        else if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
             List<String> selectedNicknames = new ArrayList<>(update.getInitialInfo().keySet());
             List<PrintableColor> selectedColors = new ArrayList<>(update.getInitialInfo().values());
             List<PrintableColor> selectableColors = PrintableColor.getColorList().stream().filter(color -> !selectedColors.contains(color)).collect(Collectors.toList());
@@ -53,8 +66,10 @@ public class GuiUpdateHandler implements UpdateHandler {
     }
 
     public void handle(GodsUpdate update) {
-        // todo print God Mapping
-        if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
+
+        if (update.getSelectedGods().size() == guiInstance.getPlayersNumber()) {
+            guiInstance.setPlayersGods(update.getSelectedGods());
+        } else if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
             if(controller.isClientPlayerGodChooser()) {
                 List<String> selectableGods = View.getGodsNamesList();
                 guiInstance.setSelectableGods(selectableGods);
@@ -67,8 +82,14 @@ public class GuiUpdateHandler implements UpdateHandler {
     }
 
 
-    public void handle(MatchStartedUpdate update) {}
-    public void handle(BoardUpdate update) {}
+    public void handle(MatchStartedUpdate update) {
+        guiInstance.onBoardChanged(update.getBoard());
+    }
+
+    public void handle(BoardUpdate update) {
+        guiInstance.onBoardChanged(update.getBoard());
+    }
+
     public void handle(ErrorUpdate update) {}
 
     public void handle(WinUpdate update) {}

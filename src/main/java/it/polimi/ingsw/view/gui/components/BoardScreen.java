@@ -4,12 +4,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.view.gui.Gui;
+import it.polimi.ingsw.view.gui.ui.BackgroundButton;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class BoardScreen extends JPanel {
     private JButton[][] buttons = new JButton[Board.WIDTH_SIZE][Board.HEIGHT_SIZE];
+
+    JButton[][] getBoardCells() {
+        return this.buttons;
+    }
 
     //public JPanel BoardScreen(String boardString) {
     public BoardScreen(String boardString) {        //This methods returns a JPanel. Now it is used to test it playing.
@@ -34,10 +39,15 @@ public class BoardScreen extends JPanel {
                 Player playerPrintableWorker;
 
                 BackgroundButton btn = new BackgroundButton(blockLevel, i, j);
-                //JButton btn = new JButton();
+
                 btn.setLayout(new BorderLayout());
 
+                btn.setEmpty(gameBoard.getCell(i, j).isEmpty());
+
                 if (!gameBoard.getCell(i, j).isEmpty()) {
+
+                    btn.setEmpty(false);
+
                     playerPrintableWorker = printableWorker.player;
                     ImageIcon workerIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/worker_" + playerPrintableWorker.getColor().toString().toLowerCase() + ".png"));
                     //+ playerPrintableWorker.getColor().toString().toLowerCase() + printableWorker.workerType + ".png"));
@@ -45,6 +55,8 @@ public class BoardScreen extends JPanel {
                     workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(80,80, Image.SCALE_SMOOTH));
 
                     JLabel overImage = new JLabel(workerIcon);
+
+                    btn.setWorkerLabel(overImage);
 
                     btn.add(overImage, BorderLayout.CENTER);            //Use btn.getComponents() to have access to JLabel
                 }
@@ -54,6 +66,7 @@ public class BoardScreen extends JPanel {
                     domeIcon = new ImageIcon(domeIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH));
                     JLabel overImage = new JLabel(domeIcon);
                     btn.add(overImage, BorderLayout.CENTER);
+
                 }
 
                 this.buttons[i][j] = btn;

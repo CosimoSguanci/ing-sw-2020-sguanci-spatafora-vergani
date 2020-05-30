@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.updates.Update;
 import it.polimi.ingsw.network.client.Client;
@@ -15,6 +16,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 public class Gui extends View implements Observer<Update> {
 
@@ -39,11 +41,19 @@ public class Gui extends View implements Observer<Update> {
     private CardLayout mainCardLayout;
     private JPanel mainPanel;
 
+    private GamePhase currentGamePhase;
 
     private PlayerNumberChoice playerNumberChoiceComponent;
     private WaitingForAMatch waitingForAMatchComponent;
     private InitialInfo initialInfoComponent;
     private GodChoice godsChoiceComponent;
+    private GamePreparation gamePreparation;
+    private RealGame realGame;
+
+
+    private Map<String, String> playersGods;
+    private Map<String, PrintableColor> playersColors;
+
     // etc
 
     private static Gui guiInstance = null;
@@ -67,6 +77,7 @@ public class Gui extends View implements Observer<Update> {
         return guiInstance;
     }
 
+
     public void setPlayersNumber(int playersNumberSelected) {
         playersNumber = playersNumberSelected;
     }
@@ -85,6 +96,22 @@ public class Gui extends View implements Observer<Update> {
 
     public int getPlayersNumber() {
         return this.playersNumber;
+    }
+
+    public void setPlayersColors(Map<String, PrintableColor> playersColors) {
+        this.playersColors = playersColors;
+    }
+
+    public Map<String, PrintableColor> getPlayersColors() {
+        return this.playersColors;
+    }
+
+    public void setPlayersGods(Map<String, String> playersGods) {
+        this.playersGods = playersGods;
+    }
+
+    public Map<String, String> getPlayersGods() {
+        return this.playersGods;
     }
 
     private Gui(Client clientInstance, Controller controllerInstance){
@@ -116,11 +143,15 @@ public class Gui extends View implements Observer<Update> {
         this.waitingForAMatchComponent = new WaitingForAMatch();
         this.initialInfoComponent = new InitialInfo();
         this.godsChoiceComponent = new GodChoice();
+        this.gamePreparation = new GamePreparation();
+        this.realGame = new RealGame();
 
         mainPanel.add(playerNumberChoiceComponent, PLAYERS_NUMBER_CHOICE);
         mainPanel.add(waitingForAMatchComponent, WAITING_FOR_MATCH);
         mainPanel.add(initialInfoComponent, INITIAL_INFO);
         mainPanel.add(godsChoiceComponent, GOD_CHOICE);
+        mainPanel.add(gamePreparation, GAME_PREPARATION);
+        mainPanel.add(realGame, REAL_GAME);
 
        // mainPanel.add(godsChoiceComponent, GOD_CHOICE);
 
@@ -210,6 +241,16 @@ public class Gui extends View implements Observer<Update> {
         this.mainCardLayout.show(mainPanel, GOD_CHOICE);
     }
 
+    void startGamePreparation() {
+        this.currentGamePhase = GamePhase.GAME_PREPARATION;
+        this.mainCardLayout.show(mainPanel, GAME_PREPARATION);
+    }
+
+    void startRealGame() {
+        this.currentGamePhase = GamePhase.REAL_GAME;
+        this.mainCardLayout.show(mainPanel, REAL_GAME);
+    }
+
     void showInitialInfoOnTurn() {
         this.initialInfoComponent.showGuiOnTurn();
     }
@@ -218,6 +259,31 @@ public class Gui extends View implements Observer<Update> {
         this.godsChoiceComponent.showGuiOnTurn();
     }
 
+    void setCurrentGamePhase(GamePhase gamePhase) {
+        this.currentGamePhase = gamePhase;
+    }
+
+    void onTurnChanged() {
+        switch(currentGamePhase) {
+            case GAME_PREPARATION:
+                this.gamePreparation.changeTurn();
+                break;
+            case REAL_GAME:
+                this.realGame.changeTurn();
+                break;
+        }
+    }
+
+    void onBoardChanged(String board) {
+        switch(currentGamePhase) {
+            case GAME_PREPARATION:
+                this.gamePreparation.setBoard(board);
+                break;
+            case REAL_GAME:
+                this.realGame.setBoard(board);
+                break;
+        }
+    }
 
     void setSelectableColors(List<PrintableColor> selectableColors) {
         this.initialInfoComponent.setSelectableColors(selectableColors);

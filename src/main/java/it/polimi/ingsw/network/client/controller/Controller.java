@@ -40,6 +40,10 @@ public class Controller extends Observable<Update> implements Observer<Object> {
         return this.currentPlayerID;
     }
 
+    public Player getClientPlayer() {
+        return this.clientPlayer;
+    }
+
     public boolean isClientPlayerGodChooser() {
         return this.clientPlayer.isGodChooser();
     }

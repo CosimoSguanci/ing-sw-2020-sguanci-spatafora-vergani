@@ -8,14 +8,17 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-public class Game extends JPanel {
+public abstract class Game extends JPanel {
     private String stdImagePath = "src/main/resources//images/Game/";
     Image backgroundImage = new ImageIcon(stdImagePath + "background.png").getImage();
     private String externalImgPath = "src/main/resources/images/";
     private Font font = Gui.getFont(Gui.FONT_REGULAR, 18);
     private Font turnFont = Gui.getFont(Gui.FONT_REGULAR, 22);
-    private JLabel turn;
+    private JLabel turn = new JLabel();
     private JRoundButton quitButton;
     private BoardScreen board;
     private JPanel northernPanel;
@@ -24,8 +27,58 @@ public class Game extends JPanel {
     private Font titleFont = Gui.getFont(Gui.FONT_BOLD, 24);
     JPanel rightPanel = new JPanel();
     int buttonDim = 70;
+    protected String boardString;
 
-    public Game(String boardString) {
+    List<JLabel> godsLabels;
+
+    Gui gui = Gui.getInstance();
+
+    private String currentPlayerNickname;
+
+    public void changeTurn() {
+
+        try {
+            this.currentPlayerNickname = gui.getController().getCurrentPlayerNickname();
+            turn.setText(currentPlayerNickname + "'s turn");
+            this.revalidate();
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    BoardScreen getBoard() {
+        return board;
+    }
+
+    public void setBoard(String board) {
+        this.boardString = board;
+
+        if(this.boardString != null) {
+            this.removeAll();
+            this.draw();
+            this.revalidate();
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(this.backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
+    }
+
+
+    protected void drawCommonBoard() {
+
+        this.currentPlayerNickname = gui.getController().getCurrentPlayerNickname();
+
+        Map<String, String> playersGods = gui.getPlayersGods();
+
+        this.godsLabels = new ArrayList<>();
+
+        playersGods.forEach((player, god) -> {
+            this.godsLabels.add(new JLabel(player + " has " + god));
+        });
+
         LayoutManager layoutManager = new BorderLayout();
         this.setLayout(layoutManager);
 
@@ -34,7 +87,7 @@ public class Game extends JPanel {
         playersGodsTurn.setOpaque(false);
         //playersGodsTurn.setForeground(Color.RED);
         playersGodsTurn.setLayout(new BoxLayout(playersGodsTurn, BoxLayout.Y_AXIS));
-        this.turn = new JLabel("x's turn");
+        this.turn = new JLabel(currentPlayerNickname + "'s turn");
         this.turn.setHorizontalAlignment(JLabel.CENTER);
         this.turn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         this.turn.setBackground(Color.YELLOW);
@@ -44,15 +97,11 @@ public class Game extends JPanel {
         //insert in gods an ArrayList<JLabel>
         JPanel gods = new JPanel();
         gods.setLayout(new BoxLayout(gods, BoxLayout.Y_AXIS));
-        JLabel one = new JLabel("x has A");
-        one.setFont(this.font);
-        JLabel two = new JLabel("y has B");
-        two.setFont(this.font);
-        JLabel three = new JLabel("z has C");
-        three.setFont(this.font);
-        gods.add(one);
-        gods.add(two);
-        gods.add(three);
+
+        this.godsLabels.forEach(l -> {
+            l.setFont(this.font);
+            gods.add(l);
+        });
 
         gods.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         gods.setBackground(Color.YELLOW);
@@ -123,15 +172,5 @@ public class Game extends JPanel {
         this.revalidate();
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(this.backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
-    }
-
-
-    public void updateBoard(String boardString) {
-        this.board = new BoardScreen(boardString);
-        this.revalidate();
-    }
+    abstract void draw();
 }

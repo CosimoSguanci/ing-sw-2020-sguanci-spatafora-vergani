@@ -9,9 +9,6 @@ public class JRoundButton extends JButton {
     public JRoundButton(Icon icon) {
         this(null, icon);
     }
-   /* public JRoundButton(String text) {
-        this(text, null);
-    }*/
 
     public JRoundButton(String text, Icon icon) {
         setModel(new DefaultButtonModel());
@@ -40,16 +37,7 @@ public class JRoundButton extends JButton {
         int iw = Math.max(icon.getIconWidth(), icon.getIconHeight());
         return new Dimension(iw+i.right+i.left, iw+i.top+i.bottom);
     }
-    /*@Override protected void paintBorder(Graphics g) {
-        initShape();
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(getBackground());
-        g2.draw(shape);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_OFF);
-    }*/
+
     @Override public boolean contains(int x, int y) {
         initShape();
         return shape.contains(x, y);

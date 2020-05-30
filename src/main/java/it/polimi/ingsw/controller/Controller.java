@@ -556,7 +556,6 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     private void godChoosePhase() {
         model.nextGamePhase();
         model.gamePhaseUpdate(model.getCurrentGamePhase());
-
         model.godsUpdate(new ArrayList<>(), new HashMap<>());
     }
 

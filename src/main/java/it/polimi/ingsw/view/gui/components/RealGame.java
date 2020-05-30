@@ -1,7 +1,5 @@
 package it.polimi.ingsw.view.gui.components;
 
-import it.polimi.ingsw.view.gui.ui.JRoundButton;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,8 +9,10 @@ public class RealGame extends Game {
     private int buttonWidth = 170;
     private int buttonHeight = 80;
 
-    public RealGame(String boardString) {
-        super(boardString);
+    @Override
+    void draw() {
+
+        drawCommonBoard();
 
         //need to set rightPanel's layout
         //rightPanel contains buttons to perform a move, a build and to end turn
