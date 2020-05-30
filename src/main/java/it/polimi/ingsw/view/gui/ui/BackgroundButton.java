@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.ui;
 
 import it.polimi.ingsw.model.BlockType;
+import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.view.gui.Gui;
 
 import javax.swing.*;
@@ -13,10 +14,21 @@ public class BackgroundButton extends JButton {
     private JLabel workerLabel;
     private boolean isEmpty = true;
 
-    public BackgroundButton(BlockType blockLevel, int row, int col) {
+    private Worker worker;
+
+    public BackgroundButton(Worker worker, BlockType blockLevel, int row, int col) {
+        this.worker = worker;
         this.blockLevel = blockLevel;
         this.row = row;
         this.col = col;
+    }
+
+    public Worker getWorker() {
+        return worker;
+    }
+
+    public void setWorker(Worker worker) {
+        this.worker = worker;
     }
 
     public void setEmpty(boolean isEmpty) {

@@ -30,7 +30,7 @@ public class GamePreparation extends Game implements ActionListener {
 
         drawCommonBoard();
 
-        List<JButton> cells = twoDArrayToList(this.getBoard().getBoardCells());
+        List<BackgroundButton> cells = twoDArrayToList(this.getBoard().getBoardCells());
 
         cells.forEach(cell -> {
             cell.addActionListener(this);
@@ -57,14 +57,6 @@ public class GamePreparation extends Game implements ActionListener {
         this.subtitle.setText("Place your workers by selecting two cells");
 
         this.revalidate();
-    }
-
-    private java.util.List<JButton> twoDArrayToList(JButton[][] twoDArray) {
-        List <JButton> list = new ArrayList<>();
-        for (JButton[] array : twoDArray) {
-            list.addAll(Arrays.asList(array));
-        }
-        return list;
     }
 
     @Override

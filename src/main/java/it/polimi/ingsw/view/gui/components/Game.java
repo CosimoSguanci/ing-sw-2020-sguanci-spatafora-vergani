@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.view.gui.Gui;
+import it.polimi.ingsw.view.gui.ui.BackgroundButton;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
 import javax.swing.*;
@@ -9,6 +10,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -36,14 +38,9 @@ public abstract class Game extends JPanel {
     private String currentPlayerNickname;
 
     public void changeTurn() {
-
-        try {
-            this.currentPlayerNickname = gui.getController().getCurrentPlayerNickname();
-            turn.setText(currentPlayerNickname + "'s turn");
-            this.revalidate();
-        } catch(NullPointerException e) {
-            e.printStackTrace();
-        }
+        this.currentPlayerNickname = gui.getController().getCurrentPlayerNickname();
+        turn.setText(currentPlayerNickname + "'s turn");
+        this.revalidate();
     }
 
     BoardScreen getBoard() {
@@ -173,4 +170,12 @@ public abstract class Game extends JPanel {
     }
 
     abstract void draw();
+
+    protected static java.util.List<BackgroundButton> twoDArrayToList(BackgroundButton[][] twoDArray) {
+        List <BackgroundButton> list = new ArrayList<>();
+        for (BackgroundButton[] array : twoDArray) {
+            list.addAll(Arrays.asList(array));
+        }
+        return list;
+    }
 }
