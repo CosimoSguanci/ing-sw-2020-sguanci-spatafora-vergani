@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.BuildButtonListener;
+import it.polimi.ingsw.view.gui.listeners.EndTurnButtonListener;
 import it.polimi.ingsw.view.gui.listeners.MoveButtonListener;
 import it.polimi.ingsw.view.gui.ui.BackgroundButton;
 
@@ -119,6 +120,9 @@ public class RealGame extends Game implements ActionListener {
         ImageIcon endIcon = new ImageIcon(this.classImagePath + "end.png");
         endIcon = new ImageIcon(endIcon.getImage().getScaledInstance(this.dimension, -1, Image.SCALE_SMOOTH));
         JButton endButton = new JButton("End turn", endIcon);
+
+        endButton.addActionListener(new EndTurnButtonListener(this));
+
         endButton.setMinimumSize(new Dimension(this.buttonWidth, this.buttonHeight));
         endButton.setPreferredSize(new Dimension(this.buttonWidth, this.buttonHeight));
         endButton.setMaximumSize(new Dimension(this.buttonWidth, this.buttonHeight));
@@ -209,8 +213,6 @@ public class RealGame extends Game implements ActionListener {
 
         this.worker1Button = cellBtns.get(0).getWorker().workerType.equals(Command.WORKER_FIRST) ? cellBtns.get(0) : cellBtns.get(1);
         this.worker2Button = cellBtns.get(0).getWorker().workerType.equals(Command.WORKER_SECOND) ? cellBtns.get(0) : cellBtns.get(1);
-
-
     }
 
     public void onMove() {
@@ -224,7 +226,6 @@ public class RealGame extends Game implements ActionListener {
         }
 
         this.selectedWorkerButton.setBorder( BorderFactory.createLineBorder(Color.YELLOW, 2, true));
-
     }
 
     public void onBuild() {
