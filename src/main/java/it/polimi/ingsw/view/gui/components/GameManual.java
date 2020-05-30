@@ -9,8 +9,8 @@ import java.util.LinkedHashMap;
 
 public class GameManual extends JPanel {
     private Color color = Color.yellow;
-    private Font titleFont = new Font(Font.SERIF, Font.BOLD, 18);
-    private Font font = new Font(Font.SERIF, Font.CENTER_BASELINE, 15);
+    private Font titleFont = new Font(Font.SERIF, Font.BOLD, 16);
+    private Font font = new Font(Font.SERIF, Font.PLAIN, 13);
     private String standardImgPath = "src/main/resources/images/GameManual/";
     private String externalImgPath = "src/main/resources/images/";
     private Image backgroundImage = new ImageIcon(standardImgPath + "background.jpg").getImage();
@@ -46,6 +46,8 @@ public class GameManual extends JPanel {
             mainPanel.add(Box.createVerticalGlue());
         }
 
+        //mainPanel.setPreferredSize(new Dimension(300, 600));
+
 
         //OK button must be bottom-right
         ImageIcon continueImg = new ImageIcon(this.externalImgPath + "Done.png");
@@ -60,7 +62,7 @@ public class GameManual extends JPanel {
         innerPanel2.add(continueButton, BorderLayout.EAST);
         innerPanel.add(innerPanel2);
 
-        JScrollPane scrollableMain = new JScrollPane(mainPanel);
+        JScrollPane scrollableMain = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         /*scrollableMain.setMinimumSize(new Dimension(200, 200));
         scrollableMain.setPreferredSize(new Dimension(300, 300));
         scrollableMain.setMaximumSize(new Dimension(800, 1500));*/

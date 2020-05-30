@@ -153,12 +153,13 @@ public class Gui extends View implements Observer<Update> {
         frame.add(currentPanel);*/
 
         //useful for testing WIP panels
-        //JPanel currentPanel = new RealGame(board.toString());
+        //JPanel currentPanel = new GameManual();
         //frame.add(currentPanel);
 
 
         frame.pack();
         frame.setSize(900, 700);
+        frame.setMinimumSize(new Dimension(500, 400));
         frame.setIconImage(ImageIO.read(Gui.class.getResource("/images/title_island.png")));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
