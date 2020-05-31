@@ -14,6 +14,8 @@ import it.polimi.ingsw.view.cli.Cli;
  * Its constructor method allow BoardDelegate to have a reference to
  * a singular Client and the purpose of the class is summed up in
  * printBoard method.
+ *
+ * @author Roberto Spatafora
  */
 public class BoardDelegate {
 

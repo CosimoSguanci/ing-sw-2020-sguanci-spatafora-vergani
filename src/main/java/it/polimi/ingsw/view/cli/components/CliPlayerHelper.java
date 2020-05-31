@@ -10,13 +10,34 @@ import it.polimi.ingsw.view.cli.Cli;
 
 import java.util.Map;
 
+/**
+ * This class is made to make Cli user-friendly, answering
+ * to every possible help request from users.
+ * This class specify a game manual, if someone is new to the game.
+ * CommandType.RULES, CommandType.HELP, CommandType.TURN, CommandType.GOD,
+ * CommandType.BOARD, CommandType.INFO are managed in this class by
+ * printing what a user requires.
+ *
+ * @author Andrea Vergani
+ * @author Roberto Spatafora
+ */
 public class CliPlayerHelper {
     private final Cli cli;
 
+    /**
+     * This is the constructor of this class. At the moment of the creation
+     * of a single instance of CliPlayerHelper the cli associated to it is set
+     * @param cli contains reference to the Cli associated
+     */
     public CliPlayerHelper(Cli cli){
         this.cli = cli;
     }
 
+    /**
+     * This method prints what is requested from users, responding to command as
+     * RULES, HELP, TURN, GOD, BOARD, INFO.
+     * @param splitCommand is the split string, from the entire one, received as command from user
+     */
     public void helperHandle(String[] splitCommand) {
         if(CommandType.parseCommandType(splitCommand[0]) == CommandType.RULES && splitCommand.length == 1) {
             cli.newLine();
@@ -84,6 +105,11 @@ public class CliPlayerHelper {
         }
     }
 
+    /**
+     * This private method, prints different strings based on gamePhase
+     * @param gamePhase indicates the gamePhase that distinguishes which
+     *                  string is to be printed.
+     */
     private void helpString(GamePhase gamePhase) {
         switch (gamePhase) {
             case INITIAL_INFO:
@@ -122,7 +148,11 @@ public class CliPlayerHelper {
         }
     }
 
-
+    /**
+     * @param input should indicates a GamePhase. More general it can be a String
+     * @return true if the string received as parameter indicates the currentGamePhase
+     *         false otherwise.
+     */
     private boolean infoAboutGamePhase(String input) {
         return input.equals(cli.getCurrentPhaseString());
     }
