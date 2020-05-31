@@ -9,10 +9,21 @@ import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.view.cli.Cli;
 
+/**
+ * BoardDelegate is a class in which board activities are managed.
+ * Its constructor method allow BoardDelegate to have a reference to
+ * a singular Client and the purpose of the class is summed up in
+ * printBoard method.
+ */
 public class BoardDelegate {
 
     private final Cli cli;
 
+    /**
+     * This is the constructor of this class. At the moment of the creation
+     * of a single instance of BoardDelegate the cli associated to it is set
+     * @param cli contains reference to the Cli associated
+     */
     public BoardDelegate(Cli cli) {
         this.cli = cli;
     }
@@ -82,6 +93,14 @@ public class BoardDelegate {
         cli.println("");
     }
 
+    /**
+     * This private method bridges with BlockType enumeration.
+     * With this method a correspondence between BlockType level and
+     * a char that indicates it is made.
+     * @param level indicates the level of which you want the letter
+     * @return a String, generally a single character, due to the implementation of the
+     *         BlockType.convertBlockTypeToUnicode() method, which corresponds to the level
+     */
     private static String convertBlockTypeToUnicode(BlockType level) {
         return BlockType.convertBlockTypeToUnicode(level);
     }
