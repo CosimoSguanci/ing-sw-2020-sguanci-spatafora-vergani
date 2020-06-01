@@ -15,6 +15,7 @@ import it.polimi.ingsw.view.cli.Cli;
  * a singular Client and the purpose of the class is summed up in
  * printBoard method.
  *
+ * @author Andrea Vergani
  * @author Roberto Spatafora
  */
 public class BoardDelegate {
