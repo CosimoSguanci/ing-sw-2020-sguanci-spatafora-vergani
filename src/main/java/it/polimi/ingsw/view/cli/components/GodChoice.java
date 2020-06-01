@@ -12,6 +12,10 @@ import java.util.ArrayList;
 /**
  * This class deals with CHOOSE_GODS game phase.
  * It manages all the choices made by GodChooser and the other players.
+ *
+ * @author Andrea Vergani
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
  */
 public class GodChoice {
     private final Cli cli;
