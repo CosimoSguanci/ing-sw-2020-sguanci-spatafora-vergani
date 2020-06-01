@@ -7,6 +7,9 @@ import it.polimi.ingsw.view.cli.Cli;
  * This class manages GamePreparation phase's commands.
  * This class has a reference to the Cli associated, once received a
  * command during GAME_PREPARATION game phase go through this class
+ *
+ *  * @author Andrea Vergani
+ *  * @author Roberto Spatafora
  */
 public class GamePreparation {
 
