@@ -23,10 +23,10 @@ public class MatchEnded {
     }
 
     /**
-     * This method manages answers from user once the match ends.
+     * This method manages answers from users once the match ends.
      * If a user type "yes" in this part it means that he wants to play another
      * match. Otherwise, answering "no" to the question proposed, the user
-     * express its will to end.
+     * express its will to quit.
      * @param command contains the answer from the user
      * @return true if the command received was "yes",
      *         false otherwise.
