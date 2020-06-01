@@ -15,8 +15,9 @@ import java.util.Arrays;
  * Every time a user write a command go through this class and
  * different approaches are applied based on GAME_PHASE.
  *
- *  * @author Andrea Vergani
- *  * @author Roberto Spatafora
+ * @author Andrea Vergani
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
  */
 public class GamePhaseCommandHandler {
     private final RealGame realGame;
