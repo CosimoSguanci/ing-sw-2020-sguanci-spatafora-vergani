@@ -9,6 +9,10 @@ import java.io.IOException;
  * This class deals with MATCH_ENDED game phase.
  * It manages all the choices made by players. It allows players
  * to start a new match once the match in which they were involved is finished.
+ *
+ * @author Andrea Vergani
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
  */
 public class MatchEnded {
     private final Cli cli;
