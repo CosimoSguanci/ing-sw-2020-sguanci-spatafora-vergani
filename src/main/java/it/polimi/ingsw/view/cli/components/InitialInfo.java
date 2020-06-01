@@ -14,6 +14,10 @@ import java.util.stream.Collectors;
 /**
  * This class deals with INITIAL_INFO game phase. It manages all
  * the choices made by players, including nicknames and colors
+ *
+ * @author Andrea Vergani
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
  */
 public class InitialInfo {
 
