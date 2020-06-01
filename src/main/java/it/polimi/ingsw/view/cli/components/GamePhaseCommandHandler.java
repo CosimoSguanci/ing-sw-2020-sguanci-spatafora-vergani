@@ -10,6 +10,11 @@ import it.polimi.ingsw.view.cli.Cli;
 
 import java.util.Arrays;
 
+/**
+ * This class manages every possible interaction with user.
+ * Every time a user write a command go through this class and
+ * different approaches are applied based on GAME_PHASE.
+ */
 public class GamePhaseCommandHandler {
     private final RealGame realGame;
     private final GodChoice godChoice;
@@ -102,10 +107,24 @@ public class GamePhaseCommandHandler {
         }
     }
 
+    /**
+     * This private method checks if a command received through
+     * console is a valid command or not.
+     * @param splitCommand is an array of strings which contains, separately,
+     *                     all the different words entered in the console.
+     * @return false if the command contains computed words, even if these are not
+     *         valid in the game; true otherwise.
+     */
     private boolean computeCommand(String[] splitCommand) {
         return (splitCommand.length == 0) || (splitCommand[0].equals("") && splitCommand.length == 1);
     }
 
+    /**
+     * This method invokes another method which contains an
+     * algorithm to print the board game Cli version.
+     * @param board indicates the board, JSON-format which is used in
+     *              the relative match. It contains references to each cell
+     */
     public void printBoard(String board) {
         this.boardDelegate.printBoard(board);
     }
