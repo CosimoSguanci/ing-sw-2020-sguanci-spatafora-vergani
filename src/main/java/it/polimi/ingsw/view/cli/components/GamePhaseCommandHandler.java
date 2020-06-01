@@ -14,6 +14,9 @@ import java.util.Arrays;
  * This class manages every possible interaction with user.
  * Every time a user write a command go through this class and
  * different approaches are applied based on GAME_PHASE.
+ *
+ *  * @author Andrea Vergani
+ *  * @author Roberto Spatafora
  */
 public class GamePhaseCommandHandler {
     private final RealGame realGame;
