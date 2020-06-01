@@ -8,8 +8,9 @@ import it.polimi.ingsw.view.cli.Cli;
  * This class has a reference to the Cli associated, once received a
  * command during GAME_PREPARATION game phase go through this class
  *
- *  * @author Andrea Vergani
- *  * @author Roberto Spatafora
+ * @author Andrea Vergani
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
  */
 public class GamePreparation {
 
