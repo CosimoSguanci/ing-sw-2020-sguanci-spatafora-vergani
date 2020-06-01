@@ -8,6 +8,10 @@ import it.polimi.ingsw.view.cli.Cli;
  * This class deals with MATCH_LOST game phase.
  * It manages all the choices made by players. It allows players to continue to
  * watch the match in which they were involved, even if they have already lost.
+ *
+ * @author Andrea Vergani
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
  */
 public class MatchLost {
     private final Cli cli;
