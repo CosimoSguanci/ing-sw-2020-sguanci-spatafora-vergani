@@ -9,15 +9,32 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.net.URL;
 
+/**
+ * This class manages changes in a single match.
+ * @author Andrea Vergani
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
+ */
 public class OtherInfoHandler {
     private final Cli cli;
 
     private boolean soundPlayed = false;
 
+    /**
+     * This is the constructor of this class. At the moment of the creation
+     * of a single instance of OtherInfoHandler, the cli associated to it is set
+     * @param cli contains reference to the Cli associated
+     */
     public OtherInfoHandler(Cli cli) {
         this.cli = cli;
     }
 
+    /**
+     * This method handles tha changing in the turn.
+     * Once a player ends his turn, current turn goes to the next player,
+     * everyone is notified about the current turn. The current player
+     * is also informed by a sound.
+     */
     public void printCurrentTurn() {
         String currentPlayerNickname = this.cli.getController().getCurrentPlayerNickname();
         if(currentPlayerNickname != null && this.cli.playerWithColor(currentPlayerNickname) != null) {
@@ -41,6 +58,13 @@ public class OtherInfoHandler {
         }
     }
 
+    /**
+     * This method is useful to advise players that everything is working.
+     * They have just to wait for other player to complete the task requested
+     * for a specific game phase
+     * @param currentGamePhase contains a reference to the new phase.
+     *                         It is given from the updateHandler.
+     */
     public void printGamePhase(GamePhase currentGamePhase) {
         switch(currentGamePhase) {
             case INITIAL_INFO:
