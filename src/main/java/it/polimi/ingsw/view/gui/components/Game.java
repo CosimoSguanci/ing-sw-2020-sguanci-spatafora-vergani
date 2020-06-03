@@ -27,7 +27,7 @@ public abstract class Game extends JPanel {
     JLabel title;
     JLabel subtitle;
     private Font titleFont = Gui.getFont(Gui.FONT_BOLD, 24);
-    JPanel rightPanel = new JPanel();
+    JPanel rightPanel;
     int buttonDim = 70;
     protected String boardString;
 
@@ -130,6 +130,7 @@ public abstract class Game extends JPanel {
         this.add(this.board, BorderLayout.CENTER);
 
         //content of right panel will be specific for subclasses
+        this.rightPanel = new JPanel();
         this.rightPanel.setOpaque(false);
         this.rightPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
         this.add(rightPanel, BorderLayout.EAST);
