@@ -171,7 +171,7 @@ public class GodChoice extends JPanel implements ActionListener {
 
         this.godChoiceJButtonListener = new GodChoiceJButtonListener(this);
         for (int i = 0; i < gods.size(); i++) {
-            imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + gods.get(i) + ".png")));
+            imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + gods.get(i).toLowerCase() + ".png")));
             imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(60,-1, Image.SCALE_SMOOTH));
             iconGods.add(imageIcon);
 

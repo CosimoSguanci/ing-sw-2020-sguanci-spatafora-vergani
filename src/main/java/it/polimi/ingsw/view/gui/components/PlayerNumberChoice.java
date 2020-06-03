@@ -17,7 +17,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
     private final JRadioButton button2;
     private final JLabel resumeNumber;  //this JLabel needs to be refreshed every time a button is clicked
     private final String standardImgPath = "src/main/resources/images/PlayerNumberChoice/";
-    private final Image backgroundImage = new ImageIcon(standardImgPath + "SantoriniBackground.jpg").getImage();
+    private final Image backgroundImage = new ImageIcon(standardImgPath + "santoriniBackground.jpg").getImage();
 
     public PlayerNumberChoice() {
         LayoutManager layoutManager = new BorderLayout();

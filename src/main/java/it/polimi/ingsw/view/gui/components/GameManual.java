@@ -50,7 +50,7 @@ public class GameManual extends JPanel {
 
 
         //OK button must be bottom-right
-        ImageIcon continueImg = new ImageIcon(this.externalImgPath + "Done.png");
+        ImageIcon continueImg = new ImageIcon(this.externalImgPath + "done.png");
         continueImg = new ImageIcon(continueImg.getImage().getScaledInstance(this.buttonWidth, -1, Image.SCALE_SMOOTH));
         JButton continueButton = new JButton(continueImg);
         JPanel innerPanel = new JPanel();
