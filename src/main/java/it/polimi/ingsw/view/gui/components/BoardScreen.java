@@ -9,13 +9,27 @@ import it.polimi.ingsw.view.gui.ui.BackgroundButton;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * BoardScreen is a class in which the GUI-component of
+ * the board game is generated. Every time a BoardUpdate
+ * arrives from the server, this class creates a new Board with
+ * the same layout as the pre-update one.
+ * Every button of the board contains information about its relative cell level,
+ * if a worker is on that cell or a dome if the level raised the maximum.
+ *
+ * @author Andrea Vergani
+ * @author Roberto Spatafora
+ */
 public class BoardScreen extends JPanel {
     private BackgroundButton[][] buttons = new BackgroundButton[Board.WIDTH_SIZE][Board.HEIGHT_SIZE];
 
-    BackgroundButton[][] getBoardCells() {
-        return this.buttons;
-    }
-
+    /**
+     * This method is the constructor of the class.
+     * It creates a layout in which a 5x5 Cell buttons are defined.
+     * Every button contains information about its relative cell level,
+     * if a worker is on that cell or a dome if the level raised the maximum.
+     * @param boardString
+     */
     //public JPanel BoardScreen(String boardString) {
     public BoardScreen(String boardString) {        //This methods returns a JPanel. Now it is used to test it playing.
         GsonBuilder builder = new GsonBuilder();
@@ -81,4 +95,14 @@ public class BoardScreen extends JPanel {
 
         //return cellGrid
     }
+
+    /**
+     * This method allows to have references to all the
+     * different buttons of the board
+     * @return a bi-dimensional array that references every button of the board.
+     */
+    BackgroundButton[][] getBoardCells() {
+        return this.buttons;
+    }
+
 }

@@ -15,16 +15,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class creates and manages GAME_PREPARATION phase layout.
+ * The moment in which player choose where to place their workers.
+ * In this class a creator in which the layout is defined and a
+ * listener for action performed are defined.
+ *
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
+ * @author Andrea Vergani
+ */
 public class GamePreparation extends Game implements ActionListener {
     private String classImagePath = "src/main/resources/images/GamePreparation/";
     private JRoundButton continueButton;
 
     private List<BackgroundButton> selectedButtons = new ArrayList<>();
 
+    /**
+     * This method is a simple getter which gives information
+     * about button that a single player has already selected.
+     * @return a list containing references to button a player has selected.
+     */
     public List<BackgroundButton> getSelectedButtons() {
         return this.selectedButtons;
     }
 
+    /**
+     * This method is used to display CommonBoard and any workers
+     * already placed in the board.
+     */
     @Override
     public void draw() {
 
@@ -59,6 +78,13 @@ public class GamePreparation extends Game implements ActionListener {
         this.revalidate();
     }
 
+    /**
+     * This method handles every action performed by a user.
+     * A player has to select 2 different empty cell to place its workers.
+     * If a player wrongly tries to select more than 2 cells, only the first two
+     * remain selected. A selected cell can be rejected by selecting it again.
+     * @param e contains references to the event performed.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
