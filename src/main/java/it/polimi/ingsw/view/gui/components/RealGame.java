@@ -2,14 +2,13 @@ package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.controller.commands.CommandType;
-import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.BuildButtonListener;
 import it.polimi.ingsw.view.gui.listeners.EndTurnButtonListener;
 import it.polimi.ingsw.view.gui.listeners.MoveButtonListener;
-import it.polimi.ingsw.view.gui.ui.BackgroundButton;
+import it.polimi.ingsw.view.gui.ui.JCellButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,11 +26,11 @@ public class RealGame extends Game implements ActionListener {
     private Gui gui;
     private Controller controller;
 
-    private BackgroundButton worker1Button;
-    private BackgroundButton worker2Button;
+    private JCellButton worker1Button;
+    private JCellButton worker2Button;
 
-    private BackgroundButton selectedWorkerButton;
-    private BackgroundButton selectedCellButton;
+    private JCellButton selectedWorkerButton;
+    private JCellButton selectedCellButton;
 
     private CommandType lastCommand;
 
@@ -46,11 +45,11 @@ public class RealGame extends Game implements ActionListener {
         this.controller = gui.getController();
     }
 
-    public BackgroundButton getSelectedWorker() {
+    public JCellButton getSelectedWorker() {
         return this.selectedWorkerButton;
     }
 
-    public BackgroundButton getSelectedCellButton() {
+    public JCellButton getSelectedCellButton() {
         return this.selectedCellButton;
     }
 
@@ -93,7 +92,7 @@ public class RealGame extends Game implements ActionListener {
 
         drawCommonBoard();
 
-        List<BackgroundButton> cells = twoDArrayToList(this.getBoard().getBoardCells());
+        List<JCellButton> cells = twoDArrayToList(this.getBoard().getBoardCells());
 
         cells.forEach(cell -> {
             cell.addActionListener(this);
@@ -158,7 +157,7 @@ public class RealGame extends Game implements ActionListener {
     }
 
     private void highlightWorkerFirst() {
-        List<BackgroundButton> cellBtns = Game.twoDArrayToList(getBoard().getBoardCells());
+        List<JCellButton> cellBtns = Game.twoDArrayToList(getBoard().getBoardCells());
 
         cellBtns = cellBtns
                 .stream()
@@ -176,7 +175,7 @@ public class RealGame extends Game implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
-            BackgroundButton button = (BackgroundButton) e.getSource();
+            JCellButton button = (JCellButton) e.getSource();
 
             if(button.equals(worker1Button)) {
                 this.worker1Button.setBorder( BorderFactory.createLineBorder(Color.YELLOW, 2, true));
@@ -205,7 +204,7 @@ public class RealGame extends Game implements ActionListener {
     }
 
     private void reinitialization() { // onturnchanged
-        List<BackgroundButton> cellBtns = Game.twoDArrayToList(getBoard().getBoardCells());
+        List<JCellButton> cellBtns = Game.twoDArrayToList(getBoard().getBoardCells());
 
         cellBtns = cellBtns
                 .stream()

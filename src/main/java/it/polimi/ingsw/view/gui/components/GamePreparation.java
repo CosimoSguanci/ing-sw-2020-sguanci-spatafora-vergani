@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.PlaceWorkersButtonListener;
-import it.polimi.ingsw.view.gui.ui.BackgroundButton;
+import it.polimi.ingsw.view.gui.ui.JCellButton;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
 ;import javax.swing.*;
@@ -12,7 +12,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,14 +28,14 @@ public class GamePreparation extends Game implements ActionListener {
     private String classImagePath = "src/main/resources/images/GamePreparation/";
     private JRoundButton continueButton;
 
-    private List<BackgroundButton> selectedButtons = new ArrayList<>();
+    private List<JCellButton> selectedButtons = new ArrayList<>();
 
     /**
      * This method is a simple getter which gives information
      * about button that a single player has already selected.
      * @return a list containing references to button a player has selected.
      */
-    public List<BackgroundButton> getSelectedButtons() {
+    public List<JCellButton> getSelectedButtons() {
         return this.selectedButtons;
     }
 
@@ -49,7 +48,7 @@ public class GamePreparation extends Game implements ActionListener {
 
         drawCommonBoard();
 
-        List<BackgroundButton> cells = twoDArrayToList(this.getBoard().getBoardCells());
+        List<JCellButton> cells = twoDArrayToList(this.getBoard().getBoardCells());
 
         cells.forEach(cell -> {
             cell.addActionListener(this);
@@ -92,7 +91,7 @@ public class GamePreparation extends Game implements ActionListener {
         Controller controller = gui.getController();
 
         if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
-            BackgroundButton button = (BackgroundButton) e.getSource();
+            JCellButton button = (JCellButton) e.getSource();
 
             if(button.isEmpty() && selectedButtons.size() < 2) {
                 String playerNickname = controller.getClientPlayer().getNickname();

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.view.gui.Gui;
-import it.polimi.ingsw.view.gui.ui.BackgroundButton;
+import it.polimi.ingsw.view.gui.ui.JCellButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +21,7 @@ import java.awt.*;
  * @author Roberto Spatafora
  */
 public class BoardScreen extends JPanel {
-    private BackgroundButton[][] buttons = new BackgroundButton[Board.WIDTH_SIZE][Board.HEIGHT_SIZE];
+    private JCellButton[][] buttons = new JCellButton[Board.WIDTH_SIZE][Board.HEIGHT_SIZE];
 
     /**
      * This method is the constructor of the class.
@@ -52,7 +52,7 @@ public class BoardScreen extends JPanel {
                 BlockType blockLevel = gameBoard.getCell(i, j).getLevel();
                 Player playerPrintableWorker;
 
-                BackgroundButton btn = new BackgroundButton(printableWorker, blockLevel, i, j);
+                JCellButton btn = new JCellButton(printableWorker, blockLevel, i, j);
 
                 btn.setLayout(new BorderLayout());
 
@@ -62,7 +62,6 @@ public class BoardScreen extends JPanel {
 
                     playerPrintableWorker = printableWorker.player;
                     ImageIcon workerIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/worker_" + playerPrintableWorker.getColor().toString().toLowerCase() + ".png"));
-                    //+ playerPrintableWorker.getColor().toString().toLowerCase() + printableWorker.workerType + ".png"));
 
                     workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(80,80, Image.SCALE_SMOOTH));
 
@@ -81,10 +80,18 @@ public class BoardScreen extends JPanel {
                 }
                 else if(blockLevel != BlockType.GROUND){
 
+                    JPanel levelPanel = new JPanel();
+                    levelPanel.setLayout(new BorderLayout());
+                    levelPanel.setOpaque(false);
+
+
                     ImageIcon imageIconLevel = new ImageIcon(Gui.class.getResource("/images/BoardScreen/tower-level" + blockLevel.getLevelNumber() + ".png"));
                     imageIconLevel = new ImageIcon(imageIconLevel.getImage().getScaledInstance(20, -1, Image.SCALE_SMOOTH));
                     JLabel levelImage = new JLabel(imageIconLevel);
-                    btn.add(levelImage, BorderLayout.NORTH);
+
+                    levelPanel.add(levelImage, BorderLayout.EAST);
+
+                    btn.add(levelPanel, BorderLayout.NORTH);
                 }
 
 
@@ -101,7 +108,7 @@ public class BoardScreen extends JPanel {
      * different buttons of the board
      * @return a bi-dimensional array that references every button of the board.
      */
-    BackgroundButton[][] getBoardCells() {
+    JCellButton[][] getBoardCells() {
         return this.buttons;
     }
 

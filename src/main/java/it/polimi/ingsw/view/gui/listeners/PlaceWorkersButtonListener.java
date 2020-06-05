@@ -1,10 +1,9 @@
 package it.polimi.ingsw.view.gui.listeners;
 
 import it.polimi.ingsw.controller.commands.GamePreparationCommand;
-import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.components.GamePreparation;
-import it.polimi.ingsw.view.gui.ui.BackgroundButton;
+import it.polimi.ingsw.view.gui.ui.JCellButton;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -25,7 +24,7 @@ public class PlaceWorkersButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        List<BackgroundButton> selectedButtons = gamePreparationComponent.getSelectedButtons();
+        List<JCellButton> selectedButtons = gamePreparationComponent.getSelectedButtons();
 
         if(selectedButtons.size() == 2) {
             int workerFirstRow = selectedButtons.get(0).getRow();
