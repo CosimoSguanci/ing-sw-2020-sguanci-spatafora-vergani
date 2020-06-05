@@ -1,13 +1,12 @@
 package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.view.gui.Gui;
-import it.polimi.ingsw.view.gui.ui.BackgroundButton;
+import it.polimi.ingsw.view.gui.ui.JCellButton;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,8 +123,8 @@ public abstract class Game extends JPanel {
 
         //board in the centre
         this.board = new BoardScreen(boardString);
-        Border boardBorder = BorderFactory.createLineBorder(Color.WHITE);
-        this.board.setBorder(BorderFactory.createCompoundBorder(boardBorder, boardBorder));
+        /*Border boardBorder = BorderFactory.createLineBorder(Color.WHITE);
+        this.board.setBorder(BorderFactory.createCompoundBorder(boardBorder, boardBorder));*/
         this.board.setOpaque(false);
         this.add(this.board, BorderLayout.CENTER);
 
@@ -172,9 +171,9 @@ public abstract class Game extends JPanel {
 
     abstract void draw();
 
-    protected static java.util.List<BackgroundButton> twoDArrayToList(BackgroundButton[][] twoDArray) {
-        List <BackgroundButton> list = new ArrayList<>();
-        for (BackgroundButton[] array : twoDArray) {
+    protected static java.util.List<JCellButton> twoDArrayToList(JCellButton[][] twoDArray) {
+        List <JCellButton> list = new ArrayList<>();
+        for (JCellButton[] array : twoDArray) {
             list.addAll(Arrays.asList(array));
         }
         return list;

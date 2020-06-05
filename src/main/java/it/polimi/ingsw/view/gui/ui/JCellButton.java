@@ -7,16 +7,17 @@ import it.polimi.ingsw.view.gui.Gui;
 import javax.swing.*;
 import java.awt.*;
 
-public class BackgroundButton extends JButton {
+public class JCellButton extends JButton {
     private final BlockType blockLevel;
-    private int row, col;
+    private final int row;
+    private final int col;
 
     private JLabel workerLabel;
     private boolean isEmpty = true;
 
     private Worker worker;
 
-    public BackgroundButton(Worker worker, BlockType blockLevel, int row, int col) {
+    public JCellButton(Worker worker, BlockType blockLevel, int row, int col) {
         this.worker = worker;
         this.blockLevel = blockLevel;
         this.row = row;
@@ -64,22 +65,21 @@ public class BackgroundButton extends JButton {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //int dim = Math.min(this.getWidth(), this.getHeight());
+
         g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
     }
 
-    private Image computeImage() throws Exception{
+    private Image computeImage() throws Exception {
         switch (blockLevel) {
+            case DOME:
             case GROUND:
                 return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + ".png")).getImage();
             case LEVEL_ONE:
-                return new ImageIcon(Gui.class.getResource("/images/BoardScreen/level1.png")).getImage();
             case LEVEL_TWO:
-                return new ImageIcon(Gui.class.getResource("/images/BoardScreen/level2.png")).getImage();
             case LEVEL_THREE:
-                return new ImageIcon(Gui.class.getResource("/images/BoardScreen/level3.png")).getImage();
-            case DOME:
-                return new ImageIcon(Gui.class.getResource("/images/BoardScreen/level.png")).getImage();
-
+                return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + "level.png")).getImage();
             default: throw  new Exception();
         }
     }

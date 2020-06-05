@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.PlaceWorkersButtonListener;
-import it.polimi.ingsw.view.gui.ui.BackgroundButton;
+import it.polimi.ingsw.view.gui.ui.JCellButton;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
 import javax.swing.*;
@@ -12,25 +12,43 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class creates and manages GAME_PREPARATION phase layout.
+ * The moment in which player choose where to place their workers.
+ * In this class a creator in which the layout is defined and a
+ * listener for action performed are defined.
+ *
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
+ * @author Andrea Vergani
+ */
 public class GamePreparation extends Game implements ActionListener {
     private String classImagePath = "src/main/resources/images/GamePreparation/";
     private JRoundButton continueButton;
 
-    private List<BackgroundButton> selectedButtons = new ArrayList<>();
+    private List<JCellButton> selectedButtons = new ArrayList<>();
 
-    public List<BackgroundButton> getSelectedButtons() {
+    /**
+     * This method is a simple getter which gives information
+     * about button that a single player has already selected.
+     * @return a list containing references to button a player has selected.
+     */
+    public List<JCellButton> getSelectedButtons() {
         return this.selectedButtons;
     }
 
+    /**
+     * This method is used to display CommonBoard and any workers
+     * already placed in the board.
+     */
     @Override
     public void draw() {
 
         drawCommonBoard();
 
-        List<BackgroundButton> cells = twoDArrayToList(this.getBoard().getBoardCells());
+        List<JCellButton> cells = twoDArrayToList(this.getBoard().getBoardCells());
 
         cells.forEach(cell -> {
             cell.addActionListener(this);
@@ -59,6 +77,13 @@ public class GamePreparation extends Game implements ActionListener {
         this.revalidate();
     }
 
+    /**
+     * This method handles every action performed by a user.
+     * A player has to select 2 different empty cell to place its workers.
+     * If a player wrongly tries to select more than 2 cells, only the first two
+     * remain selected. A selected cell can be rejected by selecting it again.
+     * @param e contains references to the event performed.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -66,7 +91,7 @@ public class GamePreparation extends Game implements ActionListener {
         Controller controller = gui.getController();
 
         if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
-            BackgroundButton button = (BackgroundButton) e.getSource();
+            JCellButton button = (JCellButton) e.getSource();
 
             if(button.isEmpty() && selectedButtons.size() < 2) {
                 String playerNickname = controller.getClientPlayer().getNickname();
