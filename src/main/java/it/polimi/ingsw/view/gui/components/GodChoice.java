@@ -361,10 +361,10 @@ public class GodChoice extends JPanel implements ActionListener {
         boolean isGodChooser = gui.getController().isClientPlayerGodChooser();
 
         if(isGodChooser && this.selectedGods.size() != playersNumber) {
-            JOptionPane.showMessageDialog(gui.getMainFrame(), "Error", "You must select " + playersNumber + " gods!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(gui.getMainFrame(),  "You must select " + playersNumber + " gods!", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else if(!isGodChooser && this.selectedGods.size() != 1) {
-            JOptionPane.showMessageDialog(gui.getMainFrame(), "Error", "You must select one god!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(gui.getMainFrame(),  "You must select one god!", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else {
 
