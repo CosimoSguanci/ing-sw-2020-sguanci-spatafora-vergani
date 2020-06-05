@@ -15,7 +15,7 @@ public class Artemis extends GodStrategy {
 
     public static final String NAME = "Artemis";
     public static final String DESCRIPTION = "Goddess of the Hunt";
-    public static final String POWER_DESCRIPTION = "Your Move: Your Worker may move one additional time, but not back to its initial space.";
+    public static final String POWER_DESCRIPTION = "Your Move: Your Worker may move one additional time, but not back to its initial space";
 
     /**
      * Constant representing the max number of times this God can move.

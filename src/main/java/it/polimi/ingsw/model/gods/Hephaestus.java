@@ -19,7 +19,7 @@ public class Hephaestus extends GodStrategy {
 
     public static final String NAME = "Hephaestus";
     public static final String DESCRIPTION = "God of Blacksmiths";
-    public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build one additional block (not dome) on top of your first block.";
+    public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build one additional block (not dome) on top of your first block";
 
     final int HEPHAESTUS_MAX_BUILD_NUM = 2;
     private final MultipleBuildDelegate multipleBuildDelegate;

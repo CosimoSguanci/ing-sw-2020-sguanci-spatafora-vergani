@@ -17,7 +17,7 @@ public class Poseidon extends GodStrategy {
 
     public static final String NAME = "Poseidon";
     public static final String DESCRIPTION = "God of the Sea";
-    public static final String POWER_DESCRIPTION = "End of Your Turn: If your unmoved Worker is on the ground level, it may build up to three times.";
+    public static final String POWER_DESCRIPTION = "End of Your Turn: If your unmoved Worker is on the ground level, it may build up to three times";
 
     final int POSEIDON_MAX_BUILD_NUM = 3;
     private final MultipleBuildDelegate multipleBuildDelegate;

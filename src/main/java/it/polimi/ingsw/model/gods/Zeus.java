@@ -16,7 +16,7 @@ public class Zeus extends GodStrategy {
 
     public static final String NAME = "Zeus";
     public static final String DESCRIPTION = "God of the Sky";
-    public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build a block under itself.";
+    public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build a block under itself";
 
     public Zeus() {
         super(NAME, DESCRIPTION, POWER_DESCRIPTION);

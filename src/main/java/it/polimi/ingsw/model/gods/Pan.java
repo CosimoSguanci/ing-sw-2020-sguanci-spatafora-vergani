@@ -15,7 +15,7 @@ public class Pan extends GodStrategy {
 
     public static final String NAME = "Pan";
     public static final String DESCRIPTION = "God of the Wild";
-    public static final String POWER_DESCRIPTION = "Win Condition: You also win if your Worker moves down two or more levels.";
+    public static final String POWER_DESCRIPTION = "Win Condition: You also win if your Worker moves down two or more levels";
 
     public Pan() {
         super(NAME, DESCRIPTION, POWER_DESCRIPTION);

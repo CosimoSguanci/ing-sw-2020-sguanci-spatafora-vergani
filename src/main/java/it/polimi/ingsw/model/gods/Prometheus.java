@@ -21,7 +21,7 @@ public class Prometheus extends GodStrategy {
 
     public static final String NAME = "Prometheus";
     public static final String DESCRIPTION = "Titan Benefactor of Mankind";
-    public static final String POWER_DESCRIPTION = "Your Turn: If your Worker does not move up, it may build both before and after moving.";
+    public static final String POWER_DESCRIPTION = "Your Turn: If your Worker does not move up, it may build both before and after moving";
 
     final int PROMETHEUS_MAX_BUILD_NUM = 2;
     private final MultipleBuildDelegate multipleBuildDelegate;

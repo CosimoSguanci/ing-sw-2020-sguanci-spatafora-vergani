@@ -15,7 +15,7 @@ public class Minotaur extends GodStrategy {
 
     public static final String NAME = "Minotaur";
     public static final String DESCRIPTION = "Bull-headed Monster";
-    public static final String POWER_DESCRIPTION = "Your Move: Your Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.";
+    public static final String POWER_DESCRIPTION = "Your Move: Your Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level";
 
     private final OpponentWorkerMoverDelegate opponentWorkerMoverDelegate;
     private Cell backwardCell;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.view.gui.Gui;
+import it.polimi.ingsw.view.gui.listeners.GodInfoActionListener;
 import it.polimi.ingsw.view.gui.ui.JCellButton;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
@@ -8,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +32,8 @@ public abstract class Game extends JPanel {
     int buttonDim = 70;
     protected String boardString;
 
-    List<JLabel> godsLabels;
+    //List<JLabel> godsLabels;
+    List<JButton> godsButtons;
 
     Gui gui = Gui.getInstance();
 
@@ -69,10 +72,12 @@ public abstract class Game extends JPanel {
 
         Map<String, String> playersGods = gui.getPlayersGods();
 
-        this.godsLabels = new ArrayList<>();
+        //this.godsLabels = new ArrayList<>();
+        this.godsButtons = new ArrayList<>();
 
         playersGods.forEach((player, god) -> {
-            this.godsLabels.add(new JLabel(player + " has " + god));
+            //this.godsLabels.add(new JLabel(player + " has " + god));
+            this.godsButtons.add(new JButton(player + " has " + god));
         });
 
         LayoutManager layoutManager = new BorderLayout();
@@ -89,14 +94,21 @@ public abstract class Game extends JPanel {
         this.turn.setBackground(Color.YELLOW);
         this.turn.setFont(this.turnFont);
         this.turn.setOpaque(true);
-        //todo get data from previous choices
-        //insert in gods an ArrayList<JLabel>
+
         JPanel gods = new JPanel();
         gods.setLayout(new BoxLayout(gods, BoxLayout.Y_AXIS));
 
-        this.godsLabels.forEach(l -> {
+        /*this.godsLabels.forEach(l -> {
             l.setFont(this.font);
             gods.add(l);
+        });*/
+
+        this.godsButtons.forEach(l -> {
+            l.setFont(this.font);
+            l.addActionListener(new GodInfoActionListener(this));
+            gods.add(l);
+            l.setAlignmentX(Component.CENTER_ALIGNMENT);
+            gods.add(Box.createVerticalStrut(3));
         });
 
         gods.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -104,8 +116,10 @@ public abstract class Game extends JPanel {
         gods.setOpaque(true);
         playersGodsTurn.add(Box.createVerticalGlue());
         playersGodsTurn.add(this.turn);
+        this.turn.setAlignmentX(Component.CENTER_ALIGNMENT);
         playersGodsTurn.add(Box.createVerticalStrut(30));
         playersGodsTurn.add(gods);
+        gods.setAlignmentX(Component.CENTER_ALIGNMENT);
         playersGodsTurn.add(Box.createVerticalGlue());
         playersGodsTurn.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
 
@@ -119,6 +133,7 @@ public abstract class Game extends JPanel {
         this.quitButton = new JRoundButton(quitImg);
 
         playersGodsTurn.add(this.quitButton);
+        this.quitButton.setAlignmentX(Component.RIGHT_ALIGNMENT);  //why right alignment? It works, but puts on left side (?)
 
 
         //board in the centre

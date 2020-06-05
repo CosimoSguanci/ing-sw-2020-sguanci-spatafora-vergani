@@ -15,7 +15,7 @@ public class Atlas extends GodStrategy {
 
     public static final String NAME = "Atlas";
     public static final String DESCRIPTION = "Titan Shouldering the Heavens";
-    public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build a dome at any level.";
+    public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build a dome at any level";
 
     public Atlas() {
         super(NAME, DESCRIPTION, POWER_DESCRIPTION);

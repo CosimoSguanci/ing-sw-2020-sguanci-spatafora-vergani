@@ -15,7 +15,7 @@ public class Hera extends GodStrategy {
 
     public static final String NAME = "Hera";
     public static final String DESCRIPTION = "Godness of Marriage";
-    public static final String POWER_DESCRIPTION = "Opponent’s Turn: An opponent cannot win by moving into a perimeter space.";
+    public static final String POWER_DESCRIPTION = "Opponent’s Turn: An opponent cannot win by moving into a perimeter space";
 
     public Hera() {
         super(NAME, DESCRIPTION, POWER_DESCRIPTION);
