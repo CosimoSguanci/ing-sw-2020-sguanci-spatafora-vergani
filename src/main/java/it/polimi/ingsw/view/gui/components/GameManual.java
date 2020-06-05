@@ -15,8 +15,35 @@ public class GameManual extends JPanel {
     private String externalImgPath = "src/main/resources/images/";
     private Image backgroundImage = new ImageIcon(standardImgPath + "background.jpg").getImage();
     private int buttonWidth = 60;
+    private JButton[] ruleButtonArray;
 
     public GameManual() {
+        LinkedHashMap<String, String> rules = Manual.getRules();
+        int ruleNumber = rules.size();
+        this.ruleButtonArray = new JButton[ruleNumber];
+
+        JPanel grid = new JPanel();
+        grid.setLayout(new BoxLayout(grid, BoxLayout.Y_AXIS));
+        grid.add(Box.createVerticalGlue());
+
+        Object[] ruleTitle = rules.keySet().toArray();
+        for(int i = 0; i < ruleNumber; i++) {
+            String key = (String) ruleTitle[i];  //create strings for rules: title and description
+            //String description = rules.get(key);
+            ImageIcon image = new ImageIcon(this.standardImgPath + key.toLowerCase().substring(0,3) + ".png");
+            image = new ImageIcon(image.getImage().getScaledInstance(this.buttonWidth, -1, Image.SCALE_SMOOTH));
+            this.ruleButtonArray[i] = new JButton(key, image);
+            grid.add(this.ruleButtonArray[i]);
+            grid.add(Box.createVerticalGlue());
+        }
+
+        //grid.setPreferredSize(this.getMinimumSize());
+
+        this.add(grid);
+        this.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+    }
+
+    /*public GameManual() {
         LayoutManager layoutManager = new BorderLayout();
         this.setLayout(layoutManager);
 
@@ -66,11 +93,11 @@ public class GameManual extends JPanel {
         /*scrollableMain.setMinimumSize(new Dimension(200, 200));
         scrollableMain.setPreferredSize(new Dimension(300, 300));
         scrollableMain.setMaximumSize(new Dimension(800, 1500));*/
-        this.add(scrollableMain, BorderLayout.NORTH);
-        this.add(innerPanel, BorderLayout.SOUTH);
+        //this.add(scrollableMain, BorderLayout.NORTH);
+        //this.add(innerPanel, BorderLayout.SOUTH);
 
-        this.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
-    }
+        //this.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+    //}
 
 
     @Override

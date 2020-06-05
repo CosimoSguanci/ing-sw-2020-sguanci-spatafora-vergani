@@ -7,7 +7,7 @@ import it.polimi.ingsw.view.gui.listeners.PlaceWorkersButtonListener;
 import it.polimi.ingsw.view.gui.ui.BackgroundButton;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
-;import javax.swing.*;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
