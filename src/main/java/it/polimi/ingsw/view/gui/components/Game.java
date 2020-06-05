@@ -123,8 +123,8 @@ public abstract class Game extends JPanel {
 
         //board in the centre
         this.board = new BoardScreen(boardString);
-        Border boardBorder = BorderFactory.createLineBorder(Color.WHITE);
-        this.board.setBorder(BorderFactory.createCompoundBorder(boardBorder, boardBorder));
+        /*Border boardBorder = BorderFactory.createLineBorder(Color.WHITE);
+        this.board.setBorder(BorderFactory.createCompoundBorder(boardBorder, boardBorder));*/
         this.board.setOpaque(false);
         this.add(this.board, BorderLayout.CENTER);
 

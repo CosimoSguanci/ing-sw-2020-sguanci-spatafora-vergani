@@ -105,8 +105,6 @@ public class GodChoice extends JPanel implements ActionListener {
             });
 
 
-            //showGuiOnTurn(); // todo remove
-
         }).start();
     }
     

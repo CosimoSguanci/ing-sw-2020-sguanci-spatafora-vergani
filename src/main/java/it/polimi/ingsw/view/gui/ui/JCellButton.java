@@ -65,10 +65,13 @@ public class JCellButton extends JButton {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //int dim = Math.min(this.getWidth(), this.getHeight());
+
         g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
     }
 
-    private Image computeImage() throws Exception{
+    private Image computeImage() throws Exception {
         switch (blockLevel) {
             case DOME:
             case GROUND:
@@ -77,8 +80,6 @@ public class JCellButton extends JButton {
             case LEVEL_TWO:
             case LEVEL_THREE:
                 return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + "level.png")).getImage();
-            /*case DOME:
-                return new ImageIcon(Gui.class.getResource("/images/BoardScreen/dome.png")).getImage();*/
             default: throw  new Exception();
         }
     }

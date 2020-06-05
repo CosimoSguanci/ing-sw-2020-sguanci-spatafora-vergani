@@ -185,8 +185,8 @@ public class RealGame extends Game implements ActionListener {
             }
 
             else if(button.equals(worker2Button)) {
-                this.worker2Button.setBorder( BorderFactory.createLineBorder(Color.YELLOW, 2, true));
-                this.worker1Button.setBorder( BorderFactory.createEmptyBorder());
+                this.worker2Button.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2, true));
+                this.worker1Button.setBorder(BorderFactory.createEmptyBorder());
 
                 this.selectedWorkerButton = worker2Button;
             }
@@ -197,7 +197,7 @@ public class RealGame extends Game implements ActionListener {
                 }
 
                 this.selectedCellButton = button;
-                this.selectedCellButton.setBorder( BorderFactory.createLineBorder(Color.BLUE, 2, true));
+                this.selectedCellButton.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2, true));
 
             }
         }
