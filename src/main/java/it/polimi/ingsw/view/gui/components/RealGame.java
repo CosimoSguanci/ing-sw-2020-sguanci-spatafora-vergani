@@ -35,6 +35,8 @@ public class RealGame extends Game implements ActionListener {
 
     private CommandType lastCommand;
 
+    private boolean newTurn;
+
     public void setLastCommand(CommandType lastCommand) {
         this.lastCommand = lastCommand;
     }
@@ -63,7 +65,7 @@ public class RealGame extends Game implements ActionListener {
             this.revalidate();
 
             if(this.lastCommand == CommandType.MOVE) {
-                onMove(); // todo switch
+                onMove();
             }
             else if(this.lastCommand == CommandType.BUILD) {
                 onBuild();
@@ -81,6 +83,8 @@ public class RealGame extends Game implements ActionListener {
             this.selectedWorkerButton = worker1Button;
             this.selectedWorkerButton.setBorder( BorderFactory.createLineBorder(Color.YELLOW, 2, true));
         }
+
+        this.newTurn = true;
 
     }
 
@@ -144,13 +148,10 @@ public class RealGame extends Game implements ActionListener {
 
 
         if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
-            if(worker1Button == null && worker2Button == null) {
+            if(this.newTurn) {
                 highlightWorkerFirst();
+                this.newTurn = false;
             }
-            /*else {
-                this.selectedWorkerButton = getBoard().getBoardCells()[this.selectedCellButton.getRow()][this.selectedCellButton.getCol()];
-                this.selectedWorkerButton.setBorder( BorderFactory.createLineBorder(Color.YELLOW, 2, true));
-            }*/
         }
 
         this.revalidate();
