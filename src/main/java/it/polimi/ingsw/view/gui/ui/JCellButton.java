@@ -16,6 +16,8 @@ public class JCellButton extends JButton {
     private boolean isEmpty = true;
 
     private Worker worker;
+    private JPanel levelPanel;
+    private ImageIcon imageIconLevel;
 
     public JCellButton(Worker worker, BlockType blockLevel, int row, int col) {
         this.worker = worker;
@@ -56,6 +58,19 @@ public class JCellButton extends JButton {
         return col;
     }
 
+    public void setLevelData(JPanel levelPanel, ImageIcon imageIconLevel) {
+        this.levelPanel = levelPanel;
+        this.imageIconLevel = imageIconLevel;
+    }
+
+    public ImageIcon getImageIconLevel() {
+        return imageIconLevel;
+    }
+
+    public JPanel getLevelPanel() {
+        return levelPanel;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -65,8 +80,6 @@ public class JCellButton extends JButton {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //int dim = Math.min(this.getWidth(), this.getHeight());
 
         g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
     }

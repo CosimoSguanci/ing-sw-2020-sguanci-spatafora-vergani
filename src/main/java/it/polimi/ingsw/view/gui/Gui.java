@@ -190,7 +190,7 @@ public class Gui extends View implements Observer<Update> {
 
         frame.pack();
         frame.setSize(900, 700);
-        frame.setMinimumSize(new Dimension(500, 400));
+        frame.setMinimumSize(new Dimension(600, 500));
         frame.setIconImage(ImageIO.read(Gui.class.getResource("/images/title_island.png")));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
