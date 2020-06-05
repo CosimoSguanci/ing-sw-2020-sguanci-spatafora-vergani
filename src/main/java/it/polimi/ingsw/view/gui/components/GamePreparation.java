@@ -97,7 +97,7 @@ public class GamePreparation extends Game implements ActionListener {
                 String playerNickname = controller.getClientPlayer().getNickname();
                 PrintableColor color = gui.getPlayersColors().get(playerNickname);
                 ImageIcon workerIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/worker_" + color.toString().toLowerCase() + ".png"));
-                workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(80,80, Image.SCALE_SMOOTH));
+                workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(70,70, Image.SCALE_SMOOTH));
                 JLabel overImage = new JLabel(workerIcon);
                 button.add(overImage);
 

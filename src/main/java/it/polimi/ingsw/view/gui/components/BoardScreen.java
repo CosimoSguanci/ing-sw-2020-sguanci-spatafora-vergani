@@ -32,7 +32,6 @@ import java.util.Map;
 public class BoardScreen extends JPanel {
     private final JCellButton[][] buttons = new JCellButton[Board.WIDTH_SIZE][Board.HEIGHT_SIZE];
     private final static Map<String, Map<String, ImageIcon>> towerIcons = new HashMap<>();
-    private final static Map<String, Map<String, ImageIcon>> workerIcons = new HashMap<>();
 
 
     static {
@@ -76,41 +75,6 @@ public class BoardScreen extends JPanel {
                 i++;
 
             }
-
-            PrintableColor.getColorList().forEach(color -> {
-                try {
-
-                    ImageIcon imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/BoardScreen/worker_" + color.toString().toLowerCase() + ".png")));
-
-                    ImageIcon smallImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(40,40, Image.SCALE_SMOOTH));
-
-                    ImageIcon mediumSmallImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(50,50, Image.SCALE_SMOOTH));
-
-                    ImageIcon mediumImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(60,60, Image.SCALE_SMOOTH));
-
-                    ImageIcon mediumBigImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(70,70, Image.SCALE_SMOOTH));
-
-                    ImageIcon bigImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(80,80, Image.SCALE_SMOOTH));
-
-                    ImageIcon veryBigImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(80,80, Image.SCALE_SMOOTH));
-
-                    Map<String, ImageIcon> m = new HashMap<>();
-                    m.put("small", smallImageIcon);
-                    m.put("medium_small", mediumSmallImageIcon);
-                    m.put("medium", mediumImageIcon);
-                    m.put("medium_big", mediumBigImageIcon);
-                    m.put("big", bigImageIcon);
-                    m.put("very_big", veryBigImageIcon);
-
-                    workerIcons.put("worker_" + color.toString().toLowerCase(), m);
-
-
-                } catch(IOException e) {
-                    e.printStackTrace();
-                }
-            });
-
-
 
         }).start();
     }
@@ -315,63 +279,6 @@ public class BoardScreen extends JPanel {
 
 
                         }
-
-                        /*if(btn.getWorker() != null && btn.getWorkerLabel() != null) {
-
-                            btn.remove(btn.getWorkerLabel());
-
-                            JLabel workerLabel = new JLabel();
-
-                            ImageIcon imageIcon;
-
-                            if(size.width > 400 || size.height > 400) {
-                                imageIcon = workerIcons.get("worker_" + btn.getWorker().player.getColor().toString().toLowerCase()).get("very_big");
-                            }
-
-                            else if(size.width > 200 || size.height > 200) {
-
-                                imageIcon = workerIcons.get("worker_" + btn.getWorker().player.getColor().toString().toLowerCase()).get("big");
-
-
-                            }
-
-                            else if(size.width > 120 || size.height > 120) {
-
-                                imageIcon = workerIcons.get("worker_" + btn.getWorker().player.getColor().toString().toLowerCase()).get("medium_big");
-
-
-
-                            }
-
-                            else if(size.width > 50 || size.height > 50) {
-                                imageIcon = workerIcons.get("worker_" + btn.getWorker().player.getColor().toString().toLowerCase()).get("medium");
-
-
-                            }
-
-                            else if(size.width > 25 || size.height > 25) {
-                                imageIcon = workerIcons.get("worker_" + btn.getWorker().player.getColor().toString().toLowerCase()).get("medium_small");
-
-
-                            }
-
-                            else {
-                                imageIcon = workerIcons.get("worker_" + btn.getWorker().player.getColor().toString().toLowerCase()).get("small");
-
-
-                            }
-
-                            workerLabel.setIcon(imageIcon);
-
-                            btn.setWorkerLabel(workerLabel);
-
-                            btn.add(workerLabel, BorderLayout.CENTER);
-
-                            btn.revalidate();
-                            btn.repaint();
-
-
-                        }*/
 
                     }
 
