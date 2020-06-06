@@ -97,9 +97,18 @@ public class GuiUpdateHandler implements UpdateHandler {
     }
 
     public void handle(WinUpdate update) {
-
+        guiInstance.showWinMessageDialog(update);
     }
-    public void handle(LoseUpdate update) {}
-    public void handle(ServerUnreachableUpdate update) {}
-    public void handle(DisconnectedPlayerUpdate update) {}
+
+    public void handle(LoseUpdate update) {
+        guiInstance.showLoseMessageDialog(update);
+    }
+
+    public void handle(DisconnectedPlayerUpdate update) {
+        guiInstance.showDisconnectedPlayerDialog(update);
+    }
+
+    public void handle(ServerUnreachableUpdate update) {
+        guiInstance.showServerUnreachableDialog();
+    }
 }

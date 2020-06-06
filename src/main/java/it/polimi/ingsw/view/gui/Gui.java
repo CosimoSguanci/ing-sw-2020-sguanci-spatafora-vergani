@@ -2,8 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.updates.ErrorUpdate;
-import it.polimi.ingsw.model.updates.Update;
+import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.controller.Controller;
@@ -32,39 +31,36 @@ public class Gui extends View implements Observer<Update> {
     private final static String GOD_CHOICE = "god_choice";
     private final static String GAME_PREPARATION = "game_preparation";
     private final static String REAL_GAME = "real_game";
-
-    private JFrame frame;
-
+    private static Gui guiInstance = null;
     private final UpdateHandler guiUpdateHandler;
     private final Client client;
     private final Controller controller;
-
+    private JFrame frame;
     private int playersNumber;
-
     private CardLayout mainCardLayout;
     private JPanel mainPanel;
-
     private GamePhase currentGamePhase;
-
     private PlayerNumberChoice playerNumberChoiceComponent;
     private WaitingForAMatch waitingForAMatchComponent;
     private InitialInfo initialInfoComponent;
     private GodChoice godsChoiceComponent;
     private GamePreparation gamePreparation;
     private RealGame realGame;
-
-
     private Map<String, String> playersGods;
-    private Map<String, PrintableColor> playersColors;
 
     // etc
+    private Map<String, PrintableColor> playersColors;
 
-    private static Gui guiInstance = null;
 
+    private Gui(Client clientInstance, Controller controllerInstance) {
+        client = clientInstance;
+        controller = controllerInstance;
+        this.guiUpdateHandler = new GuiUpdateHandler(this, controller);
+    }
 
     public static Gui getInstance(Client client, Controller controller) {
 
-        if(guiInstance == null) {
+        if (guiInstance == null) {
             guiInstance = new Gui(client, controller);
         }
 
@@ -73,16 +69,31 @@ public class Gui extends View implements Observer<Update> {
 
     public static Gui getInstance() {
 
-        if(guiInstance == null) {
+        if (guiInstance == null) {
             return new Gui(null, null);
         }
 
         return guiInstance;
     }
 
+    public static Font getFont(int fontMode, int size) {
+        try {
+            InputStream inputStream;
 
-    public void setPlayersNumber(int playersNumberSelected) {
-        playersNumber = playersNumberSelected;
+            switch (fontMode) {
+                case FONT_BOLD:
+                    inputStream = Gui.class.getResourceAsStream("/fonts/Lato-Bold.ttf");
+                    break;
+                case FONT_REGULAR:
+                default:
+                    inputStream = Gui.class.getResourceAsStream("/fonts/Lato-Regular.ttf");
+                    break;
+            }
+
+            return Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(Font.PLAIN, size);
+        } catch (FontFormatException | IOException ex) {
+            return new Font(Font.SERIF, Font.BOLD, 14);
+        }
     }
 
     public JFrame getMainFrame() {
@@ -101,33 +112,31 @@ public class Gui extends View implements Observer<Update> {
         return this.playersNumber;
     }
 
-    public void setPlayersColors(Map<String, PrintableColor> playersColors) {
-        this.playersColors = playersColors;
+    public void setPlayersNumber(int playersNumberSelected) {
+        playersNumber = playersNumberSelected;
     }
 
     public Map<String, PrintableColor> getPlayersColors() {
         return this.playersColors;
     }
 
-    public void setPlayersGods(Map<String, String> playersGods) {
-        this.playersGods = playersGods;
+    public void setPlayersColors(Map<String, PrintableColor> playersColors) {
+        this.playersColors = playersColors;
     }
 
     public Map<String, String> getPlayersGods() {
         return this.playersGods;
     }
 
-    private Gui(Client clientInstance, Controller controllerInstance){
-        client = clientInstance;
-        controller = controllerInstance;
-        this.guiUpdateHandler = new GuiUpdateHandler(this, controller);
+    public void setPlayersGods(Map<String, String> playersGods) {
+        this.playersGods = playersGods;
     }
 
     public void start() throws IOException {
         SwingUtilities.invokeLater(() -> {
             try {
                 showGui();
-            } catch(IOException e) {
+            } catch (IOException e) {
                 //throw new IOException();
             }
 
@@ -156,7 +165,7 @@ public class Gui extends View implements Observer<Update> {
         mainPanel.add(gamePreparation, GAME_PREPARATION);
         mainPanel.add(realGame, REAL_GAME);
 
-       // mainPanel.add(godsChoiceComponent, GOD_CHOICE);
+        // mainPanel.add(godsChoiceComponent, GOD_CHOICE);
 
         frame.add(mainPanel);
 
@@ -209,7 +218,6 @@ public class Gui extends View implements Observer<Update> {
         notify(update);
     }
 
-
     public void startWaitingForMatch() {
 
         try {
@@ -227,14 +235,13 @@ public class Gui extends View implements Observer<Update> {
             client.setupUpdateListener();
             client.getUpdateListener().addObserver(this);
 
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
 
         this.mainCardLayout.show(mainPanel, WAITING_FOR_MATCH);
     }
-
 
     void startInitialInfoPhase() {
         this.mainCardLayout.show(mainPanel, INITIAL_INFO);
@@ -267,7 +274,7 @@ public class Gui extends View implements Observer<Update> {
     }
 
     void onTurnChanged() {
-        switch(currentGamePhase) {
+        switch (currentGamePhase) {
             case GAME_PREPARATION:
                 this.gamePreparation.changeTurn();
                 break;
@@ -278,7 +285,7 @@ public class Gui extends View implements Observer<Update> {
     }
 
     void onBoardChanged(String board) {
-        switch(currentGamePhase) {
+        switch (currentGamePhase) {
             case GAME_PREPARATION:
                 this.gamePreparation.setBoard(board);
                 break;
@@ -300,26 +307,6 @@ public class Gui extends View implements Observer<Update> {
         this.godsChoiceComponent.setSelectableGods(selectableGods);
     }
 
-    public static Font getFont(int fontMode, int size) {
-        try {
-            InputStream inputStream;
-
-            switch(fontMode) {
-                case FONT_BOLD:
-                    inputStream = Gui.class.getResourceAsStream("/fonts/Lato-Bold.ttf");
-                    break;
-                case FONT_REGULAR:
-                default:
-                    inputStream = Gui.class.getResourceAsStream("/fonts/Lato-Regular.ttf");
-                    break;
-            }
-
-            return Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(Font.PLAIN, size);
-        } catch (FontFormatException | IOException ex) {
-            return new Font(Font.SERIF, Font.BOLD, 14);
-        }
-    }
-
     void showError(ErrorUpdate update) {
 
         String title = "Error";
@@ -327,20 +314,17 @@ public class Gui extends View implements Observer<Update> {
 
         switch (update.command) {
             case MOVE:
-                
+
                 if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
 
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
 
                     message = "Move Error: you can't perform this move because " + inhibitorGod + " doesn't let you move in the position you specified!";
-                }
-                else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
+                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
                     message = "Move Error: you can't perform this move because your God doesn't let you move in the position you specified!";
-                }
-                else if(update.errorType == ErrorType.WRONG_TURN) {
+                } else if (update.errorType == ErrorType.WRONG_TURN) {
                     message = "Move Error: you can't perform this move because it's not your turn!";
-                }
-                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     message = "Wrong Game Phase: current Game Phase is not Real Game Phase";
                 }
 
@@ -351,14 +335,11 @@ public class Gui extends View implements Observer<Update> {
                 if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
                     message = "Build Error: you can't perform this build because " + inhibitorGod + " doesn't let you build in the position you specified!";
-                }
-                else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
+                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
                     message = "Build Error: you can't perform this build because your God doesn't let you build in the position you specified!";
-                }
-                else if(update.errorType == ErrorType.WRONG_TURN) {
+                } else if (update.errorType == ErrorType.WRONG_TURN) {
                     message = "Build Error: you can't perform this build because it's not your turn!";
-                }
-                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     message = "Wrong Game Phase: current Game Phase is not Real Game Phase";
                 }
 
@@ -368,15 +349,12 @@ public class Gui extends View implements Observer<Update> {
 
                 if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
-                    message = "End Turn Error: " +  inhibitorGod + " doesn't let you end your turn now!";
-                }
-                else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
+                    message = "End Turn Error: " + inhibitorGod + " doesn't let you end your turn now!";
+                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
                     message = "End Turn Error: " + "you can't end your turn now: maybe you must move or build!";
-                }
-                else if(update.errorType == ErrorType.WRONG_TURN) {
+                } else if (update.errorType == ErrorType.WRONG_TURN) {
                     message = "End Turn Error: " + "you can't end your turn because it's not your turn!";
-                }
-                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     message = "Wrong Game Phase: current Game Phase is not Real Game Phase";
                 }
 
@@ -384,16 +362,13 @@ public class Gui extends View implements Observer<Update> {
 
             case PICK:
 
-                if(update.errorType == ErrorType.ALREADY_TAKEN_NICKNAME) {
+                if (update.errorType == ErrorType.ALREADY_TAKEN_NICKNAME) {
                     message = "Nickname Error: already taken nickname";
-                }
-                else if(update.errorType == ErrorType.INVALID_COLOR) {
+                } else if (update.errorType == ErrorType.INVALID_COLOR) {
                     message = "Color Error: invalid or already taken color";
-                }
-                else if(update.errorType == ErrorType.WRONG_TURN) {
+                } else if (update.errorType == ErrorType.WRONG_TURN) {
                     message = "Turn Error: Not your turn!";
-                }
-                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     message = "Wrong Game Phase: current Game Phase is not Initial Info Phase";
                 }
 
@@ -405,34 +380,172 @@ public class Gui extends View implements Observer<Update> {
                 if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
                     message = "Game Preparation Error: you can't place your Worker where you specified because " + inhibitorGod + " doesn't allow it";
-                }
-                else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
+                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
                     message = "Game Preparation Error: you can't place your Workers where you specified because your God doesn't allow it";
-                }
-                else if(update.errorType == ErrorType.WRONG_TURN) {
+                } else if (update.errorType == ErrorType.WRONG_TURN) {
                     message = "Game Preparation Error: you can't place your Workers because it's not your turn!";
-                }
-                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     message = "Wrong Game Phase: current Game Phase is not Game Preparation Phase";
                 }
                 break;
 
             case SELECT:
 
-                if(update.errorType == ErrorType.WRONG_TURN) {
+                if (update.errorType == ErrorType.WRONG_TURN) {
                     message = "God Choice Error: you can't choose your God because it's not your turn!";
-                }
-                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     message = "Wrong Game Phase: current Game Phase is not Gods Choice Phase";
-                }
-                else if(update.errorType == ErrorType.INVALID_GOD) {
+                } else if (update.errorType == ErrorType.INVALID_GOD) {
                     message = "God Error: invalid God selected, it's not in selectable Gods list!";
                 }
                 break;
         }
 
-        JOptionPane.showMessageDialog(null,  message, title, JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
 
     }
+
+
+    void showWinMessageDialog(WinUpdate update) {
+
+        String title;
+        String message;
+        ImageIcon icon;
+        String imagePath = "src/main/resources/images/RealGame/";
+
+        int iconWidth = 70;
+
+        if (update.getWinnerPlayer().getPlayerID().equals(this.controller.getClientPlayerID())) {
+            title = "Win";
+            message = "You Won!";
+            icon = new ImageIcon(imagePath + "trophy.png");
+            icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
+        } else {
+            title = "You Lost";
+            message = update.getWinnerPlayer().getNickname() + " Won!";
+            icon = new ImageIcon(imagePath + "game-over.png");
+            icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
+        }
+
+        JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, null, null);
+
+        askPlayAgainDialog();
+    }
+
+    public void showLoseMessageDialog(LoseUpdate update) {
+        String title;
+        String message;
+        ImageIcon icon;
+        String imagePath = "src/main/resources/images/RealGame/game-over.png";
+
+        int iconWidth = 70;
+
+        if (update.getLoserPlayer().getPlayerID().equals(this.controller.getClientPlayerID())) {
+
+            String loseCauseMsg = "because you can't " + (update.getLoseCause() == LoseUpdate.LoseCause.CANT_MOVE ? "move" : "build") +
+                    " with any Worker";
+
+            title = "Lost";
+            message = "You Lost " + loseCauseMsg;
+            icon = new ImageIcon(imagePath);
+            icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
+
+            JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, null, null);
+
+            askContinueToWatch();
+        } else {
+            title = "Lost";
+            message = update.getLoserPlayer().getNickname() + " Lost!";
+            JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+        }
+
+    }
+
+    private void askPlayAgainDialog() {
+        String title = "Play Again";
+        String message = "Do you want to play another match?";
+
+        int res = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+        switch (res) {
+            case JOptionPane.YES_OPTION:
+                this.reinitializeConnection();
+                this.reinitializeComponents();
+                break;
+            case JOptionPane.NO_OPTION:
+            case JOptionPane.CLOSED_OPTION:
+                System.exit(0);
+                break;
+        }
+    }
+
+    private void askContinueToWatch() {
+        String title = "Continue to watch";
+        String message = "Do you want to continue to watch this match?";
+
+        int res = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+        switch (res) {
+            case JOptionPane.YES_OPTION:
+                this.realGame.disableButtons();
+                break;
+            case JOptionPane.NO_OPTION:
+            case JOptionPane.CLOSED_OPTION:
+                askPlayAgainDialog();
+                break;
+        }
+    }
+
+    public void showServerUnreachableDialog() {
+        JOptionPane.showMessageDialog(null, "Cannot communicate to the Server, maybe it's down. Otherwise, check your connection." + System.lineSeparator() + "Quitting...", "Server Unreachable", JOptionPane.ERROR_MESSAGE);
+        System.exit(0);
+    }
+
+    public void showDisconnectedPlayerDialog(DisconnectedPlayerUpdate update) {
+        String imagePath = "src/main/resources/images/RealGame/player_disconnected.png";
+        int iconWidth = 70;
+
+        ImageIcon icon = new ImageIcon(imagePath);
+        icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
+
+        String player = update.getDisconnectedPlayer().getNickname() != null ? update.getDisconnectedPlayer().getNickname() : "A Player";
+
+        JOptionPane.showOptionDialog(null, player + " disconnected", "Disconnection", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, null, null);
+
+        askPlayAgainDialog();
+    }
+
+    private void reinitializeComponents() {
+        mainPanel.removeAll();
+
+        this.playerNumberChoiceComponent = new PlayerNumberChoice();
+        this.waitingForAMatchComponent = new WaitingForAMatch();
+        this.initialInfoComponent = new InitialInfo();
+        this.godsChoiceComponent = new GodChoice();
+        this.gamePreparation = new GamePreparation();
+        this.realGame = new RealGame();
+
+        mainPanel.add(playerNumberChoiceComponent, PLAYERS_NUMBER_CHOICE);
+        mainPanel.add(waitingForAMatchComponent, WAITING_FOR_MATCH);
+        mainPanel.add(initialInfoComponent, INITIAL_INFO);
+        mainPanel.add(godsChoiceComponent, GOD_CHOICE);
+        mainPanel.add(gamePreparation, GAME_PREPARATION);
+        mainPanel.add(realGame, REAL_GAME);
+    }
+
+    private void reinitializeConnection() {
+        try {
+            client.getUpdateListener().setIsActive(false);
+            client.reinitializeConnection();
+            this.playersNumber = 0;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("The Game couldn't start, maybe there was some network error or the server isn't available.");
+            System.exit(0);
+        }
+
+    }
+
 
 }
