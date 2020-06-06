@@ -36,7 +36,6 @@ public class RealGame extends Game implements ActionListener {
 
     private boolean newTurn;
 
-
     private boolean buttonsEnabled = true;
 
     public void setLastCommand(CommandType lastCommand) {
@@ -220,8 +219,11 @@ public class RealGame extends Game implements ActionListener {
                 .filter(btn -> btn.getWorker() != null && btn.getWorker().player.getPlayerID().equals(this.controller.getClientPlayerID()))
                 .collect(Collectors.toList());
 
-        this.worker1Button = cellBtns.get(0).getWorker().workerType.equals(Command.WORKER_FIRST) ? cellBtns.get(0) : cellBtns.get(1);
-        this.worker2Button = cellBtns.get(0).getWorker().workerType.equals(Command.WORKER_SECOND) ? cellBtns.get(0) : cellBtns.get(1);
+        if(cellBtns.size() > 0) {
+            this.worker1Button = cellBtns.get(0).getWorker().workerType.equals(Command.WORKER_FIRST) ? cellBtns.get(0) : cellBtns.get(1);
+            this.worker2Button = cellBtns.get(0).getWorker().workerType.equals(Command.WORKER_SECOND) ? cellBtns.get(0) : cellBtns.get(1);
+        }
+
     }
 
     public void onMove() {
@@ -252,5 +254,8 @@ public class RealGame extends Game implements ActionListener {
 
     public void disableButtons() {
         this.buttonsEnabled = false;
+        this.removeAll();
+        this.draw();
+        this.revalidate();
     }
 }
