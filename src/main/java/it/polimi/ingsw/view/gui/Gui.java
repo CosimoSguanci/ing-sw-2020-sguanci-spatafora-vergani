@@ -2,12 +2,15 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.updates.ErrorUpdate;
 import it.polimi.ingsw.model.updates.Update;
+import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.components.*;
 
 import javax.imageio.ImageIO;
@@ -315,6 +318,121 @@ public class Gui extends View implements Observer<Update> {
         } catch (FontFormatException | IOException ex) {
             return new Font(Font.SERIF, Font.BOLD, 14);
         }
+    }
+
+    void showError(ErrorUpdate update) {
+
+        String title = "Error";
+        String message = "";
+
+        switch (update.command) {
+            case MOVE:
+                
+                if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
+
+                    String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
+
+                    message = "Move Error: you can't perform this move because " + inhibitorGod + " doesn't let you move in the position you specified!";
+                }
+                else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
+                    message = "Move Error: you can't perform this move because your God doesn't let you move in the position you specified!";
+                }
+                else if(update.errorType == ErrorType.WRONG_TURN) {
+                    message = "Move Error: you can't perform this move because it's not your turn!";
+                }
+                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                    message = "Wrong Game Phase: current Game Phase is not Real Game Phase";
+                }
+
+                break;
+
+            case BUILD:
+
+                if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
+                    String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
+                    message = "Build Error: you can't perform this build because " + inhibitorGod + " doesn't let you build in the position you specified!";
+                }
+                else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
+                    message = "Build Error: you can't perform this build because your God doesn't let you build in the position you specified!";
+                }
+                else if(update.errorType == ErrorType.WRONG_TURN) {
+                    message = "Build Error: you can't perform this build because it's not your turn!";
+                }
+                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                    message = "Wrong Game Phase: current Game Phase is not Real Game Phase";
+                }
+
+                break;
+
+            case END_TURN:
+
+                if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
+                    String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
+                    message = "End Turn Error: " +  inhibitorGod + " doesn't let you end your turn now!";
+                }
+                else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
+                    message = "End Turn Error: " + "you can't end your turn now: maybe you must move or build!";
+                }
+                else if(update.errorType == ErrorType.WRONG_TURN) {
+                    message = "End Turn Error: " + "you can't end your turn because it's not your turn!";
+                }
+                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                    message = "Wrong Game Phase: current Game Phase is not Real Game Phase";
+                }
+
+                break;
+
+            case PICK:
+
+                if(update.errorType == ErrorType.ALREADY_TAKEN_NICKNAME) {
+                    message = "Nickname Error: already taken nickname";
+                }
+                else if(update.errorType == ErrorType.INVALID_COLOR) {
+                    message = "Color Error: invalid or already taken color";
+                }
+                else if(update.errorType == ErrorType.WRONG_TURN) {
+                    message = "Turn Error: Not your turn!";
+                }
+                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                    message = "Wrong Game Phase: current Game Phase is not Initial Info Phase";
+                }
+
+                break;
+
+            case PLACE:
+
+
+                if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
+                    String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
+                    message = "Game Preparation Error: you can't place your Worker where you specified because " + inhibitorGod + " doesn't allow it";
+                }
+                else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
+                    message = "Game Preparation Error: you can't place your Workers where you specified because your God doesn't allow it";
+                }
+                else if(update.errorType == ErrorType.WRONG_TURN) {
+                    message = "Game Preparation Error: you can't place your Workers because it's not your turn!";
+                }
+                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                    message = "Wrong Game Phase: current Game Phase is not Game Preparation Phase";
+                }
+                break;
+
+            case SELECT:
+
+                if(update.errorType == ErrorType.WRONG_TURN) {
+                    message = "God Choice Error: you can't choose your God because it's not your turn!";
+                }
+                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                    message = "Wrong Game Phase: current Game Phase is not Gods Choice Phase";
+                }
+                else if(update.errorType == ErrorType.INVALID_GOD) {
+                    message = "God Error: invalid God selected, it's not in selectable Gods list!";
+                }
+                break;
+        }
+
+        JOptionPane.showMessageDialog(null,  message, title, JOptionPane.ERROR_MESSAGE);
+
     }
 
 }

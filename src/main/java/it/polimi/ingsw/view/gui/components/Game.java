@@ -38,10 +38,16 @@ public abstract class Game extends JPanel {
     Gui gui = Gui.getInstance();
 
     private String currentPlayerNickname;
+    private String nicknameToShow;
 
     public void changeTurn() {
         this.currentPlayerNickname = gui.getController().getCurrentPlayerNickname();
-        turn.setText(currentPlayerNickname + "'s turn");
+
+        if(this.nicknameToShow == null) {
+            this.nicknameToShow = this.currentPlayerNickname.length() > 10 ? this.currentPlayerNickname.substring(0, 10) + "..." : this.currentPlayerNickname;
+        }
+
+        turn.setText(this.nicknameToShow + "'s turn");
         this.revalidate();
     }
 
@@ -72,12 +78,13 @@ public abstract class Game extends JPanel {
 
         Map<String, String> playersGods = gui.getPlayersGods();
 
-        //this.godsLabels = new ArrayList<>();
         this.godsButtons = new ArrayList<>();
 
         playersGods.forEach((player, god) -> {
-            //this.godsLabels.add(new JLabel(player + " has " + god));
-            this.godsButtons.add(new JButton(player + " has " + god));
+
+            String nicknameResized = player.length() > 10 ? player.substring(0, 10) + "..." : player;
+
+            this.godsButtons.add(new JButton(nicknameResized + " has " + god));
         });
 
         LayoutManager layoutManager = new BorderLayout();
@@ -88,7 +95,10 @@ public abstract class Game extends JPanel {
         playersGodsTurn.setOpaque(false);
         //playersGodsTurn.setForeground(Color.RED);
         playersGodsTurn.setLayout(new BoxLayout(playersGodsTurn, BoxLayout.Y_AXIS));
-        this.turn = new JLabel(currentPlayerNickname + "'s turn");
+
+        this.nicknameToShow = this.currentPlayerNickname.length() > 10 ? this.currentPlayerNickname.substring(0, 10) + "..." : this.currentPlayerNickname;
+
+        this.turn = new JLabel(this.nicknameToShow + "'s turn");
         this.turn.setHorizontalAlignment(JLabel.CENTER);
         this.turn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         this.turn.setBackground(Color.YELLOW);

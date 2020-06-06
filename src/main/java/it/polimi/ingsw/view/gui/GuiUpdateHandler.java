@@ -90,9 +90,15 @@ public class GuiUpdateHandler implements UpdateHandler {
         guiInstance.onBoardChanged(update.getBoard());
     }
 
-    public void handle(ErrorUpdate update) {}
+    public void handle(ErrorUpdate update) {
+        if (!update.getCurrentPlayer().getPlayerID().equals(controller.getClientPlayerID())) return;
 
-    public void handle(WinUpdate update) {}
+        guiInstance.showError(update);
+    }
+
+    public void handle(WinUpdate update) {
+
+    }
     public void handle(LoseUpdate update) {}
     public void handle(ServerUnreachableUpdate update) {}
     public void handle(DisconnectedPlayerUpdate update) {}

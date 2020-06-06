@@ -335,21 +335,13 @@ public class GodChoice extends JPanel implements ActionListener {
     public void showGuiOnTurn() {
 
         this.playersNumber = gui.getPlayersNumber();
-
-
         this.removeAll();
 
         try {
-
-
-
             drawGodChoice();
-
-
         } catch(IOException e) {
             e.printStackTrace();
         }
-
 
         this.revalidate();
         this.repaint();

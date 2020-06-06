@@ -67,7 +67,6 @@ public class BoardScreen extends JPanel {
 
                     towerIcons.put("level_" + i, m);
 
-
                 } catch(IOException e) {
                     e.printStackTrace();
                 }
