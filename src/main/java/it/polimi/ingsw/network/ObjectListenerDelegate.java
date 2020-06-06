@@ -31,6 +31,7 @@ public class ObjectListenerDelegate {
             if(objectListener.isActive()) {
                 objectListener.handleConnectionReset();
             }
+
             else {
                 objectListener.setIsActive(false);
             }
