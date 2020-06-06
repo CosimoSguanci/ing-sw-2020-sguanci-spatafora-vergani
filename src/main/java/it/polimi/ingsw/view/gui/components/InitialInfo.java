@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.commands.InitialInfoCommand;
 import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.Gui;
+import it.polimi.ingsw.view.gui.listeners.QuitButtonListener;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
 import javax.swing.*;
@@ -137,6 +138,7 @@ public class InitialInfo extends JPanel implements ActionListener {
         quitImg = new ImageIcon(quitImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JRoundButton quitButton = new JRoundButton(quitImg);
 
+        quitButton.addActionListener(new QuitButtonListener(this));
         innerPanel2.add(quitButton, BorderLayout.WEST);
 
         innerPanel.add(innerPanel2);

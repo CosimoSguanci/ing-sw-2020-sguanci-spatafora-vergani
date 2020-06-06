@@ -483,7 +483,7 @@ public class Gui extends View implements Observer<Update> {
 
     }
 
-    private void askPlayAgainDialog() {
+    public void askPlayAgainDialog() {
         String title = "Play Again";
         String message = "Do you want to play another match?";
 

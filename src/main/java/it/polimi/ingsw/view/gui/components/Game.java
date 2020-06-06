@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.GodInfoActionListener;
+import it.polimi.ingsw.view.gui.listeners.QuitButtonListener;
 import it.polimi.ingsw.view.gui.ui.JCellButton;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
@@ -154,6 +155,7 @@ public abstract class Game extends JPanel {
         quitImg = new ImageIcon(quitImg.getImage().getScaledInstance(this.buttonDim, this.buttonDim, Image.SCALE_SMOOTH));
         this.quitButton = new JRoundButton(quitImg);
 
+        this.quitButton.addActionListener(new QuitButtonListener(this));
         playersGodsTurn.add(this.quitButton);
         this.quitButton.setAlignmentX(Component.RIGHT_ALIGNMENT);  //why right alignment? It works, but puts on left side (?)
 
