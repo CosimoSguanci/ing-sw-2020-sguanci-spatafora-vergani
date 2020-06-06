@@ -24,7 +24,6 @@ public class ClientApp {
             Gui gui = Gui.getInstance(client, controller);
             gui.addObserver(controller);
             controller.addObserver(gui);
-
             gui.start();
 
         } catch(Exception e) { //IOException

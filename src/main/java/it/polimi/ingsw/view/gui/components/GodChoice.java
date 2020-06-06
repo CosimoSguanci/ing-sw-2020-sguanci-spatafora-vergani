@@ -360,6 +360,8 @@ public class GodChoice extends JPanel implements ActionListener {
         }
         else {
 
+            this.selectedGods = this.selectedGods.stream().map(String::toLowerCase).collect(Collectors.toList());
+
             GodChoiceCommand godChoiceCommand = new GodChoiceCommand(this.selectedGods);
             gui.notify(godChoiceCommand);
 
