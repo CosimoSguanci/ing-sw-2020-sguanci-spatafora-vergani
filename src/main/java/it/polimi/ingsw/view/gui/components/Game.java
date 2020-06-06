@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.components;
 
+import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.GodInfoActionListener;
 import it.polimi.ingsw.view.gui.listeners.QuitButtonListener;
@@ -40,6 +41,7 @@ public abstract class Game extends JPanel {
 
     private String currentPlayerNickname;
     private String nicknameToShow;
+
 
     public void changeTurn() {
         this.currentPlayerNickname = gui.getController().getCurrentPlayerNickname();
@@ -84,14 +86,19 @@ public abstract class Game extends JPanel {
         this.currentPlayerNickname = gui.getController().getCurrentPlayerNickname();
 
         Map<String, String> playersGods = gui.getPlayersGods();
+        Map<String, PrintableColor> playersColors = gui.getPlayersColors();
 
         this.godsButtons = new ArrayList<>();
 
         playersGods.forEach((player, god) -> {
+            PrintableColor color = playersColors.get(player);  //gets player's color
 
             String nicknameResized = player.length() > 10 ? player.substring(0, 10) + "..." : player;
 
-            this.godsButtons.add(new JButton(nicknameResized + " has " + god));
+            JButton godButton = new JButton(nicknameResized + " has " + god);
+            godButton.setForeground(PrintableColor.convertToColor(color));
+
+            this.godsButtons.add(godButton);
         });
 
         LayoutManager layoutManager = new BorderLayout();
@@ -134,9 +141,9 @@ public abstract class Game extends JPanel {
             gods.add(Box.createVerticalStrut(3));
         });
 
-        gods.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        gods.setBackground(Color.YELLOW);
-        gods.setOpaque(true);
+        //gods.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        //gods.setBackground(Color.LIGHT_GRAY);
+        gods.setOpaque(false);
         playersGodsTurn.add(Box.createVerticalGlue());
         playersGodsTurn.add(this.turn);
         this.turn.setAlignmentX(Component.CENTER_ALIGNMENT);

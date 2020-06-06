@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +44,23 @@ public enum PrintableColor {
                 return "\u001B[33m";
             case PURPLE:
                 return "\u001B[35m";
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    public static Color convertToColor (PrintableColor color) {
+        switch (color) {
+            case RED:
+                return Color.RED;
+            case BLUE:
+                return Color.BLUE;
+            case GREEN:
+                return Color.GREEN.darker().darker();
+            case YELLOW:
+                return Color.ORANGE;
+            case PURPLE:
+                return Color.MAGENTA.darker().darker();
             default:
                 throw new IllegalArgumentException();
         }
