@@ -401,7 +401,13 @@ public class Gui extends View implements Observer<Update> {
                 break;
         }
 
-        JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
+        //JOptionPane.showMessageDialog(gui.getMainFrame(), errorDialogMessage + View.listToStringBuilder(selectedNicknames), errorDialogTitle, JOptionPane.ERROR_MESSAGE);
+
+
+        //JOptionPane.showMessageDialog(frame, message, title, JOptionPane.ERROR_MESSAGE);
+
+        String finalMessage = message;
+        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame, finalMessage, title, JOptionPane.ERROR_MESSAGE));
 
     }
 
@@ -427,9 +433,17 @@ public class Gui extends View implements Observer<Update> {
             icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
         }
 
-        JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, null, null);
+        //JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, null, null);
 
-        askPlayAgainDialog();
+
+        ImageIcon finalIcon = icon;
+        SwingUtilities.invokeLater(() -> {
+            JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE, finalIcon);
+            askPlayAgainDialog();
+        });
+
+
+        //askPlayAgainDialog();
     }
 
     public void showLoseMessageDialog(LoseUpdate update) {
@@ -450,13 +464,21 @@ public class Gui extends View implements Observer<Update> {
             icon = new ImageIcon(imagePath);
             icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
 
-            JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, null, null);
+            //JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, null, null);
 
-            askContinueToWatch();
+            SwingUtilities.invokeLater(() -> {
+                JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+                askContinueToWatch();
+            });
+
         } else {
             title = "Lost";
             message = update.getLoserPlayer().getNickname() + " Lost!";
-            JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+            //JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+
+
+            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE));
+
         }
 
     }
@@ -465,40 +487,52 @@ public class Gui extends View implements Observer<Update> {
         String title = "Play Again";
         String message = "Do you want to play another match?";
 
-        int res = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        SwingUtilities.invokeLater(() -> {
+            int res = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 
-        switch (res) {
-            case JOptionPane.YES_OPTION:
-                this.reinitializeConnection();
-                this.reinitializeComponents();
-                break;
-            case JOptionPane.NO_OPTION:
-            case JOptionPane.CLOSED_OPTION:
-                System.exit(0);
-                break;
-        }
+            switch (res) {
+                case JOptionPane.YES_OPTION:
+                    this.reinitializeConnection();
+                    this.reinitializeComponents();
+                    break;
+                case JOptionPane.NO_OPTION:
+                case JOptionPane.CLOSED_OPTION:
+                    System.exit(0);
+                    break;
+            }
+        });
+
     }
 
     private void askContinueToWatch() {
         String title = "Continue to watch";
         String message = "Do you want to continue to watch this match?";
 
-        int res = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        SwingUtilities.invokeLater(() -> {
+            int res = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 
-        switch (res) {
-            case JOptionPane.YES_OPTION:
-                this.realGame.disableButtons();
-                break;
-            case JOptionPane.NO_OPTION:
-            case JOptionPane.CLOSED_OPTION:
-                askPlayAgainDialog();
-                break;
-        }
+            switch (res) {
+                case JOptionPane.YES_OPTION:
+                    this.realGame.disableButtons();
+                    break;
+                case JOptionPane.NO_OPTION:
+                case JOptionPane.CLOSED_OPTION:
+                    askPlayAgainDialog();
+                    break;
+            }
+        });
+
+
     }
 
     public void showServerUnreachableDialog() {
-        JOptionPane.showMessageDialog(null, "Cannot communicate to the Server, maybe it's down. Otherwise, check your connection." + System.lineSeparator() + "Quitting...", "Server Unreachable", JOptionPane.ERROR_MESSAGE);
-        System.exit(0);
+
+        SwingUtilities.invokeLater(() -> {
+            JOptionPane.showMessageDialog(null, "Cannot communicate to the Server, maybe it's down. Otherwise, check your connection." + System.lineSeparator() + "Quitting...", "Server Unreachable", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        });
+
+
     }
 
     public void showDisconnectedPlayerDialog(DisconnectedPlayerUpdate update) {
@@ -510,9 +544,14 @@ public class Gui extends View implements Observer<Update> {
 
         String player = update.getDisconnectedPlayer().getNickname() != null ? update.getDisconnectedPlayer().getNickname() : "A Player";
 
-        JOptionPane.showOptionDialog(null, player + " disconnected", "Disconnection", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, null, null);
+        ImageIcon finalIcon = icon;
+        SwingUtilities.invokeLater(() -> {
+            JOptionPane.showOptionDialog(null, player + " disconnected", "Disconnection", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, finalIcon, null, null);
 
-        askPlayAgainDialog();
+            askPlayAgainDialog();
+        });
+
+
     }
 
     private void reinitializeComponents() {

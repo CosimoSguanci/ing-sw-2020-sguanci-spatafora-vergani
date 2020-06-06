@@ -26,6 +26,7 @@ public class ObjectListenerDelegate {
                 }
             }
         } catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
             objectListener.setIsActive(false);
             objectListener.handleConnectionReset();
         }

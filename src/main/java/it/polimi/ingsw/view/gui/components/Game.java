@@ -47,7 +47,13 @@ public abstract class Game extends JPanel {
             this.nicknameToShow = this.currentPlayerNickname.length() > 10 ? this.currentPlayerNickname.substring(0, 10) + "..." : this.currentPlayerNickname;
         }
 
-        turn.setText(this.nicknameToShow + "'s turn");
+        if(currentPlayerNickname.equals(gui.getController().getClientPlayer().getNickname())) {
+            turn.setText("Your Turn");
+        }
+        else {
+            turn.setText(this.nicknameToShow + "'s turn");
+        }
+
         this.revalidate();
     }
 
@@ -98,7 +104,13 @@ public abstract class Game extends JPanel {
 
         this.nicknameToShow = this.currentPlayerNickname.length() > 10 ? this.currentPlayerNickname.substring(0, 10) + "..." : this.currentPlayerNickname;
 
-        this.turn = new JLabel(this.nicknameToShow + "'s turn");
+        if(currentPlayerNickname.equals(gui.getController().getClientPlayer().getNickname())) {
+            this.turn = new JLabel("Your Turn");
+        }
+        else {
+            this.turn = new JLabel(this.nicknameToShow + "'s turn");
+        }
+
         this.turn.setHorizontalAlignment(JLabel.CENTER);
         this.turn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         this.turn.setBackground(Color.YELLOW);
