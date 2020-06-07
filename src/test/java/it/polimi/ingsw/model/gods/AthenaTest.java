@@ -12,10 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AthenaTest {
     @Test
     public void athenaCheckMoveConstraintsTest()  {
-
-
-
-
         Athena athena = new Athena();
 
         Match match = new Match(2);
@@ -41,9 +37,6 @@ public class AthenaTest {
 
     @Test
     public void athenaEndTurnTest() {
-
-
-
         Athena athena = new Athena();
 
         Match match = new Match(2);
@@ -69,5 +62,30 @@ public class AthenaTest {
 
         //Now I check that I can move again (so the values are correctly reinitialized
         assertTrue(athena.checkMove(worker, match.getMatchBoard().getCell(0, 2)));
+    }
+
+    @Test
+    public void onTurnStartedTest() {
+        Athena athena = new Athena();
+
+        Match match = new Match(2);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        Worker worker = player.getWorkerFirst();
+
+        Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        Worker oppositeWorker = oppositePlayer.getWorkerFirst();
+
+        worker.setInitialPosition(0, 0);
+        match.getMatchBoard().getCell(0, 1).setLevel(BlockType.LEVEL_ONE);
+        assertTrue(athena.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
+        athena.executeMove(worker,  match.getMatchBoard().getCell(0, 1));
+
+        oppositeWorker.setInitialPosition(3, 3);
+        match.getMatchBoard().getCell(3, 4).setLevel(BlockType.LEVEL_ONE);
+
+        assertFalse(athena.checkMoveConstraints(oppositeWorker, match.getMatchBoard().getCell(3, 4 )));
+        athena.onTurnStarted(player);
+
+        assertTrue(athena.checkMoveConstraints(oppositeWorker, match.getMatchBoard().getCell(3, 4 )));
     }
 }

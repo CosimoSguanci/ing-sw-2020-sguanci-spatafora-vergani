@@ -43,8 +43,6 @@ public class Apollo extends GodStrategy {
         if (selectedWorker != null)
             return false; // if selectedWorker is not null, move has already been executed this turn
 
-        // Worker otherWorker = worker.equals(worker.player.getWorkerFirst()) ? worker.player.getWorkerSecond() : worker.player.getWorkerFirst();
-
         return !worker.hasMoved() && !worker.hasBuilt() && worker.getPosition().isAdjacentTo(moveCell)
                 && worker.getPosition().isLevelDifferenceOk(moveCell)
                 && (moveCell.isEmpty() || opponentWorkerMoverDelegate.isNotOtherPlayerWorkerPosition(worker, moveCell))

@@ -33,10 +33,6 @@ public class ApolloTest {
 
     @Test
     public void apolloExecuteMoveTest()  {
-
-
-
-
         Apollo apollo = new Apollo();
 
         Match match = new Match(2);
@@ -55,6 +51,31 @@ public class ApolloTest {
 
         assertEquals(worker, match.getMatchBoard().getCell(0, 1).getWorker());
         assertEquals(oppositeWorker, match.getMatchBoard().getCell(0, 0).getWorker());
+
+        assertFalse(apollo.checkMove(worker, match.getMatchBoard().getCell(0, 0)));
+    }
+
+    @Test
+    public void apolloCannotMoveTest() {
+        Apollo apollo = new Apollo();
+
+        Match match = new Match(2);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        Worker workerFirst = player.getWorkerFirst();
+        Worker workerSecond = player.getWorkerSecond();
+
+        workerFirst.setInitialPosition(0, 0);
+        workerSecond.setInitialPosition(0, 4);
+
+        match.getMatchBoard().getCell(0, 1).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(1, 1).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(1, 0).setLevel(BlockType.DOME);
+
+        match.getMatchBoard().getCell(0, 3).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(1, 3).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(1, 4).setLevel(BlockType.DOME);
+
+        assertFalse(apollo.canMove(match.getMatchBoard(), player));
     }
 
 }

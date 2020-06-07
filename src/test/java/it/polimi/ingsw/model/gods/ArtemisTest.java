@@ -12,10 +12,6 @@ public class ArtemisTest {
 
     @Test
     public void artemisCheckMultipleMoveTest() {
-
-
-
-
         Artemis artemis = new Artemis();
 
         Match match = new Match(2);
@@ -39,10 +35,6 @@ public class ArtemisTest {
 
     @Test
     public void artemisCheckMultipleMoveInitialPositionTest() {
-
-
-
-
         Artemis artemis = new Artemis();
 
         Match match = new Match(2);
@@ -61,9 +53,6 @@ public class ArtemisTest {
 
     @Test
     public void artemisEndTurnTest() {
-
-
-
         Artemis artemis = new Artemis();
 
         Match match = new Match(2);
@@ -92,5 +81,40 @@ public class ArtemisTest {
 
         //Now I check that I can move again (so the values are correctly reinitialized
         assertTrue(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 3)));
+    }
+
+    @Test
+    public void artemisCannotBuildTest() {
+        Artemis artemis = new Artemis();
+
+        Match match = new Match(2);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        Worker worker = player.getWorkerFirst();
+        Worker otherWorker = player.getWorkerSecond();
+
+        worker.setInitialPosition(0, 1);
+        otherWorker.setInitialPosition(3, 2);
+
+        assertTrue(artemis.checkMove(worker, match.getMatchBoard().getCell(0, 0)));
+        artemis.executeMove(worker, match.getMatchBoard().getCell(0, 0));
+
+        match.getMatchBoard().getCell(0, 1).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(1, 1).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(1, 0).setLevel(BlockType.DOME);
+
+        assertFalse(artemis.canBuild(match.getMatchBoard(), worker));
+
+        match.getMatchBoard().getCell(1, 1).setLevel(BlockType.LEVEL_ONE);
+        assertTrue(artemis.checkMove(worker, match.getMatchBoard().getCell(1, 1)));
+        artemis.executeMove(worker, match.getMatchBoard().getCell(1, 1));
+
+        match.getMatchBoard().getAvailableBuildCells(worker).stream().filter(cell -> cell.isAdjacentTo(worker.getPosition())).forEach(cell -> cell.setLevel(BlockType.DOME));
+
+        assertFalse(artemis.canBuild(match.getMatchBoard(), worker));
+
+        artemis.endPlayerTurn(player);
+
+        worker.move(match.getMatchBoard().getCell(3, 3));
+
     }
 }
