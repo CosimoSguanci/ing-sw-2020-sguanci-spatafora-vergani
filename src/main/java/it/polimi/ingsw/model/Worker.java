@@ -168,10 +168,6 @@ public class Worker {
         return this.hasBuilt;
     }
 
-    public void setHasBuilt() {
-        this.hasBuilt = true;
-    }
-
     public void setHasMoved() {
         this.hasMoved = true;
     }

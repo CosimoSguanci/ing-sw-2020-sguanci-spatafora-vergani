@@ -4,11 +4,14 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.exceptions.InvalidColorException;
 import it.polimi.ingsw.exceptions.NicknameAlreadyTakenException;
+import it.polimi.ingsw.exceptions.WrongGamePhaseException;
 import it.polimi.ingsw.exceptions.WrongPlayerException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.model.gods.*;
+import it.polimi.ingsw.view.gui.components.GodChoice;
+import it.polimi.ingsw.view.gui.components.InitialInfo;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -66,7 +69,7 @@ public class ControllerTest {
         model.nextGamePhase();  //Real_Game phase
 
         PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 C4");
-        playerCommand.setPlayer(p1);
+        playerCommand.setPlayerID("Andrea");
         controller.update(playerCommand);
 
         assertEquals(p1, model.getCurrentPlayer());
@@ -973,5 +976,4 @@ public class ControllerTest {
 
         assertFalse(returnValue); */
     }
-
 }

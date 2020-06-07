@@ -119,17 +119,13 @@ public class Model extends Observable<Update> {
     public void nextGamePhase() {
         match.nextGamePhase();
     }
-
-
+    
     public void onPlayerLose(Player loserPlayer, LoseUpdate.LoseCause loseCause) {
         loserPlayer.getWorkerFirst().getPosition().setWorker(null);
         loserPlayer.getWorkerSecond().getPosition().setWorker(null);
-
         removePlayer(loserPlayer);
         loseUpdate(loserPlayer, loseCause);
-
         turnUpdate(getCurrentPlayer());
-
     }
 
     public int getPlayersNumber() {

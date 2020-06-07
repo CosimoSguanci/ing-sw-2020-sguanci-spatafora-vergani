@@ -155,7 +155,6 @@ public final class GodsUtils {
         if(godsInfo.containsKey(godName)) {
             return godsInfo.get(godName);
         }
-
         throw new UnknownGodException();
     }
 

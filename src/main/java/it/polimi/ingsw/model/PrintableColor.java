@@ -11,6 +11,13 @@ public enum PrintableColor {
     public static final String RESET = "\u001B[0m";
     public static final String BOLD = "\u001B[1m";
 
+    static final String RED_ANSI = "\u001B[31m";
+    static final String BLUE_ANSI = "\u001B[34m";
+    static final String GREEN_ANSI = "\u001B[32m";
+    static final String YELLOW_ANSI = "\u001B[33m";
+    static final String PURPLE_ANSI = "\u001B[35m";
+
+
     public static boolean isValidColor(String color) {
         try {
             Enum.valueOf(PrintableColor.class, color.toUpperCase());
@@ -32,24 +39,22 @@ public enum PrintableColor {
      * @param color is the PrintableColor you want to calculate the Ansi code
      * @return the string of the respective Ansi color.
      */
-    public static String convertColorToAnsi (PrintableColor color) {
+    public static String convertColorToAnsi(PrintableColor color) {
         switch (color) {
             case RED:
-                return "\u001B[31m";
+                return RED_ANSI;
             case BLUE:
-                return "\u001B[34m";
+                return BLUE_ANSI;
             case GREEN:
-                return "\u001B[32m";
+                return GREEN_ANSI;
             case YELLOW:
-                return "\u001B[33m";
-            case PURPLE:
-                return "\u001B[35m";
+                return YELLOW_ANSI;
             default:
-                throw new IllegalArgumentException();
+                return PURPLE_ANSI;
         }
     }
 
-    public static Color convertToColor (PrintableColor color) {
+    public static Color convertToColor(PrintableColor color) {
         switch (color) {
             case RED:
                 return Color.RED;
@@ -59,10 +64,8 @@ public enum PrintableColor {
                 return Color.GREEN.darker().darker();
             case YELLOW:
                 return Color.ORANGE;
-            case PURPLE:
-                return Color.MAGENTA.darker().darker();
             default:
-                throw new IllegalArgumentException();
+                return Color.MAGENTA.darker().darker();
         }
     }
 }

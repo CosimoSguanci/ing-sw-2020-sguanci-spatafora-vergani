@@ -2,11 +2,11 @@ package it.polimi.ingsw.model;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import it.polimi.ingsw.exceptions.InvalidCellException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class BoardTest {
@@ -139,12 +139,8 @@ public class BoardTest {
     @Test
     public void canBuildFalseTest()  {
 
-
-
-
         int playersNum = 2;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Board board = match.getMatchBoard();
         Player player = new Player("Andrea", new Model(match), match);
         Worker w1 = player.getWorkerFirst();
@@ -166,8 +162,9 @@ public class BoardTest {
         assertTrue(board.canBuild(w2));
     }
 
-    @Disabled
     @Test
-    public void getCell() {
+    public void invalidCellTest() {
+        Board board = new Board();
+        assertThrows(InvalidCellException.class, () -> board.getCell(-1, -1));
     }
 }

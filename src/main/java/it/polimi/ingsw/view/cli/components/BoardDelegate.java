@@ -105,6 +105,6 @@ public class BoardDelegate {
      *         BlockType.convertBlockTypeToUnicode() method, which corresponds to the level
      */
     private static String convertBlockTypeToUnicode(BlockType level) {
-        return BlockType.convertBlockTypeToUnicode(level);
+        return BlockType.convertBlockTypeToText(level);
     }
 }

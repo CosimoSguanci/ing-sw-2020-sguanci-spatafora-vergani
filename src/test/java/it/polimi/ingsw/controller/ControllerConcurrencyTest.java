@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.Athena;
 import it.polimi.ingsw.model.gods.Atlas;
 import it.polimi.ingsw.model.utils.GodsUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class ControllerConcurrencyTest {
 
+    @Disabled
     @Test
     public void concurrencyStressTest() {
 
