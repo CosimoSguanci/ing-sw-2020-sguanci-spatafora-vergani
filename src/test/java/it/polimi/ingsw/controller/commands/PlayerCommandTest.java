@@ -2,42 +2,11 @@ package it.polimi.ingsw.controller.commands;
 
 import it.polimi.ingsw.exceptions.BadCommandException;
 import it.polimi.ingsw.model.BlockType;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerCommandTest {
-
-    @Disabled
-    @Test
-    void setCellTest() {
-    }
-
-    @Disabled
-    @Test
-    void getCellTest() {
-    }
-
-    @Disabled
-    @Test
-    void getPlayerTest() {
-    }
-
-    @Disabled
-    @Test
-    void setPlayerTest() {
-    }
-
-    @Disabled
-    @Test
-    void getWorkerTest() {
-    }
-
-    @Disabled
-    @Test
-    void setWorkerTest() {
-    }
 
     @Test
     void parseInputEndTest()  {
@@ -60,7 +29,9 @@ class PlayerCommandTest {
     void parseInputBuildTest()  {
         PlayerCommand playerCommand = PlayerCommand.parseInput("buiLD   w1  B2 domE");
         playerCommand.setPlayerID("Player1");
+        playerCommand.setPlayerNickname("Player1Nick");
         assertEquals("Player1", playerCommand.getPlayerID());
+        assertEquals("Player1Nick", playerCommand.getPlayerNickname());
         assertEquals(CommandType.BUILD, playerCommand.commandType);
         assertEquals("w1", playerCommand.workerID);
         assertEquals(1, playerCommand.row);
