@@ -326,6 +326,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
             if (model.getPlayers().size() != 1) {
                 model.boardUpdate();
             }
+
         } else {
             if (!checkCanMoveOtherGodsConstraints(model.getCurrentPlayer())) {
                 model.onPlayerLose(model.getCurrentPlayer(), LoseUpdate.LoseCause.CANT_MOVE);

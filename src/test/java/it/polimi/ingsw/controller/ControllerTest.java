@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.model.gods.*;
+import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.view.RemoteView;
 import it.polimi.ingsw.view.gui.components.GodChoice;
 import it.polimi.ingsw.view.gui.components.InitialInfo;
@@ -1114,8 +1115,214 @@ public class ControllerTest {
 
         verify(model, times(1)).reportError(wrongPlayer, CommandType.SELECT, ErrorType.WRONG_TURN, null);
 
+        // Game Preparation Wrong Player test
 
+        model.nextGamePhase();
+        model.setInitialTurn(0);
 
+        GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput("place w1 a1 w2 a2");
 
+        gamePreparationCommand.setPlayer(p2);
+        gamePreparationCommand.setPlayerID(p2.getPlayerID());
+
+        controller.update(gamePreparationCommand);
+
+        verify(model, times(1)).reportError(p2, CommandType.PLACE, ErrorType.WRONG_TURN, null);
+
+    }
+
+    @Test
+    public void startMatchCalledTest() {
+        int playersNum = 3;
+        Match match = new Match(playersNum);
+        Model model = Mockito.spy(new Model(match));
+
+        Player p1 = new Player("Andrea", model, match);
+        Player p2 = new Player("Cosimo", model, match);
+        Player p3 = new Player("Roberto", model, match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Controller controller = new Controller(model);
+
+        p1.setNickname("nick1");
+        p1.setColor(PrintableColor.RED);
+
+        p1.setNickname("nick2");
+        p1.setColor(PrintableColor.GREEN);
+
+        p1.setNickname("nick3");
+        p1.setColor(PrintableColor.BLUE);
+
+        p1.setGodStrategy(GodStrategy.instantiateGod("athena"));
+        p2.setGodStrategy(GodStrategy.instantiateGod("atlas"));
+        p3.setGodStrategy(GodStrategy.instantiateGod("poseidon"));
+
+        controller.initialPhase();
+        model.nextGamePhase();
+        model.nextGamePhase();
+
+        Optional<Player> godChooserOpt = model.getPlayers().stream().filter(Player::isGodChooser).findFirst();
+
+        if(!godChooserOpt.isPresent()) throw new IllegalArgumentException();
+
+        Player godChooser = godChooserOpt.get();
+
+        int turn = godChooser.equals(p1) ? 1 : godChooser.equals(p2) ? 2 : 0;
+
+        model.setInitialTurn(turn);
+
+        GamePreparationCommand gamePreparationCommand1 = GamePreparationCommand.parseInput("place w1 a1 w2 a2");
+
+        gamePreparationCommand1.setPlayer(model.getCurrentPlayer());
+        gamePreparationCommand1.setPlayerID(model.getCurrentPlayer().getPlayerID());
+
+        controller.update(gamePreparationCommand1);
+
+        GamePreparationCommand gamePreparationCommand2 = GamePreparationCommand.parseInput("place w1 b1 w2 e2");
+
+        gamePreparationCommand2.setPlayer(model.getCurrentPlayer());
+        gamePreparationCommand2.setPlayerID(model.getCurrentPlayer().getPlayerID());
+
+        controller.update(gamePreparationCommand2);
+
+        GamePreparationCommand gamePreparationCommand3 = GamePreparationCommand.parseInput("place w1 c3 w2 e5");
+
+        gamePreparationCommand3.setPlayer(model.getCurrentPlayer());
+        gamePreparationCommand3.setPlayerID(model.getCurrentPlayer().getPlayerID());
+
+        controller.update(gamePreparationCommand3);
+
+        verify(model, times(1)).matchStartedUpdate();
+    }
+
+    @Test
+    public void checkAllMoveConstraintsFailed() {
+        int playersNum = 3;
+        Match match = new Match(playersNum);
+        Model model = Mockito.spy(new Model(match));
+
+        Player p1 = new Player("Andrea", model, match);
+        Player p2 = new Player("Cosimo", model, match);
+        Player p3 = new Player("Roberto", model, match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Controller controller = new Controller(model);
+
+        p1.setNickname("nick1");
+        p1.setColor(PrintableColor.RED);
+
+        p1.setNickname("nick2");
+        p1.setColor(PrintableColor.GREEN);
+
+        p1.setNickname("nick3");
+        p1.setColor(PrintableColor.BLUE);
+
+        p1.setGodStrategy(GodStrategy.instantiateGod("athena"));
+        p2.setGodStrategy(GodStrategy.instantiateGod("atlas"));
+        p3.setGodStrategy(GodStrategy.instantiateGod("poseidon"));
+
+        p1.getWorkerFirst().setInitialPosition(3, 3);
+        p1.getWorkerSecond().setInitialPosition(3, 4);
+
+        p2.getWorkerFirst().setInitialPosition(0, 0);
+        p2.getWorkerSecond().setInitialPosition(0, 1);
+
+        p3.getWorkerFirst().setInitialPosition(3, 2);
+        p3.getWorkerSecond().setInitialPosition(2, 4);
+
+        controller.initialPhase();
+        model.nextGamePhase();
+        model.nextGamePhase();
+        model.nextGamePhase();
+
+        model.setInitialTurn(0);
+
+        model.getBoard().getCell(4, 4).setLevel(BlockType.LEVEL_ONE);
+
+        PlayerCommand playerCommand = PlayerCommand.parseInput("move w2 e5");
+        playerCommand.setPlayerID(p1.getPlayerID());
+
+        controller.update(playerCommand);
+
+        playerCommand = PlayerCommand.parseInput("build w2 d5");
+        playerCommand.setPlayerID(p1.getPlayerID());
+
+        controller.update(playerCommand);
+
+        playerCommand = PlayerCommand.parseInput("end");
+        playerCommand.setPlayerID(p1.getPlayerID());
+
+        controller.update(playerCommand);
+
+        model.getBoard().getCell(0, 2).setLevel(BlockType.LEVEL_ONE);
+
+        playerCommand = PlayerCommand.parseInput("move w2 a3");
+        playerCommand.setPlayerID(p2.getPlayerID());
+
+        controller.update(playerCommand);
+
+        verify(model, times(1)).reportError(p2, CommandType.MOVE, ErrorType.DENIED_BY_OPPONENT_GOD, GodsUtils.parseGodName("athena"));
+    }
+
+    @Test
+    public void matchWonTest() {
+        int playersNum = 3;
+        Match match = new Match(playersNum);
+        Model model = Mockito.spy(new Model(match));
+
+        Player p1 = new Player("Andrea", model, match);
+        Player p2 = new Player("Cosimo", model, match);
+        Player p3 = new Player("Roberto", model, match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Controller controller = new Controller(model);
+
+        p1.setNickname("nick1");
+        p1.setColor(PrintableColor.RED);
+
+        p1.setNickname("nick2");
+        p1.setColor(PrintableColor.GREEN);
+
+        p1.setNickname("nick3");
+        p1.setColor(PrintableColor.BLUE);
+
+        p1.setGodStrategy(GodStrategy.instantiateGod("athena"));
+        p2.setGodStrategy(GodStrategy.instantiateGod("atlas"));
+        p3.setGodStrategy(GodStrategy.instantiateGod("poseidon"));
+
+        model.getBoard().getCell(4, 4).setLevel(BlockType.LEVEL_TWO);
+        model.getBoard().getCell(3, 4).setLevel(BlockType.LEVEL_THREE);
+
+        p1.getWorkerFirst().setInitialPosition(3, 3);
+        p1.getWorkerSecond().setInitialPosition(3, 4);
+
+        p2.getWorkerFirst().setInitialPosition(0, 0);
+        p2.getWorkerSecond().setInitialPosition(0, 1);
+
+        p3.getWorkerFirst().setInitialPosition(3, 2);
+        p3.getWorkerSecond().setInitialPosition(2, 4);
+
+        controller.initialPhase();
+        model.nextGamePhase();
+        model.nextGamePhase();
+        model.nextGamePhase();
+
+        model.setInitialTurn(0);
+
+        p1.getWorkerSecond().move(model.getBoard().getCell(4, 4));
+        p1.getWorkerSecond().reinitializeBuiltMoved();
+
+        PlayerCommand playerCommand = PlayerCommand.parseInput("move w2 d5");
+        playerCommand.setPlayerID(p1.getPlayerID());
+
+        controller.update(playerCommand);
+
+        verify(model, times(1)).winUpdate(p1);
     }
 }
