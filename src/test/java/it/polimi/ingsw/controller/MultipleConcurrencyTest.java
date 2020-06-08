@@ -29,7 +29,7 @@ public class MultipleConcurrencyTest {
                 .selectors(selectClass(ControllerConcurrencyTest.class))
                 .build();
         Launcher launcher = LauncherFactory.create();
-        TestPlan testPlan = launcher.discover(request);
+        launcher.discover(request);
         launcher.registerTestExecutionListeners(listener);
         launcher.execute(request);
     }

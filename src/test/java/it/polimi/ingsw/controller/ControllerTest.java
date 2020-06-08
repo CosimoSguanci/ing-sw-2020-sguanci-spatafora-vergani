@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.model.gods.*;
+import it.polimi.ingsw.model.updates.LoseUpdate;
 import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.view.RemoteView;
 import it.polimi.ingsw.view.gui.components.GodChoice;
@@ -1324,5 +1325,176 @@ public class ControllerTest {
         controller.update(playerCommand);
 
         verify(model, times(1)).winUpdate(p1);
+    }
+
+    @Test
+    public void checkEndTurnFailedTest() {
+        int playersNum = 3;
+        Match match = new Match(playersNum);
+        Model model = Mockito.spy(new Model(match));
+
+        Player p1 = new Player("Andrea", model, match);
+        Player p2 = new Player("Cosimo", model, match);
+        Player p3 = new Player("Roberto", model, match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Controller controller = new Controller(model);
+
+        p1.setNickname("nick1");
+        p1.setColor(PrintableColor.RED);
+
+        p1.setNickname("nick2");
+        p1.setColor(PrintableColor.GREEN);
+
+        p1.setNickname("nick3");
+        p1.setColor(PrintableColor.BLUE);
+
+        p1.setGodStrategy(GodStrategy.instantiateGod("athena"));
+        p2.setGodStrategy(GodStrategy.instantiateGod("atlas"));
+        p3.setGodStrategy(GodStrategy.instantiateGod("poseidon"));
+
+        p1.getWorkerFirst().setInitialPosition(3, 3);
+        p1.getWorkerSecond().setInitialPosition(3, 4);
+
+        p2.getWorkerFirst().setInitialPosition(0, 0);
+        p2.getWorkerSecond().setInitialPosition(0, 1);
+
+        p3.getWorkerFirst().setInitialPosition(3, 2);
+        p3.getWorkerSecond().setInitialPosition(2, 4);
+
+        controller.initialPhase();
+        model.nextGamePhase();
+        model.nextGamePhase();
+        model.nextGamePhase();
+
+        model.setInitialTurn(0);
+
+        PlayerCommand playerCommand = PlayerCommand.parseInput("move w2 e5");
+        playerCommand.setPlayerID(p1.getPlayerID());
+
+        controller.update(playerCommand);
+
+        playerCommand = PlayerCommand.parseInput("end");
+        playerCommand.setPlayerID(p1.getPlayerID());
+
+        controller.update(playerCommand);
+
+        verify(model, times(1)).reportError(p1, CommandType.END_TURN, ErrorType.DENIED_BY_PLAYER_GOD, null);
+    }
+
+    @Test
+    public void loseConditionMoveTest() {
+        int playersNum = 3;
+        Match match = new Match(playersNum);
+        Model model = Mockito.spy(new Model(match));
+
+        Player p1 = new Player("Andrea", model, match);
+        Player p2 = new Player("Cosimo", model, match);
+        Player p3 = new Player("Roberto", model, match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Controller controller = new Controller(model);
+
+        p1.setNickname("nick1");
+        p1.setColor(PrintableColor.RED);
+
+        p1.setNickname("nick2");
+        p1.setColor(PrintableColor.GREEN);
+
+        p1.setNickname("nick3");
+        p1.setColor(PrintableColor.BLUE);
+
+        p1.setGodStrategy(GodStrategy.instantiateGod("athena"));
+        p2.setGodStrategy(GodStrategy.instantiateGod("atlas"));
+        p3.setGodStrategy(GodStrategy.instantiateGod("poseidon"));
+
+        p1.getWorkerFirst().setInitialPosition(0, 0);
+        p1.getWorkerSecond().setInitialPosition(0, 1);
+
+        p2.getWorkerFirst().setInitialPosition(1, 0);
+        p2.getWorkerSecond().setInitialPosition(1, 1);
+
+        p3.getWorkerFirst().setInitialPosition(0, 3);
+        p3.getWorkerSecond().setInitialPosition(1, 2);
+
+        controller.initialPhase();
+        model.nextGamePhase();
+        model.nextGamePhase();
+        model.nextGamePhase();
+
+        model.setInitialTurn(2);
+
+        PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 a3");
+        playerCommand.setPlayerID(p3.getPlayerID());
+
+        controller.update(playerCommand);
+
+        playerCommand = PlayerCommand.parseInput("build w1 a4");
+        playerCommand.setPlayerID(p3.getPlayerID());
+
+        controller.update(playerCommand);
+
+        playerCommand = PlayerCommand.parseInput("end");
+        playerCommand.setPlayerID(p3.getPlayerID());
+
+        controller.update(playerCommand);
+
+        verify(model, times(1)).onPlayerLose(p1, LoseUpdate.LoseCause.CANT_MOVE);
+    }
+
+    @Test
+    public void loseConditionBuildTest() {
+        int playersNum = 3;
+        Match match = new Match(playersNum);
+        Model model = Mockito.spy(new Model(match));
+
+        Player p1 = new Player("Andrea", model, match);
+        Player p2 = new Player("Cosimo", model, match);
+        Player p3 = new Player("Roberto", model, match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Controller controller = new Controller(model);
+
+        p1.setNickname("nick1");
+        p1.setColor(PrintableColor.RED);
+
+        p1.setNickname("nick2");
+        p1.setColor(PrintableColor.GREEN);
+
+        p1.setNickname("nick3");
+        p1.setColor(PrintableColor.BLUE);
+
+        p1.setGodStrategy(GodStrategy.instantiateGod("athena"));
+        p2.setGodStrategy(GodStrategy.instantiateGod("apollo"));
+        p3.setGodStrategy(GodStrategy.instantiateGod("poseidon"));
+
+        p1.getWorkerFirst().setInitialPosition(0, 0);
+        p1.getWorkerSecond().setInitialPosition(0, 1);
+
+        p2.getWorkerFirst().setInitialPosition(1, 0);
+        p2.getWorkerSecond().setInitialPosition(1, 1);
+
+        p3.getWorkerFirst().setInitialPosition(0, 3);
+        p3.getWorkerSecond().setInitialPosition(1, 3);
+
+        controller.initialPhase();
+        model.nextGamePhase();
+        model.nextGamePhase();
+        model.nextGamePhase();
+
+        model.setInitialTurn(1);
+
+        PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 a1");
+        playerCommand.setPlayerID(p2.getPlayerID());
+
+        controller.update(playerCommand);
+
+        verify(model, times(1)).onPlayerLose(p2, LoseUpdate.LoseCause.CANT_BUILD);
     }
 }
