@@ -10,17 +10,21 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.GodStrategy;
 import it.polimi.ingsw.model.gods.*;
+import it.polimi.ingsw.view.RemoteView;
 import it.polimi.ingsw.view.gui.components.GodChoice;
 import it.polimi.ingsw.view.gui.components.InitialInfo;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class ControllerTest {
 
@@ -975,5 +979,143 @@ public class ControllerTest {
 
 
         assertFalse(returnValue); */
+    }
+
+    @Test
+    public void updateExceptions() {
+        int playersNum = 3;
+        Match match = new Match(playersNum);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
+        Player p3 = new Player("Roberto", new Model(match), match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        //Model model = new Model(match);
+       // Model model = mock(Model.class);
+        Model model = Mockito.spy(new Model(match));
+        Controller controller = new Controller(model);
+
+        p1.setGodStrategy(GodStrategy.instantiateGod("athena"));
+        p2.setGodStrategy(GodStrategy.instantiateGod("atlas"));
+        p3.setGodStrategy(GodStrategy.instantiateGod("poseidon"));
+
+        p1.getWorkerFirst().setInitialPosition(3, 3);
+        p1.getWorkerSecond().setInitialPosition(3, 4);
+
+        p2.getWorkerFirst().setInitialPosition(0, 0);
+        p2.getWorkerSecond().setInitialPosition(0, 1);
+
+        p3.getWorkerFirst().setInitialPosition(3, 2);
+        p3.getWorkerSecond().setInitialPosition(2, 4);
+
+        controller.initialPhase();
+        model.setInitialTurn(0);
+
+        PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 a1");
+        playerCommand.setPlayerID("Andrea");
+        playerCommand.setPlayer(p1);
+
+        controller.update(playerCommand);
+
+        verify(model, times(1)).reportError(p1, CommandType.MOVE, ErrorType.WRONG_GAME_PHASE, null);
+
+        InitialInfoCommand initialInfoCommand = new InitialInfoCommand("nickname", PrintableColor.GREEN);
+        initialInfoCommand.setPlayerID("Cosimo");
+        initialInfoCommand.setPlayer(p2);
+
+        controller.update(initialInfoCommand);
+
+        verify(model, times(1)).reportError(p2, CommandType.PICK, ErrorType.WRONG_TURN, null);
+
+        // Nickname Already Taken error test
+
+        InitialInfoCommand initialInfoCommand2 = new InitialInfoCommand("nickname", PrintableColor.GREEN);
+        initialInfoCommand2.setPlayerID("Andrea");
+        initialInfoCommand2.setPlayer(p1);
+
+        controller.update(initialInfoCommand2);
+
+        model.endTurn();
+        model.setInitialTurn(1);
+
+        InitialInfoCommand initialInfoCommand3 = new InitialInfoCommand("nickname", PrintableColor.GREEN);
+        initialInfoCommand3.setPlayerID("Cosimo");
+        initialInfoCommand3.setPlayer(p2);
+
+        controller.update(initialInfoCommand3);
+
+        verify(model, times(1)).reportError(p2, CommandType.PICK, ErrorType.ALREADY_TAKEN_NICKNAME, null);
+
+        // Invalid Color error test
+
+        InitialInfoCommand initialInfoCommand4 = new InitialInfoCommand("nickname2", PrintableColor.GREEN);
+        initialInfoCommand4.setPlayerID("Cosimo");
+        initialInfoCommand4.setPlayer(p2);
+
+        controller.update(initialInfoCommand4);
+
+        verify(model, times(1)).reportError(p2, CommandType.PICK, ErrorType.INVALID_COLOR, null);
+
+        // Invalid God Exception
+
+        model.nextGamePhase();
+
+        Optional<Player> godChooserOpt = model.getPlayers().stream().filter(Player::isGodChooser).findFirst();
+
+        if(!godChooserOpt.isPresent()) throw new IllegalArgumentException();
+
+        Player godChooser = godChooserOpt.get();
+
+        List<String> gods = new ArrayList<>();
+        gods.add("apollo");
+        gods.add("athena");
+        gods.add("hestia");
+
+        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(gods);
+        godChoiceCommand.setPlayerID(godChooser.getPlayerID());
+        godChoiceCommand.setPlayer(godChooser);
+
+        int turn = godChooser.equals(p1) ? 0 : godChooser.equals(p2) ? 1 : 2;
+
+        model.setInitialTurn(turn);
+
+        controller.update(godChoiceCommand);
+
+        turn = turn == 2 ? 0 : turn + 1;
+
+        model.setInitialTurn(turn);
+
+        List<String> chosenGods = new ArrayList<>();
+        chosenGods.add("minotaur");
+
+        GodChoiceCommand godChoiceCommand1 = new GodChoiceCommand(chosenGods);
+        Player turnPlayer = model.getPlayers().get(turn);
+        godChoiceCommand1.setPlayerID(turnPlayer.getPlayerID());
+        godChoiceCommand1.setPlayer(turnPlayer);
+
+        controller.update(godChoiceCommand1);
+
+        verify(model, times(1)).reportError(turnPlayer, CommandType.SELECT, ErrorType.INVALID_GOD, null);
+
+        // Selectable god but wrong Player
+
+        chosenGods = new ArrayList<>();
+        chosenGods.add("apollo");
+
+        GodChoiceCommand godChoiceCommand2 = new GodChoiceCommand(chosenGods);
+        turn = turn == 2 ? 0 : turn + 1;
+        Player wrongPlayer = model.getPlayers().get(turn);
+        godChoiceCommand2.setPlayerID(wrongPlayer.getPlayerID());
+        godChoiceCommand2.setPlayer(wrongPlayer);
+
+        controller.update(godChoiceCommand2);
+
+        verify(model, times(1)).reportError(wrongPlayer, CommandType.SELECT, ErrorType.WRONG_TURN, null);
+
+
+
+
     }
 }

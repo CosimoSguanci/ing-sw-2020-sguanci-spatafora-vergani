@@ -4,9 +4,7 @@ import it.polimi.ingsw.controller.commands.*;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.gods.GodStrategy;
-import it.polimi.ingsw.model.gods.Prometheus;
 import it.polimi.ingsw.model.updates.LoseUpdate;
-import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
