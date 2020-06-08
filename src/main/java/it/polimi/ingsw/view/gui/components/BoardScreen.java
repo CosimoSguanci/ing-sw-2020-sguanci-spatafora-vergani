@@ -96,8 +96,6 @@ public class BoardScreen extends JPanel {
         LayoutManager layoutManager = new BorderLayout();
         this.setLayout(layoutManager);
 
-
-
             JPanel cellsGrid = new JPanel(new GridLayout(Board.HEIGHT_SIZE, Board.WIDTH_SIZE)) {
 
             /**
@@ -182,7 +180,7 @@ public class BoardScreen extends JPanel {
                     btn.add(overImage, BorderLayout.CENTER);
                 }
 
-                else if(blockLevel != BlockType.GROUND){
+             /*   else if(blockLevel != BlockType.GROUND){
 
                     JPanel levelPanel = new JPanel();
                     levelPanel.setLayout(new BorderLayout());
@@ -204,11 +202,11 @@ public class BoardScreen extends JPanel {
 
                     btn.setLevelData(levelPanel, imageIconLevel);
                 }
-
+*/
 
                 this.buttons[i][j] = btn;
                 cellsGrid.add(this.buttons[i][j]);
-
+/*
                 btn.addComponentListener(new ComponentAdapter() {
 
                     @Override
@@ -282,7 +280,7 @@ public class BoardScreen extends JPanel {
                     }
 
                 });
-
+*/
             }
         }
 

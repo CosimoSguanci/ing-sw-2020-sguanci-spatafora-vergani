@@ -90,9 +90,11 @@ public class JCellButton extends JButton {
             case GROUND:
                 return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + ".png")).getImage();
             case LEVEL_ONE:
+                return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + "-level1.png")).getImage();
             case LEVEL_TWO:
+                return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + "-level2.png")).getImage();
             case LEVEL_THREE:
-                return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + "level.png")).getImage();
+                return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + "-level3.png")).getImage();
             default: throw  new Exception();
         }
     }
