@@ -1497,4 +1497,31 @@ public class ControllerTest {
 
         verify(model, times(1)).onPlayerLose(p2, LoseUpdate.LoseCause.CANT_BUILD);
     }
+
+    @Test
+    public void onPlayerDisconnectedTest() {
+        int playersNum = 3;
+        Match match = new Match(playersNum);
+        Model model = Mockito.spy(new Model(match));
+
+        Player p1 = new Player("Andrea", model, match);
+        Player p2 = new Player("Cosimo", model, match);
+        Player p3 = new Player("Roberto", model, match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+        match.addPlayer(p3);
+
+        Controller controller = new Controller(model);
+
+        p1.getWorkerFirst().setInitialPosition(0, 0);
+        p1.getWorkerSecond().setInitialPosition(3, 3);
+
+        controller.onPlayerDisconnected("Andrea");
+
+        assertEquals(2, model.getPlayers().size());
+        assertNull(model.getBoard().getCell(0, 0).getWorker());
+        assertNull(model.getBoard().getCell(3, 3).getWorker());
+        verify(model, times(1)).disconnectedPlayerUpdate(p1);
+        verify(model, times(1)).gamePhaseUpdate(GamePhase.MATCH_ENDED);
+    }
 }
