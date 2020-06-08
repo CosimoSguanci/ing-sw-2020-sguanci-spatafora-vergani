@@ -7,7 +7,6 @@ public class DisconnectedPlayerUpdate extends Update {
 
     private final Player disconnectedPlayer;
 
-
     public DisconnectedPlayerUpdate(Player disconnectedPlayer, String board) {
         super(board);
         this.disconnectedPlayer = disconnectedPlayer;
