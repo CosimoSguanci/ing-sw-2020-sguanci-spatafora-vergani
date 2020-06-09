@@ -15,7 +15,6 @@ public class ApolloTest {
 
          // TODO Use @BeforeEach
 
-
         Apollo apollo = new Apollo();
 
         Match match = new Match(2);
@@ -76,6 +75,13 @@ public class ApolloTest {
         match.getMatchBoard().getCell(1, 4).setLevel(BlockType.DOME);
 
         assertFalse(apollo.canMove(match.getMatchBoard(), player));
+    }
+
+    @Test
+    public void equalsTest() {
+        Apollo apollo = new Apollo();
+        Apollo apollo2 = new Apollo();
+        assertEquals(apollo, apollo2);
     }
 
 }

@@ -86,7 +86,7 @@ public class Artemis extends GodStrategy {
 
         // super.canBuild is false e si può ancora muovere -> controllo che in una qualsiasi delle celle adiacenti in cui si può muovere, possa costruire
 
-        for (int i = 0; i < Board.WIDTH_SIZE; i++) {
+        for (int i = 0; i < Board.WIDTH_SIZE; i++) { // todo togliere
             for (int j = 0; j < Board.HEIGHT_SIZE; j++) {
                 if (worker.getPosition().isAdjacentTo(board.getCell(i, j)) && worker.getPosition().isLevelDifferenceOk(board.getCell(i, j)) && board.getCell(i, j).getLevel() != BlockType.DOME && board.getCell(i, j).isEmpty()) {
 
