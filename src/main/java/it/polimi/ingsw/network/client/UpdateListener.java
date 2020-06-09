@@ -41,7 +41,7 @@ public class UpdateListener extends Observable<Update> implements ObjectListener
 
     @Override
     public void forwardNotify(Object update) {
-        if(update instanceof String && update.equals(Server.PING_MSG)) {
+        /*if(update instanceof String && update.equals(Server.PING_MSG)) {
             try {
                 objectOutputStream.writeObject(Server.PONG_MSG);
             } catch (IOException e) {
@@ -52,6 +52,9 @@ public class UpdateListener extends Observable<Update> implements ObjectListener
             if(update instanceof Update) {
                 notify((Update) update);
             }
+        }*/
+        if(update instanceof Update) {
+            notify((Update) update);
         }
     }
 

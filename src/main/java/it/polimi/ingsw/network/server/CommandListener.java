@@ -57,8 +57,8 @@ public class CommandListener extends Observable<Command> implements ObjectListen
             socket.close();
         } else {
             server.addToPingWaitingList(socket);
-            objectOutputStream.writeObject(Server.PING_MSG);
-            objectOutputStream.flush();
+            /*objectOutputStream.writeObject(Server.PING_MSG);
+            objectOutputStream.flush();*/
         }
     }
 

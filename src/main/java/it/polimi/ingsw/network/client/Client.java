@@ -10,6 +10,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class Client {
@@ -19,12 +22,12 @@ public class Client {
     private final static int PORT = 12345;
     private final static int TIMEOUT_MS = 2000;
     private final ExecutorService executor = CustomThreadPoolExecutor.createNew();
+    private final ScheduledExecutorService pongScheduler = Executors.newScheduledThreadPool(1);
     private Socket socket;
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
     private ObjectOutputStream objectOutputStream;
     private UpdateListener updateListener;
-
 
     public Client() throws IOException {
         initConnection();
@@ -48,6 +51,7 @@ public class Client {
         }
         this.updateListener = new UpdateListener(socket, objectOutputStream);
         executor.execute(updateListener);
+        pongScheduler.scheduleAtFixedRate(new PongSender(this.objectOutputStream), 0, 500, TimeUnit.MILLISECONDS);
     }
 
 
@@ -80,9 +84,6 @@ public class Client {
         objectOutputStream.flush();
     }
 
-    public Socket getSocket() {
-        return this.socket;
-    }
 
     public UpdateListener getUpdateListener() {
         return this.updateListener;
