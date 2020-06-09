@@ -21,8 +21,9 @@ public class Client {
     private final static String IP = "cosimosguanci.ddns.net";
     private final static int PORT = 12345;
     private final static int TIMEOUT_MS = 2000;
+    private final static int PONG_SCHEDULE_TIME_MS = 500;
     private final ExecutorService executor = CustomThreadPoolExecutor.createNew();
-    private final ScheduledExecutorService pongScheduler = Executors.newScheduledThreadPool(1);
+    private ScheduledExecutorService pongScheduler;
     private Socket socket;
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
@@ -51,9 +52,9 @@ public class Client {
         }
         this.updateListener = new UpdateListener(socket, objectOutputStream);
         executor.execute(updateListener);
-        pongScheduler.scheduleAtFixedRate(new PongSender(this.objectOutputStream), 0, 500, TimeUnit.MILLISECONDS);
+        this.pongScheduler = Executors.newScheduledThreadPool(1);
+        pongScheduler.scheduleAtFixedRate(new PongSender(this.objectOutputStream, this.pongScheduler), 0, PONG_SCHEDULE_TIME_MS, TimeUnit.MILLISECONDS);
     }
-
 
     public void sendPlayersNumber(int playersNum) throws IOException {
         dataOutputStream.writeInt(playersNum);

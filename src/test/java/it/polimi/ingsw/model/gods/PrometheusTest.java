@@ -31,9 +31,6 @@ public class PrometheusTest {
     @Test
     public void prometheusCannotMoveUpIfBuiltBeforeMovingTest()  {
 
-
-
-
         Prometheus prometheus = new Prometheus();
 
         Match match = new Match(2);
@@ -51,10 +48,6 @@ public class PrometheusTest {
 
     @Test
     public void prometheusCannotMultipleBuildIfMoveBeforeBuildTest()  {
-
-
-
-
         Prometheus prometheus = new Prometheus();
 
         Match match = new Match(2);
@@ -103,6 +96,30 @@ public class PrometheusTest {
 
         //Now I check that I can move/build again (so the values are correctly reinitialized
         assertTrue(prometheus.checkBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_THREE));
+    }
+
+    @Test
+    public void prometheusEndTurnTest_standard() {
+
+        Prometheus prometheus = new Prometheus();
+
+        Match match = new Match(2);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        Worker worker = player.getWorkerFirst();
+
+        worker.setInitialPosition(0, 0);
+
+        assertTrue(prometheus.checkMove(worker, match.getMatchBoard().getCell(1, 1)));
+        prometheus.executeMove(worker, match.getMatchBoard().getCell(1, 1));
+
+        assertTrue(prometheus.checkBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE));
+        prometheus.executeBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE);
+
+        assertTrue(prometheus.checkEndTurn());
+        prometheus.endPlayerTurn(player);
+
+        //Now I check that I can move/build again (so the values are correctly reinitialized
+        assertTrue(prometheus.checkBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_TWO));
     }
 
     @Test
@@ -181,5 +198,23 @@ public class PrometheusTest {
         assertEquals(1, model.getPlayers().size());
         assertFalse(model.getPlayers().contains(player));
         assertTrue(model.getPlayers().contains(player2));
+    }
+
+    @Test
+    public void cannotBuildWithWorkerNotSelectedPrometheus() {
+        Prometheus prometheus = new Prometheus();
+
+        Match match = new Match(2);
+        Model model = new Model(match);
+        Player player = new Player(UUID.randomUUID().toString(), model, match);
+        player.setGodStrategy(prometheus);
+
+        player.getWorkerFirst().setInitialPosition(0, 0);
+        player.getWorkerSecond().setInitialPosition(3, 3);
+
+        assertTrue(prometheus.checkMove(player.getWorkerFirst(), match.getMatchBoard().getCell(0, 1)));
+        prometheus.executeMove(player.getWorkerFirst(), match.getMatchBoard().getCell(0, 1));
+
+        assertFalse(prometheus.checkBuild(player.getWorkerSecond(), match.getMatchBoard().getCell(3, 4), null));
     }
 }

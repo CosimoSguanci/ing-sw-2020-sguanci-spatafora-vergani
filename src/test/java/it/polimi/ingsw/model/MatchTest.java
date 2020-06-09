@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.AlreadyInsidePlayerException;
+import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
 import it.polimi.ingsw.exceptions.NicknameAlreadyTakenException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,7 @@ public class MatchTest {
     @Test
     public void addPlayerTest2() {
         int playersNum = 3;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Player p1 = new Player("Andrea",  new Model(match), match);
         Player p2 = new Player("Cosimo",  new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
@@ -25,14 +25,14 @@ public class MatchTest {
         match.addPlayer(p2);
         assertThrows(AlreadyInsidePlayerException.class, () -> match.addPlayer(p2));
         match.addPlayer(p3);
+        assertThrows(InvalidPlayerNumberException.class, () -> match.addPlayer(new Player("id", new Model(new Match(3)), new Match(3))));
     }
 
     @Disabled // todo exception not thrown here
     @Test
     public void addPlayerTest1() {
         int playersNum = 3;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Player p1 = new Player("Andrea",  new Model(match), match);
         Player p2 = new Player("Cosimo",  new Model(match), match);
         Player p3 = new Player("ValerioAndoni",  new Model(match), match);
@@ -44,8 +44,7 @@ public class MatchTest {
     @Test
     public void removePlayerTest() {
         int playersNum = 3;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
         Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
