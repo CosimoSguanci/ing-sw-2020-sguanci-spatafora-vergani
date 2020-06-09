@@ -11,9 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MinotaurTest {
     @Test
     public void minotaurCheckMoveTest() {
-
-
-
         Minotaur minotaur = new Minotaur();
 
         Match match = new Match(2);
@@ -64,6 +61,51 @@ public class MinotaurTest {
         minotaur.executeMove(worker, match.getMatchBoard().getCell(1, 2));
         assertEquals(match.getMatchBoard().getCell(1, 2), worker.getPosition());
         assertEquals(match.getMatchBoard().getCell(2, 3), oppositeWorker.getPosition()); // Forced one space straight backwards
+    }
+
+    @Test
+    public void minotaurCannotMoveTest() {
+        Minotaur minotaur = new Minotaur();
+
+        Match match = new Match(2);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        Worker workerFirst = player.getWorkerFirst();
+        Worker workerSecond = player.getWorkerSecond();
+
+        workerFirst.setInitialPosition(0, 0);
+        workerSecond.setInitialPosition(0, 4);
+
+        match.getMatchBoard().getCell(0, 1).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(1, 1).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(1, 0).setLevel(BlockType.DOME);
+
+        match.getMatchBoard().getCell(0, 3).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(1, 3).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(1, 4).setLevel(BlockType.DOME);
+
+        assertFalse(minotaur.canMove(match.getMatchBoard(), player));
+    }
+
+    @Test
+    public void minotaurCanMoveTest() {
+        Minotaur minotaur = new Minotaur();
+
+        Match match = new Match(2);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        Worker workerFirst = player.getWorkerFirst();
+        Worker workerSecond = player.getWorkerSecond();
+
+        workerFirst.setInitialPosition(0, 0);
+        workerSecond.setInitialPosition(0, 4);
+
+        match.getMatchBoard().getCell(1, 1).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(1, 0).setLevel(BlockType.DOME);
+
+        match.getMatchBoard().getCell(0, 3).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(1, 3).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(1, 4).setLevel(BlockType.DOME);
+
+        assertTrue(minotaur.canMove(match.getMatchBoard(), player));
     }
 
 }
