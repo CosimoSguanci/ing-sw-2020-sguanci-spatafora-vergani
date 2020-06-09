@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.Gui;
+import it.polimi.ingsw.view.gui.listeners.GodChoiceInfoButtonListener;
 import it.polimi.ingsw.view.gui.listeners.GodChoiceJButtonListener;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
@@ -121,37 +122,82 @@ public class GodChoice extends JPanel implements ActionListener {
         }
     }
 
-    private void drawGodChoice() throws IOException {
+
+    private void setSpecific() {
+        ImageIcon startImg = new ImageIcon("src/main/resources/images/done.png");
+        startImg = new ImageIcon(startImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        this.continueButton = new JRoundButton(startImg);
+        this.continueButton.setBorder(BorderFactory.createEmptyBorder(0,5, 0,5));
+
+        ImageIcon infoImg = new ImageIcon(this.standardImgPath + "information.png");
+        infoImg = new ImageIcon(infoImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        this.infoButton = new JRoundButton(infoImg);
+        this.infoButton.setBorder(BorderFactory.createEmptyBorder(0,5, 0,5));
 
         boolean isGodChooser = this.gui.getController().isClientPlayerGodChooser();
+        if(isGodChooser) {
+            titleLabel.setText("Select " + playersNumber + " Gods");
+        }
+        else {
+            titleLabel.setText("Select a God");
+        }
+    }
+
+    private void addListeners() {
+        this.continueButton.addActionListener(this);
+        this.infoButton.addActionListener(new GodChoiceInfoButtonListener(this));
+
+        boolean isGodChooser = this.gui.getController().isClientPlayerGodChooser();
+        List<String> gods = isGodChooser ? View.getGodsNamesList() : this.selectableGods;
+        for (int i = 0; i < gods.size(); i++) {
+            this.godChoiceJButtonListener = new GodChoiceJButtonListener(this);
+            this.buttons.get(i).addActionListener(godChoiceJButtonListener);
+        }
+    }
+
+    private JRoundButton continueButton;
+    private JRoundButton infoButton;
+    private JLabel titleLabel = new JLabel();
+    private JPanel possibleGodsPanel = new JPanel();
+    private JPanel innerPanel = new JPanel();
+    private JPanel innerPanel2 = new JPanel();
+
+    /*private*/public void drawGodChoice(JPanel owner, Gui gui, JPanel possibleGodsPanel, JPanel innerPanel, JPanel innerPanel2, JLabel titleLabel, ArrayList<JButton> buttons) throws IOException {
+
+        boolean isGodChooser = /*this.*/gui.getController().isClientPlayerGodChooser();
 
         LayoutManager layoutManager = new BorderLayout();
-        this.setLayout(layoutManager);
+        /*this.setLayout(layoutManager);*/
+        owner.setLayout(layoutManager);
 
         JPanel titlePanel = new JPanel();
-        JPanel possibleGodsPanel = new JPanel();
-        ImageIcon startImg = new ImageIcon("src/main/resources/images/done.png");
+        /*JPanel possibleGodsPanel = new JPanel();*/
+        /*ImageIcon startImg = new ImageIcon("src/main/resources/images/done.png");
         startImg = new ImageIcon(startImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
 
         JRoundButton continueButton = new JRoundButton(startImg);
-        continueButton.addActionListener(this);
-        JPanel innerPanel = new JPanel();
-        JPanel innerPanel2 = new JPanel();
+        continueButton.addActionListener(this);*/
+        /*JPanel innerPanel = new JPanel();
+        JPanel innerPanel2 = new JPanel();/*
 
-        JLabel titleLabel;
+        /*JLabel titleLabel;
 
         if(isGodChooser) {
             titleLabel = new JLabel("Select " + playersNumber + " Gods");
         }
         else {
             titleLabel = new JLabel("Select a God");
-        }
+        }*/
+
+        //titleLabel = new JLabel();
 
         titleLabel.setFont(this.titleFont);
         titlePanel.add(titleLabel);
         titlePanel.setBorder(BorderFactory.createEmptyBorder(20,0,20,0));
-        this.add(titlePanel, BorderLayout.NORTH);
-        this.setBorder(BorderFactory.createEmptyBorder(0,20,0,20));
+        /*this.add(titlePanel, BorderLayout.NORTH);
+        this.setBorder(BorderFactory.createEmptyBorder(0,20,0,20));*/
+        owner.add(titlePanel, BorderLayout.NORTH);
+        owner.setBorder(BorderFactory.createEmptyBorder(0,20,0,20));
 
 
        // GridLayout gridLayout = new GridLayout(4, 4);
@@ -167,7 +213,7 @@ public class GodChoice extends JPanel implements ActionListener {
 
         List<String> gods = isGodChooser ? View.getGodsNamesList() : this.selectableGods;
 
-        this.godChoiceJButtonListener = new GodChoiceJButtonListener(this);
+        /*this.godChoiceJButtonListener = new GodChoiceJButtonListener(this);*/
         for (int i = 0; i < gods.size(); i++) {
             imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + gods.get(i).toLowerCase() + ".png")));
             imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(60,-1, Image.SCALE_SMOOTH));
@@ -216,8 +262,8 @@ public class GodChoice extends JPanel implements ActionListener {
 
             });
 
-            this.buttons.add(godBtn);
-            this.buttons.get(i).addActionListener(godChoiceJButtonListener);
+            /*this.*/buttons.add(godBtn);
+            //this.buttons.get(i).addActionListener(godChoiceJButtonListener);
 
             godBtn.setHorizontalTextPosition(JButton.CENTER);
             godBtn.setVerticalTextPosition(JButton.BOTTOM);
@@ -245,7 +291,7 @@ public class GodChoice extends JPanel implements ActionListener {
             possibleGodsPanel.add(pannel); */
         }
 
-        commonGodChoose(possibleGodsPanel, continueButton, innerPanel, innerPanel2);
+        //commonGodChoose(possibleGodsPanel, continueButton, innerPanel, innerPanel2);
 
         titlePanel.setOpaque(false);
         innerPanel.setOpaque(false);
@@ -253,13 +299,20 @@ public class GodChoice extends JPanel implements ActionListener {
         possibleGodsPanel.setOpaque(false);
     }
 
-    private void commonGodChoose(JPanel possibleGodsPanel, JButton continueButton, JPanel innerPanel, JPanel innerPanel2) {
+    private void commonGodChoose(/*JPanel possibleGodsPanel, JButton continueButton, JPanel innerPanel, JPanel innerPanel2*/) {
         this.add(possibleGodsPanel);
 
         this.add(innerPanel, BorderLayout.SOUTH);
         innerPanel.setLayout(new BorderLayout());
         innerPanel2.setLayout(new BorderLayout());
-        innerPanel2.add(continueButton, BorderLayout.EAST);
+        JPanel boxLayout = new JPanel();
+        boxLayout.setLayout(new BoxLayout(boxLayout, BoxLayout.X_AXIS));
+        boxLayout.setOpaque(false);
+        boxLayout.add(infoButton);
+        boxLayout.add(Box.createHorizontalGlue());
+        boxLayout.add(continueButton);
+        innerPanel2.add(boxLayout, BorderLayout.EAST);
+        //innerPanel2.add(continueButton, BorderLayout.EAST);
         innerPanel.add(innerPanel2);
         innerPanel.setBorder(BorderFactory.createEmptyBorder(0,0,20,0));
     }
@@ -338,7 +391,12 @@ public class GodChoice extends JPanel implements ActionListener {
         this.removeAll();
 
         try {
-            drawGodChoice();
+            drawGodChoice(this, this.gui, this.possibleGodsPanel, this.innerPanel, this.innerPanel2, this.titleLabel, this.buttons);
+            setSpecific();
+            commonGodChoose(/*possibleGodsPanel, continueButton, innerPanel, innerPanel2*/);
+            addListeners();
+            this.revalidate();
+            this.repaint();
         } catch(IOException e) {
             e.printStackTrace();
         }

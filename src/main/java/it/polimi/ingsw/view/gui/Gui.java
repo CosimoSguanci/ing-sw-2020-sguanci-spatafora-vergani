@@ -212,6 +212,7 @@ public class Gui extends View implements Observer<Update> {
     @Override
     public void update(Update update) {
         SwingUtilities.invokeLater(() -> update.handleUpdate(this.guiUpdateHandler));
+        //update.handleUpdate(this.guiUpdateHandler);
     }
 
     void forwardNotify(Update update) { // forwards update to client-side Controller
