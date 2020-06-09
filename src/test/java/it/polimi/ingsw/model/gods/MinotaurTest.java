@@ -37,6 +37,30 @@ public class MinotaurTest {
         oppositeWorker.reinitializeBuiltMoved();
 
         assertTrue(minotaur.checkMove(worker, match.getMatchBoard().getCell(1, 1)));
+
+        worker.move(match.getMatchBoard().getCell(2, 2));
+        oppositeWorker.move(match.getMatchBoard().getCell(1, 2));
+
+        worker.reinitializeBuiltMoved();
+        oppositeWorker.reinitializeBuiltMoved();
+
+        assertTrue(minotaur.checkMove(worker, match.getMatchBoard().getCell(1, 2)));
+
+        worker.move(match.getMatchBoard().getCell(2, 2));
+        oppositeWorker.move(match.getMatchBoard().getCell(2, 1));
+
+        worker.reinitializeBuiltMoved();
+        oppositeWorker.reinitializeBuiltMoved();
+
+        assertTrue(minotaur.checkMove(worker, match.getMatchBoard().getCell(2, 1)));
+
+        worker.move(match.getMatchBoard().getCell(1, 2));
+        oppositeWorker.move(match.getMatchBoard().getCell(2, 2));
+
+        worker.reinitializeBuiltMoved();
+        oppositeWorker.reinitializeBuiltMoved();
+
+        assertTrue(minotaur.checkMove(worker, match.getMatchBoard().getCell(2, 2)));
     }
 
     @Test

@@ -56,7 +56,6 @@ public class Client {
         pongScheduler.scheduleAtFixedRate(new PongSender(this.objectOutputStream, this.pongScheduler), 0, PONG_SCHEDULE_TIME_MS, TimeUnit.MILLISECONDS);
     }
 
-
     public void sendPlayersNumber(int playersNum) throws IOException {
         dataOutputStream.writeInt(playersNum);
         dataOutputStream.flush();

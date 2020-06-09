@@ -104,6 +104,10 @@ public class ArtemisTest {
 
         assertFalse(artemis.canBuild(match.getMatchBoard(), worker));
 
+        /*match.getMatchBoard().getCell(1, 1).setLevel(BlockType.GROUND);
+
+        assertTrue(artemis.canBuild(match.getMatchBoard(), worker));*/
+
         match.getMatchBoard().getCell(1, 1).setLevel(BlockType.LEVEL_ONE);
         assertTrue(artemis.checkMove(worker, match.getMatchBoard().getCell(1, 1)));
         artemis.executeMove(worker, match.getMatchBoard().getCell(1, 1));
