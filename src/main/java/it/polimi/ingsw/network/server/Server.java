@@ -24,7 +24,6 @@ public class Server implements Observer<Controller> {
     private final ServerSocket serverSocket;
     public final static int TIMEOUT_MS = 2000;
     public final static String PING_MSG = "PING";
-    public final static String PONG_MSG = "PONG";
 
     /**
      * Cached ThreadPool without idle threads termination

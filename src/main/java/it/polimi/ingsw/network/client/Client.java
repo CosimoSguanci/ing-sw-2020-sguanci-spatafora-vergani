@@ -53,7 +53,7 @@ public class Client {
         this.updateListener = new UpdateListener(socket, objectOutputStream);
         executor.execute(updateListener);
         this.pongScheduler = Executors.newScheduledThreadPool(1);
-        pongScheduler.scheduleAtFixedRate(new PongSender(this.objectOutputStream, this.pongScheduler), 0, PONG_SCHEDULE_TIME_MS, TimeUnit.MILLISECONDS);
+        pongScheduler.scheduleAtFixedRate(new PingSender(this.objectOutputStream, this.pongScheduler), 0, PONG_SCHEDULE_TIME_MS, TimeUnit.MILLISECONDS);
     }
 
     public void sendPlayersNumber(int playersNum) throws IOException {

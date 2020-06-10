@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.concurrent.ScheduledExecutorService;
 
-public class PongSender implements Runnable {
+public class PingSender implements Runnable {
 
     private ObjectOutputStream objectOutputStream;
     private ScheduledExecutorService scheduler;
 
-    PongSender(ObjectOutputStream objectOutputStream, ScheduledExecutorService scheduler) {
+    PingSender(ObjectOutputStream objectOutputStream, ScheduledExecutorService scheduler) {
         this.objectOutputStream = objectOutputStream;
         this.scheduler = scheduler;
     }
@@ -19,7 +19,7 @@ public class PongSender implements Runnable {
     @Override
     public void run() {
         try {
-            this.objectOutputStream.writeObject(Server.PONG_MSG);
+            this.objectOutputStream.writeObject(Server.PING_MSG);
         } catch(IOException e) {
             scheduler.shutdown();
             e.printStackTrace();

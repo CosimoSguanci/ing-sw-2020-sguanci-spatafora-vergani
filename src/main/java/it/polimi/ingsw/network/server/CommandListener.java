@@ -41,7 +41,7 @@ public class CommandListener extends Observable<Command> implements ObjectListen
 
     @Override
     public void forwardNotify(Object command) {
-        if(command instanceof String && command.equals(Server.PONG_MSG)) {
+        if(command instanceof String && command.equals(Server.PING_MSG)) {
             server.removeFromPingWaitingList(socket);
         }
         else {
