@@ -47,10 +47,7 @@ public class Gui extends View implements Observer<Update> {
     private GamePreparation gamePreparation;
     private RealGame realGame;
     private Map<String, String> playersGods;
-
-    // etc
     private Map<String, PrintableColor> playersColors;
-
 
     private Gui(Client clientInstance, Controller controllerInstance) {
         client = clientInstance;
@@ -201,8 +198,8 @@ public class Gui extends View implements Observer<Update> {
 
 
         frame.pack();
-        frame.setSize(900, 700);
-        frame.setMinimumSize(new Dimension(600, 600));
+        frame.setPreferredSize(new Dimension(950, 750));
+        frame.setMinimumSize(frame.getPreferredSize());
         frame.setIconImage(ImageIO.read(Gui.class.getResource("/images/title_island.png")));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -408,6 +405,7 @@ public class Gui extends View implements Observer<Update> {
         //JOptionPane.showMessageDialog(frame, message, title, JOptionPane.ERROR_MESSAGE);
 
         String finalMessage = message;
+
         SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame, finalMessage, title, JOptionPane.ERROR_MESSAGE));
 
     }
@@ -438,13 +436,14 @@ public class Gui extends View implements Observer<Update> {
 
 
         ImageIcon finalIcon = icon;
+
+
+
         SwingUtilities.invokeLater(() -> {
             JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE, finalIcon);
             askPlayAgainDialog();
         });
 
-
-        //askPlayAgainDialog();
     }
 
     public void showLoseMessageDialog(LoseUpdate update) {
@@ -532,8 +531,6 @@ public class Gui extends View implements Observer<Update> {
             JOptionPane.showMessageDialog(null, "Cannot communicate to the Server, maybe it's down. Otherwise, check your connection." + System.lineSeparator() + "Quitting...", "Server Unreachable", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         });
-
-
     }
 
     public void showDisconnectedPlayerDialog(DisconnectedPlayerUpdate update) {
@@ -546,13 +543,13 @@ public class Gui extends View implements Observer<Update> {
         String player = update.getDisconnectedPlayer().getNickname() != null ? update.getDisconnectedPlayer().getNickname() : "A Player";
 
         ImageIcon finalIcon = icon;
-        SwingUtilities.invokeLater(() -> {
-            JOptionPane.showOptionDialog(null, player + " disconnected", "Disconnection", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, finalIcon, null, null);
 
-            askPlayAgainDialog();
-        });
-
-
+        if (this.currentGamePhase != GamePhase.MATCH_ENDED) {
+            SwingUtilities.invokeLater(() -> {
+                JOptionPane.showOptionDialog(null, player + " disconnected", "Disconnection", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, finalIcon, null, null);
+                askPlayAgainDialog();
+            });
+        }
     }
 
     private void reinitializeComponents() {

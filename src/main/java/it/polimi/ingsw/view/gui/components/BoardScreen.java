@@ -31,10 +31,11 @@ import java.util.Map;
  */
 public class BoardScreen extends JPanel {
     private final JCellButton[][] buttons = new JCellButton[Board.WIDTH_SIZE][Board.HEIGHT_SIZE];
-    private final static Map<String, Map<String, ImageIcon>> towerIcons = new HashMap<>();
+    //private final static Map<String, ImageIcon> towerIcons = new HashMap<>();
+    private final static Map<String, ImageIcon> domeIcon = new HashMap<>();
+    private final static Map<String, Map<String, ImageIcon>> workerIcons = new HashMap<>();
 
-
-    static {
+    /*static {
         new Thread(() -> {
 
             int i = 1;
@@ -74,6 +75,82 @@ public class BoardScreen extends JPanel {
                 i++;
 
             }
+
+        }).start();
+    }*/
+    static {
+        new Thread(() -> {
+                try {
+                    ImageIcon imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/BoardScreen/dome.png")));
+
+                    ImageIcon smallImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(30,-1, Image.SCALE_SMOOTH));
+
+                    ImageIcon mediumSmallImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(35,-1, Image.SCALE_SMOOTH));
+
+                    ImageIcon mediumImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(40,-1, Image.SCALE_SMOOTH));
+
+                    ImageIcon mediumBigImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(50,-1, Image.SCALE_SMOOTH));
+
+                    ImageIcon bigImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(60,-1, Image.SCALE_SMOOTH));
+
+                    ImageIcon veryBigImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(70,-1, Image.SCALE_SMOOTH));
+
+                    domeIcon.put("small", smallImageIcon);
+                    domeIcon.put("medium_small", mediumSmallImageIcon);
+                    domeIcon.put("medium", mediumImageIcon);
+                    domeIcon.put("medium_big", mediumBigImageIcon);
+                    domeIcon.put("big", bigImageIcon);
+                    domeIcon.put("very_big", veryBigImageIcon);
+
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+
+        }).start();
+    }
+
+    public static Map<String, Map<String, ImageIcon>> getWorkerIcons() {
+        return workerIcons;
+    }
+
+    static {
+        new Thread(() -> {
+
+            List<PrintableColor> colors = PrintableColor.getColorList();
+
+            colors.forEach(color -> {
+                try {
+
+                    ImageIcon imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/BoardScreen/worker_" + color.toString().toLowerCase() + ".png")));
+
+                    ImageIcon smallImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH));
+
+                    ImageIcon mediumSmallImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(35,35, Image.SCALE_SMOOTH));
+
+                    ImageIcon mediumImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(40,40, Image.SCALE_SMOOTH));
+
+                    ImageIcon mediumBigImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(50,50, Image.SCALE_SMOOTH));
+
+                    ImageIcon bigImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(60,60, Image.SCALE_SMOOTH));
+
+                    ImageIcon veryBigImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(70,70, Image.SCALE_SMOOTH));
+
+                    Map<String, ImageIcon> m = new HashMap<>();
+                    m.put("small", smallImageIcon);
+                    m.put("medium_small", mediumSmallImageIcon);
+                    m.put("medium", mediumImageIcon);
+                    m.put("medium_big", mediumBigImageIcon);
+                    m.put("big", bigImageIcon);
+                    m.put("very_big", veryBigImageIcon);
+
+                    workerIcons.put("worker_" + color.toString().toLowerCase(), m);
+
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+
 
         }).start();
     }
@@ -156,9 +233,63 @@ public class BoardScreen extends JPanel {
                 btn.setBorder(BorderFactory.createEmptyBorder());
 
                 if (!gameBoard.getCell(i, j).isEmpty()) {
-
                     playerPrintableWorker = printableWorker.player;
-                    ImageIcon workerIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/worker_" + playerPrintableWorker.getColor().toString().toLowerCase() + ".png"));
+
+                    btn.addComponentListener(new ComponentAdapter() {
+
+                        @Override
+                        public void componentResized(ComponentEvent e) {
+                            JCellButton btn = (JCellButton) e.getComponent();
+                            Dimension size = btn.getSize();
+
+                            if(btn.getComponents().length> 0) {
+                                btn.remove(btn.getComponent(0));
+                            }
+
+                            ImageIcon imageIcon;
+
+                            if(size.width > 120 || size.height > 120) {
+                                imageIcon = workerIcons.get("worker_" + playerPrintableWorker.getColor().toString().toLowerCase()).get("very_big");
+
+                            }
+
+                            else if(size.width > 100 || size.height > 100) {
+                                imageIcon = workerIcons.get("worker_" + playerPrintableWorker.getColor().toString().toLowerCase()).get("big");
+
+                            }
+
+                            else if(size.width > 80 || size.height > 80) {
+                                imageIcon = workerIcons.get("worker_" + playerPrintableWorker.getColor().toString().toLowerCase()).get("medium_big");
+
+                            }
+
+                            else if(size.width > 60 || size.height > 60) {
+                                imageIcon = workerIcons.get("worker_" + playerPrintableWorker.getColor().toString().toLowerCase()).get("medium");
+
+                            }
+
+                            else if(size.width > 30 || size.height > 30) {
+                                imageIcon = workerIcons.get("worker_" + playerPrintableWorker.getColor().toString().toLowerCase()).get("medium_small");
+
+                            }
+
+                            else {
+                                imageIcon = workerIcons.get("worker_" + playerPrintableWorker.getColor().toString().toLowerCase()).get("small");
+
+                            }
+
+                            JLabel overImage = new JLabel(imageIcon);
+                            btn.add(overImage, BorderLayout.CENTER);
+
+                            btn.revalidate();
+                            btn.repaint();
+
+                        }
+
+                    });
+                }
+
+                    /*ImageIcon workerIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/worker_" + playerPrintableWorker.getColor().toString().toLowerCase() + ".png"));
 
                     workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(70,70, Image.SCALE_SMOOTH));
 
@@ -170,14 +301,69 @@ public class BoardScreen extends JPanel {
 
                     btn.setWorkerLabel(overImage);
 
-                    btn.add(overImage, BorderLayout.CENTER);            //Use btn.getComponents() to have access to JLabel
-                }
+                    btn.add(overImage, BorderLayout.CENTER);      */      //Use btn.getComponents() to have access to JLabel
+
 
                 if(blockLevel == BlockType.DOME) {
-                    ImageIcon domeIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/dome.png"));
+                    /*ImageIcon domeIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/dome.png"));
                     domeIcon = new ImageIcon(domeIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH));
                     JLabel overImage = new JLabel(domeIcon);
-                    btn.add(overImage, BorderLayout.CENTER);
+                    btn.add(overImage, BorderLayout.CENTER);*/
+
+                    btn.addComponentListener(new ComponentAdapter() {
+
+                        @Override
+                        public void componentResized(ComponentEvent e) {
+                            JCellButton btn = (JCellButton) e.getComponent();
+                            Dimension size = btn.getSize();
+
+                            if(btn.getComponents().length > 0) {
+
+                                btn.remove(btn.getComponent(0));
+                            }
+
+                            ImageIcon imageIcon;
+
+                            if(size.width > 120 || size.height > 120) {
+                                imageIcon = domeIcon.get("very_big");
+
+                            }
+
+                            else if(size.width > 100 || size.height > 100) {
+                                imageIcon = domeIcon.get("big");
+
+                            }
+
+                            else if(size.width > 80 || size.height > 80) {
+                                imageIcon = domeIcon.get("medium_big");
+
+                            }
+
+                            else if(size.width > 60 || size.height > 60) {
+                                imageIcon = domeIcon.get("medium");
+
+                            }
+
+                            else if(size.width > 30 || size.height > 30) {
+                                imageIcon = domeIcon.get("medium_small");
+
+                            }
+
+                            else {
+                                imageIcon = domeIcon.get("small");
+
+                            }
+
+                            JLabel overImage = new JLabel(imageIcon);
+                            btn.add(overImage, BorderLayout.CENTER);
+
+                            btn.revalidate();
+                            btn.repaint();
+
+
+                        }
+
+                    });
                 }
 
              /*   else if(blockLevel != BlockType.GROUND){

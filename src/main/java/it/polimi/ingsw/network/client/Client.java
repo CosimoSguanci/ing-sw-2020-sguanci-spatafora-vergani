@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Client {
 
-    //private final static String IP = "127.0.0.1";
-    private final static String IP = "cosimosguanci.ddns.net";
+    private final static String IP = "127.0.0.1";
+    //private final static String IP = "cosimosguanci.ddns.net";
     private final static int PORT = 12345;
     private final static int TIMEOUT_MS = 2000;
     private final static int PONG_SCHEDULE_TIME_MS = 500;
