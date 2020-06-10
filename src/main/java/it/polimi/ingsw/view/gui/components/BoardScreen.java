@@ -320,27 +320,27 @@ public class BoardScreen extends JPanel {
 
                             ImageIcon imageIcon;
 
-                            if(size.width > 400 || size.height > 400) {
+                            if(size.width > 120 || size.height > 120) {
                                 imageIcon = domeIcon.get("very_big");
 
                             }
 
-                            else if(size.width > 200 || size.height > 200) {
+                            else if(size.width > 100 || size.height > 100) {
                                 imageIcon = domeIcon.get("big");
 
                             }
 
-                            else if(size.width > 120 || size.height > 120) {
+                            else if(size.width > 80 || size.height > 80) {
                                 imageIcon = domeIcon.get("medium_big");
 
                             }
 
-                            else if(size.width > 50 || size.height > 50) {
+                            else if(size.width > 60 || size.height > 60) {
                                 imageIcon = domeIcon.get("medium");
 
                             }
 
-                            else if(size.width > 25 || size.height > 25) {
+                            else if(size.width > 30 || size.height > 30) {
                                 imageIcon = domeIcon.get("medium_small");
 
                             }
