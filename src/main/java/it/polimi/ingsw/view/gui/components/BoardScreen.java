@@ -109,6 +109,10 @@ public class BoardScreen extends JPanel {
         }).start();
     }
 
+    public static Map<String, Map<String, ImageIcon>> getWorkerIcons() {
+        return workerIcons;
+    }
+
     static {
         new Thread(() -> {
 
