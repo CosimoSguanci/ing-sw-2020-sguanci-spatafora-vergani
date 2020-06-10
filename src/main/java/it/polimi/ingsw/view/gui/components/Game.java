@@ -1,17 +1,22 @@
 package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.model.PrintableColor;
+import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.GodInfoActionListener;
 import it.polimi.ingsw.view.gui.listeners.QuitButtonListener;
 import it.polimi.ingsw.view.gui.ui.JCellButton;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,6 +46,7 @@ public abstract class Game extends JPanel {
 
     private String currentPlayerNickname;
     private String nicknameToShow;
+    private boolean soundPlayed = false;
 
 
     public void changeTurn() {
@@ -50,11 +56,28 @@ public abstract class Game extends JPanel {
             this.nicknameToShow = this.currentPlayerNickname.length() > 10 ? this.currentPlayerNickname.substring(0, 10) + "..." : this.currentPlayerNickname;
         }
 
-        if(currentPlayerNickname.equals(gui.getController().getClientPlayer().getNickname())) {
+        /*if(currentPlayerNickname.equals(gui.getController().getClientPlayer().getNickname())) {
             turn.setText("Your Turn");
         }
         else {
             turn.setText(this.nicknameToShow + "'s turn");
+        }
+*/
+        if (!currentPlayerNickname.equals(gui.getController().getClientPlayer().getNickname())) {  //not player's turn
+            soundPlayed = false;
+            turn.setText(this.nicknameToShow + "'s turn");
+        } else {  //client's turn
+            turn.setText("Your Turn");
+            if(!soundPlayed) {
+                try {
+                    URL defaultSound = getClass().getResource("/turn.wav");
+                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(defaultSound);
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(audioInputStream);
+                    clip.start( );
+                    soundPlayed = true;
+                } catch (Exception ignored) {}
+            }
         }
 
         this.revalidate();
