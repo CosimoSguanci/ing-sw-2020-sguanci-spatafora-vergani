@@ -93,11 +93,13 @@ public class GamePreparation extends Game implements ActionListener {
         if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
             JCellButton button = (JCellButton) e.getSource();
 
+            //TODO Si potrebbe fare una resize dei worker anche in GamePreparatio. Ne vale la pena far partire un nuovo thread per una cosa che scompare alla fase successiva?
+            //Al momento settiamo una dimensione media per la GamePreparation
             if(button.isEmpty() && selectedButtons.size() < 2) {
                 String playerNickname = controller.getClientPlayer().getNickname();
                 PrintableColor color = gui.getPlayersColors().get(playerNickname);
                 ImageIcon workerIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/worker_" + color.toString().toLowerCase() + ".png"));
-                workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(70,70, Image.SCALE_SMOOTH));
+                workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(50,50, Image.SCALE_SMOOTH));
                 JLabel overImage = new JLabel(workerIcon);
                 button.add(overImage);
 
