@@ -448,13 +448,10 @@ public class Gui extends View implements Observer<Update> {
 
         ImageIcon finalIcon = icon;
 
-
-
         SwingUtilities.invokeLater(() -> {
             JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE, finalIcon);
             askPlayAgainDialog();
         });
-
     }
 
     public void showLoseMessageDialog(LoseUpdate update) {

@@ -7,6 +7,7 @@ import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.components.RealGame;
 import it.polimi.ingsw.view.gui.ui.JCellButton;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,7 +23,7 @@ public class AtlasListener extends GodListener implements ActionListener {
         JCellButton selectedCellButton = realGameComponent.getSelectedCellButton();
 
         if(selectedWorkerButton == null || selectedCellButton == null) {
-            // todo add JDialog
+            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "You must select a Worker and a Board Cell!", "Error", JOptionPane.ERROR_MESSAGE));
         }
         else {
 

@@ -19,16 +19,10 @@ public class EndTurnButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JCellButton selectedWorkerButton = realGameComponent.getSelectedWorker();
-        JCellButton selectedCellButton = realGameComponent.getSelectedCellButton();
 
-        if(selectedWorkerButton == null || selectedCellButton == null) {
-            // todo add JDialog
-        }
-        else {
-            PlayerCommand playerCommand = new PlayerCommand(CommandType.END_TURN, null, -1, -1, null);
-            Gui.getInstance().notify(playerCommand);
-            this.realGameComponent.setLastCommand(CommandType.END_TURN);
-        }
+        PlayerCommand playerCommand = new PlayerCommand(CommandType.END_TURN, null, -1, -1, null);
+        Gui.getInstance().notify(playerCommand);
+        this.realGameComponent.setLastCommand(CommandType.END_TURN);
+
     }
 }

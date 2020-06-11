@@ -6,6 +6,7 @@ import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.components.RealGame;
 import it.polimi.ingsw.view.gui.ui.JCellButton;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,7 +21,7 @@ public class ZeusListener extends GodListener implements ActionListener {
         JCellButton selectedWorkerButton = realGameComponent.getSelectedWorker();
 
         if(selectedWorkerButton == null) {
-            // todo add JDialog
+            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "You must select a Worker!", "Error", JOptionPane.ERROR_MESSAGE));
         }
         else {
 
