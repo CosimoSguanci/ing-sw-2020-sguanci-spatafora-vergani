@@ -155,6 +155,9 @@ public class Gui extends View implements Observer<Update> {
         this.gamePreparation = new GamePreparation();
         this.realGame = new RealGame();
 
+        GodScreen.loadImages();  //load all gods' images
+        //TODO find a more appropriate place to load images
+
         mainPanel.add(playerNumberChoiceComponent, PLAYERS_NUMBER_CHOICE);
         mainPanel.add(waitingForAMatchComponent, WAITING_FOR_MATCH);
         mainPanel.add(initialInfoComponent, INITIAL_INFO);
