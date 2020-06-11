@@ -11,8 +11,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class creates and manages GAME_PREPARATION phase layout.
@@ -29,6 +33,7 @@ public class GamePreparation extends Game implements ActionListener {
     private JRoundButton continueButton;
 
     private List<JCellButton> selectedButtons = new ArrayList<>();
+    private Map<String, Map<String, ImageIcon>> workerIcons = new HashMap<>();
 
     /**
      * This method is a simple getter which gives information
@@ -98,6 +103,62 @@ public class GamePreparation extends Game implements ActionListener {
             if(button.isEmpty() && selectedButtons.size() < 2) {
                 String playerNickname = controller.getClientPlayer().getNickname();
                 PrintableColor color = gui.getPlayersColors().get(playerNickname);
+
+                workerIcons = BoardScreen.getWorkerIcons();
+
+                button.addComponentListener(new ComponentAdapter() {
+
+                    @Override
+                    public void componentResized(ComponentEvent e) {
+                        JCellButton btn = (JCellButton) e.getComponent();
+                        Dimension size = btn.getSize();
+
+                        if(btn.getComponents().length> 0) {
+                            btn.remove(btn.getComponent(0));
+                        }
+
+                        ImageIcon imageIcon;
+
+                        if(size.width > 120 || size.height > 120) {
+                            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("very_big");
+
+                        }
+
+                        else if(size.width > 100 || size.height > 100) {
+                            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("big");
+
+                        }
+
+                        else if(size.width > 80 || size.height > 80) {
+                            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("medium_big");
+
+                        }
+
+                        else if(size.width > 60 || size.height > 60) {
+                            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("medium");
+
+                        }
+
+                        else if(size.width > 30 || size.height > 30) {
+                            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("medium_small");
+
+                        }
+
+                        else {
+                            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("small");
+
+                        }
+
+                        JLabel overImage = new JLabel(imageIcon);
+                        btn.add(overImage, BorderLayout.CENTER);
+
+                        btn.revalidate();
+                        btn.repaint();
+
+                    }
+
+                });
+
                 ImageIcon workerIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/worker_" + color.toString().toLowerCase() + ".png"));
                 workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(50,50, Image.SCALE_SMOOTH));
                 JLabel overImage = new JLabel(workerIcon);
@@ -106,6 +167,7 @@ public class GamePreparation extends Game implements ActionListener {
                 button.revalidate();
                 this.getBoard().revalidate();
 
+                this.getBoard().revalidate();
                 this.selectedButtons.add(button);
 
                 button.setWorkerLabel(overImage);
