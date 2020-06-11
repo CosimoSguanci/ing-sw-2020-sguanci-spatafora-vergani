@@ -154,7 +154,6 @@ public final class GodsUtils {
          */
         Map<String, Supplier<GodGuiDrawer>> tmpGodsGuiFactoryMap = new HashMap<>();
 
-
         tmpGodsGuiFactoryMap.put(Apollo.NAME.toLowerCase(), GodsGuiStrategy::new); // todo list of gods which have particular GUI?
         tmpGodsGuiFactoryMap.put(Artemis.NAME.toLowerCase(), GodsGuiStrategy::new);
         tmpGodsGuiFactoryMap.put(Athena.NAME.toLowerCase(), GodsGuiStrategy::new);
@@ -167,7 +166,6 @@ public final class GodsUtils {
         tmpGodsGuiFactoryMap.put(Pan.NAME.toLowerCase(), GodsGuiStrategy::new);
         tmpGodsGuiFactoryMap.put(Poseidon.NAME.toLowerCase(), GodsGuiStrategy::new);
         tmpGodsGuiFactoryMap.put(Prometheus.NAME.toLowerCase(), GodsGuiStrategy::new);
-
         tmpGodsGuiFactoryMap.put(Atlas.NAME.toLowerCase(), AtlasGuiStrategy::new);
         tmpGodsGuiFactoryMap.put(Zeus.NAME.toLowerCase(), ZeusGuiStrategy::new);
 

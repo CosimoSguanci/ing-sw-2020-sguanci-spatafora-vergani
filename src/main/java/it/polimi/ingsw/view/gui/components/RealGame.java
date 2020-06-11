@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 
 public class RealGame extends Game implements ActionListener {
     private String classImagePath = "src/main/resources/images/RealGame/";
-    private int dimension = 70;
-    private int buttonWidth = 170;
-    private int buttonHeight = 80;
+    public static final int dimension = 70;
+    public static final int buttonWidth = 170;
+    public static final int buttonHeight = 80;
 
     private Gui gui;
     private Controller controller;
@@ -154,9 +154,9 @@ public class RealGame extends Game implements ActionListener {
             if(godComponent != null) {
                 //buildButton.addActionListener(new BuildButtonListener(this));
 
-                godComponent.setMinimumSize(new Dimension(this.buttonWidth, this.buttonHeight));
+                /*godComponent.setMinimumSize(new Dimension(this.buttonWidth, this.buttonHeight));
                 godComponent.setPreferredSize(new Dimension(this.buttonWidth, this.buttonHeight));
-                godComponent.setMaximumSize(new Dimension(this.buttonWidth, this.buttonHeight));
+                godComponent.setMaximumSize(new Dimension(this.buttonWidth, this.buttonHeight));*/
 
                 this.rightPanel.add(godComponent);
                 this.rightPanel.add(Box.createVerticalGlue());
