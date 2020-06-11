@@ -63,7 +63,7 @@ public class Controller extends Observable<Update> implements Observer<Object> {
         } else {
 
             if (!(message instanceof Command)) {
-                return; // todo Or throw?
+                return;
             }
 
             if (!clientPlayerID.equals(currentPlayerID)) {

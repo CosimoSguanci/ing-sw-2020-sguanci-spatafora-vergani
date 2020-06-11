@@ -11,6 +11,8 @@ import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.components.*;
+import it.polimi.ingsw.view.gui.gods.GodGuiDrawer;
+import it.polimi.ingsw.view.gui.gods.GodsGuiStrategy;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -48,6 +50,7 @@ public class Gui extends View implements Observer<Update> {
     private RealGame realGame;
     private Map<String, String> playersGods;
     private Map<String, PrintableColor> playersColors;
+    private GodGuiDrawer godGuiDrawer;
 
     private Gui(Client clientInstance, Controller controllerInstance) {
         client = clientInstance;
@@ -127,6 +130,11 @@ public class Gui extends View implements Observer<Update> {
 
     public void setPlayersGods(Map<String, String> playersGods) {
         this.playersGods = playersGods;
+        this.godGuiDrawer = GodsUtils.godsGuiFactory(playersGods.get(controller.getClientPlayer().getNickname()));
+    }
+
+    public GodGuiDrawer getGodGuiDrawer() {
+        return this.godGuiDrawer;
     }
 
     public void start() throws IOException {

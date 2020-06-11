@@ -3,8 +3,10 @@ package it.polimi.ingsw.view.gui.components;
 import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.controller.commands.CommandType;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.gui.Gui;
+import it.polimi.ingsw.view.gui.gods.GodsGuiStrategy;
 import it.polimi.ingsw.view.gui.listeners.BuildButtonListener;
 import it.polimi.ingsw.view.gui.listeners.EndTurnButtonListener;
 import it.polimi.ingsw.view.gui.listeners.MoveButtonListener;
@@ -146,6 +148,19 @@ public class RealGame extends Game implements ActionListener {
             this.rightPanel.add(Box.createVerticalGlue());
             this.rightPanel.add(endButton);
             this.rightPanel.add(Box.createVerticalGlue());
+
+            JComponent godComponent = gui.getGodGuiDrawer().draw();
+
+            if(godComponent != null) {
+                //buildButton.addActionListener(new BuildButtonListener(this));
+
+                godComponent.setMinimumSize(new Dimension(this.buttonWidth, this.buttonHeight));
+                godComponent.setPreferredSize(new Dimension(this.buttonWidth, this.buttonHeight));
+                godComponent.setMaximumSize(new Dimension(this.buttonWidth, this.buttonHeight));
+
+                this.rightPanel.add(godComponent);
+                this.rightPanel.add(Box.createVerticalGlue());
+            }
 
         }
 

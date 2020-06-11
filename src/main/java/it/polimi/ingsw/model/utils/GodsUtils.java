@@ -2,6 +2,10 @@ package it.polimi.ingsw.model.utils;
 
 import it.polimi.ingsw.exceptions.UnknownGodException;
 import it.polimi.ingsw.model.gods.*;
+import it.polimi.ingsw.view.gui.gods.AtlasGuiStrategy;
+import it.polimi.ingsw.view.gui.gods.GodGuiDrawer;
+import it.polimi.ingsw.view.gui.gods.GodsGuiStrategy;
+import it.polimi.ingsw.view.gui.gods.ZeusGuiStrategy;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,7 +15,7 @@ import java.util.function.Supplier;
 /**
  * Steps to add a new God to the game:
  * 1) Add class and relative implementation in model.gods package
- * 2) Add INFO + Factory Instantiation here
+ * 2) Add INFO + Factory + GUI Factory Instantiation here
  * DONE
  */
 public final class GodsUtils {
@@ -24,6 +28,8 @@ public final class GodsUtils {
 
     private static final Map<String, Map<String, String>> godsInfo;
     private static final Map<String, Supplier<GodStrategy>> godsFactoryMap;
+    private static final Map<String, Supplier<GodGuiDrawer>> godsGuiFactoryMap;
+
 
     static {
         /*
@@ -142,6 +148,30 @@ public final class GodsUtils {
 
 
         godsFactoryMap = Collections.unmodifiableMap(tmpGodsFactoryMap);
+
+        /*
+         * Gods GUI factory static initializations
+         */
+        Map<String, Supplier<GodGuiDrawer>> tmpGodsGuiFactoryMap = new HashMap<>();
+
+
+        tmpGodsGuiFactoryMap.put(Apollo.NAME.toLowerCase(), GodsGuiStrategy::new); // todo list of gods which have particular GUI?
+        tmpGodsGuiFactoryMap.put(Artemis.NAME.toLowerCase(), GodsGuiStrategy::new);
+        tmpGodsGuiFactoryMap.put(Athena.NAME.toLowerCase(), GodsGuiStrategy::new);
+        tmpGodsGuiFactoryMap.put(Demeter.NAME.toLowerCase(), GodsGuiStrategy::new);
+        tmpGodsGuiFactoryMap.put(Eros.NAME.toLowerCase(), GodsGuiStrategy::new);
+        tmpGodsGuiFactoryMap.put(Hephaestus.NAME.toLowerCase(), GodsGuiStrategy::new);
+        tmpGodsGuiFactoryMap.put(Hera.NAME.toLowerCase(), GodsGuiStrategy::new);
+        tmpGodsGuiFactoryMap.put(Hestia.NAME.toLowerCase(), GodsGuiStrategy::new);
+        tmpGodsGuiFactoryMap.put(Minotaur.NAME.toLowerCase(), GodsGuiStrategy::new);
+        tmpGodsGuiFactoryMap.put(Pan.NAME.toLowerCase(), GodsGuiStrategy::new);
+        tmpGodsGuiFactoryMap.put(Poseidon.NAME.toLowerCase(), GodsGuiStrategy::new);
+        tmpGodsGuiFactoryMap.put(Prometheus.NAME.toLowerCase(), GodsGuiStrategy::new);
+
+        tmpGodsGuiFactoryMap.put(Atlas.NAME.toLowerCase(), AtlasGuiStrategy::new);
+        tmpGodsGuiFactoryMap.put(Zeus.NAME.toLowerCase(), ZeusGuiStrategy::new);
+
+        godsGuiFactoryMap = Collections.unmodifiableMap(tmpGodsGuiFactoryMap);
     }
 
 
@@ -170,4 +200,14 @@ public final class GodsUtils {
     public static Map<String, Map<String, String>> getGodsInfo() {
         return godsInfo;
     }
+
+    public static GodGuiDrawer godsGuiFactory(String godName) throws UnknownGodException {
+        godName = godName.toLowerCase();
+        if(godsFactoryMap.containsKey(godName)) {
+            return godsGuiFactoryMap.get(godName).get();
+        }
+
+        throw new UnknownGodException();
+    }
+
 }
