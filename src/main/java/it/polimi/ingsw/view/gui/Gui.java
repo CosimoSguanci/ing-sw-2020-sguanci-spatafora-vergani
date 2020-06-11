@@ -187,6 +187,10 @@ public class Gui extends View implements Observer<Update> {
         //JPanel currentPanel = new GameManual();
         //frame.add(currentPanel);
 
+        initFrame(frame);
+    }
+
+    static void initFrame(JFrame frame) throws IOException {
         frame.pack();
         frame.setPreferredSize(new Dimension(800, 700));
         frame.setMinimumSize(frame.getPreferredSize());
@@ -541,11 +545,8 @@ public class Gui extends View implements Observer<Update> {
             client.getUpdateListener().setIsActive(false);
             client.reinitializeConnection();
             this.playersNumber = 0;
-
         } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("The Game couldn't start, maybe there was some network error or the server isn't available.");
-            System.exit(0);
+            new ConnectionError().show();
         }
 
     }
