@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.cli.components;
 
 import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.model.PrintableColor;
+import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.cli.Cli;
 
 import javax.sound.sampled.AudioInputStream;
@@ -44,14 +45,8 @@ public class OtherInfoHandler {
             } else {  //client's turn
                 this.cli.println("It's" + Cli.convertColorToAnsi(this.cli.getPlayersColors().get(currentPlayerNickname)) + " your " + PrintableColor.RESET + "turn!");
                 if(!soundPlayed) {
-                    try {
-                        URL defaultSound = getClass().getResource("/turn.wav");
-                        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(defaultSound);
-                        Clip clip = AudioSystem.getClip();
-                        clip.open(audioInputStream);
-                        clip.start( );
-                        soundPlayed = true;
-                    } catch (Exception ignored) {}
+                    View.playOnTurnSound();
+                    soundPlayed = true;
                 }
             }
             this.cli.newLine();
