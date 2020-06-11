@@ -108,6 +108,12 @@ public abstract class Game extends JPanel {
             JButton godButton = new JButton(nicknameResized + " has " + god);
             godButton.setForeground(PrintableColor.convertToColor(color));
 
+            Border border = BorderFactory.createLineBorder(Color.BLACK, 1, true);
+            godButton.setBorder(BorderFactory.createCompoundBorder(border,
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+
+
+
             this.godsButtons.add(godButton);
         });
 
@@ -130,7 +136,6 @@ public abstract class Game extends JPanel {
         }
 
         this.turn.setHorizontalAlignment(JLabel.CENTER);
-        //this.turn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2, true);
         this.turn.setBorder(BorderFactory.createCompoundBorder(border,
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
@@ -146,7 +151,7 @@ public abstract class Game extends JPanel {
             l.addActionListener(new GodInfoActionListener(this));
             gods.add(l);
             l.setAlignmentX(Component.CENTER_ALIGNMENT);
-            gods.add(Box.createVerticalStrut(3));
+            gods.add(Box.createVerticalStrut(10));
         });
 
         gods.setOpaque(false);
