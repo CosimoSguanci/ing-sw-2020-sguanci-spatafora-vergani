@@ -26,7 +26,7 @@ public class ClientApp {
             controller.addObserver(gui);
             gui.start();
 
-        } catch(Exception e) { //IOException
+        } catch(Exception e) { // IOException
             System.err.println("The Game couldn't start, maybe there was some network error " +
                     "or the server isn't available.");
         }

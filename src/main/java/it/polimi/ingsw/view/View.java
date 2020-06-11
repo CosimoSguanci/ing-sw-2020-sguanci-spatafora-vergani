@@ -12,6 +12,8 @@ import java.util.List;
 
 public abstract class View extends Observable<Object> {
 
+    public abstract void start();
+
     public static void playOnTurnSound() {
         try {
             URL defaultSound = View.class.getResource("/turn.wav");

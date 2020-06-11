@@ -1,7 +1,8 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.controller.GamePhase;
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.ErrorType;
+import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.network.client.Client;
@@ -9,10 +10,8 @@ import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.components.*;
 import it.polimi.ingsw.view.gui.gods.GodGuiDrawer;
-import it.polimi.ingsw.view.gui.gods.GodsGuiStrategy;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -26,7 +25,6 @@ public class Gui extends View implements Observer<Update> {
 
     public static final int FONT_REGULAR = 0;
     public static final int FONT_BOLD = 1;
-
     private final static String PLAYERS_NUMBER_CHOICE = "players_number_choice";
     private final static String WAITING_FOR_MATCH = "waiting_for_match";
     private final static String INITIAL_INFO = "initial_info";
@@ -56,6 +54,7 @@ public class Gui extends View implements Observer<Update> {
         client = clientInstance;
         controller = controllerInstance;
         this.guiUpdateHandler = new GuiUpdateHandler(this, controller);
+        GodScreen.loadImages();
     }
 
     public static Gui getInstance(Client client, Controller controller) {
@@ -137,14 +136,13 @@ public class Gui extends View implements Observer<Update> {
         return this.godGuiDrawer;
     }
 
-    public void start() throws IOException {
+    @Override
+    public void start() {
         SwingUtilities.invokeLater(() -> {
             try {
                 showGui();
-            } catch (IOException e) {
-                //throw new IOException();
+            } catch (IOException ignored) {
             }
-
         });
     }
 
@@ -156,25 +154,7 @@ public class Gui extends View implements Observer<Update> {
 
         mainPanel.setLayout(mainCardLayout);
 
-        this.playerNumberChoiceComponent = new PlayerNumberChoice();
-        this.waitingForAMatchComponent = new WaitingForAMatch();
-        this.initialInfoComponent = new InitialInfo();
-        this.godsChoiceComponent = new GodChoice();
-        this.gamePreparation = new GamePreparation();
-        this.realGame = new RealGame();
-
-        GodScreen.loadImages();  //load all gods' images
-        //TODO find a more appropriate place to load images
-
-        mainPanel.add(playerNumberChoiceComponent, PLAYERS_NUMBER_CHOICE);
-        mainPanel.add(waitingForAMatchComponent, WAITING_FOR_MATCH);
-        mainPanel.add(initialInfoComponent, INITIAL_INFO);
-        mainPanel.add(godsChoiceComponent, GOD_CHOICE);
-        mainPanel.add(gamePreparation, GAME_PREPARATION);
-        mainPanel.add(realGame, REAL_GAME);
-
-        // mainPanel.add(godsChoiceComponent, GOD_CHOICE);
-
+        initializeComponents();
         frame.add(mainPanel);
 
         /*
@@ -207,7 +187,6 @@ public class Gui extends View implements Observer<Update> {
         //JPanel currentPanel = new GameManual();
         //frame.add(currentPanel);
 
-
         frame.pack();
         frame.setPreferredSize(new Dimension(800, 700));
         frame.setMinimumSize(frame.getPreferredSize());
@@ -220,7 +199,6 @@ public class Gui extends View implements Observer<Update> {
     @Override
     public void update(Update update) {
         SwingUtilities.invokeLater(() -> update.handleUpdate(this.guiUpdateHandler));
-        //update.handleUpdate(this.guiUpdateHandler);
     }
 
     void forwardNotify(Update update) { // forwards update to client-side Controller
@@ -230,24 +208,15 @@ public class Gui extends View implements Observer<Update> {
     public void startWaitingForMatch() {
 
         try {
-
-            System.out.println("Players Number: " + playersNumber);
-
             client.sendPlayersNumber(playersNumber);
-
             String playerID = client.readPlayerID();
-
-            System.out.println("Player ID: " + playerID);
-
             controller.setClientPlayerID(playerID);
-
             client.setupUpdateListener();
             client.getUpdateListener().addObserver(this);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         this.mainCardLayout.show(mainPanel, WAITING_FOR_MATCH);
     }
@@ -410,11 +379,6 @@ public class Gui extends View implements Observer<Update> {
                 break;
         }
 
-        //JOptionPane.showMessageDialog(gui.getMainFrame(), errorDialogMessage + View.listToStringBuilder(selectedNicknames), errorDialogTitle, JOptionPane.ERROR_MESSAGE);
-
-
-        //JOptionPane.showMessageDialog(frame, message, title, JOptionPane.ERROR_MESSAGE);
-
         String finalMessage = message;
 
         SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame, finalMessage, title, JOptionPane.ERROR_MESSAGE));
@@ -443,9 +407,6 @@ public class Gui extends View implements Observer<Update> {
             icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
         }
 
-        //JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, null, null);
-
-
         ImageIcon finalIcon = icon;
 
         SwingUtilities.invokeLater(() -> {
@@ -457,10 +418,9 @@ public class Gui extends View implements Observer<Update> {
     public void showLoseMessageDialog(LoseUpdate update) {
         String title;
         String message;
-        ImageIcon icon;
-        String imagePath = "src/main/resources/images/RealGame/game-over.png";
 
         int iconWidth = 70;
+
 
         if (update.getLoserPlayer().getPlayerID().equals(this.controller.getClientPlayerID())) {
 
@@ -469,24 +429,21 @@ public class Gui extends View implements Observer<Update> {
 
             title = "Lost";
             message = "You Lost " + loseCauseMsg;
-            icon = new ImageIcon(imagePath);
-            icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
-
-            //JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, null, null);
 
             SwingUtilities.invokeLater(() -> {
-                JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+                ImageIcon icon;
+                String imagePath = "src/main/resources/images/RealGame/game-over.png";
+                icon = new ImageIcon(imagePath);
+                icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
+                JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE, icon);
                 askContinueToWatch();
             });
 
         } else {
             title = "Lost";
             message = update.getLoserPlayer().getNickname() + " Lost!";
-            //JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-
 
             SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE));
-
         }
 
     }
@@ -509,7 +466,6 @@ public class Gui extends View implements Observer<Update> {
                     break;
             }
         });
-
     }
 
     private void askContinueToWatch() {
@@ -529,8 +485,6 @@ public class Gui extends View implements Observer<Update> {
                     break;
             }
         });
-
-
     }
 
     public void showServerUnreachableDialog() {
@@ -563,6 +517,10 @@ public class Gui extends View implements Observer<Update> {
     private void reinitializeComponents() {
         mainPanel.removeAll();
 
+        initializeComponents();
+    }
+
+    private void initializeComponents() {
         this.playerNumberChoiceComponent = new PlayerNumberChoice();
         this.waitingForAMatchComponent = new WaitingForAMatch();
         this.initialInfoComponent = new InitialInfo();
@@ -591,6 +549,4 @@ public class Gui extends View implements Observer<Update> {
         }
 
     }
-
-
 }

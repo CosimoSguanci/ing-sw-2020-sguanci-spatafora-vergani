@@ -93,7 +93,8 @@ public class Cli extends View implements Observer<Update> {
      * In this method, once a connection between client and server
      * is established, every game phase is managed.
      */
-    public void start() { // todo Command Pattern?
+    @Override
+    public void start() {
         stdin = new Scanner(System.in);
         stdout = System.out;
         try {
