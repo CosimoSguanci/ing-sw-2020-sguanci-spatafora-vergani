@@ -158,6 +158,9 @@ public class Gui extends View implements Observer<Update> {
         this.gamePreparation = new GamePreparation();
         this.realGame = new RealGame();
 
+        GodScreen.loadImages();  //load God's images immediately
+        //TODO load God's images in a more appropriate time
+
         mainPanel.add(playerNumberChoiceComponent, PLAYERS_NUMBER_CHOICE);
         mainPanel.add(waitingForAMatchComponent, WAITING_FOR_MATCH);
         mainPanel.add(initialInfoComponent, INITIAL_INFO);
@@ -201,8 +204,8 @@ public class Gui extends View implements Observer<Update> {
 
 
         frame.pack();
-        frame.setSize(900, 700);
-        frame.setMinimumSize(new Dimension(600, 600));
+        frame.setSize(700, 650);
+        frame.setMinimumSize(new Dimension(500, 470));
         frame.setIconImage(ImageIO.read(Gui.class.getResource("/images/title_island.png")));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

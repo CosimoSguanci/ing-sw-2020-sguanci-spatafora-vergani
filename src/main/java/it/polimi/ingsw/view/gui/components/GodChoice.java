@@ -47,7 +47,7 @@ public class GodChoice extends JPanel implements ActionListener {
     private Font godLabelFont = Gui.getFont(Gui.FONT_BOLD, 14);
 
 
-    private Map<String, Map<String, ImageIcon>> allIconGods = new HashMap<>(); // todo synchronized
+    //private Map<String, Map<String, ImageIcon>> allIconGods = new HashMap<>(); // todo synchronized
 
     public void setSelectableGods(List<String> selectableGods) {
         this.selectableGods = selectableGods;
@@ -65,7 +65,7 @@ public class GodChoice extends JPanel implements ActionListener {
         this.selectedGods = new ArrayList<>();
         this.add(new LoadingComponent("Waiting...", Color.BLACK));
 
-        new Thread(() -> {
+        /*new Thread(() -> {
             List<String> gods =  View.getGodsNamesList();
 
             gods.forEach(god -> {
@@ -109,7 +109,7 @@ public class GodChoice extends JPanel implements ActionListener {
             });
 
 
-        }).start();
+        }).start();*/
     }
     
     private void commonGodChoose2(JPanel possibleGodsPanel, ArrayList<ImageIcon> iconGods) throws IOException {
@@ -125,37 +125,6 @@ public class GodChoice extends JPanel implements ActionListener {
         }
     }
 
-
-    private void setSpecific() {
-        ImageIcon startImg = new ImageIcon("src/main/resources/images/done.png");
-        startImg = new ImageIcon(startImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
-        JRoundButton continueButton = new JRoundButton(startImg);
-        continueButton.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        continueButton.addActionListener(this);
-
-        ImageIcon infoImg = new ImageIcon(this.standardImgPath + "information.png");
-        infoImg = new ImageIcon(infoImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
-        JRoundButton infoButton = new JRoundButton(infoImg);
-        infoButton.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        infoButton.addActionListener(new GodChoiceInfoButtonListener(this));
-
-        boolean isGodChooser = this.gui.getController().isClientPlayerGodChooser();
-        if (isGodChooser) {
-            this.godScreen.setTitle("Select " + playersNumber + " Gods");
-        } else {
-            this.godScreen.setTitle("Select a God");
-        }
-    }
-
-    private void addListeners() {
-        boolean isGodChooser = this.gui.getController().isClientPlayerGodChooser();
-        List<String> gods = isGodChooser ? View.getGodsNamesList() : this.selectableGods;
-        ArrayList<JButton> godButtons = this.godScreen.getButtons();
-        for (int i = 0; i < gods.size(); i++) {
-            this.godChoiceJButtonListener = new GodChoiceJButtonListener(this);
-            godButtons.get(i).addActionListener(godChoiceJButtonListener);
-        }
-    }
 
 
 
@@ -226,6 +195,53 @@ public class GodChoice extends JPanel implements ActionListener {
 
     }
 
+
+    private void setSpecific() {
+        ImageIcon startImg = new ImageIcon("src/main/resources/images/done.png");
+        startImg = new ImageIcon(startImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        JRoundButton continueButton = new JRoundButton(startImg);
+        continueButton.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        continueButton.setOpaque(false);
+        continueButton.addActionListener(this);
+
+        ImageIcon infoImg = new ImageIcon(this.standardImgPath + "information.png");
+        infoImg = new ImageIcon(infoImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        JRoundButton infoButton = new JRoundButton(infoImg);
+        infoButton.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        infoButton.setOpaque(false);
+        infoButton.addActionListener(new GodChoiceInfoButtonListener(this));
+
+        //JPanel innerPanel = new JPanel();
+        //innerPanel.setLayout(new BorderLayout());
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(infoButton);
+        buttonPanel.add(continueButton);
+        //innerPanel.add(buttonPanel, BorderLayout.SOUTH);
+        this.godScreen.getRightPanel().add(buttonPanel, BorderLayout.SOUTH);
+
+
+        boolean isGodChooser = this.gui.getController().isClientPlayerGodChooser();
+        if (isGodChooser) {
+            this.godScreen.setTitle("Select " + playersNumber + " Gods");
+        } else {
+            this.godScreen.setTitle("Select a God");
+        }
+    }
+
+
+    private void addListeners() {
+        boolean isGodChooser = this.gui.getController().isClientPlayerGodChooser();
+        List<String> gods = isGodChooser ? View.getGodsNamesList() : this.selectableGods;
+        ArrayList<JButton> godButtons = this.godScreen.getButtons();
+        for (int i = 0; i < gods.size(); i++) {
+            this.godChoiceJButtonListener = new GodChoiceJButtonListener(this);
+            godButtons.get(i).addActionListener(godChoiceJButtonListener);
+        }
+    }
+
+
     // todo add interface
     public void showGuiOnTurn() {
 
@@ -233,12 +249,16 @@ public class GodChoice extends JPanel implements ActionListener {
         this.removeAll();
 
         try {
-            this.godScreen = new GodScreen(this.playersNumber, this.selectableGods, this.allIconGods);
-            this.add(this.godScreen);
+            LayoutManager layoutManager = new BorderLayout();
+            this.setLayout(layoutManager);
+            this.setBorder(BorderFactory.createEmptyBorder(20,20, 20,20));
+            this.godScreen = new GodScreen(this.playersNumber, this.selectableGods);
+            this.godScreen.setOpaque(false);
+            this.add(this.godScreen, BorderLayout.CENTER);
             //drawGodChoice(this, this.gui, this.possibleGodsPanel, this.innerPanel, this.innerPanel2, this.titleLabel, this.buttons);
-            //setSpecific();
+            setSpecific();
             //commonGodChoose(possibleGodsPanel, continueButton, innerPanel, innerPanel2);
-            //addListeners();
+            addListeners();
             this.revalidate();
             this.repaint();
         } catch(IOException e) {

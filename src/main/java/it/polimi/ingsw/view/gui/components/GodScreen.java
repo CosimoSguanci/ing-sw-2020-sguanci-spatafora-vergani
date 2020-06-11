@@ -11,18 +11,73 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class GodScreen extends JPanel {
     Gui gui = Gui.getInstance();
-    private JLabel titleLabel = new JLabel();
+
+    private JLabel titleLabel;
+    private JPanel rightPanel;
+
     private Font titleFont = Gui.getFont(Gui.FONT_BOLD, 20);
     private Font godLabelFont = Gui.getFont(Gui.FONT_BOLD, 14);
     private ArrayList<JButton> buttons = new ArrayList<>();
+    private static Map<String, Map<String, ImageIcon>> allIconGods = new HashMap<>(); // todo synchronized
 
 
-    public GodScreen(int playersNumber, List<String> selectableGods, Map<String, Map<String, ImageIcon>> allIconGods) throws IOException {
+    public static void loadImages() {
+        new Thread(() -> {
+            List<String> gods =  View.getGodsNamesList();
+
+            gods.forEach(god -> {
+
+                try {
+
+                    ImageIcon smallImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
+                    smallImageIcon = new ImageIcon(smallImageIcon.getImage().getScaledInstance(20,-1, Image.SCALE_SMOOTH));
+
+                    ImageIcon mediumSmallImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
+                    mediumSmallImageIcon = new ImageIcon(mediumSmallImageIcon.getImage().getScaledInstance(40,-1, Image.SCALE_SMOOTH));
+
+                    ImageIcon mediumImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
+                    mediumImageIcon = new ImageIcon(mediumImageIcon.getImage().getScaledInstance(65,-1, Image.SCALE_SMOOTH));
+
+                    ImageIcon mediumBigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
+                    mediumBigImageIcon = new ImageIcon(mediumBigImageIcon.getImage().getScaledInstance(85,-1, Image.SCALE_SMOOTH));
+
+                    ImageIcon bigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
+                    bigImageIcon = new ImageIcon(bigImageIcon.getImage().getScaledInstance(110,-1, Image.SCALE_SMOOTH));
+
+                    ImageIcon veryBigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
+                    veryBigImageIcon = new ImageIcon(veryBigImageIcon.getImage().getScaledInstance(180,-1, Image.SCALE_SMOOTH));
+
+                    Map<String, ImageIcon> m = new HashMap<>();
+                    m.put("small", smallImageIcon);
+                    m.put("medium_small", mediumSmallImageIcon);
+                    m.put("medium", mediumImageIcon);
+                    m.put("medium_big", mediumBigImageIcon);
+                    m.put("big", bigImageIcon);
+                    m.put("very_big", veryBigImageIcon);
+
+                    allIconGods.put(god, m);
+
+
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            });
+
+
+        }).start();
+    }
+
+
+    public GodScreen(int playersNumber, List<String> selectableGods) throws IOException {
+        //loadImages();
         boolean isGodChooser = this.gui.getController().isClientPlayerGodChooser();
 
         LayoutManager layoutManager = new BorderLayout();
@@ -30,13 +85,17 @@ public class GodScreen extends JPanel {
 
         JPanel titlePanel = new JPanel();
         JPanel possibleGodsPanel = new JPanel();
+        this.rightPanel = new JPanel();
+        this.rightPanel.setLayout(new BorderLayout());
+        this.rightPanel.setOpaque(false);
+
         /*ImageIcon startImg = new ImageIcon("src/main/resources/images/done.png");
         startImg = new ImageIcon(startImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
 
         JRoundButton continueButton = new JRoundButton(startImg);
         continueButton.addActionListener(this);*/
-        JPanel innerPanel = new JPanel();
-        JPanel innerPanel2 = new JPanel();
+        //JPanel innerPanel = new JPanel();
+        //JPanel innerPanel2 = new JPanel();
 
         /*JLabel titleLabel;
 
@@ -49,6 +108,7 @@ public class GodScreen extends JPanel {
 
         //titleLabel = new JLabel();
 
+        this.titleLabel = new JLabel();
         this.titleLabel.setFont(this.titleFont);
         titlePanel.add(this.titleLabel);
         titlePanel.setBorder(BorderFactory.createEmptyBorder(20,0,20,0));
@@ -150,9 +210,12 @@ public class GodScreen extends JPanel {
         //commonGodChoose(possibleGodsPanel, continueButton, innerPanel, innerPanel2);
 
         titlePanel.setOpaque(false);
-        innerPanel.setOpaque(false);
-        innerPanel2.setOpaque(false);
+        //innerPanel.setOpaque(false);
+        //innerPanel2.setOpaque(false);
         possibleGodsPanel.setOpaque(false);
+
+        this.add(possibleGodsPanel, BorderLayout.CENTER);
+        this.add(this.rightPanel, BorderLayout.EAST);
     }
 
 
@@ -164,5 +227,9 @@ public class GodScreen extends JPanel {
 
     ArrayList<JButton> getButtons() {
         return this.buttons;
+    }
+
+    JPanel getRightPanel() {
+        return this.rightPanel;
     }
 }
