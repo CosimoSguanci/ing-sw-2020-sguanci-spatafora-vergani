@@ -149,15 +149,9 @@ public class RealGame extends Game implements ActionListener {
             this.rightPanel.add(endButton);
             this.rightPanel.add(Box.createVerticalGlue());
 
-            JComponent godComponent = gui.getGodGuiDrawer().draw();
+            JComponent godComponent = gui.getGodGuiDrawer().draw(this);
 
             if(godComponent != null) {
-                //buildButton.addActionListener(new BuildButtonListener(this));
-
-                /*godComponent.setMinimumSize(new Dimension(this.buttonWidth, this.buttonHeight));
-                godComponent.setPreferredSize(new Dimension(this.buttonWidth, this.buttonHeight));
-                godComponent.setMaximumSize(new Dimension(this.buttonWidth, this.buttonHeight));*/
-
                 this.rightPanel.add(godComponent);
                 this.rightPanel.add(Box.createVerticalGlue());
             }
