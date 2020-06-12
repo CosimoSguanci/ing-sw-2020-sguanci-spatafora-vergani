@@ -57,7 +57,7 @@ public class MatchEnded {
         try {
             cli.getClient().getUpdateListener().setIsActive(false);
             cli.getClient().reinitializeConnection();
-            cli.setPlayersNum(0);
+            cli.setPlayersNumber(0);
             cli.setContinueToWatch(false);
 
         } catch(IOException e) {

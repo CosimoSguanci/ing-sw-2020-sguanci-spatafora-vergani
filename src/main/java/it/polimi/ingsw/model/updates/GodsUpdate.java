@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GodsUpdate extends Update {
+    private static final long serialVersionUID = -3321537110343022582L;
     private final List<String> selectableGods;
     private final Map<String, String> selectedGods; // Nickname : GodName
 

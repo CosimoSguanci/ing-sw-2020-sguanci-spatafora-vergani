@@ -60,7 +60,7 @@ public class GamePreparation extends Game implements ActionListener {
         });
 
         //need to set rightPanel's layout, with a "continue" button in the southern part
-        ImageIcon continueImg = new ImageIcon(this.classImagePath + "continue.png");
+        ImageIcon continueImg = new ImageIcon("src/main/resources/images/done.png");
         continueImg = new ImageIcon(continueImg.getImage().getScaledInstance(this.buttonDim, this.buttonDim, Image.SCALE_SMOOTH));
         this.continueButton = new JRoundButton(continueImg);
 

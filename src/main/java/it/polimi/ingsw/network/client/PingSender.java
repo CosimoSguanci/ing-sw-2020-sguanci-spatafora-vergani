@@ -8,8 +8,8 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public class PingSender implements Runnable {
 
-    private ObjectOutputStream objectOutputStream;
-    private ScheduledExecutorService scheduler;
+    private final ObjectOutputStream objectOutputStream;
+    private final ScheduledExecutorService scheduler;
 
     PingSender(ObjectOutputStream objectOutputStream, ScheduledExecutorService scheduler) {
         this.objectOutputStream = objectOutputStream;
@@ -22,7 +22,6 @@ public class PingSender implements Runnable {
             this.objectOutputStream.writeObject(Server.PING_MSG);
         } catch(IOException e) {
             scheduler.shutdown();
-            e.printStackTrace();
         }
     }
 }

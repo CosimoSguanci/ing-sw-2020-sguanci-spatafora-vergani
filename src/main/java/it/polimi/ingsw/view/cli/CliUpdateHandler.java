@@ -67,7 +67,7 @@ public class CliUpdateHandler implements UpdateHandler {
      * @param update is the instance of GodsUpdate from client-side Controller.
      */
     public void handle(GodsUpdate update) {
-        if (update.getSelectedGods().size() == cliInstance.getPlayersNum()) {
+        if (update.getSelectedGods().size() == cliInstance.getPlayersNumber()) {
             cliInstance.setPlayersGods(update.getSelectedGods());
             cliInstance.printPlayerGods();
         } else {
@@ -77,7 +77,7 @@ public class CliUpdateHandler implements UpdateHandler {
                 cliInstance.setInitialGodChooser(true);
                 cliInstance.println(Cli.toBold("You are the God Chooser!"));
                 cliInstance.newLine();
-                cliInstance.println(Cli.toBold("Choose ") + cliInstance.getPlayersNum() + " gods. For a perfect match, choose the ones you like most!    Command " + Cli.toBold("format") + " expected: select [god(1)] ... [god(n)]");
+                cliInstance.println(Cli.toBold("Choose ") + cliInstance.getPlayersNumber() + " gods. For a perfect match, choose the ones you like most!    Command " + Cli.toBold("format") + " expected: select [god(1)] ... [god(n)]");
                 cliInstance.newLine();
                 cliInstance.println("Available gods are: " + availableGods());
                 cliInstance.newLine();
@@ -106,7 +106,7 @@ public class CliUpdateHandler implements UpdateHandler {
      */
     public void handle(InitialInfoUpdate update) {
 
-        if (update.getInitialInfo().size() == cliInstance.getPlayersNum()) {
+        if (update.getInitialInfo().size() == cliInstance.getPlayersNumber()) {
             cliInstance.setPlayersColors(update.getInitialInfo());
             cliInstance.printPlayersColors();
         } else {

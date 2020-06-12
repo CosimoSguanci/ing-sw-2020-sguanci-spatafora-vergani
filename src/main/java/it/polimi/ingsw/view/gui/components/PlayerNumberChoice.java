@@ -27,7 +27,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         JPanel questionPanel = new JPanel();
         questionPanel.setOpaque(false);
         JLabel questionLabel = new JLabel("How many players do you want in your match?");
-        Font font = Gui.getFont(Gui.FONT_REGULAR, 20);
+        Font font = Gui.getFont(Gui.FONT_BOLD, 22);
         questionLabel.setFont(font);
         Color textColor = Color.WHITE;
         questionLabel.setForeground(textColor);
@@ -37,7 +37,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
 
         //button for selecting two players
         ImageIcon buttonTwoPlayers = new ImageIcon(standardImgPath + "two.png");
-        int selectionButtonWidth = 50;
+        int selectionButtonWidth = 80;
         buttonTwoPlayers = new ImageIcon(buttonTwoPlayers.getImage().getScaledInstance(selectionButtonWidth, -1, Image.SCALE_SMOOTH));
         this.button1 = new JRadioButton(buttonTwoPlayers, true);
         this.button1.setOpaque(false);
@@ -76,7 +76,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
 
         Color resumeNumberTextColor = Color.WHITE;
         this.resumeNumber.setForeground(resumeNumberTextColor);
-        Font resumeNumberFont = Gui.getFont(Gui.FONT_BOLD, 18);
+        Font resumeNumberFont = Gui.getFont(Gui.FONT_BOLD, 22);
         this.resumeNumber.setFont(resumeNumberFont);
         resumeNumberPanel.add(this.resumeNumber);
 
@@ -93,7 +93,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
 
         //this part must be south-east
         ImageIcon startImg = new ImageIcon("src/main/resources/images/next.png");
-        startImg = new ImageIcon(startImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        startImg = new ImageIcon(startImg.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
 
         JRoundButton startButton = new JRoundButton(startImg);
 
@@ -108,7 +108,6 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         innerPanel2.add(startButton, BorderLayout.EAST);
         innerPanel.add(innerPanel2);
         this.add(innerPanel, BorderLayout.SOUTH);
-
 
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     }
@@ -125,18 +124,9 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         if (button.equals(this.button1)) {
             this.button1.setSelected(true);
             this.button2.setSelected(false);
-
-            /*this.button1.setBorder(BorderFactory.createLineBorder(Color.RED, 2, true));
-            this.button2.setBorder(null);*/
-
         } else {
             this.button1.setSelected(false);
             this.button2.setSelected(true);
-
-            /*this.button2.setBorder(BorderFactory.createLineBorder(Color.RED, 2, true));
-            this.button1.setBorder(null);*/
-
-
         }
     }
 

@@ -1,7 +1,8 @@
-package it.polimi.ingsw.view.gui.listeners;
+package it.polimi.ingsw.view.gui.gods.listeners;
 
 import it.polimi.ingsw.controller.commands.CommandType;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
+import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.components.RealGame;
 import it.polimi.ingsw.view.gui.ui.JCellButton;
@@ -10,12 +11,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MoveButtonListener implements ActionListener {
+public class AtlasListener extends GodListener implements ActionListener {
 
-    private RealGame realGameComponent;
-
-    public MoveButtonListener(RealGame realGameComponent) {
-        this.realGameComponent = realGameComponent;
+    public AtlasListener(RealGame realGameComponent) {
+        super(realGameComponent);
     }
 
     @Override
@@ -28,10 +27,10 @@ public class MoveButtonListener implements ActionListener {
         }
         else {
 
-            PlayerCommand playerCommand = new PlayerCommand(CommandType.MOVE, selectedWorkerButton.getWorker().workerType, selectedCellButton.getRow(), selectedCellButton.getCol(), null);
+            PlayerCommand playerCommand = new PlayerCommand(CommandType.BUILD, selectedWorkerButton.getWorker().workerType, selectedCellButton.getRow(), selectedCellButton.getCol(), BlockType.DOME);
             Gui.getInstance().notify(playerCommand);
 
-            this.realGameComponent.setLastCommand(CommandType.MOVE);
+            this.realGameComponent.setLastCommand(CommandType.BUILD);
 
         }
     }

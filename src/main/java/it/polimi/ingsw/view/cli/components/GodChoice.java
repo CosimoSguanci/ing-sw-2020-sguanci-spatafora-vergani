@@ -39,14 +39,14 @@ public class GodChoice {
      *                     it is parsed in this method.
      */
     public void handleIsGodChooserGodsChoice(String[] splitCommand) {
-        if (CommandType.parseCommandType(splitCommand[0]) != CommandType.SELECT || splitCommand.length != (cli.getPlayersNum() + 1)) {
-            cli.println("You have to use the SELECT command, and type " + cli.getPlayersNum() + " names of gods separated by spaces");
+        if (CommandType.parseCommandType(splitCommand[0]) != CommandType.SELECT || splitCommand.length != (cli.getPlayersNumber() + 1)) {
+            cli.println("You have to use the SELECT command, and type " + cli.getPlayersNumber() + " names of gods separated by spaces");
             throw new BadCommandException();
         }
 
         ArrayList<String> chosenGods = new ArrayList<>();
 
-        for (int i = 0; i < cli.getPlayersNum(); i++) {
+        for (int i = 0; i < cli.getPlayersNumber(); i++) {
             String god = splitCommand[i + 1];
 
             if (!isValidGod(god, chosenGods)) {

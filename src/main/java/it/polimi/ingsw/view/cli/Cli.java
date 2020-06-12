@@ -24,24 +24,14 @@ import java.util.*;
  * @author Andrea Vergani
  */
 public class Cli extends View implements Observer<Update> {
-    private final Client client;
-    private int playersNum;
     private Scanner stdin;
     private PrintStream stdout;
 
-    // TODO Put currentGamePhase in common superclass with GUI
-
-    private GamePhase currentGamePhase;
     private List<String> selectedNicknames;
     private List<PrintableColor> selectableColors;
     private boolean isInitialGodChooser = false;
     private boolean continueToWatch = false;
     private List<String> selectableGods;
-    private Map<String, String> playersGods;
-    private Map<String, PrintableColor> playersColors;
-    private final UpdateHandler cliUpdateHandler;
-
-    private final Controller controller;
 
     /**
      *  JSON representation of current board of the match
@@ -63,9 +53,8 @@ public class Cli extends View implements Observer<Update> {
      * in order to avoid repeated and unnecessary interactions with the server.
      */
     public Cli(Client client, Controller controller) {
-        this.client = client;
-        this.controller = controller;
-        this.cliUpdateHandler = new CliUpdateHandler(this, controller);
+        super(client, controller);
+        this.updateHandler = new CliUpdateHandler(this, controller);
     }
 
     /**
@@ -93,7 +82,8 @@ public class Cli extends View implements Observer<Update> {
      * In this method, once a connection between client and server
      * is established, every game phase is managed.
      */
-    public void start() { // todo Command Pattern?
+    @Override
+    public void start() {
         stdin = new Scanner(System.in);
         stdout = System.out;
         try {
@@ -101,14 +91,14 @@ public class Cli extends View implements Observer<Update> {
                 println("How many players do you want in your match? ");
                 String playersNumString = stdin.nextLine();
                 if (playersNumString.equals("2")) {
-                    playersNum = 2;
+                    this.playersNumber = 2;
                 } else if (playersNumString.equals("3")) {
-                    playersNum = 3;
+                    this.playersNumber = 3;
                 } else {
                     println("Invalid Players number: 2 or 3 players matches are available.");
                 }
-            } while (playersNum != 2 && playersNum != 3);
-            client.sendPlayersNumber(playersNum);
+            } while (this.playersNumber != 2 && this.playersNumber != 3);
+            client.sendPlayersNumber(this.playersNumber);
             String clientID = client.readPlayerID();
             controller.setClientPlayerID(clientID);
             client.setupUpdateListener();
@@ -119,16 +109,6 @@ public class Cli extends View implements Observer<Update> {
             System.err.println("The Game couldn't start, maybe there was some network error or the server isn't available.");
             System.exit(0);
         }
-    }
-
-    /**
-     * This method forwards an update received to the
-     * client-side Controller
-     * @param update is the update received from Cli which is
-     *               forwarded to the Controller client-side.
-     */
-    void forwardNotify(Update update) {
-        notify(update);
     }
 
     /**
@@ -157,7 +137,8 @@ public class Cli extends View implements Observer<Update> {
      * @param selectableGods is as list used to have references to all Gods
      * a player can choose in a specific match (once GodChooser selected them)
      */
-    void setSelectableGods(List<String> selectableGods) {
+    @Override
+    public void setSelectableGods(List<String> selectableGods) {
         this.selectableGods = selectableGods;
     }
 
@@ -175,7 +156,8 @@ public class Cli extends View implements Observer<Update> {
      * This method let clients choose a nickname unique in the match.
      * @param selectedNicknames is a list of all nickname already chosen from players.
      */
-    void setSelectedNicknames(List<String> selectedNicknames) {
+    @Override
+    public void setSelectedNicknames(List<String> selectedNicknames) {
         this.selectedNicknames = selectedNicknames;
     }
 
@@ -195,7 +177,8 @@ public class Cli extends View implements Observer<Update> {
      * This method let clients choose a color unique in the match.
      * @param selectableColors is a list of all color not yet chosen from players.
      */
-    void setSelectableColors(List<PrintableColor> selectableColors) {
+    @Override
+    public void setSelectableColors(List<PrintableColor> selectableColors) {
         this.selectableColors = selectableColors;
     }
 
@@ -212,57 +195,12 @@ public class Cli extends View implements Observer<Update> {
     }
 
     /**
-     * This getter method gives information about the number of player involved in a match
-     * @return the number of player involved in the match
-     */
-    public int getPlayersNum() {
-        return this.playersNum;
-    }
-
-    /**
-     * This method is a simple getter that set the number of the player involved in a match
-     * @param playersNum is an integer number that indicates how many player are involved
-     *                   in the match the particular Cli instance is involved in.
-     */
-    public void setPlayersNum(int playersNum) {
-        this.playersNum = playersNum;
-    }
-
-    /**
-     * This method makes a correspondence to the client and the God associated.
-     * @param playersGods is the corresponding God to the client.
-     */
-    void setPlayersGods(Map<String, String> playersGods) {
-        this.playersGods = playersGods;
-    }
-
-    /**
-     * This method makes a correspondence to the client and the color associated.
-     * @param playersColors is the corresponding color to the client.
-     */
-    void setPlayersColors(Map<String, PrintableColor> playersColors) {
-        this.playersColors = playersColors;
-    }
-
-    /**
-     * This method is a getter which gives a correspondence to the color chosen
-     * from a single player.
-     * @return an association between a String which contains the nickname
-     *         of a player involved and a PrintableColor that indicates a color
-     *         a player can choose during INITIAL_INFO game phase.
-     */
-    public Map<String, PrintableColor> getPlayersColors() {
-        return this.playersColors;
-    }
-
-    /**
      * This setter method is used to set a specific game phase.
      * It is necessary to have this method to change different phase during the match.
      * @param newGamePhase is the new phase that it is set with the invocation of this method.
      */
     public void setCurrentGamePhase(GamePhase newGamePhase) {
         this.currentGamePhase = newGamePhase;
-
         this.otherInfoHandler.printGamePhase(this.currentGamePhase);
     }
 
@@ -275,7 +213,7 @@ public class Cli extends View implements Observer<Update> {
      */
     @Override
     public void update(Update update) {
-        update.handleUpdate(this.cliUpdateHandler);
+        update.handleUpdate(this.updateHandler);
     }
 
     /**
@@ -385,13 +323,6 @@ public class Cli extends View implements Observer<Update> {
         return PrintableColor.BOLD + s + PrintableColor.RESET;
     }
 
-    /**
-     * This is the getter of the Client
-     * @return the Client associated to a particular instance of Cli
-     */
-    public Client getClient(){
-        return this.client;
-    }
 
     /**
      * This method is used to have the JSON representation of the current Board.
@@ -434,13 +365,5 @@ public class Cli extends View implements Observer<Update> {
      */
     public Scanner getStdin() {
         return this.stdin;
-    }
-
-    /**
-     * This method is a simple getter of the Controller client-side
-     * @return the instance of the Controller associated to Cli.
-     */
-    public Controller getController() {
-        return this.controller;
     }
 }

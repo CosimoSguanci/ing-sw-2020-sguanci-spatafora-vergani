@@ -9,16 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CellTest {
 
-    @Disabled
-    @Test
-    public void isEmptyTest() {
-    }
-
-    @Disabled
-    @Test
-    public void getWorkerTest() {
-    }
-
     @Test
     public void getLevelGroundTest() {
         Cell cell = new Cell(1,4);

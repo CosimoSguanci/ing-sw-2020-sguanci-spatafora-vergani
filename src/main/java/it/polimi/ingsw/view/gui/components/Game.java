@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.model.PrintableColor;
+import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.GodInfoActionListener;
@@ -40,7 +41,6 @@ public abstract class Game extends JPanel {
     int buttonDim = 70;
     protected String boardString;
 
-    //List<JLabel> godsLabels;
     List<JButton> godsButtons;
 
     Gui gui = Gui.getInstance();
@@ -57,27 +57,14 @@ public abstract class Game extends JPanel {
             this.nicknameToShow = this.currentPlayerNickname.length() > 10 ? this.currentPlayerNickname.substring(0, 10) + "..." : this.currentPlayerNickname;
         }
 
-        /*if(currentPlayerNickname.equals(gui.getController().getClientPlayer().getNickname())) {
-            turn.setText("Your Turn");
-        }
-        else {
-            turn.setText(this.nicknameToShow + "'s turn");
-        }
-*/
         if (!currentPlayerNickname.equals(gui.getController().getClientPlayer().getNickname())) {  //not player's turn
             soundPlayed = false;
             turn.setText(this.nicknameToShow + "'s turn");
         } else {  //client's turn
             turn.setText("Your Turn");
             if(!soundPlayed) {
-                try {
-                    URL defaultSound = getClass().getResource("/turn.wav");
-                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(defaultSound);
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(audioInputStream);
-                    clip.start( );
-                    soundPlayed = true;
-                } catch (Exception ignored) {}
+                View.playOnTurnSound();
+                soundPlayed = true;
             }
         }
 
@@ -122,6 +109,12 @@ public abstract class Game extends JPanel {
             JGodButton godButton = new JGodButton(nicknameResized + " has " + god, god.toLowerCase());
             godButton.setForeground(PrintableColor.convertToColor(color));
 
+            Border border = BorderFactory.createLineBorder(Color.BLACK, 1, true);
+            godButton.setBorder(BorderFactory.createCompoundBorder(border,
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+
+
+
             this.godsButtons.add(godButton);
         });
 
@@ -144,7 +137,9 @@ public abstract class Game extends JPanel {
         }
 
         this.turn.setHorizontalAlignment(JLabel.CENTER);
-        this.turn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        Border border = BorderFactory.createLineBorder(Color.BLACK, 2, true);
+        this.turn.setBorder(BorderFactory.createCompoundBorder(border,
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         this.turn.setBackground(Color.YELLOW);
         this.turn.setFont(this.turnFont);
         this.turn.setOpaque(true);
@@ -152,21 +147,14 @@ public abstract class Game extends JPanel {
         JPanel gods = new JPanel();
         gods.setLayout(new BoxLayout(gods, BoxLayout.Y_AXIS));
 
-        /*this.godsLabels.forEach(l -> {
-            l.setFont(this.font);
-            gods.add(l);
-        });*/
-
         this.godsButtons.forEach(l -> {
             l.setFont(this.font);
             l.addActionListener(new GodInfoActionListener(this));
             gods.add(l);
             l.setAlignmentX(Component.CENTER_ALIGNMENT);
-            gods.add(Box.createVerticalStrut(3));
+            gods.add(Box.createVerticalStrut(10));
         });
 
-        //gods.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        //gods.setBackground(Color.LIGHT_GRAY);
         gods.setOpaque(false);
         playersGodsTurn.add(Box.createVerticalGlue());
         playersGodsTurn.add(this.turn);
@@ -177,9 +165,7 @@ public abstract class Game extends JPanel {
         playersGodsTurn.add(Box.createVerticalGlue());
         playersGodsTurn.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
 
-
         this.add(playersGodsTurn, BorderLayout.WEST);
-
 
         //button to quit must be south-west
         ImageIcon quitImg = new ImageIcon(this.externalImgPath + "exit.png");
@@ -193,8 +179,6 @@ public abstract class Game extends JPanel {
 
         //board in the centre
         this.board = new BoardScreen(boardString);
-        /*Border boardBorder = BorderFactory.createLineBorder(Color.WHITE);
-        this.board.setBorder(BorderFactory.createCompoundBorder(boardBorder, boardBorder));*/
         this.board.setOpaque(false);
         this.add(this.board, BorderLayout.CENTER);
 

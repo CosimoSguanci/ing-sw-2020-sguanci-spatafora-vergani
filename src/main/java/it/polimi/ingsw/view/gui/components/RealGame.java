@@ -3,8 +3,10 @@ package it.polimi.ingsw.view.gui.components;
 import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.controller.commands.CommandType;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.gui.Gui;
+import it.polimi.ingsw.view.gui.gods.GodsGuiStrategy;
 import it.polimi.ingsw.view.gui.listeners.BuildButtonListener;
 import it.polimi.ingsw.view.gui.listeners.EndTurnButtonListener;
 import it.polimi.ingsw.view.gui.listeners.MoveButtonListener;
@@ -19,9 +21,9 @@ import java.util.stream.Collectors;
 
 public class RealGame extends Game implements ActionListener {
     private String classImagePath = "src/main/resources/images/RealGame/";
-    private int dimension = 70;
-    private int buttonWidth = 170;
-    private int buttonHeight = 80;
+    public static final int dimension = 70;
+    public static final int buttonWidth = 170;
+    public static final int buttonHeight = 80;
 
     private Gui gui;
     private Controller controller;
@@ -146,6 +148,13 @@ public class RealGame extends Game implements ActionListener {
             this.rightPanel.add(Box.createVerticalGlue());
             this.rightPanel.add(endButton);
             this.rightPanel.add(Box.createVerticalGlue());
+
+            JComponent godComponent = gui.getGodGuiDrawer().draw(this);
+
+            if(godComponent != null) {
+                this.rightPanel.add(godComponent);
+                this.rightPanel.add(Box.createVerticalGlue());
+            }
 
         }
 

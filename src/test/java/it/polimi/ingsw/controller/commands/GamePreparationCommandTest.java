@@ -14,32 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GamePreparationCommandTest {
 
-    @Disabled
-    @Test
-    void setWorkerFirstCell() {
-    }
-
-    @Disabled
-    @Test
-    void setWorkerSecondCell() {
-    }
-
-    @Disabled
-    @Test
-    void getWorkerFirstCell() {
-    }
-
-    @Disabled
-    @Test
-    void getWorkerSecondCell() {
-    }
-
-    @Disabled
-    @Test
-    void handleCommand() {
-    }
-
-
     @Test
     void parseInputSimpleTest() {
         GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput("place w1 a1 w2 e3");
