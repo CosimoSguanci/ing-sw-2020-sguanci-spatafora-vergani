@@ -28,19 +28,6 @@ public class MatchTest {
         assertThrows(InvalidPlayerNumberException.class, () -> match.addPlayer(new Player("id", new Model(new Match(3)), new Match(3))));
     }
 
-    @Disabled // todo exception not thrown here
-    @Test
-    public void addPlayerTest1() {
-        int playersNum = 3;
-        Match match = new Match(playersNum);
-        Player p1 = new Player("Andrea",  new Model(match), match);
-        Player p2 = new Player("Cosimo",  new Model(match), match);
-        Player p3 = new Player("ValerioAndoni",  new Model(match), match);
-        match.addPlayer(p1);
-        match.addPlayer(p2);
-        assertThrows(NicknameAlreadyTakenException.class, () -> match.addPlayer(p3));
-    }
-
     @Test
     public void removePlayerTest() {
         int playersNum = 3;
@@ -140,10 +127,5 @@ public class MatchTest {
         assertEquals(p1, match.getCurrentPlayer());
         match.nextTurn();
         assertEquals(p2, match.getCurrentPlayer());
-    }
-
-    @Disabled
-    @Test
-    public void getMatchBoardTest() {
     }
 }

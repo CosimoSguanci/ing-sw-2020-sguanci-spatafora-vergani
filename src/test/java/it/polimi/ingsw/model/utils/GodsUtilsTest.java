@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.utils;
 
 import it.polimi.ingsw.exceptions.UnknownGodException;
 import it.polimi.ingsw.model.gods.GodStrategy;
+import it.polimi.ingsw.view.gui.gods.GodGuiDrawer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,5 +70,15 @@ public class GodsUtilsTest {
         assertEquals(GodsUtils.getGodsInfo().get(god), GodsUtils.parseGodName(god));
 
         assertThrows(UnknownGodException.class, () -> GodsUtils.parseGodName("not a valid god"));
+    }
+
+    @Test
+    public void godsGuiFactoryTest() {
+        GodGuiDrawer apollo1 = GodsUtils.godsGuiFactory("apollo");
+        GodGuiDrawer apollo2 = GodsUtils.godsGuiFactory("apollo");
+
+        assertNotSame(apollo1, apollo2);
+
+        assertThrows(UnknownGodException.class, () -> GodsUtils.godsGuiFactory("not a valid god"));
     }
 }

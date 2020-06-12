@@ -425,7 +425,6 @@ public class Gui extends View implements Observer<Update> {
 
         int iconWidth = 70;
 
-
         if (update.getLoserPlayer().getPlayerID().equals(this.controller.getClientPlayerID())) {
 
             String loseCauseMsg = "because you can't " + (update.getLoseCause() == LoseUpdate.LoseCause.CANT_MOVE ? "move" : "build") +
@@ -497,6 +496,7 @@ public class Gui extends View implements Observer<Update> {
             JOptionPane.showMessageDialog(null, "Cannot communicate to the Server, maybe it's down. Otherwise, check your connection." + System.lineSeparator() + "Quitting...", "Server Unreachable", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         });
+
     }
 
     public void showDisconnectedPlayerDialog(DisconnectedPlayerUpdate update) {
@@ -520,7 +520,6 @@ public class Gui extends View implements Observer<Update> {
 
     private void reinitializeComponents() {
         mainPanel.removeAll();
-
         initializeComponents();
     }
 

@@ -39,10 +39,6 @@ public class ConnectionError {
             resumeNumberPanel.setOpaque(false);
             JLabel errorLabel = new JLabel("The Game couldn't start, maybe there was some network error " +
                     "or the server isn't available.");
-            /*
-            "<html>The Game couldn't start, maybe there was <br />some network error " +
-                    "or the server isn't available.</html>"
-             */
             errorLabel.setBackground(Color.RED);
             errorLabel.setOpaque(true);
             Border border = BorderFactory.createLineBorder(Color.WHITE, 2, true);
@@ -56,6 +52,7 @@ public class ConnectionError {
             resumeNumberPanel.add(errorLabel);
             buttonAllInfoPanel.add(resumeNumberPanel, BorderLayout.CENTER);
             this.add(buttonAllInfoPanel, BorderLayout.CENTER);
+
         }
 
         @Override
