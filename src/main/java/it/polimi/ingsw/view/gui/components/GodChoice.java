@@ -204,21 +204,21 @@ public class GodChoice extends JPanel implements ActionListener {
         ImageIcon startImg = new ImageIcon("src/main/resources/images/done.png");
         startImg = new ImageIcon(startImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JRoundButton continueButton = new JRoundButton(startImg);
-        continueButton.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        continueButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         continueButton.setOpaque(false);
         continueButton.addActionListener(this);
 
         ImageIcon infoImg = new ImageIcon(this.standardImgPath + "information.png");
         infoImg = new ImageIcon(infoImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JRoundButton infoButton = new JRoundButton(infoImg);
-        infoButton.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        infoButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         infoButton.setOpaque(false);
         infoButton.addActionListener(new GodChoiceInfoButtonListener(this));
 
         //JPanel innerPanel = new JPanel();
         //innerPanel.setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.setOpaque(false);
         buttonPanel.add(infoButton);
         buttonPanel.add(continueButton);
