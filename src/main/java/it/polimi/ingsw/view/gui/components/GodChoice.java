@@ -53,6 +53,10 @@ public class GodChoice extends JPanel implements ActionListener {
         this.selectableGods = selectableGods;
     }
 
+    public List<String> getSelectableGods() {
+        return this.selectableGods;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

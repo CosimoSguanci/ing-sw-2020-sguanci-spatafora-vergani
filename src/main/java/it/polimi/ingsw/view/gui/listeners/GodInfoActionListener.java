@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.listeners;
 
 import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.view.gui.components.Game;
+import it.polimi.ingsw.view.gui.ui.JGodButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,18 +12,17 @@ import java.util.Map;
 
 public class GodInfoActionListener implements ActionListener {
     private String godChoiceImgPath = "src/main/resources/images/GodChoice/";
-    private Game game;
+    private Container container;
 
-    public GodInfoActionListener(Game game) {
-        this.game = game;
+    public GodInfoActionListener(Container container) {
+        this.container = container;
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JButton pressedButton = (JButton) e.getSource();
-        String buttonText = pressedButton.getText().toLowerCase();
-        String god = buttonText.substring(buttonText.lastIndexOf(" ") + 1);
+        JGodButton pressedButton = (JGodButton) e.getSource();
+        String god = pressedButton.getGodName();
 
         Map<String, String> godInfo = GodsUtils.parseGodName(god);  //all god's information
 
@@ -30,6 +30,6 @@ public class GodInfoActionListener implements ActionListener {
         ImageIcon godIcon = new ImageIcon(this.godChoiceImgPath + god + ".png");  //god's image
         godIcon = new ImageIcon(godIcon.getImage().getScaledInstance(godIconWidth, -1, Image.SCALE_SMOOTH));
 
-        JOptionPane.showMessageDialog(this.game, godInfo.get(GodsUtils.POWER_DESCRIPTION), godInfo.get(GodsUtils.GOD_NAME) + ", " + godInfo.get(GodsUtils.GOD_DESCRIPTION), JOptionPane.INFORMATION_MESSAGE, godIcon);
+        JOptionPane.showMessageDialog(this.container, godInfo.get(GodsUtils.POWER_DESCRIPTION), godInfo.get(GodsUtils.GOD_NAME) + ", " + godInfo.get(GodsUtils.GOD_DESCRIPTION), JOptionPane.INFORMATION_MESSAGE, godIcon);
     }
 }

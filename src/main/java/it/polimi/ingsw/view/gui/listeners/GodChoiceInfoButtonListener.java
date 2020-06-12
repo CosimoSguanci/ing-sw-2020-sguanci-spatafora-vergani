@@ -1,19 +1,21 @@
 package it.polimi.ingsw.view.gui.listeners;
 
+import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.components.GodChoice;
 import it.polimi.ingsw.view.gui.components.GodInfo;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.List;
 
 public class GodChoiceInfoButtonListener implements ActionListener {
 
     private GodChoice godChoice;
-    private JLabel titleLabel = new JLabel("Click on a god to have info");
-    private JPanel possibleGodsPanel = new JPanel();
-    private JPanel innerPanel = new JPanel();
-    private JPanel innerPanel2 = new JPanel();
+    private GodInfo dialog;
 
     public GodChoiceInfoButtonListener(GodChoice godChoice) {
         this.godChoice = godChoice;
@@ -22,9 +24,25 @@ public class GodChoiceInfoButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JButton pressedButton = (JButton) e.getSource();
-        System.out.println("Info pressed");
+        SwingUtilities.invokeLater(() ->
+            {
+                try {
+                    showDialog();
+                } catch(IOException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        );
+    }
 
-        //JDialog dialog = GodInfo.showAllGodsForInfo(this.godChoice);
+    private void showDialog() throws IOException {
+        dialog = new GodInfo(this.godChoice.getSelectableGods());
+        dialog.pack();
+        dialog.setPreferredSize(new Dimension(400, 400));
+        dialog.setMinimumSize(dialog.getPreferredSize());
+        dialog.setMaximumSize(new Dimension(650, 650));
+        dialog.setIconImage(ImageIO.read(Gui.class.getResource("/images/title_island.png")));
+        dialog.setLocationRelativeTo(this.godChoice);
+        dialog.setVisible(true);
     }
 }

@@ -6,6 +6,7 @@ import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.GodInfoActionListener;
 import it.polimi.ingsw.view.gui.listeners.QuitButtonListener;
 import it.polimi.ingsw.view.gui.ui.JCellButton;
+import it.polimi.ingsw.view.gui.ui.JGodButton;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
 import javax.sound.sampled.AudioInputStream;
@@ -118,7 +119,7 @@ public abstract class Game extends JPanel {
 
             String nicknameResized = player.length() > 10 ? player.substring(0, 10) + "..." : player;
 
-            JButton godButton = new JButton(nicknameResized + " has " + god);
+            JGodButton godButton = new JGodButton(nicknameResized + " has " + god, god.toLowerCase());
             godButton.setForeground(PrintableColor.convertToColor(color));
 
             this.godsButtons.add(godButton);

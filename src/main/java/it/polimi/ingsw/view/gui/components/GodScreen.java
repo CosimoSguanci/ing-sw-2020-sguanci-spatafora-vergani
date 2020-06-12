@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.Gui;
+import it.polimi.ingsw.view.gui.ui.JGodButton;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
 import javax.imageio.ImageIO;
@@ -135,7 +136,7 @@ public class GodScreen extends JPanel {
             imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(60,-1, Image.SCALE_SMOOTH));
             iconGods.add(imageIcon);
 
-            JButton godBtn = new JButton(gods.get(i).toUpperCase(), iconGods.get(i));
+            JGodButton godBtn = new JGodButton(gods.get(i).toUpperCase(), iconGods.get(i), gods.get(i).toLowerCase());
 
             godBtn.setFont(this.godLabelFont);
             godBtn.setForeground(Color.BLACK); // Color.decode("0xc8102e")
