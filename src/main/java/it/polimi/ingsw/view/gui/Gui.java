@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.utils.GodsUtils;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.components.*;
 import it.polimi.ingsw.view.gui.gods.GodGuiDrawer;
@@ -32,28 +31,20 @@ public class Gui extends View implements Observer<Update> {
     private final static String GAME_PREPARATION = "game_preparation";
     private final static String REAL_GAME = "real_game";
     private static Gui guiInstance = null;
-    private final UpdateHandler guiUpdateHandler;
-    private final Client client;
-    private final Controller controller;
     private JFrame frame;
-    private int playersNumber;
     private CardLayout mainCardLayout;
     private JPanel mainPanel;
-    private GamePhase currentGamePhase;
     private PlayerNumberChoice playerNumberChoiceComponent;
     private WaitingForAMatch waitingForAMatchComponent;
     private InitialInfo initialInfoComponent;
     private GodChoice godsChoiceComponent;
     private GamePreparation gamePreparation;
     private RealGame realGame;
-    private Map<String, String> playersGods;
-    private Map<String, PrintableColor> playersColors;
     private GodGuiDrawer godGuiDrawer;
 
     private Gui(Client clientInstance, Controller controllerInstance) {
-        client = clientInstance;
-        controller = controllerInstance;
-        this.guiUpdateHandler = new GuiUpdateHandler(this, controller);
+        super(clientInstance, controllerInstance);
+        this.updateHandler = new GuiUpdateHandler(this, controllerInstance);
         GodScreen.loadImages();
     }
 
@@ -95,45 +86,28 @@ public class Gui extends View implements Observer<Update> {
         }
     }
 
+    static void initFrame(JFrame frame) throws IOException {
+        frame.pack();
+        frame.setPreferredSize(new Dimension(800, 700));
+        frame.setMinimumSize(frame.getPreferredSize());
+        frame.setIconImage(ImageIO.read(Gui.class.getResource("/images/title_island.png")));
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
     public JFrame getMainFrame() {
         return frame;
     }
 
-    public Client getClient() {
-        return this.client;
-    }
-
-    public Controller getController() {
-        return this.controller;
-    }
-
-    public int getPlayersNumber() {
-        return this.playersNumber;
-    }
-
-    public void setPlayersNumber(int playersNumberSelected) {
-        playersNumber = playersNumberSelected;
-    }
-
-    public Map<String, PrintableColor> getPlayersColors() {
-        return this.playersColors;
-    }
-
-    public void setPlayersColors(Map<String, PrintableColor> playersColors) {
-        this.playersColors = playersColors;
-    }
-
-    public Map<String, String> getPlayersGods() {
-        return this.playersGods;
-    }
-
-    public void setPlayersGods(Map<String, String> playersGods) {
-        this.playersGods = playersGods;
-        this.godGuiDrawer = GodsUtils.godsGuiFactory(playersGods.get(controller.getClientPlayer().getNickname()));
-    }
-
     public GodGuiDrawer getGodGuiDrawer() {
         return this.godGuiDrawer;
+    }
+
+    @Override
+    public void setPlayersGods(Map<String, String> playersGods) {
+        super.setPlayersGods(playersGods);
+        this.godGuiDrawer = GodsUtils.godsGuiFactory(playersGods.get(controller.getClientPlayer().getNickname()));
     }
 
     @Override
@@ -157,32 +131,6 @@ public class Gui extends View implements Observer<Update> {
         initializeComponents();
         frame.add(mainPanel);
 
-        /*
-        //USED FOR BOARD'S VISUALIZATION
-        Match match = new Match(2);
-        Model model = new Model(match);
-        Board board = match.getMatchBoard();
-        Player player1 = new Player("ID1", model, match);
-        player1.setColor(PrintableColor.BLUE);
-        Player player2 = new Player("ID2", model, match);
-        player2.setColor(PrintableColor.GREEN);
-        match.addPlayer(player1);
-        match.addPlayer(player2);
-        board.getCell(1,3).setLevel(BlockType.LEVEL_THREE);
-        board.getCell(4,4).setLevel(BlockType.LEVEL_ONE);
-        board.getCell(0,0).setLevel(BlockType.GROUND);
-        board.getCell(0,2).setLevel(BlockType.LEVEL_TWO);
-        board.getCell(2,4).setLevel(BlockType.DOME);
-
-        board.getCell(1,3).setWorker(player1.getWorkerFirst());
-        board.getCell(2,2).setWorker(player1.getWorkerSecond());
-        board.getCell(4,3).setWorker(player2.getWorkerFirst());
-        board.getCell(1,1).setWorker(player2.getWorkerSecond());
-
-        /*JPanel currentPanel = new BoardScreen(board.toString());
-
-        frame.add(currentPanel);*/
-
         //useful for testing WIP panels
         //JPanel currentPanel = new GameManual();
         //frame.add(currentPanel);
@@ -190,28 +138,15 @@ public class Gui extends View implements Observer<Update> {
         initFrame(frame);
     }
 
-    static void initFrame(JFrame frame) throws IOException {
-        frame.pack();
-        frame.setPreferredSize(new Dimension(800, 700));
-        frame.setMinimumSize(frame.getPreferredSize());
-        frame.setIconImage(ImageIO.read(Gui.class.getResource("/images/title_island.png")));
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
     @Override
     public void update(Update update) {
-        SwingUtilities.invokeLater(() -> update.handleUpdate(this.guiUpdateHandler));
-    }
-
-    void forwardNotify(Update update) { // forwards update to client-side Controller
-        notify(update);
+        SwingUtilities.invokeLater(() -> update.handleUpdate(this.updateHandler));
     }
 
     public void startWaitingForMatch() {
 
         try {
+
             client.sendPlayersNumber(playersNumber);
             String playerID = client.readPlayerID();
             controller.setClientPlayerID(playerID);
@@ -219,7 +154,7 @@ public class Gui extends View implements Observer<Update> {
             client.getUpdateListener().addObserver(this);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            showServerUnreachableDialog();
         }
 
         this.mainCardLayout.show(mainPanel, WAITING_FOR_MATCH);
@@ -251,10 +186,6 @@ public class Gui extends View implements Observer<Update> {
         this.godsChoiceComponent.showGuiOnTurn();
     }
 
-    void setCurrentGamePhase(GamePhase gamePhase) {
-        this.currentGamePhase = gamePhase;
-    }
-
     void onTurnChanged() {
         switch (currentGamePhase) {
             case GAME_PREPARATION:
@@ -277,15 +208,18 @@ public class Gui extends View implements Observer<Update> {
         }
     }
 
-    void setSelectableColors(List<PrintableColor> selectableColors) {
+    @Override
+    public void setSelectableColors(List<PrintableColor> selectableColors) {
         this.initialInfoComponent.setSelectableColors(selectableColors);
     }
 
-    void setSelectedNicknames(List<String> selectedNicknames) {
+    @Override
+    public void setSelectedNicknames(List<String> selectedNicknames) {
         this.initialInfoComponent.setSelectedNicknames(selectedNicknames);
     }
 
-    void setSelectableGods(List<String> selectableGods) {
+    @Override
+    public void setSelectableGods(List<String> selectableGods) {
         this.godsChoiceComponent.setSelectableGods(selectableGods);
     }
 
@@ -422,7 +356,6 @@ public class Gui extends View implements Observer<Update> {
     public void showLoseMessageDialog(LoseUpdate update) {
         String title;
         String message;
-
         int iconWidth = 70;
 
         if (update.getLoserPlayer().getPlayerID().equals(this.controller.getClientPlayerID())) {
@@ -491,12 +424,10 @@ public class Gui extends View implements Observer<Update> {
     }
 
     public void showServerUnreachableDialog() {
-
         SwingUtilities.invokeLater(() -> {
             JOptionPane.showMessageDialog(null, "Cannot communicate to the Server, maybe it's down. Otherwise, check your connection." + System.lineSeparator() + "Quitting...", "Server Unreachable", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         });
-
     }
 
     public void showDisconnectedPlayerDialog(DisconnectedPlayerUpdate update) {
@@ -545,8 +476,7 @@ public class Gui extends View implements Observer<Update> {
             client.reinitializeConnection();
             this.playersNumber = 0;
         } catch (IOException e) {
-            new ConnectionError().show();
+            showServerUnreachableDialog();
         }
-
     }
 }
