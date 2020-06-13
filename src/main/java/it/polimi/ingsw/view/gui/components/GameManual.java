@@ -12,8 +12,8 @@ import java.util.LinkedHashMap;
 
 public class GameManual extends JPanel implements ActionListener {
     //private Font font = new Font(Font.SERIF, Font.BOLD, 13);
-    private String standardImgPath = "src/main/resources/images/GameManual/";
-    private Image backgroundImage = new ImageIcon(standardImgPath + "green.jpg").getImage();
+    private String standardImgPath = "/images/GameManual/";
+    private Image backgroundImage = new ImageIcon(getClass().getResource(standardImgPath + "green.jpg")).getImage();
     private int imgButtonWidth = 60;
     //private int imgButtonHeight = 78;
     private Dimension buttonDimension = new Dimension(250, 100);
@@ -33,7 +33,7 @@ public class GameManual extends JPanel implements ActionListener {
         Object[] ruleTitle = this.rules.keySet().toArray();
         for(int i = 0; i < ruleNumber; i++) {
             String key = (String) ruleTitle[i];  //create title-strings for rules
-            ImageIcon image = new ImageIcon(this.standardImgPath + key.toLowerCase().substring(0,3) + ".png");
+            ImageIcon image = new ImageIcon(getClass().getResource(this.standardImgPath + key.toLowerCase().substring(0,3) + ".png"));
             image = new ImageIcon(image.getImage().getScaledInstance(this.imgButtonWidth, -1, Image.SCALE_SMOOTH));
             this.ruleButtonArray[i] = new JButton(key, image);
             this.ruleButtonArray[i].setHorizontalTextPosition(JButton.CENTER);

@@ -78,7 +78,6 @@ public class GodScreen extends JPanel {
 
 
     public GodScreen(int playersNumber, List<String> selectableGods) throws IOException {
-        //loadImages();
         boolean isGodChooser = this.gui.getController().isClientPlayerGodChooser();
 
         LayoutManager layoutManager = new BorderLayout();
@@ -90,32 +89,12 @@ public class GodScreen extends JPanel {
         this.rightPanel.setLayout(new BorderLayout());
         this.rightPanel.setOpaque(false);
 
-        /*ImageIcon startImg = new ImageIcon("src/main/resources/images/done.png");
-        startImg = new ImageIcon(startImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
-
-        JRoundButton continueButton = new JRoundButton(startImg);
-        continueButton.addActionListener(this);*/
-        //JPanel innerPanel = new JPanel();
-        //JPanel innerPanel2 = new JPanel();
-
-        /*JLabel titleLabel;
-
-        if(isGodChooser) {
-            titleLabel = new JLabel("Select " + playersNumber + " Gods");
-        }
-        else {
-            titleLabel = new JLabel("Select a God");
-        }*/
-
-        //titleLabel = new JLabel();
-
         this.titleLabel = new JLabel();
         this.titleLabel.setFont(this.titleFont);
         titlePanel.add(this.titleLabel);
         titlePanel.setBorder(BorderFactory.createEmptyBorder(20,0,20,0));
         this.add(titlePanel, BorderLayout.NORTH);
         this.setBorder(BorderFactory.createEmptyBorder(0,20,0,20));
-
 
         // GridLayout gridLayout = new GridLayout(4, 4);
         // gridLayout.setVgap(10);

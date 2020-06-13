@@ -20,16 +20,14 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GodChoice extends JPanel implements ActionListener {
 
-    private final String standardImgPath = "src/main/resources/images/GodChoice/";
-    private final Image backgroundImage = new ImageIcon(standardImgPath + "title_sky.png").getImage(); // todo background ok? Or Olympus
+    private final String standardImgPath = "/images/GodChoice/";
+    private final Image backgroundImage = new ImageIcon(getClass().getResource(standardImgPath + "title_sky.png")).getImage(); // todo background ok? Or Olympus
     private ArrayList<JButton> buttons = new ArrayList<>();
     private GodChoiceJButtonListener godChoiceJButtonListener;
     private int selectedGodsNumber = 0;
@@ -67,53 +65,17 @@ public class GodChoice extends JPanel implements ActionListener {
 
         this.gui = Gui.getInstance();
         this.selectedGods = new ArrayList<>();
+        //Set<String> opponents = gui.getPlayersColors().keySet();
+        /*String loadingMsg = "You're playing against ";
+
+        int i = 0;
+
+        while(i < opponents.size()) {
+            loadingMsg += opponents
+            i++;
+        }*/ // todo
+
         this.add(new LoadingComponent("Waiting...", Color.BLACK));
-
-        /*new Thread(() -> {
-            List<String> gods =  View.getGodsNamesList();
-
-            gods.forEach(god -> {
-
-                try {
-
-                    ImageIcon smallImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
-                    smallImageIcon = new ImageIcon(smallImageIcon.getImage().getScaledInstance(30,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon mediumSmallImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
-                    mediumSmallImageIcon = new ImageIcon(mediumSmallImageIcon.getImage().getScaledInstance(50,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon mediumImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
-                    mediumImageIcon = new ImageIcon(mediumImageIcon.getImage().getScaledInstance(70,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon mediumBigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
-                    mediumBigImageIcon = new ImageIcon(mediumBigImageIcon.getImage().getScaledInstance(100,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon bigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
-                    bigImageIcon = new ImageIcon(bigImageIcon.getImage().getScaledInstance(130,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon veryBigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
-                    veryBigImageIcon = new ImageIcon(veryBigImageIcon.getImage().getScaledInstance(200,-1, Image.SCALE_SMOOTH));
-
-                    Map<String, ImageIcon> m = new HashMap<>();
-                    m.put("small", smallImageIcon);
-                    m.put("medium_small", mediumSmallImageIcon);
-                    m.put("medium", mediumImageIcon);
-                    m.put("medium_big", mediumBigImageIcon);
-                    m.put("big", bigImageIcon);
-                    m.put("very_big", veryBigImageIcon);
-
-                    allIconGods.put(god, m);
-
-
-                } catch(IOException e) {
-                    e.printStackTrace();
-                }
-
-
-            });
-
-
-        }).start();*/
     }
     
     private void commonGodChoose2(JPanel possibleGodsPanel, ArrayList<ImageIcon> iconGods) throws IOException {
@@ -201,14 +163,14 @@ public class GodChoice extends JPanel implements ActionListener {
 
 
     private void setSpecific() {
-        ImageIcon startImg = new ImageIcon("src/main/resources/images/done.png");
+        ImageIcon startImg = new ImageIcon(getClass().getResource("/images/done.png"));
         startImg = new ImageIcon(startImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JRoundButton continueButton = new JRoundButton(startImg);
         continueButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         continueButton.setOpaque(false);
         continueButton.addActionListener(this);
 
-        ImageIcon infoImg = new ImageIcon(this.standardImgPath + "information.png");
+        ImageIcon infoImg = new ImageIcon(getClass().getResource(this.standardImgPath + "information.png"));
         infoImg = new ImageIcon(infoImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JRoundButton infoButton = new JRoundButton(infoImg);
         infoButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

@@ -7,8 +7,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class WaitingForAMatch extends JPanel {
-    private final String standardImgPath = "src/main/resources/images/WaitingForAMatch/";
-    private final Image backgroundImage = new ImageIcon(standardImgPath + "title_FG_grass.png").getImage();
+    private final String standardImgPath = "/images/WaitingForAMatch/";
+    private final Image backgroundImage = new ImageIcon(getClass().getResource(standardImgPath + "title_FG_grass.png")).getImage();
 
     public WaitingForAMatch() {
         LayoutManager layoutManager = new BorderLayout();
@@ -26,7 +26,7 @@ public class WaitingForAMatch extends JPanel {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         jPanel.add(label);
 
-        Icon imgIcon = new ImageIcon("src/main/resources/images/loadings/loading.gif");
+        Icon imgIcon = new ImageIcon(getClass().getResource("/images/loadings/loading.gif"));
         JLabel label2 = new JLabel(imgIcon);
         label2.setBorder(new EmptyBorder(15, 0, 0, 0));
 

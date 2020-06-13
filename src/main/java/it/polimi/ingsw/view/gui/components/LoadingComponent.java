@@ -28,10 +28,10 @@ public class LoadingComponent extends JPanel {
         ImageIcon imgIcon;
 
         if (textColor.equals(Color.BLACK)) {
-            imgIcon = new ImageIcon("src/main/resources/images/loadings/loading_infinity_black.gif");
+            imgIcon = new ImageIcon(getClass().getResource("/images/loadings/loading_infinity_black.gif"));
         }
         else {
-            imgIcon = new ImageIcon("src/main/resources/images/loadings/loading_infinity_white.gif");
+            imgIcon = new ImageIcon(getClass().getResource("/images/loadings/loading_infinity_white.gif"));
         }
 
         JLabel label2 = new JLabel(imgIcon);

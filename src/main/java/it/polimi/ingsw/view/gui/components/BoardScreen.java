@@ -31,53 +31,14 @@ import java.util.Map;
  */
 public class BoardScreen extends JPanel {
     private final JCellButton[][] buttons = new JCellButton[Board.WIDTH_SIZE][Board.HEIGHT_SIZE];
-    //private final static Map<String, ImageIcon> towerIcons = new HashMap<>();
     private final static Map<String, ImageIcon> domeIcon = new HashMap<>();
     private final static Map<String, Map<String, ImageIcon>> workerIcons = new HashMap<>();
+    /*private final static Map<String, Image> groundBackgrounds = new HashMap<>();
+    private final static Map<String, Image> levelOneBackgrounds = new HashMap<>();
+    private final static Map<String, Image> levelTwoBackgrounds = new HashMap<>();
+    private final static Map<String, Image> levelThreeBackgrounds = new HashMap<>();*/
 
-    /*static {
-        new Thread(() -> {
 
-            int i = 1;
-
-            while(i <= 3) {
-
-                try {
-
-                    ImageIcon imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/BoardScreen/tower-level" + i + ".png")));
-
-                    ImageIcon smallImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(20,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon mediumSmallImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(30,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon mediumImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(35,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon mediumBigImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(40,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon bigImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(45,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon veryBigImageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(45,-1, Image.SCALE_SMOOTH));
-
-                    Map<String, ImageIcon> m = new HashMap<>();
-                    m.put("small", smallImageIcon);
-                    m.put("medium_small", mediumSmallImageIcon);
-                    m.put("medium", mediumImageIcon);
-                    m.put("medium_big", mediumBigImageIcon);
-                    m.put("big", bigImageIcon);
-                    m.put("very_big", veryBigImageIcon);
-
-                    towerIcons.put("level_" + i, m);
-
-                } catch(IOException e) {
-                    e.printStackTrace();
-                }
-
-                i++;
-
-            }
-
-        }).start();
-    }*/
     static {
         new Thread(() -> {
                 try {
@@ -149,11 +110,63 @@ public class BoardScreen extends JPanel {
                     e.printStackTrace();
                 }
             });
-
-
-
         }).start();
     }
+
+    /*public static Image getImage(BlockType blockType, int row, int col) {
+        switch(blockType) {
+            case DOME:
+            case GROUND:
+                return groundBackgrounds.get(row + "," + col);
+            case LEVEL_ONE:
+                return levelOneBackgrounds.get(row + "," + col);
+            case LEVEL_TWO:
+                return levelTwoBackgrounds.get(row + "," + col);
+            case LEVEL_THREE:
+                return levelThreeBackgrounds.get(row + "," + col);
+            default:
+                return null;
+        }
+    }
+
+    static {
+        new Thread(() -> {
+            try {
+
+                for(int i = 0; i < Board.HEIGHT_SIZE; i++) {
+                    for(int j = 0; j < Board.WIDTH_SIZE; j++) {
+                        Image ground = new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (i + 1) + "-col-" + (j + 1) + ".png")).getImage();
+                        groundBackgrounds.put(i + "," + j, ground);
+                    }
+                }
+
+                for(int i = 0; i < Board.HEIGHT_SIZE; i++) {
+                    for(int j = 0; j < Board.WIDTH_SIZE; j++) {
+                        Image one = new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (i + 1) + "-col-" + (j + 1) + "-level1.png")).getImage();
+                        levelOneBackgrounds.put(i + "," + j, one);
+                    }
+                }
+
+                for(int i = 0; i < Board.HEIGHT_SIZE; i++) {
+                    for(int j = 0; j < Board.WIDTH_SIZE; j++) {
+                        Image two = new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (i + 1) + "-col-" + (j + 1) + "-level2.png")).getImage();
+                        levelTwoBackgrounds.put(i + "," + j, two);
+                    }
+                }
+
+                for(int i = 0; i < Board.HEIGHT_SIZE; i++) {
+                    for(int j = 0; j < Board.WIDTH_SIZE; j++) {
+                        Image three = new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (i + 1) + "-col-" + (j + 1) + "-level3.png")).getImage();
+                        levelThreeBackgrounds.put(i + "," + j, three);
+                    }
+                }
+
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
+        }).start();
+    }*/
 
     /**
      * This method is the constructor of the class.

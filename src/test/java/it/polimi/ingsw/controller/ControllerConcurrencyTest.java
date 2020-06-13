@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class ControllerConcurrencyTest {
 
-    @Disabled
+    //@Disabled
     @Test
     public void concurrencyStressTest() {
 

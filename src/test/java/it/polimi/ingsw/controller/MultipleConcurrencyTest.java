@@ -15,12 +15,12 @@ public class MultipleConcurrencyTest {
 
     SummaryGeneratingListener listener = new SummaryGeneratingListener();
 
-    @Disabled
+    //@Disabled
     @Test
     public void runAll() {
-        while(true) {
+       /* while(true) {
             runOne();
-        }
+        } */
     }
 
 

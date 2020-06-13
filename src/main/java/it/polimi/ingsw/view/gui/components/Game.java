@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Game extends JPanel {
-    private String stdImagePath = "src/main/resources//images/Game/";
-    Image backgroundImage = new ImageIcon(stdImagePath + "background.png").getImage();
-    private String externalImgPath = "src/main/resources/images/";
+    private String stdImagePath = "/images/Game/";
+    Image backgroundImage = new ImageIcon(getClass().getResource(stdImagePath + "background.png")).getImage();
+    private String externalImgPath = "/images/";
     private Font font = Gui.getFont(Gui.FONT_REGULAR, 18);
     private Font turnFont = Gui.getFont(Gui.FONT_REGULAR, 22);
     private JLabel turn = new JLabel();
@@ -167,7 +167,7 @@ public abstract class Game extends JPanel {
         this.add(playersGodsTurn, BorderLayout.WEST);
 
         //button to quit must be south-west
-        ImageIcon quitImg = new ImageIcon(this.externalImgPath + "exit.png");
+        ImageIcon quitImg = new ImageIcon(getClass().getResource(this.externalImgPath + "exit.png"));
         quitImg = new ImageIcon(quitImg.getImage().getScaledInstance(this.buttonDim, this.buttonDim, Image.SCALE_SMOOTH));
         this.quitButton = new JRoundButton(quitImg);
 

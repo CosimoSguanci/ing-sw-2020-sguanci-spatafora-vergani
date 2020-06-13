@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RealGame extends Game implements ActionListener {
-    private String classImagePath = "src/main/resources/images/RealGame/";
+    private String classImagePath = "/images/RealGame/";
     public static final int dimension = 70;
     public static final int buttonWidth = 170;
     public static final int buttonHeight = 80;
@@ -106,7 +106,7 @@ public class RealGame extends Game implements ActionListener {
 
             //need to set rightPanel's layout
             //rightPanel contains buttons to perform a move, a build and to end turn
-            ImageIcon moveIcon = new ImageIcon(this.classImagePath + "move.png");
+            ImageIcon moveIcon = new ImageIcon(getClass().getResource(this.classImagePath + "move.png"));
             moveIcon = new ImageIcon(moveIcon.getImage().getScaledInstance(this.dimension, -1, Image.SCALE_SMOOTH));
 
             JButton moveButton = new JButton("Move", moveIcon);
@@ -117,7 +117,7 @@ public class RealGame extends Game implements ActionListener {
             moveButton.setPreferredSize(new Dimension(this.buttonWidth, this.buttonHeight));
             moveButton.setMaximumSize(new Dimension(this.buttonWidth, this.buttonHeight));
 
-            ImageIcon buildIcon = new ImageIcon(this.classImagePath + "build.png");
+            ImageIcon buildIcon = new ImageIcon(getClass().getResource(this.classImagePath + "build.png"));
             buildIcon = new ImageIcon(buildIcon.getImage().getScaledInstance(this.dimension, -1, Image.SCALE_SMOOTH));
 
             JButton buildButton = new JButton("Build", buildIcon);
@@ -128,7 +128,7 @@ public class RealGame extends Game implements ActionListener {
             buildButton.setPreferredSize(new Dimension(this.buttonWidth, this.buttonHeight));
             buildButton.setMaximumSize(new Dimension(this.buttonWidth, this.buttonHeight));
 
-            ImageIcon endIcon = new ImageIcon(this.classImagePath + "end.png");
+            ImageIcon endIcon = new ImageIcon(getClass().getResource(this.classImagePath + "end.png"));
             endIcon = new ImageIcon(endIcon.getImage().getScaledInstance(this.dimension, -1, Image.SCALE_SMOOTH));
 
             JButton endButton = new JButton("End turn", endIcon);

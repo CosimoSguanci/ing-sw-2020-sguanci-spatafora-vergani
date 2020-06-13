@@ -23,8 +23,8 @@ public class ConnectionError {
     }
 
     private static class ConnectionErrorPanel extends JPanel {
+        private final Image backgroundImage = new ImageIcon(getClass().getResource("/images/connection_error_bg.png")).getImage();
 
-        private final Image backgroundImage = new ImageIcon("src/main/resources/images/connection_error_bg.png").getImage();
 
         private ConnectionErrorPanel() {
 

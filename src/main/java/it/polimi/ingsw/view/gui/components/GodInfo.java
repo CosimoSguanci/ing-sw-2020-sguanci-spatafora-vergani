@@ -16,8 +16,8 @@ public class GodInfo extends JDialog {
     private Gui gui = Gui.getInstance();
     private GodScreen godScreen;
     private List<String> selectableGods;
-    private final String godChoiceImgPath = "src/main/resources/images/GodChoice/";
-    private final Image backgroundImage = new ImageIcon(godChoiceImgPath + "title_sky.png").getImage();
+    private final String godChoiceImgPath = "/images/GodChoice/";
+    private final Image backgroundImage = new ImageIcon(getClass().getResource(godChoiceImgPath + "title_sky.png")).getImage();
 
 
     public GodInfo(List<String> selectableGods) {

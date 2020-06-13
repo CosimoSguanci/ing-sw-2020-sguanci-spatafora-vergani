@@ -29,7 +29,6 @@ import java.util.Map;
  * @author Andrea Vergani
  */
 public class GamePreparation extends Game implements ActionListener {
-    private String classImagePath = "src/main/resources/images/GamePreparation/";
     private JRoundButton continueButton;
 
     private List<JCellButton> selectedButtons = new ArrayList<>();
@@ -60,7 +59,7 @@ public class GamePreparation extends Game implements ActionListener {
         });
 
         //need to set rightPanel's layout, with a "continue" button in the southern part
-        ImageIcon continueImg = new ImageIcon("src/main/resources/images/done.png");
+        ImageIcon continueImg = new ImageIcon(getClass().getResource("/images/done.png"));
         continueImg = new ImageIcon(continueImg.getImage().getScaledInstance(this.buttonDim, this.buttonDim, Image.SCALE_SMOOTH));
         this.continueButton = new JRoundButton(continueImg);
 

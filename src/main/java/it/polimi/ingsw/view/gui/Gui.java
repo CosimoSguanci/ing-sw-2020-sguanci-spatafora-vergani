@@ -49,20 +49,16 @@ public class Gui extends View implements Observer<Update> {
     }
 
     public static Gui getInstance(Client client, Controller controller) {
-
         if (guiInstance == null) {
             guiInstance = new Gui(client, controller);
         }
-
         return guiInstance;
     }
 
     public static Gui getInstance() {
-
         if (guiInstance == null) {
             return new Gui(null, null);
         }
-
         return guiInstance;
     }
 
@@ -329,19 +325,19 @@ public class Gui extends View implements Observer<Update> {
         String title;
         String message;
         ImageIcon icon;
-        String imagePath = "src/main/resources/images/RealGame/";
+        String imagePath = "/images/RealGame/";
 
         int iconWidth = 70;
 
         if (update.getWinnerPlayer().getPlayerID().equals(this.controller.getClientPlayerID())) {
             title = "Win";
             message = "You Won!";
-            icon = new ImageIcon(imagePath + "trophy.png");
+            icon = new ImageIcon(getClass().getResource(imagePath + "trophy.png"));
             icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
         } else {
             title = "You Lost";
             message = update.getWinnerPlayer().getNickname() + " Won!";
-            icon = new ImageIcon(imagePath + "game-over.png");
+            icon = new ImageIcon(getClass().getResource(imagePath + "game-over.png"));
             icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
         }
 
@@ -368,8 +364,8 @@ public class Gui extends View implements Observer<Update> {
 
             SwingUtilities.invokeLater(() -> {
                 ImageIcon icon;
-                String imagePath = "src/main/resources/images/RealGame/game-over.png";
-                icon = new ImageIcon(imagePath);
+                String imagePath = "/images/RealGame/game-over.png";
+                icon = new ImageIcon(getClass().getResource(imagePath));
                 icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
                 JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE, icon);
                 askContinueToWatch();
@@ -431,10 +427,10 @@ public class Gui extends View implements Observer<Update> {
     }
 
     public void showDisconnectedPlayerDialog(DisconnectedPlayerUpdate update) {
-        String imagePath = "src/main/resources/images/RealGame/player_disconnected.png";
+        String imagePath = "/images/RealGame/player_disconnected.png";
         int iconWidth = 70;
 
-        ImageIcon icon = new ImageIcon(imagePath);
+        ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
         icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
 
         String player = update.getDisconnectedPlayer().getNickname() != null ? update.getDisconnectedPlayer().getNickname() : "A Player";

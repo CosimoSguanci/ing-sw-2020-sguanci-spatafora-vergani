@@ -875,20 +875,20 @@ public class ControllerTest {
 
         controller.update(gamePreparationCommand);
         for(Player player : players) {
-            assertEquals(null, player.getWorkerFirst().getPosition());
-            assertEquals(null, player.getWorkerFirst().getPosition());
-            assertEquals(null, player.getWorkerSecond().getPosition());
-            assertEquals(null, player.getWorkerSecond().getPosition());
+            assertNull(player.getWorkerFirst().getPosition());
+            assertNull(player.getWorkerFirst().getPosition());
+            assertNull(player.getWorkerSecond().getPosition());
+            assertNull(player.getWorkerSecond().getPosition());
         }
 
         gamePreparationCommand = new GamePreparationCommand(0,2, 2, 4);
         gamePreparationCommand.setPlayer(model.getCurrentPlayer());
         controller.update(gamePreparationCommand);
         for(Player player : players) {
-            assertEquals(null, player.getWorkerFirst().getPosition());
-            assertEquals(null, player.getWorkerFirst().getPosition());
-            assertEquals(null, player.getWorkerSecond().getPosition());
-            assertEquals(null, player.getWorkerSecond().getPosition());
+            assertNull(player.getWorkerFirst().getPosition());
+            assertNull(player.getWorkerFirst().getPosition());
+            assertNull(player.getWorkerSecond().getPosition());
+            assertNull(player.getWorkerSecond().getPosition());
         }
 
         gamePreparationCommand = new GamePreparationCommand(0,2, 3, 2);

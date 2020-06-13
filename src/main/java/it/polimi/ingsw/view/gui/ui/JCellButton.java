@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.ui;
 import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.view.gui.Gui;
+import it.polimi.ingsw.view.gui.components.BoardScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,19 +59,6 @@ public class JCellButton extends JButton {
         return col;
     }
 
-    public void setLevelData(JPanel levelPanel, ImageIcon imageIconLevel) {
-        this.levelPanel = levelPanel;
-        this.imageIconLevel = imageIconLevel;
-    }
-
-    public ImageIcon getImageIconLevel() {
-        return imageIconLevel;
-    }
-
-    public JPanel getLevelPanel() {
-        return levelPanel;
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -97,5 +85,7 @@ public class JCellButton extends JButton {
                 return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + "-level3.png")).getImage();
             default: throw  new Exception();
         }
+
+        //return BoardScreen.getImage(blockLevel, row, col);
     }
 }

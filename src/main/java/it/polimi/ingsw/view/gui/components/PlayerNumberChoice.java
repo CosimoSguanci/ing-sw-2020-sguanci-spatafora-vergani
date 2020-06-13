@@ -16,8 +16,8 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
     private final JRadioButton button1;
     private final JRadioButton button2;
     private final JLabel resumeNumber;  //this JLabel needs to be refreshed every time a button is clicked
-    private final String standardImgPath = "src/main/resources/images/PlayerNumberChoice/";
-    private final Image backgroundImage = new ImageIcon(standardImgPath + "santoriniBackground.jpg").getImage();
+    private final String standardImgPath = "/images/PlayerNumberChoice/";
+    private final Image backgroundImage = new ImageIcon(PlayerNumberChoice.class.getResource(standardImgPath + "santoriniBackground.jpg")).getImage();
 
     public PlayerNumberChoice() {
         LayoutManager layoutManager = new BorderLayout();
@@ -36,14 +36,14 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         this.add(questionPanel, BorderLayout.NORTH);
 
         //button for selecting two players
-        ImageIcon buttonTwoPlayers = new ImageIcon(standardImgPath + "two.png");
+        ImageIcon buttonTwoPlayers = new ImageIcon(getClass().getResource(standardImgPath + "two.png"));
         int selectionButtonWidth = 80;
         buttonTwoPlayers = new ImageIcon(buttonTwoPlayers.getImage().getScaledInstance(selectionButtonWidth, -1, Image.SCALE_SMOOTH));
         this.button1 = new JRadioButton(buttonTwoPlayers, true);
         this.button1.setOpaque(false);
 
         //button for selecting three players
-        ImageIcon buttonThreePlayers = new ImageIcon(standardImgPath + "three.png");
+        ImageIcon buttonThreePlayers = new ImageIcon(getClass().getResource(standardImgPath + "three.png"));
         buttonThreePlayers = new ImageIcon(buttonThreePlayers.getImage().getScaledInstance(selectionButtonWidth, -1, Image.SCALE_SMOOTH));
         this.button2 = new JRadioButton(buttonThreePlayers, false);
         this.button2.setOpaque(false);
@@ -92,7 +92,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         this.add(buttonAllInfoPanel, BorderLayout.CENTER);
 
         //this part must be south-east
-        ImageIcon startImg = new ImageIcon("src/main/resources/images/next.png");
+        ImageIcon startImg = new ImageIcon(getClass().getResource("/images/next.png"));
         startImg = new ImageIcon(startImg.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
 
         JRoundButton startButton = new JRoundButton(startImg);

@@ -22,8 +22,8 @@ public class InitialInfo extends JPanel implements ActionListener {
     private static final String errorDialogTitle = "Error";
     private static final String errorDialogMessage = "You can't use this nickname!" + System.lineSeparator() +
             "Nicknames already used are: ";
-    private final String standardImgPath = "src/main/resources/images/InitialInfo/";
-    private final Image backgroundImage = new ImageIcon(standardImgPath + "backgroundTemple.png").getImage();
+    private final String standardImgPath = "/images/InitialInfo/";
+    private final Image backgroundImage = new ImageIcon(getClass().getResource(standardImgPath + "backgroundTemple.png")).getImage();
     private final Font font = Gui.getFont(Gui.FONT_REGULAR, 20);
     private final Color textColor = Color.WHITE;
     private final Gui gui;
@@ -119,7 +119,7 @@ public class InitialInfo extends JPanel implements ActionListener {
 
 
         //button to continue must be south-east
-        ImageIcon continueImg = new ImageIcon(this.standardImgPath + "button-play-normal.png");
+        ImageIcon continueImg = new ImageIcon(getClass().getResource(this.standardImgPath + "button-play-normal.png"));
         int buttonWidth = 60;
         continueImg = new ImageIcon(continueImg.getImage().getScaledInstance(buttonWidth, -1, Image.SCALE_SMOOTH));
         JButton continueButton = new JButton(continueImg);
@@ -133,8 +133,8 @@ public class InitialInfo extends JPanel implements ActionListener {
         innerPanel2.add(continueButton, BorderLayout.EAST);
 
         //button to quit must be south-west
-        String externalImgPath = "src/main/resources/images/";
-        ImageIcon quitImg = new ImageIcon(externalImgPath + "exit.png");
+        String externalImgPath = "/images/";
+        ImageIcon quitImg = new ImageIcon(getClass().getResource(externalImgPath + "exit.png"));
         quitImg = new ImageIcon(quitImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JRoundButton quitButton = new JRoundButton(quitImg);
 
