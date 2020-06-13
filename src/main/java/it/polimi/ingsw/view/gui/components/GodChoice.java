@@ -86,14 +86,15 @@ public class GodChoice extends JPanel implements ActionListener {
         String opponentsStr;
 
         if(this.gui.getPlayersNumber() == 3) {
-            stringBuilder.append("Waiting... Your opponents are ");
-            opponents.stream().filter(p -> !p.toLowerCase().equals(this.gui.getController().getClientPlayer().getNickname().toLowerCase())).forEach(opponent -> stringBuilder.append(opponent).append(" and "));
+            stringBuilder.append("<html>Waiting... Your opponents are ");
+            opponents.stream().filter(p -> !p.toLowerCase().equals(this.gui.getController().getClientPlayer().getNickname().toLowerCase())).forEach(opponent -> stringBuilder.append("<strong>").append(opponent).append("</strong>").append(" and "));
             opponentsStr = stringBuilder.substring(0, stringBuilder.lastIndexOf(" and "));
+            opponentsStr += "</html>";
 
         }
         else {
-            stringBuilder.append("Waiting... Your opponent is ");
-            opponents.stream().filter(p -> !p.toLowerCase().equals(this.gui.getController().getClientPlayer().getNickname().toLowerCase())).forEach(stringBuilder::append);
+            stringBuilder.append("<html>Waiting... Your opponent is ");
+            opponents.stream().filter(p -> !p.toLowerCase().equals(this.gui.getController().getClientPlayer().getNickname().toLowerCase())).forEach(opponent -> stringBuilder.append("<strong>").append(opponent).append("</strong></html>"));
             opponentsStr = stringBuilder.toString();
         }
 
