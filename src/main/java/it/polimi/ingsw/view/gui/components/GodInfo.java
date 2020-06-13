@@ -27,8 +27,6 @@ public class GodInfo extends JDialog {
         int playersNumber = gui.getPlayersNumber();
 
 
-        //this.removeAll();
-
         try {
             LayoutManager layoutManager = new BorderLayout();
             this.setLayout(layoutManager);
@@ -40,13 +38,14 @@ public class GodInfo extends JDialog {
                 }
             };
             mainPanel.setOpaque(false);
+            mainPanel.setLayout(new BorderLayout());
             //this.setBorder(BorderFactory.createEmptyBorder(20,20, 20,20));
             this.godScreen = new GodScreen(playersNumber, this.selectableGods);
             this.godScreen.setOpaque(false);
             //this.add(this.godScreen, BorderLayout.CENTER);
             setSpecific();
             addListeners();
-            mainPanel.add(this.godScreen);
+            mainPanel.add(this.godScreen, BorderLayout.CENTER);
             this.add(mainPanel);
             this.revalidate();
             this.repaint();
