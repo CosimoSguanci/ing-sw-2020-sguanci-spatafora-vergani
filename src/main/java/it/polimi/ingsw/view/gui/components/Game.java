@@ -109,10 +109,9 @@ public abstract class Game extends JPanel {
             JGodButton godButton = new JGodButton(nicknameResized + " has " + god, god.toLowerCase());
             godButton.setForeground(PrintableColor.convertToColor(color));
 
-            Border border = BorderFactory.createLineBorder(Color.BLACK, 1, true);
+           /* Border border = BorderFactory.createLineBorder(Color.BLACK, 1, true);
             godButton.setBorder(BorderFactory.createCompoundBorder(border,
-                    BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10))); */
 
 
             this.godsButtons.add(godButton);
