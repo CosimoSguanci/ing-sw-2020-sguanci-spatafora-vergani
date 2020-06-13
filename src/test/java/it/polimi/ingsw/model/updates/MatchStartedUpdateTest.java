@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.updates;
 
-import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.view.UpdateHandler;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class MatchStartedUpdateTest {
+
     @Test
     public void handleUpdateTest() {
         UpdateHandler updateHandler = UpdateTest.getMockUpdateHandler();

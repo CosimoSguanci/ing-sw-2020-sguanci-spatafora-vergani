@@ -146,8 +146,6 @@ public class RealGame extends Game implements ActionListener {
             this.rightPanel.add(Box.createVerticalGlue());
             this.rightPanel.add(buildButton);
             this.rightPanel.add(Box.createVerticalGlue());
-            this.rightPanel.add(endButton);
-            this.rightPanel.add(Box.createVerticalGlue());
 
             JComponent godComponent = gui.getGodGuiDrawer().draw(this);
 
@@ -155,6 +153,9 @@ public class RealGame extends Game implements ActionListener {
                 this.rightPanel.add(godComponent);
                 this.rightPanel.add(Box.createVerticalGlue());
             }
+
+            this.rightPanel.add(endButton);
+            this.rightPanel.add(Box.createVerticalGlue());
 
         }
 
