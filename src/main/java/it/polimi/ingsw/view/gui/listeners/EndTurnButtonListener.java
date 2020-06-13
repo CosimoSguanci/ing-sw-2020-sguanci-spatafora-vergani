@@ -4,14 +4,13 @@ import it.polimi.ingsw.controller.commands.CommandType;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.components.RealGame;
-import it.polimi.ingsw.view.gui.ui.JCellButton;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class EndTurnButtonListener implements ActionListener {
 
-    private RealGame realGameComponent;
+    private final RealGame realGameComponent;
 
     public EndTurnButtonListener(RealGame realGameComponent) {
         this.realGameComponent = realGameComponent;

@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PlayerNumberChoiceRadioButtonListener implements ActionListener {
-    private PlayerNumberChoice playerNumberChoice;
+    private final PlayerNumberChoice playerNumberChoice;
 
     public PlayerNumberChoiceRadioButtonListener(PlayerNumberChoice playerNumberChoice) {
         this.playerNumberChoice = playerNumberChoice;

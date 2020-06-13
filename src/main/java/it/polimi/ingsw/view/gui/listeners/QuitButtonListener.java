@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 public class QuitButtonListener implements ActionListener {
     Gui gui = Gui.getInstance();
-    private JPanel panel;
+    private final JPanel panel;
 
     public QuitButtonListener(JPanel panel) {
         this.panel = panel;

@@ -15,7 +15,7 @@ public class PlaceWorkersButtonListener implements ActionListener {
     private static final String errorDialogTitle = "Error";
     private static final String errorDialogMessage = "You must place 2 Workers";
 
-    private GamePreparation gamePreparationComponent;
+    private final GamePreparation gamePreparationComponent;
 
     public PlaceWorkersButtonListener(GamePreparation gamePreparationComponent) {
         this.gamePreparationComponent = gamePreparationComponent;
@@ -26,7 +26,7 @@ public class PlaceWorkersButtonListener implements ActionListener {
 
         List<JCellButton> selectedButtons = gamePreparationComponent.getSelectedButtons();
 
-        if(selectedButtons.size() == 2) {
+        if (selectedButtons.size() == 2) {
             int workerFirstRow = selectedButtons.get(0).getRow();
             int workerFirstCol = selectedButtons.get(0).getCol();
 
@@ -35,8 +35,7 @@ public class PlaceWorkersButtonListener implements ActionListener {
 
             GamePreparationCommand gamePreparationCommand = new GamePreparationCommand(workerFirstRow, workerFirstCol, workerSecondRow, workerSecondCol);
             Gui.getInstance().notify(gamePreparationCommand);
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(Gui.getInstance().getMainFrame(), errorDialogMessage, errorDialogTitle, JOptionPane.ERROR_MESSAGE);
         }
     }

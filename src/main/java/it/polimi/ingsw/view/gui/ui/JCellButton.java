@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.gui.ui;
 import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.view.gui.Gui;
-import it.polimi.ingsw.view.gui.components.BoardScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,8 +16,6 @@ public class JCellButton extends JButton {
     private boolean isEmpty = true;
 
     private Worker worker;
-    private JPanel levelPanel;
-    private ImageIcon imageIconLevel;
 
     public JCellButton(Worker worker, BlockType blockLevel, int row, int col) {
         this.worker = worker;
@@ -35,20 +32,20 @@ public class JCellButton extends JButton {
         this.worker = worker;
     }
 
-    public void setEmpty(boolean isEmpty) {
-        this.isEmpty = isEmpty;
-    }
-
     public boolean isEmpty() {
         return this.isEmpty;
     }
 
-    public void setWorkerLabel(JLabel workerLabel) {
-        this.workerLabel = workerLabel;
+    public void setEmpty(boolean isEmpty) {
+        this.isEmpty = isEmpty;
     }
 
     public JLabel getWorkerLabel() {
         return workerLabel;
+    }
+
+    public void setWorkerLabel(JLabel workerLabel) {
+        this.workerLabel = workerLabel;
     }
 
     public int getRow() {
@@ -83,9 +80,8 @@ public class JCellButton extends JButton {
                 return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + "-level2.png")).getImage();
             case LEVEL_THREE:
                 return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + "-level3.png")).getImage();
-            default: throw  new Exception();
+            default:
+                throw new Exception();
         }
-
-        //return BoardScreen.getImage(blockLevel, row, col);
     }
 }

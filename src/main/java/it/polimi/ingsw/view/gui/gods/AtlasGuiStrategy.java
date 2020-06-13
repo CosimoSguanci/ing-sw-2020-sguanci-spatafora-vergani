@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui.gods;
 
 import it.polimi.ingsw.view.gui.components.RealGame;
 import it.polimi.ingsw.view.gui.gods.listeners.AtlasListener;
-import it.polimi.ingsw.view.gui.listeners.EndTurnButtonListener;
 
 import javax.swing.*;
 import java.awt.*;

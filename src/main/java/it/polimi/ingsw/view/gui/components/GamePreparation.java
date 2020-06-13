@@ -29,14 +29,14 @@ import java.util.Map;
  * @author Andrea Vergani
  */
 public class GamePreparation extends Game implements ActionListener {
-    private JRoundButton continueButton;
 
-    private List<JCellButton> selectedButtons = new ArrayList<>();
+    private final List<JCellButton> selectedButtons = new ArrayList<>();
     private Map<String, Map<String, ImageIcon>> workerIcons = new HashMap<>();
 
     /**
      * This method is a simple getter which gives information
      * about button that a single player has already selected.
+     *
      * @return a list containing references to button a player has selected.
      */
     public List<JCellButton> getSelectedButtons() {
@@ -61,9 +61,9 @@ public class GamePreparation extends Game implements ActionListener {
         //need to set rightPanel's layout, with a "continue" button in the southern part
         ImageIcon continueImg = new ImageIcon(getClass().getResource("/images/done.png"));
         continueImg = new ImageIcon(continueImg.getImage().getScaledInstance(this.buttonDim, this.buttonDim, Image.SCALE_SMOOTH));
-        this.continueButton = new JRoundButton(continueImg);
+        JRoundButton continueButton = new JRoundButton(continueImg);
 
-        this.continueButton.addActionListener(new PlaceWorkersButtonListener(this));
+        continueButton.addActionListener(new PlaceWorkersButtonListener(this));
 
         JPanel innerPanel = new JPanel();
         innerPanel.setLayout(new BorderLayout());
@@ -86,6 +86,7 @@ public class GamePreparation extends Game implements ActionListener {
      * A player has to select 2 different empty cell to place its workers.
      * If a player wrongly tries to select more than 2 cells, only the first two
      * remain selected. A selected cell can be rejected by selecting it again.
+     *
      * @param e contains references to the event performed.
      */
     @Override
@@ -94,12 +95,12 @@ public class GamePreparation extends Game implements ActionListener {
         Gui gui = Gui.getInstance();
         Controller controller = gui.getController();
 
-        if(controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
+        if (controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
             JCellButton button = (JCellButton) e.getSource();
 
             //TODO Si potrebbe fare una resize dei worker anche in GamePreparatio. Ne vale la pena far partire un nuovo thread per una cosa che scompare alla fase successiva?
             //Al momento settiamo una dimensione media per la GamePreparation
-            if(button.isEmpty() && selectedButtons.size() < 2) {
+            if (button.isEmpty() && selectedButtons.size() < 2) {
                 String playerNickname = controller.getClientPlayer().getNickname();
                 PrintableColor color = gui.getPlayersColors().get(playerNickname);
 
@@ -112,38 +113,28 @@ public class GamePreparation extends Game implements ActionListener {
                         JCellButton btn = (JCellButton) e.getComponent();
                         Dimension size = btn.getSize();
 
-                        if(btn.getComponents().length> 0) {
+                        if (btn.getComponents().length > 0) {
                             btn.remove(btn.getComponent(0));
                         }
 
                         ImageIcon imageIcon;
 
-                        if(size.width > 120 || size.height > 120) {
+                        if (size.width > 120 || size.height > 120) {
                             imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("very_big");
 
-                        }
-
-                        else if(size.width > 100 || size.height > 100) {
+                        } else if (size.width > 100 || size.height > 100) {
                             imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("big");
 
-                        }
-
-                        else if(size.width > 80 || size.height > 80) {
+                        } else if (size.width > 80 || size.height > 80) {
                             imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("medium_big");
 
-                        }
-
-                        else if(size.width > 60 || size.height > 60) {
+                        } else if (size.width > 60 || size.height > 60) {
                             imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("medium");
 
-                        }
-
-                        else if(size.width > 30 || size.height > 30) {
+                        } else if (size.width > 30 || size.height > 30) {
                             imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("medium_small");
 
-                        }
-
-                        else {
+                        } else {
                             imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("small");
 
                         }
@@ -159,7 +150,7 @@ public class GamePreparation extends Game implements ActionListener {
                 });
 
                 ImageIcon workerIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/worker_" + color.toString().toLowerCase() + ".png"));
-                workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(50,50, Image.SCALE_SMOOTH));
+                workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
                 JLabel overImage = new JLabel(workerIcon);
                 button.add(overImage);
 
@@ -171,8 +162,7 @@ public class GamePreparation extends Game implements ActionListener {
 
                 button.setWorkerLabel(overImage);
                 button.setEmpty(false);
-            }
-            else if(selectedButtons.contains(button)) {
+            } else if (selectedButtons.contains(button)) {
                 button.remove(button.getWorkerLabel());
                 button.setWorkerLabel(null);
                 this.selectedButtons.remove(button);

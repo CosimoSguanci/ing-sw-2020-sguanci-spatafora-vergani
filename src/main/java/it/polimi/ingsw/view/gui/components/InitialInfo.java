@@ -34,7 +34,7 @@ public class InitialInfo extends JPanel implements ActionListener {
     private String nickname;
 
 
-    public InitialInfo() { // Controller
+    public InitialInfo() {
 
         this.gui = Gui.getInstance();
         this.add(new LoadingComponent(loadingMsgBefore, Color.WHITE));
@@ -147,7 +147,7 @@ public class InitialInfo extends JPanel implements ActionListener {
 
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        this.revalidate(); // Todo new component in CardLayout for Waiting?
+        this.revalidate();
         this.repaint();
     }
 

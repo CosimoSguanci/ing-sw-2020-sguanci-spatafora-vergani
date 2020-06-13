@@ -1,67 +1,36 @@
 package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.controller.commands.GodChoiceCommand;
-import it.polimi.ingsw.controller.commands.InitialInfoCommand;
-import it.polimi.ingsw.model.PrintableColor;
-import it.polimi.ingsw.model.utils.GodsUtils;
-import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.GodChoiceInfoButtonListener;
 import it.polimi.ingsw.view.gui.listeners.GodChoiceJButtonListener;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GodChoice extends JPanel implements ActionListener {
 
     private final String standardImgPath = "/images/GodChoice/";
     private final Image backgroundImage = new ImageIcon(getClass().getResource(standardImgPath + "title_sky.png")).getImage(); // todo background ok? Or Olympus
-    private ArrayList<JButton> buttons = new ArrayList<>();
-    private GodChoiceJButtonListener godChoiceJButtonListener;
+    private final Gui gui;
+    private final LoadingComponent loadingComponent;
+    GodScreen godScreen;
     private int selectedGodsNumber = 0;
-
     private int playersNumber;
-
-    private Gui gui;
-
     private List<String> selectedGods;
     private List<String> selectableGods;
 
-    GodScreen godScreen;
 
-    private Font titleFont = Gui.getFont(Gui.FONT_BOLD, 20);
-    private Font godLabelFont = Gui.getFont(Gui.FONT_BOLD, 14);
-
-    private LoadingComponent loadingComponent;
-
-
-    public void setSelectableGods(List<String> selectableGods) {
-        this.selectableGods = selectableGods;
-    }
-
-    public List<String> getSelectableGods() {
-        return this.selectableGods;
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
-    }
-
-    public GodChoice(){
+    public GodChoice() {
 
         this.gui = Gui.getInstance();
         this.selectedGods = new ArrayList<>();
@@ -80,19 +49,32 @@ public class GodChoice extends JPanel implements ActionListener {
         this.add(loadingComponent);
     }
 
+    public List<String> getSelectableGods() {
+        return this.selectableGods;
+    }
+
+    public void setSelectableGods(List<String> selectableGods) {
+        this.selectableGods = selectableGods;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
+    }
+
     public void setOtherPlayersNicknames(Set<String> opponents) {
 
         StringBuilder stringBuilder = new StringBuilder();
         String opponentsStr;
 
-        if(this.gui.getPlayersNumber() == 3) {
+        if (this.gui.getPlayersNumber() == 3) {
             stringBuilder.append("<html>Waiting... Your opponents are ");
             opponents.stream().filter(p -> !p.toLowerCase().equals(this.gui.getController().getClientPlayer().getNickname().toLowerCase())).forEach(opponent -> stringBuilder.append("<strong>").append(opponent).append("</strong>").append(" and "));
             opponentsStr = stringBuilder.substring(0, stringBuilder.lastIndexOf(" and "));
             opponentsStr += "</html>";
 
-        }
-        else {
+        } else {
             stringBuilder.append("<html>Waiting... Your opponent is ");
             opponents.stream().filter(p -> !p.toLowerCase().equals(this.gui.getController().getClientPlayer().getNickname().toLowerCase())).forEach(opponent -> stringBuilder.append("<strong>").append(opponent).append("</strong></html>"));
             opponentsStr = stringBuilder.toString();
@@ -103,29 +85,28 @@ public class GodChoice extends JPanel implements ActionListener {
 
 
     public void setGodChoiceSelected(JButton button) {
-        if(gui.getController().isClientPlayerGodChooser()){
-            if(!button.isSelected()){
-                if(selectedGodsNumber < playersNumber){
+        if (gui.getController().isClientPlayerGodChooser()) {
+            if (!button.isSelected()) {
+                if (selectedGodsNumber < playersNumber) {
                     button.setSelected(true);
 
                     String operSys = System.getProperty("os.name").toLowerCase();
 
-                    if(operSys.contains("mac")) {
+                    if (operSys.contains("mac")) {
                         button.setBorderPainted(true);
                     }
 
-                    button.setBorder( BorderFactory.createLineBorder(Color.GREEN, 2, true));
+                    button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2, true));
                     selectedGodsNumber++;
                     this.selectedGods.add(button.getText());
                 }
-            }
-            else {
+            } else {
                 button.setSelected(false);
                 button.setBorder(UIManager.getBorder("Button.border"));
 
                 String operSys = System.getProperty("os.name").toLowerCase();
 
-                if(operSys.contains("mac")) {
+                if (operSys.contains("mac")) {
                     button.setBorderPainted(false);
                 }
 
@@ -133,32 +114,30 @@ public class GodChoice extends JPanel implements ActionListener {
                 this.selectedGods.remove(button.getText());
             }
 
-        }
-        else {
-            if(!button.isSelected()){
-                if(selectedGodsNumber < 1) {
+        } else {
+            if (!button.isSelected()) {
+                if (selectedGodsNumber < 1) {
                     button.setSelected(true);
 
                     String operSys = System.getProperty("os.name").toLowerCase();
 
-                    if(operSys.contains("mac")) {
+                    if (operSys.contains("mac")) {
                         button.setBorderPainted(true);
                     }
 
-                    button.setBorder( BorderFactory.createLineBorder(Color.GREEN, 2, true));
+                    button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2, true));
 
                     selectedGodsNumber++;
                     this.selectedGods.add(button.getText());
                 }
-            }
-            else {
+            } else {
                 button.setSelected(false);
 
                 button.setBorder(UIManager.getBorder("Button.border"));
 
                 String operSys = System.getProperty("os.name").toLowerCase();
 
-                if(operSys.contains("mac")) {
+                if (operSys.contains("mac")) {
                     button.setBorderPainted(false);
                 }
 
@@ -210,7 +189,7 @@ public class GodChoice extends JPanel implements ActionListener {
         List<String> gods = isGodChooser ? View.getGodsNamesList() : this.selectableGods;
         ArrayList<JButton> godButtons = this.godScreen.getButtons();
         for (int i = 0; i < gods.size(); i++) {
-            this.godChoiceJButtonListener = new GodChoiceJButtonListener(this);
+            GodChoiceJButtonListener godChoiceJButtonListener = new GodChoiceJButtonListener(this);
             godButtons.get(i).addActionListener(godChoiceJButtonListener);
         }
     }
@@ -225,7 +204,7 @@ public class GodChoice extends JPanel implements ActionListener {
         try {
             LayoutManager layoutManager = new BorderLayout();
             this.setLayout(layoutManager);
-            this.setBorder(BorderFactory.createEmptyBorder(20,20, 20,20));
+            this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
             this.godScreen = new GodScreen(this.playersNumber, this.selectableGods);
             this.godScreen.setOpaque(false);
             this.add(this.godScreen, BorderLayout.CENTER);
@@ -235,7 +214,7 @@ public class GodChoice extends JPanel implements ActionListener {
             addListeners();
             this.revalidate();
             this.repaint();
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -248,13 +227,11 @@ public class GodChoice extends JPanel implements ActionListener {
 
         boolean isGodChooser = gui.getController().isClientPlayerGodChooser();
 
-        if(isGodChooser && this.selectedGods.size() != playersNumber) {
-            JOptionPane.showMessageDialog(gui.getMainFrame(),  "You must select " + playersNumber + " gods!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        else if(!isGodChooser && this.selectedGods.size() != 1) {
-            JOptionPane.showMessageDialog(gui.getMainFrame(),  "You must select one god!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        else {
+        if (isGodChooser && this.selectedGods.size() != playersNumber) {
+            JOptionPane.showMessageDialog(gui.getMainFrame(), "You must select " + playersNumber + " gods!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (!isGodChooser && this.selectedGods.size() != 1) {
+            JOptionPane.showMessageDialog(gui.getMainFrame(), "You must select one god!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
 
             this.selectedGods = this.selectedGods.stream().map(String::toLowerCase).collect(Collectors.toList());
 

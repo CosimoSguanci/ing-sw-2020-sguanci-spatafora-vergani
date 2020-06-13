@@ -9,7 +9,7 @@ import java.awt.*;
 public class LoadingComponent extends JPanel {
 
     private String loadingMessage;
-    private JLabel waitingLabel;
+    private final JLabel waitingLabel;
 
     public LoadingComponent(String loadingMessage, Color textColor) {
         LayoutManager layoutManager = new BorderLayout();
@@ -20,7 +20,6 @@ public class LoadingComponent extends JPanel {
         jPanel.setLayout(panelLayoutManager);
 
         this.loadingMessage = loadingMessage;
-
         this.waitingLabel = new JLabel(this.loadingMessage);
 
         this.waitingLabel.setForeground(textColor);
@@ -35,25 +34,17 @@ public class LoadingComponent extends JPanel {
 
         if (textColor.equals(Color.BLACK)) {
             imgIcon = new ImageIcon(getClass().getResource("/images/loadings/loading_infinity_black.gif"));
-        }
-        else {
+        } else {
             imgIcon = new ImageIcon(getClass().getResource("/images/loadings/loading_infinity_white.gif"));
         }
 
         JLabel label2 = new JLabel(imgIcon);
         label2.setBorder(new EmptyBorder(15, 0, 0, 0));
-
         label2.setAlignmentX(Component.CENTER_ALIGNMENT);
         jPanel.add(label2);
-
         jPanel.setOpaque(false);
-
-
         this.add(jPanel, BorderLayout.NORTH);
-
-
-        this.setBorder(BorderFactory.createEmptyBorder(35,20,20,20));
-
+        this.setBorder(BorderFactory.createEmptyBorder(35, 20, 20, 20));
         this.setOpaque(false);
     }
 
@@ -61,6 +52,4 @@ public class LoadingComponent extends JPanel {
         this.loadingMessage = loadingMessage;
         this.waitingLabel.setText(loadingMessage);
     }
-
-
 }

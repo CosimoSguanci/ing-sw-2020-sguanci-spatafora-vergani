@@ -11,7 +11,8 @@ public class ConnectionError {
         SwingUtilities.invokeLater(() -> {
             try {
                 draw();
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
         });
     }
 

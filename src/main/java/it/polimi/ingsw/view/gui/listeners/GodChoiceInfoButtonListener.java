@@ -13,8 +13,7 @@ import java.io.IOException;
 
 public class GodChoiceInfoButtonListener implements ActionListener {
 
-    private GodChoice godChoice;
-    private GodInfo dialog;
+    private final GodChoice godChoice;
 
     public GodChoiceInfoButtonListener(GodChoice godChoice) {
         this.godChoice = godChoice;
@@ -24,18 +23,18 @@ public class GodChoiceInfoButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         SwingUtilities.invokeLater(() ->
-            {
-                try {
-                    showDialog();
-                } catch(IOException exception) {
-                    exception.printStackTrace();
+                {
+                    try {
+                        showDialog();
+                    } catch (IOException exception) {
+                        exception.printStackTrace();
+                    }
                 }
-            }
         );
     }
 
     private void showDialog() throws IOException {
-        dialog = new GodInfo(this.godChoice.getSelectableGods());
+        GodInfo dialog = new GodInfo(this.godChoice.getSelectableGods());
         dialog.pack();
         dialog.setPreferredSize(new Dimension(605, 605));
         dialog.setMinimumSize(dialog.getPreferredSize());

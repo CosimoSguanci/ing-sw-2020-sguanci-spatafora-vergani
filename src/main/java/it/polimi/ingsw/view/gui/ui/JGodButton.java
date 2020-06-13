@@ -3,7 +3,7 @@ package it.polimi.ingsw.view.gui.ui;
 import javax.swing.*;
 
 public class JGodButton extends JButton {
-    private String godName;
+    private final String godName;
 
     public JGodButton(String text, String godName) {
         super(text);

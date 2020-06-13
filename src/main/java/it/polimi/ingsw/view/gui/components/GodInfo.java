@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.Gui;
-
 import it.polimi.ingsw.view.gui.listeners.GodInfoActionListener;
 
 import javax.swing.*;
@@ -13,15 +12,15 @@ import java.util.List;
 
 public class GodInfo extends JDialog {
 
-    private Gui gui = Gui.getInstance();
-    private GodScreen godScreen;
-    private List<String> selectableGods;
+    private final Gui gui = Gui.getInstance();
+    private final List<String> selectableGods;
     private final String godChoiceImgPath = "/images/GodChoice/";
     private final Image backgroundImage = new ImageIcon(getClass().getResource(godChoiceImgPath + "title_sky.png")).getImage();
+    private GodScreen godScreen;
 
 
     public GodInfo(List<String> selectableGods) {
-        super((Frame)null, "Information about Gods", false);
+        super((Frame) null, "Information about Gods", false);
 
         this.selectableGods = selectableGods;
         int playersNumber = gui.getPlayersNumber();
@@ -49,7 +48,7 @@ public class GodInfo extends JDialog {
             this.add(mainPanel);
             this.revalidate();
             this.repaint();
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

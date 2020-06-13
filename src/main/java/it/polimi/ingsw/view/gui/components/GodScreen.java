@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.gui.components;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.ui.JGodButton;
-import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,64 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 public class GodScreen extends JPanel {
+    private static final Map<String, Map<String, ImageIcon>> allIconGods = new HashMap<>();
     Gui gui = Gui.getInstance();
-
-    private JLabel titleLabel;
-    private JPanel rightPanel;
-
-    private Font titleFont = Gui.getFont(Gui.FONT_BOLD, 20);
-    private Font godLabelFont = Gui.getFont(Gui.FONT_BOLD, 14);
-    private ArrayList<JButton> buttons = new ArrayList<>();
-    private static Map<String, Map<String, ImageIcon>> allIconGods = new HashMap<>(); // todo synchronized
-
-
-    public static void loadImages() {
-        new Thread(() -> {
-            List<String> gods =  View.getGodsNamesList();
-
-            gods.forEach(god -> {
-
-                try {
-
-                    ImageIcon smallImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
-                    smallImageIcon = new ImageIcon(smallImageIcon.getImage().getScaledInstance(20,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon mediumSmallImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
-                    mediumSmallImageIcon = new ImageIcon(mediumSmallImageIcon.getImage().getScaledInstance(40,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon mediumImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
-                    mediumImageIcon = new ImageIcon(mediumImageIcon.getImage().getScaledInstance(65,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon mediumBigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
-                    mediumBigImageIcon = new ImageIcon(mediumBigImageIcon.getImage().getScaledInstance(85,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon bigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
-                    bigImageIcon = new ImageIcon(bigImageIcon.getImage().getScaledInstance(110,-1, Image.SCALE_SMOOTH));
-
-                    ImageIcon veryBigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
-                    veryBigImageIcon = new ImageIcon(veryBigImageIcon.getImage().getScaledInstance(180,-1, Image.SCALE_SMOOTH));
-
-                    Map<String, ImageIcon> m = new HashMap<>();
-                    m.put("small", smallImageIcon);
-                    m.put("medium_small", mediumSmallImageIcon);
-                    m.put("medium", mediumImageIcon);
-                    m.put("medium_big", mediumBigImageIcon);
-                    m.put("big", bigImageIcon);
-                    m.put("very_big", veryBigImageIcon);
-
-                    allIconGods.put(god, m);
-
-
-                } catch(IOException e) {
-                    e.printStackTrace();
-                }
-
-
-            });
-
-
-        }).start();
-    }
+    private final JLabel titleLabel;
+    private final JPanel rightPanel;
+    private final ArrayList<JButton> buttons = new ArrayList<>();
 
 
     public GodScreen(int playersNumber, List<String> selectableGods) throws IOException {
@@ -90,11 +36,12 @@ public class GodScreen extends JPanel {
         this.rightPanel.setOpaque(false);
 
         this.titleLabel = new JLabel();
-        this.titleLabel.setFont(this.titleFont);
+        Font titleFont = Gui.getFont(Gui.FONT_BOLD, 20);
+        this.titleLabel.setFont(titleFont);
         titlePanel.add(this.titleLabel);
-        titlePanel.setBorder(BorderFactory.createEmptyBorder(20,0,20,0));
+        titlePanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         this.add(titlePanel, BorderLayout.NORTH);
-        this.setBorder(BorderFactory.createEmptyBorder(0,20,0,20));
+        this.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
         // GridLayout gridLayout = new GridLayout(4, 4);
         // gridLayout.setVgap(10);
@@ -112,12 +59,13 @@ public class GodScreen extends JPanel {
         /*this.godChoiceJButtonListener = new GodChoiceJButtonListener(this);*/
         for (int i = 0; i < gods.size(); i++) {
             imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + gods.get(i).toLowerCase() + ".png")));
-            imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(60,-1, Image.SCALE_SMOOTH));
+            imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(60, -1, Image.SCALE_SMOOTH));
             iconGods.add(imageIcon);
 
             JGodButton godBtn = new JGodButton(gods.get(i).toUpperCase(), iconGods.get(i), gods.get(i).toLowerCase());
 
-            godBtn.setFont(this.godLabelFont);
+            Font godLabelFont = Gui.getFont(Gui.FONT_BOLD, 14);
+            godBtn.setFont(godLabelFont);
             godBtn.setForeground(Color.BLACK); // Color.decode("0xc8102e")
 
             godBtn.addComponentListener(new ComponentAdapter() {
@@ -129,27 +77,17 @@ public class GodScreen extends JPanel {
 
                     String god = btn.getText().toLowerCase();
 
-                    if(size.width > 600 || size.height > 600) {
+                    if (size.width > 600 || size.height > 600) {
                         btn.setIcon(allIconGods.get(god).get("very_big"));
-                    }
-
-                    else if(size.width > 400 || size.height > 400) {
+                    } else if (size.width > 400 || size.height > 400) {
                         btn.setIcon(allIconGods.get(god).get("big"));
-                    }
-
-                    else if(size.width > 260 || size.height > 260) {
+                    } else if (size.width > 260 || size.height > 260) {
                         btn.setIcon(allIconGods.get(god).get("medium_big"));
-                    }
-
-                    else if(size.width > 70 || size.height > 70) {
+                    } else if (size.width > 70 || size.height > 70) {
                         btn.setIcon(allIconGods.get(god).get("medium"));
-                    }
-
-                    else if(size.width > 40 || size.height > 40) {
+                    } else if (size.width > 40 || size.height > 40) {
                         btn.setIcon(allIconGods.get(god).get("medium_small"));
-                    }
-
-                    else {
+                    } else {
                         btn.setIcon(allIconGods.get(god).get("small"));
 
                     }
@@ -168,12 +106,7 @@ public class GodScreen extends JPanel {
 
             String operSys = System.getProperty("os.name").toLowerCase();
 
-            if(operSys.contains("mac")) {
-                godBtn.setBorderPainted(false);
-            }
-            else {
-                godBtn.setBorderPainted(true);
-            }
+            godBtn.setBorderPainted(!operSys.contains("mac"));
             possibleGodsPanel.add(godBtn);
 
 
@@ -198,6 +131,53 @@ public class GodScreen extends JPanel {
         this.add(this.rightPanel, BorderLayout.EAST);
     }
 
+    public static void loadImages() {
+        new Thread(() -> {
+            List<String> gods = View.getGodsNamesList();
+
+            gods.forEach(god -> {
+
+                try {
+
+                    ImageIcon smallImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
+                    smallImageIcon = new ImageIcon(smallImageIcon.getImage().getScaledInstance(20, -1, Image.SCALE_SMOOTH));
+
+                    ImageIcon mediumSmallImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
+                    mediumSmallImageIcon = new ImageIcon(mediumSmallImageIcon.getImage().getScaledInstance(40, -1, Image.SCALE_SMOOTH));
+
+                    ImageIcon mediumImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
+                    mediumImageIcon = new ImageIcon(mediumImageIcon.getImage().getScaledInstance(65, -1, Image.SCALE_SMOOTH));
+
+                    ImageIcon mediumBigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
+                    mediumBigImageIcon = new ImageIcon(mediumBigImageIcon.getImage().getScaledInstance(85, -1, Image.SCALE_SMOOTH));
+
+                    ImageIcon bigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
+                    bigImageIcon = new ImageIcon(bigImageIcon.getImage().getScaledInstance(110, -1, Image.SCALE_SMOOTH));
+
+                    ImageIcon veryBigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + god + ".png")));
+                    veryBigImageIcon = new ImageIcon(veryBigImageIcon.getImage().getScaledInstance(180, -1, Image.SCALE_SMOOTH));
+
+                    Map<String, ImageIcon> m = new HashMap<>();
+                    m.put("small", smallImageIcon);
+                    m.put("medium_small", mediumSmallImageIcon);
+                    m.put("medium", mediumImageIcon);
+                    m.put("medium_big", mediumBigImageIcon);
+                    m.put("big", bigImageIcon);
+                    m.put("very_big", veryBigImageIcon);
+
+                    allIconGods.put(god, m);
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            });
+
+
+        }).start();
+    }
 
     void setTitle(String title) {
         this.titleLabel.setText(title);

@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 
 public class BuildButtonListener implements ActionListener {
 
-    private RealGame realGameComponent;
+    private final RealGame realGameComponent;
 
     public BuildButtonListener(RealGame realGameComponent) {
         this.realGameComponent = realGameComponent;
@@ -23,10 +23,9 @@ public class BuildButtonListener implements ActionListener {
         JCellButton selectedWorkerButton = realGameComponent.getSelectedWorker();
         JCellButton selectedCellButton = realGameComponent.getSelectedCellButton();
 
-        if(selectedWorkerButton == null || selectedCellButton == null) {
+        if (selectedWorkerButton == null || selectedCellButton == null) {
             SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "You must select a Worker and a Board Cell!", "Error", JOptionPane.ERROR_MESSAGE));
-        }
-        else {
+        } else {
 
             PlayerCommand playerCommand = new PlayerCommand(CommandType.BUILD, selectedWorkerButton.getWorker().workerType, selectedCellButton.getRow(), selectedCellButton.getCol(), null);
             Gui.getInstance().notify(playerCommand);
