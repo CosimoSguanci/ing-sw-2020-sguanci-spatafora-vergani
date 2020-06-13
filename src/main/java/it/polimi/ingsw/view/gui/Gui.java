@@ -107,6 +107,12 @@ public class Gui extends View implements Observer<Update> {
     }
 
     @Override
+    public void setPlayersColors(Map<String, PrintableColor> playersColors) {
+        super.setPlayersColors(playersColors);
+        this.godsChoiceComponent.setOtherPlayersNicknames(playersColors.keySet());
+    }
+
+    @Override
     public void start() {
         SwingUtilities.invokeLater(() -> {
             try {

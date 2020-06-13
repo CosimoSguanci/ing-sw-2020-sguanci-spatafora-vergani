@@ -31,6 +31,7 @@ public class InitialInfo extends JPanel implements ActionListener {
     private JComboBox<PrintableColor> color;
     private List<PrintableColor> selectableColors;
     private List<String> selectedNicknames;
+    private String nickname;
 
 
     public InitialInfo() { // Controller
@@ -154,13 +155,13 @@ public class InitialInfo extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        String nickname = nicknameTextField.getText().toLowerCase();
+        this.nickname = nicknameTextField.getText();
 
-        if (this.selectedNicknames.stream().map(String::toLowerCase).collect(Collectors.toList()).contains(nickname)) {
+        if (this.selectedNicknames.stream().map(String::toLowerCase).collect(Collectors.toList()).contains(nickname.toLowerCase())) {
             JOptionPane.showMessageDialog(gui.getMainFrame(), errorDialogMessage + View.listToStringBuilder(selectedNicknames), errorDialogTitle, JOptionPane.ERROR_MESSAGE);
         } else {
             PrintableColor color = (PrintableColor) this.color.getSelectedItem();
-            InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nickname, color);
+            InitialInfoCommand initialInfoCommand = new InitialInfoCommand(this.nickname, color);
             gui.notify(initialInfoCommand);
 
             onInitialInfoSent();
@@ -171,6 +172,8 @@ public class InitialInfo extends JPanel implements ActionListener {
         this.removeAll();
 
         this.add(new LoadingComponent(loadingMsgAfter, Color.WHITE));
+
+        this.gui.getController().setClientPlayerNickname(this.nickname);
 
         this.revalidate();
         this.repaint();

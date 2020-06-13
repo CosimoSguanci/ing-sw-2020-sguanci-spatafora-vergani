@@ -35,7 +35,7 @@ public abstract class View extends Observable<Object> {
 
     public static void playOnTurnSound() {
         try {
-            URL defaultSound = View.class.getResource("/turn.wav");
+            URL defaultSound = View.class.getResource("/sounds/turn.wav");
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(defaultSound);
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);

@@ -8,6 +8,9 @@ import java.awt.*;
 
 public class LoadingComponent extends JPanel {
 
+    private String loadingMessage;
+    private JLabel waitingLabel;
+
     public LoadingComponent(String loadingMessage, Color textColor) {
         LayoutManager layoutManager = new BorderLayout();
         this.setLayout(layoutManager);
@@ -16,14 +19,17 @@ public class LoadingComponent extends JPanel {
         LayoutManager panelLayoutManager = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
         jPanel.setLayout(panelLayoutManager);
 
-        JLabel label = new JLabel(loadingMessage);
-        label.setForeground(textColor);
-        Font font = Gui.getFont(Gui.FONT_REGULAR, 20);
-        label.setFont(font);
-        label.setHorizontalAlignment(JLabel.CENTER);
+        this.loadingMessage = loadingMessage;
 
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jPanel.add(label);
+        this.waitingLabel = new JLabel(this.loadingMessage);
+
+        this.waitingLabel.setForeground(textColor);
+        Font font = Gui.getFont(Gui.FONT_REGULAR, 20);
+        this.waitingLabel.setFont(font);
+        this.waitingLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        this.waitingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        jPanel.add(this.waitingLabel);
 
         ImageIcon imgIcon;
 
@@ -49,6 +55,11 @@ public class LoadingComponent extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(35,20,20,20));
 
         this.setOpaque(false);
+    }
+
+    void setLoadingMessage(String loadingMessage) {
+        this.loadingMessage = loadingMessage;
+        this.waitingLabel.setText(loadingMessage);
     }
 
 

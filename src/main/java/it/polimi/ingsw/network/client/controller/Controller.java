@@ -48,6 +48,12 @@ public class Controller extends Observable<Update> implements Observer<Object> {
         return this.clientPlayer.isGodChooser();
     }
 
+    public void setClientPlayerNickname(String nickname) {
+        if(this.clientPlayer != null) {
+            this.clientPlayer.setNickname(nickname);
+        }
+    }
+
     @Override
     public void update(Object message) {
 

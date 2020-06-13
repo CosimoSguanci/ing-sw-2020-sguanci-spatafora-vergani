@@ -44,8 +44,8 @@ public class GodChoice extends JPanel implements ActionListener {
     private Font titleFont = Gui.getFont(Gui.FONT_BOLD, 20);
     private Font godLabelFont = Gui.getFont(Gui.FONT_BOLD, 14);
 
+    private LoadingComponent loadingComponent;
 
-    //private Map<String, Map<String, ImageIcon>> allIconGods = new HashMap<>(); // todo synchronized
 
     public void setSelectableGods(List<String> selectableGods) {
         this.selectableGods = selectableGods;
@@ -75,23 +75,30 @@ public class GodChoice extends JPanel implements ActionListener {
             i++;
         }*/ // todo
 
-        this.add(new LoadingComponent("Waiting...", Color.BLACK));
+        this.loadingComponent = new LoadingComponent("Waiting...", Color.BLACK);
+
+        this.add(loadingComponent);
     }
-    
-    private void commonGodChoose2(JPanel possibleGodsPanel, ArrayList<ImageIcon> iconGods) throws IOException {
-        ImageIcon imageIcon;
-        for (int i = 0; i < playersNumber; i++) {
-            imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + this.selectableGods.get(i) + ".png")));
-            imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(30,-1, Image.SCALE_SMOOTH));
-            iconGods.add(imageIcon);
-            //possibleGodsPanel.add(new JButton(chosenGods[i], iconGods.get(i)));+
-            this.buttons.add(new JButton(this.selectableGods.get(i), iconGods.get(i)));
-            this.buttons.get(i).addActionListener(godChoiceJButtonListener);
-            possibleGodsPanel.add(this.buttons.get(i));
+
+    public void setOtherPlayersNicknames(Set<String> opponents) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        String opponentsStr;
+
+        if(this.gui.getPlayersNumber() == 3) {
+            stringBuilder.append("Waiting... Your opponents are ");
+            opponents.stream().filter(p -> !p.toLowerCase().equals(this.gui.getController().getClientPlayer().getNickname().toLowerCase())).forEach(opponent -> stringBuilder.append(opponent).append(" and "));
+            opponentsStr = stringBuilder.substring(0, stringBuilder.lastIndexOf(" and "));
+
         }
+        else {
+            stringBuilder.append("Waiting... Your opponent is ");
+            opponents.stream().filter(p -> !p.toLowerCase().equals(this.gui.getController().getClientPlayer().getNickname().toLowerCase())).forEach(stringBuilder::append);
+            opponentsStr = stringBuilder.toString();
+        }
+
+        this.loadingComponent.setLoadingMessage(opponentsStr);
     }
-
-
 
 
     public void setGodChoiceSelected(JButton button) {
@@ -259,7 +266,7 @@ public class GodChoice extends JPanel implements ActionListener {
 
     private void onGodChoiceSent() {
         this.removeAll();
-        this.add(new LoadingComponent("Waiting...", Color.BLACK));
+        this.add(this.loadingComponent);
         this.revalidate();
     }
 }
