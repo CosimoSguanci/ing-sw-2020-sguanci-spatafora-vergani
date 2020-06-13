@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class GameManual extends JPanel implements ActionListener {
-    private Font font = new Font(Font.SERIF, Font.BOLD, 13);
+    //private Font font = new Font(Font.SERIF, Font.BOLD, 13);
     private String standardImgPath = "src/main/resources/images/GameManual/";
-    private Image backgroundImage = new ImageIcon(standardImgPath + "background.jpg").getImage();
-    private int imgButtonWidth = 95;
-    private int imgButtonHeight = 78;
+    private Image backgroundImage = new ImageIcon(standardImgPath + "green.jpg").getImage();
+    private int imgButtonWidth = 60;
+    //private int imgButtonHeight = 78;
     private Dimension buttonDimension = new Dimension(250, 100);
     private Dimension rigidAreaDimension = new Dimension(0, 3);
     private JButton[] ruleButtonArray;
@@ -34,11 +34,11 @@ public class GameManual extends JPanel implements ActionListener {
         for(int i = 0; i < ruleNumber; i++) {
             String key = (String) ruleTitle[i];  //create title-strings for rules
             ImageIcon image = new ImageIcon(this.standardImgPath + key.toLowerCase().substring(0,3) + ".png");
-            image = new ImageIcon(image.getImage().getScaledInstance(this.imgButtonWidth, this.imgButtonHeight, Image.SCALE_SMOOTH));
+            image = new ImageIcon(image.getImage().getScaledInstance(this.imgButtonWidth, -1, Image.SCALE_SMOOTH));
             this.ruleButtonArray[i] = new JButton(key, image);
             this.ruleButtonArray[i].setHorizontalTextPosition(JButton.CENTER);
             this.ruleButtonArray[i].setVerticalTextPosition(JButton.BOTTOM);
-            this.ruleButtonArray[i].setFont(this.font);
+            //this.ruleButtonArray[i].setFont(this.font);
             this.ruleButtonArray[i].setPreferredSize(this.buttonDimension);
             this.ruleButtonArray[i].setMaximumSize(this.buttonDimension);
             this.ruleButtonArray[i].setMinimumSize(this.buttonDimension);

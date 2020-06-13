@@ -16,6 +16,8 @@ public class GodInfo extends JDialog {
     private Gui gui = Gui.getInstance();
     private GodScreen godScreen;
     private List<String> selectableGods;
+    private final String godChoiceImgPath = "src/main/resources/images/GodChoice/";
+    private final Image backgroundImage = new ImageIcon(godChoiceImgPath + "title_sky.png").getImage();
 
 
     public GodInfo(List<String> selectableGods) {
@@ -25,18 +27,27 @@ public class GodInfo extends JDialog {
         int playersNumber = gui.getPlayersNumber();
 
 
-        this.removeAll();
+        //this.removeAll();
 
         try {
             LayoutManager layoutManager = new BorderLayout();
             this.setLayout(layoutManager);
+            JPanel mainPanel = new JPanel() {
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
+                }
+            };
+            mainPanel.setOpaque(false);
             //this.setBorder(BorderFactory.createEmptyBorder(20,20, 20,20));
             this.godScreen = new GodScreen(playersNumber, this.selectableGods);
             this.godScreen.setOpaque(false);
             //this.add(this.godScreen, BorderLayout.CENTER);
-            this.setContentPane(this.godScreen);
             setSpecific();
             addListeners();
+            mainPanel.add(this.godScreen);
+            this.add(mainPanel);
             this.revalidate();
             this.repaint();
         } catch(IOException e) {

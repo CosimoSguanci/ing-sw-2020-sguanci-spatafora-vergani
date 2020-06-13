@@ -10,7 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.List;
 
 public class GodChoiceInfoButtonListener implements ActionListener {
 
@@ -38,7 +37,7 @@ public class GodChoiceInfoButtonListener implements ActionListener {
     private void showDialog() throws IOException {
         dialog = new GodInfo(this.godChoice.getSelectableGods());
         dialog.pack();
-        dialog.setPreferredSize(new Dimension(400, 400));
+        dialog.setPreferredSize(new Dimension(500, 500));
         dialog.setMinimumSize(dialog.getPreferredSize());
         dialog.setMaximumSize(new Dimension(650, 650));
         dialog.setIconImage(ImageIO.read(Gui.class.getResource("/images/title_island.png")));
