@@ -1,4 +1,6 @@
 # Santorini - Sguanci_Spatafora_Vergani INGSW 19-20
+![Santorini](https://i.ibb.co/nszm4hX/santorini-logo.png)
+
 ## In order to run these executables, you need to install JDK 1.8 (available [here](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html))
 
 JAR Executable files are placed in /deliveries/executables folder.
@@ -28,3 +30,9 @@ java -jar gui.jar
 ```
 
 Or you can simply double click the JAR file.
+
+## Additional Features developed:
+
+- Multiple matches at the same time;
+- 5 Advanced Gods implemented.
+
