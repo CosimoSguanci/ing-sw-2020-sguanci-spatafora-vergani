@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.components;
 import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.Gui;
+import it.polimi.ingsw.view.gui.listeners.GameManualListener;
 import it.polimi.ingsw.view.gui.listeners.GodInfoActionListener;
 import it.polimi.ingsw.view.gui.listeners.QuitButtonListener;
 import it.polimi.ingsw.view.gui.ui.JCellButton;
@@ -155,10 +156,17 @@ public abstract class Game extends JPanel {
 
         //button to quit must be south-west
         String externalImgPath = "/images/";
+
+        ImageIcon helpImg = new ImageIcon(getClass().getResource(externalImgPath + "info.png"));
+        helpImg = new ImageIcon(helpImg.getImage().getScaledInstance(80, 90, Image.SCALE_SMOOTH));
+        JRoundButton helpButton = new JRoundButton(helpImg);
+        helpButton.addActionListener(new GameManualListener(this));
+        playersGodsTurn.add(helpButton);
+        helpButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
         ImageIcon quitImg = new ImageIcon(getClass().getResource(externalImgPath + "exit.png"));
         quitImg = new ImageIcon(quitImg.getImage().getScaledInstance(buttonDim, buttonDim, Image.SCALE_SMOOTH));
         JRoundButton quitButton = new JRoundButton(quitImg);
-
         quitButton.addActionListener(new QuitButtonListener(this));
         playersGodsTurn.add(quitButton);
         quitButton.setAlignmentX(Component.RIGHT_ALIGNMENT);  //why right alignment? It works, but puts on left side (?)

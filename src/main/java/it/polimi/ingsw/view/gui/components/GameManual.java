@@ -1,16 +1,15 @@
 package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.view.Manual;
-import it.polimi.ingsw.view.View;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class GameManual extends JPanel implements ActionListener {
+
+public class GameManual extends JDialog implements ActionListener {
     //private Font font = new Font(Font.SERIF, Font.BOLD, 13);
     private String standardImgPath = "/images/GameManual/";
     private Image backgroundImage = new ImageIcon(getClass().getResource(standardImgPath + "green.jpg")).getImage();
@@ -21,7 +20,36 @@ public class GameManual extends JPanel implements ActionListener {
     private JButton[] ruleButtonArray;
     private LinkedHashMap<String, String> rules = Manual.getRules();  //titles and descriptions of game's rules
 
+
     public GameManual() {
+        super((Frame) null, "Game Manual", false);
+
+        LayoutManager layoutManager = new BorderLayout();
+        this.setLayout(layoutManager);
+
+        JPanel mainPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
+                }
+        };
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setOpaque(false);
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        JPanel panelToShow = panelToShow();
+        panelToShow.setOpaque(false);
+
+        mainPanel.add(panelToShow);
+        panelToShow.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelToShow.setAlignmentY(Component.CENTER_ALIGNMENT);
+        this.add(mainPanel);
+        this.revalidate();
+        this.repaint();
+    }
+
+
+    private JPanel panelToShow() {
         //LinkedHashMap<String, String> rules = Manual.getRules();
         int ruleNumber = this.rules.size();
         this.ruleButtonArray = new JButton[ruleNumber];
@@ -48,17 +76,10 @@ public class GameManual extends JPanel implements ActionListener {
             grid.add(Box.createRigidArea(this.rigidAreaDimension));
         }
 
-        this.add(grid);
-        this.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        return grid;
+        //this.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
     }
 
-
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

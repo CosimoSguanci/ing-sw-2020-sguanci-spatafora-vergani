@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.view.gui.Gui;
+import it.polimi.ingsw.view.gui.listeners.GameManualListener;
 import it.polimi.ingsw.view.gui.listeners.PlayerNumberChoiceRadioButtonListener;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
 
@@ -17,6 +18,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
     private final JRadioButton button2;
     private final JLabel resumeNumber;  //this JLabel needs to be refreshed every time a button is clicked
     private final String standardImgPath = "/images/PlayerNumberChoice/";
+    private final String externalImgPath = "/images/";
     private final Image backgroundImage = new ImageIcon(PlayerNumberChoice.class.getResource(standardImgPath + "santoriniBackground.jpg")).getImage();
 
     public PlayerNumberChoice() {
@@ -91,13 +93,20 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         buttonAllInfoPanel.add(resumeNumberPanel, BorderLayout.CENTER);
         this.add(buttonAllInfoPanel, BorderLayout.CENTER);
 
-        //this part must be south-east
-        ImageIcon startImg = new ImageIcon(getClass().getResource("/images/next.png"));
+        //this part must be south-east (continue) and south-west (manual)
+        ImageIcon startImg = new ImageIcon(getClass().getResource(this.externalImgPath + "next.png"));
         startImg = new ImageIcon(startImg.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
 
         JRoundButton startButton = new JRoundButton(startImg);
 
         startButton.addActionListener(this);
+
+        ImageIcon manualImg = new ImageIcon(getClass().getResource(this.externalImgPath + "info.png"));
+        manualImg = new ImageIcon(manualImg.getImage().getScaledInstance(80, 90, Image.SCALE_SMOOTH));
+
+        JRoundButton infoButton = new JRoundButton(manualImg);
+
+        infoButton.addActionListener(new GameManualListener(this));
 
         JPanel innerPanel = new JPanel();
         innerPanel.setLayout(new BorderLayout());
@@ -106,6 +115,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         innerPanel2.setLayout(new BorderLayout());
         innerPanel2.setOpaque(false);
         innerPanel2.add(startButton, BorderLayout.EAST);
+        innerPanel2.add(infoButton, BorderLayout.WEST);
         innerPanel.add(innerPanel2);
         this.add(innerPanel, BorderLayout.SOUTH);
 
