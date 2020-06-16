@@ -136,7 +136,7 @@ public class InitialInfo extends JPanel implements ActionListener {
         //button to quit must be south-west
         String externalImgPath = "/images/";
         ImageIcon quitImg = new ImageIcon(getClass().getResource(externalImgPath + "exit.png"));
-        quitImg = new ImageIcon(quitImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        quitImg = new ImageIcon(quitImg.getImage().getScaledInstance(buttonWidth, -1, Image.SCALE_SMOOTH));
         JRoundButton quitButton = new JRoundButton(quitImg);
 
         quitButton.addActionListener(new QuitButtonListener(this));

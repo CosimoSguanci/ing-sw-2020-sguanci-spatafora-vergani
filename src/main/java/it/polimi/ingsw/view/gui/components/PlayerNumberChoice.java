@@ -102,7 +102,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         startButton.addActionListener(this);
 
         ImageIcon manualImg = new ImageIcon(getClass().getResource(this.externalImgPath + "info.png"));
-        manualImg = new ImageIcon(manualImg.getImage().getScaledInstance(80, 90, Image.SCALE_SMOOTH));
+        manualImg = new ImageIcon(manualImg.getImage().getScaledInstance(80, -1, Image.SCALE_SMOOTH));
 
         JRoundButton infoButton = new JRoundButton(manualImg);
 

@@ -165,7 +165,7 @@ public abstract class Game extends JPanel {
         String externalImgPath = "/images/";
 
         ImageIcon helpImg = new ImageIcon(getClass().getResource(externalImgPath + "info.png"));
-        helpImg = new ImageIcon(helpImg.getImage().getScaledInstance(80, 90, Image.SCALE_SMOOTH));
+        helpImg = new ImageIcon(helpImg.getImage().getScaledInstance(80, -1, Image.SCALE_SMOOTH));
         JRoundButton helpButton = new JRoundButton(helpImg);
         helpButton.addActionListener(new GameManualListener(this));
         playersGodsTurn.add(helpButton);
