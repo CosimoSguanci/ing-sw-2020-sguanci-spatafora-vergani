@@ -100,7 +100,14 @@ public abstract class Game extends JPanel {
 
             String nicknameResized = player.length() > 10 ? player.substring(0, 10) + "..." : player;
 
-            JGodButton godButton = new JGodButton(nicknameResized + " has " + god, god.toLowerCase());
+            JGodButton godButton;
+
+            if (player.equals(gui.getController().getClientPlayer().getNickname())) {
+                godButton = new JGodButton("You have " + god, god.toLowerCase());
+            } else {
+                godButton = new JGodButton(nicknameResized + " has " + god, god.toLowerCase());
+            }
+
             godButton.setForeground(PrintableColor.convertToColor(color));
 
 
