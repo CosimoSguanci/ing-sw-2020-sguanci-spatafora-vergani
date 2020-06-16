@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 public class ErrorUpdate extends Update {
+    private static final long serialVersionUID = -6803649711188401133L;
     private Player currentPlayer;
     public final CommandType command;
     public final ErrorType errorType;

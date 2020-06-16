@@ -8,5 +8,5 @@ public enum ErrorType {
     WRONG_GAME_PHASE,
     ALREADY_TAKEN_NICKNAME,
     INVALID_COLOR,
-    INVALID_GOD;
+    INVALID_GOD
 }
