@@ -17,6 +17,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * GodChoice is a class in which the GUI-component of
+ * the GamePreparation game phase is generated. At the beginning of a match
+ * GodChooser player is asked to choose as many Gods as the number of player
+ * involved in the match; other player will choose a single God, one of those
+ * chosen from the GodChooser.
+ *
+ * @author Andrea Vergani
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
+ */
 public class GodChoice extends JPanel implements ActionListener {
 
     private final String standardImgPath = "/images/GodChoice/";
@@ -29,7 +40,11 @@ public class GodChoice extends JPanel implements ActionListener {
     private List<String> selectedGods;
     private List<String> selectableGods;
 
-
+    /**
+     * This is the constructor of the class. At the moment of creation a Gui
+     * instance is associated to the class, and all the player are notified
+     * to wait.
+     */
     public GodChoice() {
 
         this.gui = Gui.getInstance();
@@ -49,20 +64,41 @@ public class GodChoice extends JPanel implements ActionListener {
         this.add(loadingComponent);
     }
 
+    /**
+     * This method is a simple getter of all the God selectable.
+     * GodChooser player will see all the names of the Gods available in Santorini Game.
+     * Other players will see only the names of the Gods chosen by GodChooser
+     * @return a list which contains String with references to available Gods,
+     *  based on the player.
+     */
     public List<String> getSelectableGods() {
         return this.selectableGods;
     }
 
+    /**
+     * This method is used to set the selectableGods List with Gods' name
+     * according to different players.
+     * @param selectableGods contains a list of God names available.
+     */
     public void setSelectableGods(List<String> selectableGods) {
         this.selectableGods = selectableGods;
     }
 
+    /**
+     * This method is used to set the background of different buttons.
+     * @param g contains a reference to the component we want to set a background image.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
+        g.drawImage(this.backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
     }
 
+    /**
+     * This method is used to notify to all the players involved in the match
+     * the nickname of the opponents, distinguishing the case with only one or more opponents.
+     * @param opponents contains a Set of string with nicknames of player involved in the match
+     */
     public void setOtherPlayersNicknames(Set<String> opponents) {
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -83,7 +119,12 @@ public class GodChoice extends JPanel implements ActionListener {
         this.loadingComponent.setLoadingMessage(opponentsStr);
     }
 
-
+    /**
+     * This method manages all the click on the GodChoice game phase buttons.
+     * When a user press a button, the God associated to the button will be made "selected".
+     * To unselect a God already chosen a player may clicks a second time on it.
+     * @param button contains reference to the button clicked.
+     */
     public void setGodChoiceSelected(JButton button) {
         if (gui.getController().isClientPlayerGodChooser()) {
             if (!button.isSelected()) {
@@ -148,7 +189,11 @@ public class GodChoice extends JPanel implements ActionListener {
 
     }
 
-
+    /**
+     * This private method manages the layout during GodChoice game phase.
+     * It contains a done button, where players click when they chose.
+     * It also contains an information button, which contains information about Gods available.
+     */
     private void setSpecific() {
         ImageIcon startImg = new ImageIcon(getClass().getResource("/images/done.png"));
         startImg = new ImageIcon(startImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
@@ -183,7 +228,10 @@ public class GodChoice extends JPanel implements ActionListener {
         }
     }
 
-
+    /**
+     * This private method is used to add listeners to all the buttons generated
+     * and made visible to players during the turn.
+     */
     private void addListeners() {
         boolean isGodChooser = this.gui.getController().isClientPlayerGodChooser();
         List<String> gods = isGodChooser ? View.getGodsNamesList() : this.selectableGods;
@@ -194,7 +242,11 @@ public class GodChoice extends JPanel implements ActionListener {
         }
     }
 
-
+    /**
+     * This method manages what to show according to player and selectable Gods.
+     * It creates a new GodScreen according to the turn. GodChooser will see
+     * all the Gods of the game, other player will see only remaining Gods according to the rules.
+     */
     // todo add interface
     public void showGuiOnTurn() {
 
@@ -222,6 +274,12 @@ public class GodChoice extends JPanel implements ActionListener {
         this.repaint();
     }
 
+    /**
+     * This method manages the activities linked to the clicks on the continue button of the class.
+     * It manages cases in which GodChooser player tries to select fewer Gods than necessary
+     * and the case in which a generic player clicks continue button having no selected a God.
+     * @param e contains reference to the continue button.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -242,6 +300,10 @@ public class GodChoice extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * This private method manages the case in which a player finishes
+     * the GodChoice phase.
+     */
     private void onGodChoiceSent() {
         this.removeAll();
         this.add(this.loadingComponent);
