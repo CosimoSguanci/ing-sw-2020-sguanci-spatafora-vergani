@@ -18,10 +18,10 @@ import static it.polimi.ingsw.model.utils.GodsUtils.*;
  * This class represents the Controller in MVC design pattern. The whole
  * application, in fact, is based on MVC pattern, and in particular
  * Controller class is View's observer. The "dialogue" between Controller
- * and View is possible through PlayerCommand class: this class represent a
- * move/build that a player wants to do during the game. This is the reason
- * for Controller class to implement Observer(PlayerCommand), since (as
- * explained) View notifies Controller using PlayerCommand as update message.
+ * and View is possible (mainly) through Command class: this (abstract) class can represent a
+ * move/build that a player wants to do during the game, or some initial information, ...
+ * This is the reason for Controller class to implement Observer(Command), since (as
+ * explained) View notifies Controller using Command as update message.
  * Then, following MVC pattern, Controller invokes Model's methods to
  * modify the model itself.
  *
@@ -50,14 +50,31 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         this.commandHandler = new CommandHandlerImpl(this);
     }
 
+
+    /**
+     * This method is the getter for the current game-phase of the match.
+     *
+     * @return match's current game phase
+     */
     GamePhase getCurrentGamePhase() {
         return this.model.getCurrentGamePhase();
     }
 
+
+    /**
+     * This method is the getter for the list of all players involved in the match.
+     *
+     * @return the list of players
+     */
     List<Player> getPlayers() {
         return this.model.getPlayers();
     }
 
+    /**
+     * This method is the getter for the board of the match.
+     *
+     * @return match's board
+     */
     Board getBoard() {
         return this.model.getBoard();
     }
@@ -65,7 +82,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     /**
      * This method is an overriding method of "update" in Observer interface.
-     * Its task is to handle player command coming from View.
+     * Its task is to handle players' commands coming from View.
      *
      * @param command player move/build from View
      */
@@ -86,6 +103,15 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         }
     }
 
+
+    /**
+     * This method handles an InitialInfoCommand. In particular, its main task is to set the
+     * chosen nickname and colour; then, the player's turn ends (with a possible change of
+     * game-phase, if everyone has already finished InitialInfo phase).
+     *
+     * @param initialInfoCommand command containing nickname and colour chosen by one of the
+     *                           players
+     */
     synchronized void handleInitialInfoCommand(InitialInfoCommand initialInfoCommand) {
 
         if (!initialInfoCommand.getPlayer().equals(model.getCurrentPlayer())) {
@@ -128,6 +154,16 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     }
 
+
+    /**
+     * This method handles a GodChoiceCommand. In particular, its main task is to set the
+     * chosen god (or gods, if the player is god-chooser); then, the player's turn ends
+     * (with a possible change of game-phase, if everyone has already finished GodChoice
+     * phase).
+     *
+     * @param godChoiceCommand command containing the chosen god (not god-chooser player) or
+     *                         gods(god-chooser player)
+     */
     synchronized void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {
         List<String> chosenGods = godChoiceCommand.getChosenGods();
 
@@ -174,6 +210,13 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     }
 
 
+    /**
+     * This method handles a GamePreparationCommand. In particular, its main task is to place
+     * workers in the specified positions; then, the player's turn ends (with a possible change
+     * of game-phase, if everyone has already finished GamePreparation phase).
+     *
+     * @param gamePreparationCommand command containing the positions chosen for the two workers
+     */
      synchronized void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) {
         Player currentPlayer = model.getCurrentPlayer();
         if (!gamePreparationCommand.getPlayer().equals(model.getCurrentPlayer())) { // todo uniform use of model.getCurrentPlayer() / command.getPlayer()
@@ -212,8 +255,8 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     }
 
     /**
-     * This private method simply extends update's task. In fact, to handle
-     * a command is necessary to: verify that the player who required it is
+     * This private method simply extends update's task, for PlayerCommand. In fact, to handle
+     * this command is necessary to: verify that the player who required it is
      * game's current player (otherwise, there is no need to call the Model,
      * since its state will not modify); call the selected command from the
      * player, as an invocation of one of model's methods.
@@ -319,6 +362,13 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         }
     }
 
+
+    /**
+     * This method checks if the current player has a possibility to move. In fact, if the
+     * current player needs to move but can't do it, he/she immediately loses the match: in
+     * this case, a proper method (which will notify all the players) is called.
+     *
+     */
     private void checkLoseConditionsMove() {
         if (!model.getCurrentPlayer().getGodStrategy().canMove(model.getBoard(), model.getCurrentPlayer())) {
             model.onPlayerLose(model.getCurrentPlayer(), LoseUpdate.LoseCause.CANT_MOVE);
@@ -340,6 +390,13 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         }
     }
 
+
+    /**
+     * This method checks if the current player has a possibility to build. In fact, if the
+     * current player needs to build but can't do it, he/she immediately loses the match: in
+     * this case, a proper method (which will notify all the players) is called.
+     *
+     */
     private void checkLoseConditionsBuild(PlayerCommand playerCommand) {
         if (!model.getCurrentPlayer().getGodStrategy().canBuild(model.getBoard(), playerCommand.getWorker())) {
             model.onPlayerLose(model.getCurrentPlayer(), LoseUpdate.LoseCause.CANT_BUILD);
@@ -364,7 +421,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     /**
      * This methods checks all Players God's Win Constraints to check if there is a power which
-     * prevents the Player which executed the PlayerCommand given to win.
+     * prevents the Player who executed the given PlayerCommand to win.
      *
      * @param playerCommand player command from View
      * @return true if Win is permitted, false otherwise.
@@ -380,6 +437,16 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         return true;
     }
 
+
+    /**
+     * This methods checks if a GamePreparationCommand is valid or not. A GamePreparationCommand
+     * can be not-valid when, for example, some rules (mainly related to god powers) are not respected.
+     *
+     * @param gamePreparationCommand the given command in GamePreparation Phase
+     * @param inhibitor an empty map that, in case, is filled with the name and description of the god that
+     *                  does not allow the given command
+     * @return true if the command is valid, false otherwise
+     */
     private boolean checkAllGamePreparationConstraints(GamePreparationCommand gamePreparationCommand, Map<String, String> inhibitor) {
 
         for (Player p : model.getPlayers()) {
@@ -405,10 +472,12 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     
     /**
      * This methods checks all Players God's Move Constraints to check if there is a power which
-     * prevents the Player which executed the PlayerCommand given to move.
+     * prevents the Player who executed the given PlayerCommand to move.
      *
      * @param playerCommand player command from View
-     * @return true if move is permitted, false otherwise.
+     * @param inhibitor an empty map that, in case, is filled with the name and description of the god that
+     *                  does not allow the given command
+     * @return true if move is permitted, false otherwise
      */
     private boolean checkAllMoveConstraints(PlayerCommand playerCommand, Map<String, String> inhibitor) {
 
@@ -426,10 +495,12 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     /**
      * This methods checks all Players God's Build Constraints to check if there is a power which
-     * prevents the Player which executed the PlayerCommand given to build.
+     * prevents the Player who executed the given PlayerCommand to build.
      *
      * @param playerCommand player command from View
-     * @return true if build is permitted, false otherwise.
+     * @param inhibitor an empty map that, in case, is filled with the name and description of the god that
+     *                  does not allow the given command
+     * @return true if build is permitted, false otherwise
      */
     private boolean checkAllBuildConstraints(PlayerCommand playerCommand, Map<String, String> inhibitor) {
 
