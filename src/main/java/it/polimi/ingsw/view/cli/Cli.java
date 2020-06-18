@@ -26,12 +26,11 @@ import java.util.*;
 public class Cli extends View implements Observer<Update> {
     private Scanner stdin;
     private PrintStream stdout;
-
     private List<String> selectedNicknames;
     private List<PrintableColor> selectableColors;
+    private List<String> selectableGods;
     private boolean isInitialGodChooser = false;
     private boolean continueToWatch = false;
-    private List<String> selectableGods;
 
     /**
      *  JSON representation of current board of the match

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui.components;
+package it.polimi.ingsw.view.gui.ui;
 
 import it.polimi.ingsw.view.gui.Gui;
 
@@ -48,7 +48,7 @@ public class LoadingComponent extends JPanel {
         this.setOpaque(false);
     }
 
-    void setLoadingMessage(String loadingMessage) {
+    public void setLoadingMessage(String loadingMessage) {
         this.loadingMessage = loadingMessage;
         this.waitingLabel.setText(loadingMessage);
     }

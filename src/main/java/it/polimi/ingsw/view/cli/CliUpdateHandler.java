@@ -1,11 +1,8 @@
 package it.polimi.ingsw.view.cli;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.controller.commands.CommandType;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
-import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.ErrorType;
 import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.model.updates.*;
@@ -31,7 +28,7 @@ import java.util.stream.Collectors;
  */
 public class CliUpdateHandler implements UpdateHandler {
     private final Cli cliInstance;
-    private final it.polimi.ingsw.network.client.controller.Controller controller;
+    private final Controller controller;
 
     /**
      * This is the creator of the class. At the moment of the instance creation

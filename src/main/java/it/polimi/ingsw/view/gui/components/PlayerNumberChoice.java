@@ -18,7 +18,6 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
     private final JRadioButton button2;
     private final JLabel resumeNumber;  //this JLabel needs to be refreshed every time a button is clicked
     private final String standardImgPath = "/images/PlayerNumberChoice/";
-    private final String externalImgPath = "/images/";
     private final Image backgroundImage = new ImageIcon(PlayerNumberChoice.class.getResource(standardImgPath + "santoriniBackground.jpg")).getImage();
 
     public PlayerNumberChoice() {
@@ -94,14 +93,15 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         this.add(buttonAllInfoPanel, BorderLayout.CENTER);
 
         //this part must be south-east (continue) and south-west (manual)
-        ImageIcon startImg = new ImageIcon(getClass().getResource(this.externalImgPath + "next.png"));
+        String externalImgPath = "/images/";
+        ImageIcon startImg = new ImageIcon(getClass().getResource(externalImgPath + "next.png"));
         startImg = new ImageIcon(startImg.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
 
         JRoundButton startButton = new JRoundButton(startImg);
 
         startButton.addActionListener(this);
 
-        ImageIcon manualImg = new ImageIcon(getClass().getResource(this.externalImgPath + "info.png"));
+        ImageIcon manualImg = new ImageIcon(getClass().getResource(externalImgPath + "info.png"));
         manualImg = new ImageIcon(manualImg.getImage().getScaledInstance(80, -1, Image.SCALE_SMOOTH));
 
         JRoundButton infoButton = new JRoundButton(manualImg);

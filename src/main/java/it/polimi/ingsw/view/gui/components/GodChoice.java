@@ -6,6 +6,7 @@ import it.polimi.ingsw.view.gui.Gui;
 import it.polimi.ingsw.view.gui.listeners.GodChoiceInfoButtonListener;
 import it.polimi.ingsw.view.gui.listeners.GodChoiceJButtonListener;
 import it.polimi.ingsw.view.gui.ui.JRoundButton;
+import it.polimi.ingsw.view.gui.ui.LoadingComponent;
 
 import javax.swing.*;
 import java.awt.*;
