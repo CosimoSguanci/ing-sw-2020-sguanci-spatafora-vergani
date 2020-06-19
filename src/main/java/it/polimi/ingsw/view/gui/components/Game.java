@@ -18,6 +18,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Game is an abstract class that partially manages the activities linked to
+ * GamePreparation and RealGame phases. It contains method that many GUI-components
+ * classes contain. Its abstract method is draw that is draw.
+ * This class manages the turn change during the game both when player
+ * choose where to place their workers and during RealGame phase.
+ *
+ * @author Andrea Vergani
+ * @author Roberto Spatafora
+ */
 public abstract class Game extends JPanel {
     private final String stdImagePath = "/images/Game/";
     private final Image backgroundImage = new ImageIcon(getClass().getResource(stdImagePath + "background.png")).getImage();
@@ -37,6 +47,13 @@ public abstract class Game extends JPanel {
     protected JLabel subtitle;
     private boolean soundPlayed = false;
 
+    /**
+     * This method creates a list of CellButton having as input the common Board,
+     * defined as a two-dimensional array.
+     * @param twoDArray contains reference to the Board used in game.
+     * @return a List of JCellButton containing all the button that are in
+     *      the two-dimensional array given as parameter.
+     */
     protected static java.util.List<JCellButton> twoDArrayToList(JCellButton[][] twoDArray) {
         List<JCellButton> list = new ArrayList<>();
         for (JCellButton[] array : twoDArray) {
@@ -45,6 +62,12 @@ public abstract class Game extends JPanel {
         return list;
     }
 
+    /**
+     * This method manages the change of the turn.
+     * At the moment in which begins a specific player turn,
+     * the player is notified about that through a sound alert.
+     * All the opponents can also see that is an opponent's turn.
+     */
     public void changeTurn() {
         this.currentPlayerNickname = gui.getController().getCurrentPlayerNickname();
 
@@ -66,10 +89,19 @@ public abstract class Game extends JPanel {
         this.revalidate();
     }
 
+    /**
+     * This method is a simple getter of the BoardScreen which is a Gui-component.
+     * @return a reference to the BoardScreen associated to the Gui.
+     */
     BoardScreen getBoard() {
         return board;
     }
 
+    /**
+     * This is a simple setter of the Board.
+     * @param board is a String JSon-format which contains information
+     *              about all the cell involved in the match board.
+     */
     public void setBoard(String board) {
         this.boardString = board;
 
@@ -80,12 +112,24 @@ public abstract class Game extends JPanel {
         }
     }
 
+    /**
+     * This method override the paintComponent method of the JPanel class.
+     * It adds to the method of the super class a background image, used in the JPanel of the class.
+     * @param g contains a reference to the component we want to set the background image
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(this.backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
     }
 
+    /**
+     * This protected method manages all the activities linked to the
+     * draw of the Board, used in GamePreparation and RealGame phases.
+     * This method handles players' nickname column, the currentGame,
+     * it also set info and continue buttons and deals
+     * with the print of the BoardScreen
+     */
     protected void drawCommonBoard() {
 
         this.currentPlayerNickname = gui.getController().getCurrentPlayerNickname();
@@ -224,5 +268,11 @@ public abstract class Game extends JPanel {
         this.revalidate();
     }
 
+    /**
+     * This is the abstract method of the class. Every class which extends Game class
+     * implements this method. This method was meant for draw a "standard" layout for
+     * specific game phases in which the board with its buttons is at the center
+     * of the component and there are a continue and info buttons.
+     */
     abstract void draw();
 }
