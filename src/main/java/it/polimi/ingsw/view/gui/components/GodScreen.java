@@ -15,6 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * GodScreen is a class which manages the display of Gods during GodChoice gamePhase.
+ * In this class there is a distinction between GodChooser and other players.
+ *
+ * @author Roberto Spatafora
+ * @author Andrea Vergani
+ */
 public class GodScreen extends JPanel {
     private static final Map<String, Map<String, ImageIcon>> allIconGods = new HashMap<>();
     Gui gui = Gui.getInstance();
@@ -22,7 +29,16 @@ public class GodScreen extends JPanel {
     private final JPanel rightPanel;
     private final ArrayList<JButton> buttons = new ArrayList<>();
 
-
+    /**
+     * This is the constructor of the class. At the moment of creation a new GridLayout
+     * is created. It is a 4x4 GridLayout case player is GodChooser, and an only row
+     * with as many columns as the number of players involved in the match. This GriLayout
+     * contains buttons which contain Gods images
+     * @param playersNumber is an integer number that contains information about the number of players involved in a match.
+     * @param selectableGods is a List of Strings which contains Gods names that can be chosen.
+     *                       GodChooser will see all the Gods available in game. Other player see Gods chosen bu GodChooser
+     * @throws IOException is used in case in which the image we are looking for is not available in specified path.
+     */
     public GodScreen(int playersNumber, List<String> selectableGods) throws IOException {
         boolean isGodChooser = this.gui.getController().isClientPlayerGodChooser();
 
@@ -131,6 +147,11 @@ public class GodScreen extends JPanel {
         this.add(this.rightPanel, BorderLayout.EAST);
     }
 
+    /**
+     * This static method has the function to load all the Gods images in different dimension.
+     * This function was meant to be in a different thread from the main one of the execution.
+     * Different dimensions are used to re-size images after a window re-size.
+     */
     public static void loadImages() {
         new Thread(() -> {
             List<String> gods = View.getGodsNamesList();
@@ -179,16 +200,30 @@ public class GodScreen extends JPanel {
         }).start();
     }
 
+    /**
+     * This package protected method is a simple setter of the title of the titleLabel of the class.
+     * This is a good solution in order to creates instances of this class, distinguish at the moment
+     * of the invocation, different contexts and for each set the desired title.
+     * @param title
+     */
     void setTitle(String title) {
         this.titleLabel.setText(title);
         this.revalidate();
         this.repaint();
     }
 
+    /**
+     * This method is a simple getter of the Gods buttons available in this class.
+     * @return an ArrayList of JButton which contains as many buttons as many Gods are available in a specific turn of GodChoice game phase.
+     */
     ArrayList<JButton> getButtons() {
         return this.buttons;
     }
 
+    /**
+     * This method is a getter of the right panel located east in this class.
+     * @return a reference to the east panel of the class.
+     */
     JPanel getRightPanel() {
         return this.rightPanel;
     }
