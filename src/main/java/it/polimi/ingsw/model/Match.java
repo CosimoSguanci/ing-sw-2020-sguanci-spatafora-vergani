@@ -123,10 +123,20 @@ public class Match {
         return this.matchBoard;
     }
 
+    /**
+     * The method is the getter for current GamePhase of the match.
+     * @return current GamePhase
+     */
     public GamePhase getCurrentGamePhase() {
         return this.currentGamePhase;
     }
 
+    /**
+     * This method performs a chronological switch of GamePhase. For example,
+     * Santorini's manual says that, after choosing gods, every player must
+     * place his/her workers on the board: these situations correspond
+     * to different GamePhases, and after choosing gods the switch takes place.
+     */
     public void nextGamePhase() {
         this.currentGamePhase = GamePhase.nextGamePhase(this.currentGamePhase);
     }
