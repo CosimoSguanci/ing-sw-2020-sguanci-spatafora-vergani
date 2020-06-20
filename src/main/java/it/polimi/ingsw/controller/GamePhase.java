@@ -35,6 +35,8 @@ public enum GamePhase {
      *
      * @param currentGamePhase the current game phase
      * @return the (chronological) next phase
+     * @throws IllegalArgumentException if parameter-phase is not valid or not followed
+     *                                  by another phase
      *
      */
     public static GamePhase nextGamePhase(GamePhase currentGamePhase) {
@@ -76,6 +78,7 @@ public enum GamePhase {
      * @param input an input string, that should represent a game-phase
      * @return the correspondent GamePhase if the parameter is one of the GamePhases
      *         (hypothetical .toString)
+     * @throws BadCommandException if parameter-string does not represent any GamePhase
      *
      */
     public static GamePhase parseGamePhase(String input) {

@@ -111,6 +111,12 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      *
      * @param initialInfoCommand command containing nickname and colour chosen by one of the
      *                           players
+     * @throws WrongPlayerException if player who gave the command is not the current player
+     * @throws NicknameAlreadyTakenException if selected nickname has already been chosen by
+     *                                       another player
+     * @throws InvalidColorException if selected colour has already been chosen by another player
+     *                               (or, for any other reason, is not in selectable's colour
+     *                               list)
      */
     synchronized void handleInitialInfoCommand(InitialInfoCommand initialInfoCommand) {
 
@@ -163,6 +169,8 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      *
      * @param godChoiceCommand command containing the chosen god (not god-chooser player) or
      *                         gods(god-chooser player)
+     * @throws WrongPlayerException if player who gave the command is not the current player
+     * @throws InvalidGodException if selected god is not in selectable's gods list
      */
     synchronized void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {
         List<String> chosenGods = godChoiceCommand.getChosenGods();
@@ -216,6 +224,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * of game-phase, if everyone has already finished GamePreparation phase).
      *
      * @param gamePreparationCommand command containing the positions chosen for the two workers
+     * @throws WrongPlayerException if player who gave the command is not the current player
      */
      synchronized void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) {
         Player currentPlayer = model.getCurrentPlayer();
@@ -262,7 +271,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * player, as an invocation of one of model's methods.
      *
      * @param playerCommand player command from View
-     * @throws InvalidPlayerNumberException when command's player is not current player
+     * @throws WrongPlayerException when command's player is not current player
      */
     synchronized void handlePlayerCommand(PlayerCommand playerCommand) throws WrongPlayerException {
         Player currentPlayer = model.getCurrentPlayer();
