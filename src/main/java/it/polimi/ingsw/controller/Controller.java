@@ -420,7 +420,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
 
     /**
-     * This methods checks all Players God's Win Constraints to check if there is a power which
+     * This method checks all Players God's Win Constraints to check if there is a power which
      * prevents the Player who executed the given PlayerCommand to win.
      *
      * @param playerCommand player command from View
@@ -439,7 +439,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
 
     /**
-     * This methods checks if a GamePreparationCommand is valid or not. A GamePreparationCommand
+     * This method checks if a GamePreparationCommand is valid or not. A GamePreparationCommand
      * can be not-valid when, for example, some rules (mainly related to god powers) are not respected.
      *
      * @param gamePreparationCommand the given command in GamePreparation Phase
@@ -471,7 +471,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     
     
     /**
-     * This methods checks all Players God's Move Constraints to check if there is a power which
+     * This method checks all Players God's Move Constraints to check if there is a power which
      * prevents the Player who executed the given PlayerCommand to move.
      *
      * @param playerCommand player command from View
@@ -494,7 +494,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     }
 
     /**
-     * This methods checks all Players God's Build Constraints to check if there is a power which
+     * This method checks all Players God's Build Constraints to check if there is a power which
      * prevents the Player who executed the given PlayerCommand to build.
      *
      * @param playerCommand player command from View
@@ -516,6 +516,15 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         return true;
     }
 
+
+    /**
+     * This method checks if an End-Turn can be performed, or it is not allowed by some of the players' gods.
+     *
+     * @param playerCommand player command from View
+     * @param inhibitor an empty map that, in case, is filled with the name and description of the god that
+     *                  does not allow the given command
+     * @return true if end-turn is permitted, false otherwise
+     */
     private boolean checkAllEndTurnConstraints(PlayerCommand playerCommand, Map<String, String> inhibitor) {
 
         for (Player p : model.getPlayers()) {
@@ -530,6 +539,15 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         return true;
     }
 
+
+    /**
+     * This method checks if one of the parameter-player's workers can move or not, related to other players' God
+     * Powers; in particular, some God's Powers can totally inhibit a player's possibility to move with one of
+     * his/her workers.
+     *
+     * @param player player during his/her turn
+     * @return true if move is permitted, false if denied by a God Power
+     */
     private boolean checkCanMoveOtherGodsConstraints(Player player) {
         List<Cell> availableMoveCellsWorkerFirst = model.getBoard().getAvailableMoveCells(player.getWorkerFirst());
         List<Cell> availableMoveCellsWorkerSecond = model.getBoard().getAvailableMoveCells(player.getWorkerSecond());
@@ -567,6 +585,15 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         return false;
     }
 
+
+    /**
+     * This method checks if one of the parameter-player's workers can build or not, related to other players' God
+     * Powers; in particular, some God's Powers can totally inhibit a player's possibility to build with one of
+     * his/her workers.
+     *
+     * @param player player during his/her turn
+     * @return true if build is permitted, false if denied by a God Power
+     */
     private boolean checkCanBuildOtherGodsConstraints(Player player) {
         List<Cell> availableBuildCellsWorkerFirst = model.getBoard().getAvailableBuildCells(player.getWorkerFirst());
         List<Cell> availableBuildCellsWorkerSecond = model.getBoard().getAvailableBuildCells(player.getWorkerSecond());
@@ -604,7 +631,12 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         return false;
     }
 
-
+    /**
+     * This method is the entry point from Server.java class. A random starting-player and god-chooser are chosen,
+     * and the players are notified about the first turn of the match. This starting phase is followed by
+     * InitialInfo phase, where players choose their nicknames and colours.
+     *
+     */
     // Entry point from Server class
     public void initialPhase() {
         model.gamePhaseUpdate(model.getCurrentGamePhase());
@@ -624,18 +656,31 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     }
 
+
+    /**
+     * This method must be called when GodChoice Phase starts. Every player is notified in the proper way.
+     *
+     */
     private void godChoosePhase() {
         model.nextGamePhase();
         model.gamePhaseUpdate(model.getCurrentGamePhase());
         model.godsUpdate(new ArrayList<>(), new HashMap<>());
     }
 
+    /**
+     * This method must be called when GamePreparation Phase starts. Every player is notified in the proper way.
+     *
+     */
     private void gamePreparationPhase() {
         model.nextGamePhase();
         model.gamePhaseUpdate(model.getCurrentGamePhase());
         model.boardUpdate();
     }
 
+    /**
+     * This method must be called when the real match starts. Every player is notified in the proper way.
+     *
+     */
     private void startMatch() {
         model.nextGamePhase();
         model.gamePhaseUpdate(model.getCurrentGamePhase());
@@ -645,6 +690,12 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         checkLoseConditionsMove();
     }
 
+
+    /**
+     * This method handles a disconnection from one of the clients involved in the match. In particular, when a
+     * player disconnects, he/she is removed; then, everyone must be notified and the match immediately ends.
+     *
+     */
     public void onPlayerDisconnected(String playerID) {
         Player disconnectedPlayer = model.getPlayers().stream().filter((player) -> player.getPlayerID().equals(playerID)).findFirst().orElse(null);
 
@@ -664,6 +715,10 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         model.gamePhaseUpdate(GamePhase.MATCH_ENDED);
     }
 
+    /**
+     * This method handles a victory by one of the players involved in the match.
+     *
+     */
     private void onMatchWon() {
         notify(this);
     }

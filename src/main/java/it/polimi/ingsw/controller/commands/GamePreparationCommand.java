@@ -7,6 +7,16 @@ import it.polimi.ingsw.model.Cell;
 import java.util.Arrays;
 import java.util.Map;
 
+
+/**
+ * GamePreparationCommand is the class that represents a Command specific for GamePreparation
+ * phase. In particular, in this phase every player places his/her workers in two of the board's
+ * cells.
+ *
+ * @author Andrea Mario Vergani
+ * @author Cosimo Sguanci
+ * @author Roberto Spatafora
+ */
 public class GamePreparationCommand extends Command {
 
 
@@ -19,6 +29,17 @@ public class GamePreparationCommand extends Command {
     public final int workerSecondRow;
     public final int workerSecondCol;
 
+    /**
+     * The constructor creates a Command specific for GamePreparation phase: CommandType is PLACE
+     * because this is what players must do in this phase; then, the positions of the workers are
+     * selected.
+     *
+     * @param workerFirstRow the row of the cell where the first worker must be placed
+     * @param workerFirstCol the column of the cell where the first worker must be placed
+     * @param workerSecondRow the row of the cell where the second worker must be placed
+     * @param workerSecondCol the column of the cell where the second worker must be placed
+     *
+     */
     public GamePreparationCommand(int workerFirstRow, int workerFirstCol, int workerSecondRow, int workerSecondCol) { // todo command -> private constructors (updates package protected)
 
         super(CommandType.PLACE);
@@ -30,27 +51,69 @@ public class GamePreparationCommand extends Command {
         this.workerSecondCol = workerSecondCol;
     }
 
+
+    /**
+     * This method sets the cell where the first worker must be placed.
+     *
+     * @param workerFirstCell first worker's selected cell
+     *
+     */
     public void setWorkerFirstCell(Cell workerFirstCell) {
         this.workerFirstCell = workerFirstCell;
     }
 
+    /**
+     * This method sets the cell where the second worker must be placed.
+     *
+     * @param workerSecondCell second worker's selected cell
+     *
+     */
     public void setWorkerSecondCell(Cell workerSecondCell) {
         this.workerSecondCell = workerSecondCell;
     }
 
+    /**
+     * This method gets the cell where the first worker must be placed.
+     *
+     * @return first worker's selected cell
+     *
+     */
     public Cell getWorkerFirstCell() {
         return workerFirstCell;
     }
 
+
+    /**
+     * This method gets the cell where the second worker must be placed.
+     *
+     * @return second worker's selected cell
+     *
+     */
     public Cell getWorkerSecondCell() {
         return workerSecondCell;
     }
 
+
+    /**
+     * This method handles the GamePreparationCommand received by Server in the proper way.
+     *
+     * @param handler the object that is going to handle the command
+     */
     @Override
     public void handleCommand(CommandHandler handler) {
         handler.handle(this);
     }
 
+
+    /**
+     * This static method parses a string to transform it into a valid GamePreparationCommand.
+     * Command format is: CommandType (PLACE) + WorkerFirst + "BattleShip"-form cell for WorkerFirst +
+     * WorkerSecond + "BattleShip"-form cell for WorkerSecond.
+     *
+     * @param command the string that must be converted to a valid GamePreparationCommand
+     * @return a valid GamePreparationCommand, derived from the string passed as parameter
+     * @throws BadCommandException if the string passed is not in the valid command format
+     */
     public static GamePreparationCommand parseInput(String command) throws BadCommandException {
         try {
 
