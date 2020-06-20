@@ -15,6 +15,12 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * InitialInfo is a class which manages the component during before
+ * and during nicknames and colors choice.
+ * This class also shows different messages through JDialog to users who
+ * make wrong choices.
+ */
 public class InitialInfo extends JPanel implements ActionListener {
 
     private static final String loadingMsgBefore = "Waiting for other players...";
@@ -35,29 +41,52 @@ public class InitialInfo extends JPanel implements ActionListener {
     private String nickname;
 
 
+    /**
+     * This is the creator of the class. At the moment of creation a reference to Gui
+     * is associated to this class and a new component which alert users to wait for
+     * opponents is created.
+     */
     public InitialInfo() {
 
         this.gui = Gui.getInstance();
         this.add(new LoadingComponent(loadingMsgBefore, Color.WHITE));
     }
 
+    /**
+     * This is a simple setter of the List of printableColors player can choose.
+     * @param selectableColors contains colors users can still select.
+     */
     public void setSelectableColors(List<PrintableColor> selectableColors) {
         this.selectableColors = selectableColors;
 
         this.showGuiOnTurn();
     }
 
+    /**
+     * This method is a simple setter of the String list selectedNickname,
+     * attribute of the class. It contains all the nicknames already chosen from players in a match.
+     * @param selectedNicknames is a list of already chosen nicknames in the match.
+     */
     public void setSelectedNicknames(List<String> selectedNicknames) {
         this.selectedNicknames = selectedNicknames;
     }
 
+    /**
+     * This method is used to set the background of the component layout.
+     * @param g contains a reference to the component we want to set a background image.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
+        g.drawImage(this.backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
     }
 
-    // todo interface
+    /**
+     * This method manages the InitialInfo component layout according to the current turn.
+     * Gui of current player displays a textfield in which player inputs its nickname and
+     * a vertical glue which contains selectable colors.
+     * Others players' gui displays a waiting message.
+     */
     public void showGuiOnTurn() {
 
         this.removeAll();
@@ -152,7 +181,14 @@ public class InitialInfo extends JPanel implements ActionListener {
         this.repaint();
     }
 
-
+    /**
+     * This method manages the activities made on continue button.
+     * Case player choose a nickname already chosen from an opponent player
+     * none information is sent to the server and the user is notified about a
+     * bad nickname chosen. In a positive case it send the info to
+     * the server and the game goes on.
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -169,6 +205,12 @@ public class InitialInfo extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * This private method manages the activities once a user choose a valid nickname and a color.
+     * It handles the content removal of the component, displays a loading message and set the
+     * playerNickname of the Client associated to the Gui with the nickname chosen
+     *
+     */
     private void onInitialInfoSent() {
         this.removeAll();
 
