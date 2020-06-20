@@ -29,6 +29,7 @@ public enum CommandType {
      * that the string "end" is considered to match with CommandType.END_TURN.
      *
      * @return the matching command-type
+     * @throws BadCommandException if parameter string does not represent any CommandType
      *
      */
     public static CommandType parseCommandType(String input) {

@@ -120,6 +120,7 @@ public abstract class Command implements Serializable {
      * @param partialCommand a string that represents a cell in the form "letter" + "number"
      *                       ("BattleShip" form)
      * @return a map for parameter-cell's position in a matrix
+     * @throws BadCommandException if parameter-string does not represent a valid command
      */
     protected static Map<String, Integer> parseCellIdentifiers(String partialCommand) {
 
