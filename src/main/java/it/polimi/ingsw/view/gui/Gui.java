@@ -377,7 +377,24 @@ public class Gui extends View implements Observer<Update> {
                 askContinueToWatch();
             });
 
-        } else {
+        }
+        else if(update.onePlayerRemaining) {
+
+
+            SwingUtilities.invokeLater(() -> {
+                String titleWin = "Win";
+                String messageWin = "You Won because " + update.getLoserPlayer().getNickname() + " lost!";
+
+                ImageIcon icon = new ImageIcon(getClass().getResource("/images/RealGame/trophy.png"));
+                icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
+                JOptionPane.showMessageDialog(null, messageWin, titleWin, JOptionPane.INFORMATION_MESSAGE, icon);
+                askPlayAgainDialog();
+            });
+
+
+        }
+
+        else {
             title = "Lost";
             message = update.getLoserPlayer().getNickname() + " Lost!";
 
