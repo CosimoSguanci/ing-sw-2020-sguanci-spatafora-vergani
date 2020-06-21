@@ -419,7 +419,11 @@ public class Gui extends View implements Observer<Update> {
         String message = "Do you want to play another match?";
 
         SwingUtilities.invokeLater(() -> {
-            int res = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            String imagePath = "/images/RealGame/question.png";
+            int iconWidth = 70;
+            ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
+            icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
+            int res = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon, null, null);
 
             switch (res) {
                 case JOptionPane.YES_OPTION:
