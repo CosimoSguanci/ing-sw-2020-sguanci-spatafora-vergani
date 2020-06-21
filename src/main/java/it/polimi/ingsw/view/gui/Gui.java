@@ -240,7 +240,7 @@ public class Gui extends View implements Observer<Update> {
 
                     message = "Move Error: you can't perform this move because " + inhibitorGod + " doesn't let you move in the position you specified!";
                 } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
-                    message = "Move Error: you can't perform this move because your God doesn't let you move in the position you specified!";
+                    message = "Move Error: you can't perform this move because you can't move to this cell (maybe you've already moved), or your God doesn't let you move in the position you specified!";
                 } else if (update.errorType == ErrorType.WRONG_TURN) {
                     message = "Move Error: you can't perform this move because it's not your turn!";
                 } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
@@ -259,7 +259,7 @@ public class Gui extends View implements Observer<Update> {
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
                     message = "Build Error: you can't perform this build because " + inhibitorGod + " doesn't let you build in the position you specified!";
                 } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
-                    message = "Build Error: you can't perform this build because your God doesn't let you build in the position you specified!";
+                    message = "Build Error: you can't perform this build because you can't build in this cell (maybe you haven't moved yet), or your God doesn't let you build in the position you specified!";
                 } else if (update.errorType == ErrorType.WRONG_TURN) {
                     message = "Build Error: you can't perform this build because it's not your turn!";
                 } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {

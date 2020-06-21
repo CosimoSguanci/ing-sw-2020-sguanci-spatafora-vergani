@@ -128,7 +128,7 @@ public class GamePreparation extends Game implements ActionListener {
 
                 });
 
-             
+
                 ImageIcon workerIcon = getWorkerImageIconFromBtnSize(button.getSize(), color);
                 JLabel overImage = new JLabel(workerIcon);
                 button.add(overImage);

@@ -211,13 +211,13 @@ public class CliUpdateHandler implements UpdateHandler {
 
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
 
-                    cliInstance.println(Cli.toBold("Move Error") + ": you can't perform this move because " + inhibitorGod + " doesn't let you move in the position you specified!"); // Your god -> specific god?
+                    cliInstance.println(Cli.toBold("Move Error") + ": you can't perform this move because " + inhibitorGod + " doesn't let you move in the position you specified!");
                 }
                 else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
-                    cliInstance.println(Cli.toBold("Move Error") + ": you can't perform this move because your God doesn't let you move in the position you specified!"); // Your god -> specific god?
+                    cliInstance.println(Cli.toBold("Move Error") + ": you can't perform this move because you can't move to this cell now (maybe you've already moved), or your God doesn't let you move in the position you specified!");
                 }
                 else if(update.errorType == ErrorType.WRONG_TURN) {
-                    cliInstance.println(Cli.toBold("Move Error") + ": you can't perform this move because it's not your turn!"); // Your god -> specific god?
+                    cliInstance.println(Cli.toBold("Move Error") + ": you can't perform this move because it's not your turn!");
                 }
                 else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Real Game Phase");
@@ -235,13 +235,13 @@ public class CliUpdateHandler implements UpdateHandler {
 
                 if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
-                    cliInstance.println(Cli.toBold("Build Error") + ": you can't perform this build because " + inhibitorGod + " doesn't let you build in the position you specified!"); // Your god -> specific god?
+                    cliInstance.println(Cli.toBold("Build Error") + ": you can't perform this build because " + inhibitorGod + " doesn't let you build in the position you specified!");
                 }
                 else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
-                    cliInstance.println(Cli.toBold("Build Error") + ": you can't perform this build because your God doesn't let you build in the position you specified!"); // Your god -> specific god?
+                    cliInstance.println(Cli.toBold("Build Error") + ": you can't perform this build because you can't build in this cell (maybe you haven't moved yet), or your God doesn't let you build in the position you specified!");
                 }
                 else if(update.errorType == ErrorType.WRONG_TURN) {
-                    cliInstance.println(Cli.toBold("Build Error") + ": you can't perform this build because it's not your turn!"); // Your god -> specific god?
+                    cliInstance.println(Cli.toBold("Build Error") + ": you can't perform this build because it's not your turn!");
                 }
                 else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Real Game Phase");
