@@ -712,7 +712,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     public void onPlayerDisconnected(String playerID) {
         Player disconnectedPlayer = model.getPlayers().stream().filter((player) -> player.getPlayerID().equals(playerID)).findFirst().orElse(null);
 
-        if (disconnectedPlayer == null) return; // todo throw unknownplayerexception
+        if (disconnectedPlayer == null) return;
 
         if (disconnectedPlayer.getWorkerFirst().getPosition() != null) {
             disconnectedPlayer.getWorkerFirst().getPosition().setWorker(null);

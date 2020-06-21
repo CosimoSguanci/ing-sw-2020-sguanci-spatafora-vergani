@@ -161,4 +161,20 @@ public class MinotaurTest {
         assertTrue(minotaur.canMove(match.getMatchBoard(), player));
     }
 
+    @Test
+    public void minotaurInvalidCellCheckMoveTest() {
+        Minotaur minotaur = new Minotaur();
+
+        Match match = new Match(2);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        Worker worker = player.getWorkerFirst();
+        Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        Worker oppositeWorker = oppositePlayer.getWorkerFirst();
+
+        worker.setInitialPosition(0, 1);
+        oppositeWorker.setInitialPosition(0, 0);
+
+        assertFalse(minotaur.checkMove(worker, match.getMatchBoard().getCell(0, 0)));
+    }
+
 }

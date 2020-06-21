@@ -20,10 +20,7 @@ import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -1523,5 +1520,55 @@ public class ControllerTest {
         assertNull(model.getBoard().getCell(3, 3).getWorker());
         verify(model, times(1)).disconnectedPlayerUpdate(p1);
         verify(model, times(1)).gamePhaseUpdate(GamePhase.MATCH_ENDED);
+    }
+
+    @Test
+    public void impossibleExceptionsTest() {
+
+
+        int playersNum = 2;
+        Match match = new Match(playersNum);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
+        match.addPlayer(p1);
+        match.addPlayer(p2);
+
+        Model model = Mockito.spy(new Model(match));
+        Controller controller = new Controller(model);
+        controller.initialPhase();
+
+        match.setInitialTurn(0);
+
+        String nick1 = "pippo";
+        PrintableColor colour = PrintableColor.YELLOW;
+        InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nick1, colour);
+        initialInfoCommand.setPlayer(model.getCurrentPlayer());
+
+        controller.update(initialInfoCommand);
+
+        model.nextGamePhase();
+        match.setInitialTurn(0);
+
+        String wrongID = "pippo_WRONG";
+        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(Arrays.asList("athena", "atlas"));
+        godChoiceCommand.setPlayerID(wrongID);
+
+        controller.update(godChoiceCommand);
+
+        verify(model, times(1)).reportError(null, CommandType.SELECT, ErrorType.GENERIC_ERROR, null);
+
+
+
+        model.nextGamePhase();
+        match.setInitialTurn(0);
+
+        GamePreparationCommand gamePreparationCommand = new GamePreparationCommand(-1, 100, 10000, 4);
+        gamePreparationCommand.setPlayerID(model.getPlayers().get(0).getPlayerID());
+
+        controller.update(gamePreparationCommand);
+
+        verify(model, times(1)).reportError(p1, CommandType.PLACE, ErrorType.INVALID_CELL, null);
+
+
     }
 }
