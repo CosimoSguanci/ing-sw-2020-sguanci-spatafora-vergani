@@ -16,10 +16,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * InitialInfo is a class which manages the component during before
- * and during nicknames and colors choice.
+ * InitialInfo is a class in which the component during before
+ * and during nicknames and colors choice is managed.
  * This class also shows different messages through JDialog to users who
  * make wrong choices.
+ *
+ * @author Roberto Spatafora
+ * @author Andrea Vergani
  */
 public class InitialInfo extends JPanel implements ActionListener {
 
@@ -187,7 +190,7 @@ public class InitialInfo extends JPanel implements ActionListener {
      * none information is sent to the server and the user is notified about a
      * bad nickname chosen. In a positive case it send the info to
      * the server and the game goes on.
-     * @param e
+     * @param e contains reference to the event that triggered the listener.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
