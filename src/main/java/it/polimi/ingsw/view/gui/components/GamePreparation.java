@@ -98,8 +98,6 @@ public class GamePreparation extends Game implements ActionListener {
         if (controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {
             JCellButton button = (JCellButton) e.getSource();
 
-            //TODO Si potrebbe fare una resize dei worker anche in GamePreparatio. Ne vale la pena far partire un nuovo thread per una cosa che scompare alla fase successiva?
-            //Al momento settiamo una dimensione media per la GamePreparation
             if (button.isEmpty() && selectedButtons.size() < 2) {
                 String playerNickname = controller.getClientPlayer().getNickname();
                 PrintableColor color = gui.getPlayersColors().get(playerNickname);
@@ -117,27 +115,8 @@ public class GamePreparation extends Game implements ActionListener {
                             btn.remove(btn.getComponent(0));
                         }
 
-                        ImageIcon imageIcon;
+                        ImageIcon imageIcon = getWorkerImageIconFromBtnSize(size, color);
 
-                        if (size.width > 120 || size.height > 120) {
-                            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("very_big");
-
-                        } else if (size.width > 100 || size.height > 100) {
-                            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("big");
-
-                        } else if (size.width > 80 || size.height > 80) {
-                            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("medium_big");
-
-                        } else if (size.width > 60 || size.height > 60) {
-                            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("medium");
-
-                        } else if (size.width > 30 || size.height > 30) {
-                            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("medium_small");
-
-                        } else {
-                            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("small");
-
-                        }
 
                         JLabel overImage = new JLabel(imageIcon);
                         btn.add(overImage, BorderLayout.CENTER);
@@ -149,8 +128,8 @@ public class GamePreparation extends Game implements ActionListener {
 
                 });
 
-                ImageIcon workerIcon = new ImageIcon(Gui.class.getResource("/images/BoardScreen/worker_" + color.toString().toLowerCase() + ".png"));
-                workerIcon = new ImageIcon(workerIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+             
+                ImageIcon workerIcon = getWorkerImageIconFromBtnSize(button.getSize(), color);
                 JLabel overImage = new JLabel(workerIcon);
                 button.add(overImage);
 
@@ -167,6 +146,8 @@ public class GamePreparation extends Game implements ActionListener {
                 button.setWorkerLabel(null);
                 this.selectedButtons.remove(button);
 
+
+
                 button.revalidate();
                 this.getBoard().revalidate();
 
@@ -174,5 +155,32 @@ public class GamePreparation extends Game implements ActionListener {
 
             }
         }
+    }
+
+    private ImageIcon getWorkerImageIconFromBtnSize(Dimension size, PrintableColor color) {
+
+        ImageIcon imageIcon;
+
+        if (size.width > 120 || size.height > 120) {
+            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("very_big");
+
+        } else if (size.width > 100 || size.height > 100) {
+            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("big");
+
+        } else if (size.width > 80 || size.height > 80) {
+            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("medium_big");
+
+        } else if (size.width > 60 || size.height > 60) {
+            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("medium");
+
+        } else if (size.width > 30 || size.height > 30) {
+            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("medium_small");
+
+        } else {
+            imageIcon = workerIcons.get("worker_" + color.toString().toLowerCase()).get("small");
+        }
+
+        return imageIcon;
+
     }
 }

@@ -34,21 +34,6 @@ public class Observable<T> {
     }
 
     /**
-     * This method detaches the parameter object (an observer) from the list
-     * of observable object's observers (if parameter was one of its observers).
-     * Parameter object will not be in the list anymore, so it will not be
-     * notified by observable object in the future.
-     *
-     * @param observer   observer object that wants to detach from observable's list
-     *
-     */
-    public void removeObserver(Observer<T> observer){
-        synchronized (observers) {
-            observers.remove(observer);
-        }
-    }
-
-    /**
      * This method is useful to notify to all observers (in the list) of a
      * change. In fact, observers are interested in any changes of observable
      * object they are "listening" to; on the basis of this notify, they can
