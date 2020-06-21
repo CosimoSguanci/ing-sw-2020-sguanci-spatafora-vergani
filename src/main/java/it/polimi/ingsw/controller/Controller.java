@@ -98,8 +98,12 @@ public class Controller extends Observable<Controller> implements Observer<Comma
             model.reportError(command.getPlayer(), command.commandType, ErrorType.ALREADY_TAKEN_NICKNAME, null);
         } catch (InvalidColorException e) {
             model.reportError(command.getPlayer(), command.commandType, ErrorType.INVALID_COLOR, null);
-        } catch (InvalidGodException e) {
+        } catch (InvalidGodException | UnknownGodException e) {
             model.reportError(command.getPlayer(), command.commandType, ErrorType.INVALID_GOD, null);
+        } catch (InvalidCellException  | CannotIncreaseLevelException | CellNotEmptyException e) {
+            model.reportError(command.getPlayer(), command.commandType, ErrorType.INVALID_CELL, null);
+        } catch (NullPointerException e) {
+            model.reportError(command.getPlayer(), command.commandType, ErrorType.GENERIC_ERROR, null);
         }
     }
 

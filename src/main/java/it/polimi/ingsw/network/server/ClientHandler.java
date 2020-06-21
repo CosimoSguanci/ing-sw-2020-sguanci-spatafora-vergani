@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.commands.Command;
+import it.polimi.ingsw.model.updates.ErrorUpdate;
 import it.polimi.ingsw.model.updates.Update;
 import it.polimi.ingsw.network.CustomThreadPoolExecutor;
 import it.polimi.ingsw.observer.Observable;
@@ -50,6 +51,10 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
             DataInputStream input = new DataInputStream(clientSocket.getInputStream());
 
             this.playersNum = input.readInt();
+
+            while(!Server.isValidPlayerNumber(this.playersNum)) {
+                this.playersNum = input.readInt();
+            }
 
             output.writeUTF(this.clientID);
 

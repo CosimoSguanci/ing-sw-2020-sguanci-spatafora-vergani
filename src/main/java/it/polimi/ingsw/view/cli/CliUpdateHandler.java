@@ -222,6 +222,12 @@ public class CliUpdateHandler implements UpdateHandler {
                 else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Real Game Phase");
                 }
+                else if(update.errorType == ErrorType.INVALID_CELL) {
+                    cliInstance.println(Cli.toBold("Error") + ": Invalid Cell");
+                }
+                else if(update.errorType == ErrorType.GENERIC_ERROR) {
+                    cliInstance.println(Cli.toBold("Generic Error") + ": please, try another command");
+                }
 
                 break;
 
@@ -239,6 +245,12 @@ public class CliUpdateHandler implements UpdateHandler {
                 }
                 else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Real Game Phase");
+                }
+                else if(update.errorType == ErrorType.INVALID_CELL) {
+                    cliInstance.println(Cli.toBold("Error") + ": Invalid Cell");
+                }
+                else if(update.errorType == ErrorType.GENERIC_ERROR) {
+                    cliInstance.println(Cli.toBold("Generic Error") + ": please, try another command");
                 }
 
                 break;

@@ -244,6 +244,10 @@ public class Gui extends View implements Observer<Update> {
                     message = "Move Error: you can't perform this move because it's not your turn!";
                 } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     message = "Wrong Game Phase: current Game Phase is not Real Game Phase";
+                } else if (update.errorType == ErrorType.INVALID_CELL) {
+                    message = "Invalid Cell";
+                } else if (update.errorType == ErrorType.GENERIC_ERROR) {
+                    message = "Generic Error: please, try another command";
                 }
 
                 break;
@@ -259,6 +263,10 @@ public class Gui extends View implements Observer<Update> {
                     message = "Build Error: you can't perform this build because it's not your turn!";
                 } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     message = "Wrong Game Phase: current Game Phase is not Real Game Phase";
+                } else if (update.errorType == ErrorType.INVALID_CELL) {
+                    message = "Invalid Cell";
+                } else if (update.errorType == ErrorType.GENERIC_ERROR) {
+                    message = "Generic Error: please, try another command";
                 }
 
                 break;
@@ -304,6 +312,8 @@ public class Gui extends View implements Observer<Update> {
                     message = "Game Preparation Error: you can't place your Workers because it's not your turn!";
                 } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     message = "Wrong Game Phase: current Game Phase is not Game Preparation Phase";
+                } else if (update.errorType == ErrorType.INVALID_CELL) {
+                    message = "Invalid Cell";
                 }
                 break;
 
