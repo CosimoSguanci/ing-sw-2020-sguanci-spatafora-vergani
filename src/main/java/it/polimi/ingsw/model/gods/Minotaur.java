@@ -20,7 +20,6 @@ public class Minotaur extends GodStrategy {
     private final OpponentWorkerMoverDelegate opponentWorkerMoverDelegate;
     private Cell backwardCell;
 
-
     public Minotaur() {
         super(NAME, DESCRIPTION, POWER_DESCRIPTION);
         this.opponentWorkerMoverDelegate = new OpponentWorkerMoverDelegate();
@@ -139,6 +138,14 @@ public class Minotaur extends GodStrategy {
         return board.getCell(backwardRow, backwardCol);
     }
 
+    /**
+     * This method checks if Minotaur's Player has at least an available Cell to move to.
+     *
+     * @param board  the Match board to consider
+     * @param player the Player whose ability to move is about to be tested
+     * @return true if Minotaur Player can move, false otherwise.
+     * @see GodStrategy#canMove
+     */
     @Override
     public boolean canMove(Board board, Player player) {
         Cell cellOne = player.getWorkerFirst().getPosition();
@@ -148,6 +155,16 @@ public class Minotaur extends GodStrategy {
         return (possibleOne || possibleTwo);
     }
 
+    /**
+     * This method checks if Minotaur's Worker has at least an available Cell to move to.
+     * The main difference from a "standard" canMove, is that here we must consider that Minotaur
+     * can push its position to an opponent Worker's position, so we avoid to check if adjacent cells are empty,
+     * but we must ensure that there's a backward cell available where the opponent can be pushed to.
+     *
+     * @param board the Match board to consider
+     * @param cell  the Cell from which the worker would move
+     * @return true if an Minotaur movement is possible from the cell passed by parameter, false otherwise.
+     */
     private boolean canMinotaurMoveFromCell(Board board, Cell cell) {
 
         for (int i = 0; i < Board.WIDTH_SIZE; i++) {

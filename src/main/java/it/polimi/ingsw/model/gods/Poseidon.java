@@ -29,10 +29,6 @@ public class Poseidon extends GodStrategy {
         multipleBuildDelegate = new MultipleBuildDelegate(POSEIDON_MAX_BUILD_NUM);
     }
 
-    @Override
-    public boolean checkMove(Worker worker, Cell moveCell) {
-        return super.checkMove(worker, moveCell) && (selectedWorker == null || isUsingSelectedWorker(worker));
-    }
 
     /**
      * If the Worker that is trying to build is the moved (selected) Worker, then superclass (standard) checkBuild is called.

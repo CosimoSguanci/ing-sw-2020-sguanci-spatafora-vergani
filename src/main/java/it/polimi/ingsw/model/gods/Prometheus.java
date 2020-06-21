@@ -79,6 +79,15 @@ public class Prometheus extends GodStrategy {
                     && moveCell.getLevel().getLevelNumber() <= worker.getPosition().getLevel().getLevelNumber();
     }
 
+    /**
+     * This method only moves to Worker to the specified moveCell and, if the Player didn't build before this movement,
+     * we set the selected Worker as the Worker which performed this movement.
+     * In fact, in this case, Prometheus follows the regular game rules.
+     *
+     * @param worker   the worker that the Player wants to move.
+     * @param moveCell the cell in which the Player want to move the worker.
+     * @see GodStrategy#executeMove(Worker, Cell)
+     */
     @Override
     public void executeMove(Worker worker, Cell moveCell) {
         worker.move(moveCell);
@@ -110,7 +119,8 @@ public class Prometheus extends GodStrategy {
 
         if (builtBeforeMoving && multipleBuildDelegate.getBuildCount() == 1) {
 
-            if (!worker.canMove()) worker.player.getModel().onPlayerLose(worker.player, LoseUpdate.LoseCause.CANT_MOVE); // or: if availableCells.size() == 0
+            if (!worker.canMove())
+                worker.player.getModel().onPlayerLose(worker.player, LoseUpdate.LoseCause.CANT_MOVE); // or: if availableCells.size() == 0
 
             else {
                 List<Cell> availableCells = worker.board.getAvailableMoveCells(worker);
@@ -123,7 +133,8 @@ public class Prometheus extends GodStrategy {
                     }
                 });
 
-                if (feasibleMoveCells.size() == 0) worker.player.getModel().onPlayerLose(worker.player, LoseUpdate.LoseCause.CANT_MOVE);
+                if (feasibleMoveCells.size() == 0)
+                    worker.player.getModel().onPlayerLose(worker.player, LoseUpdate.LoseCause.CANT_MOVE);
 
                 else {
                     List<Player> players = worker.player.getModel().getPlayers();
@@ -141,13 +152,19 @@ public class Prometheus extends GodStrategy {
                         return actuallyFeasible;
                     }).collect(Collectors.toList());
 
-                    if (actualFeasibleMoveCells.size() == 0) worker.player.getModel().onPlayerLose(worker.player, LoseUpdate.LoseCause.CANT_MOVE);
+                    if (actualFeasibleMoveCells.size() == 0)
+                        worker.player.getModel().onPlayerLose(worker.player, LoseUpdate.LoseCause.CANT_MOVE);
                 }
 
             }
         }
     }
 
+    /**
+     * This method is called to check that, if Prometheus built before move, also a build action after the move has been performed.
+     *
+     * @return true if Prometheus can end its turn, false otherwise.
+     */
     @Override
     public boolean checkEndTurn() {
 

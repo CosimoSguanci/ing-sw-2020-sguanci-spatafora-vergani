@@ -41,6 +41,14 @@ public class Zeus extends GodStrategy {
                 (buildCellBlockType == null || buildCellBlockType.getLevelNumber() == buildCell.getLevel().getLevelNumber() + 1);
     }
 
+    /**
+     * This method calls superclass canBuild, if it returns false, we check if Zeus can still build under itself.
+     *
+     * @param board  the Match board to consider
+     * @param worker the worker whose ability to build is about to be tested
+     * @return true if Zeus Player can build, false otherwise.
+     * @see GodStrategy#canBuild(Board, Worker)
+     */
     @Override
     public boolean canBuild(Board board, Worker worker) {
         return super.canBuild(board, worker) || worker.getPosition().getLevel() != BlockType.LEVEL_THREE;

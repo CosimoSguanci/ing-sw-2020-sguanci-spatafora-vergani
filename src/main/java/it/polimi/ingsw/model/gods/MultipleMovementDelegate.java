@@ -26,14 +26,25 @@ class MultipleMovementDelegate {
         this.MAX_MOVE_COUNT = maxMoveCount;
     }
 
+    /**
+     * This method increases the God's move count in order to keep track of the numbers of movements performed in a turn.
+     */
     void increaseMoveCount() {
         this.moveCount++;
     }
 
+    /**
+     * This method is resets the moveCount to zero.
+     */
     void reinitializeMoveCount() {
         this.moveCount = 0;
     }
 
+    /**
+     * This method is used to check if a God can move again in its turn.
+     *
+     * @return true if and only if the God can move at least another time
+     */
     boolean canMoveAgain() {
         return moveCount < MAX_MOVE_COUNT;
     }

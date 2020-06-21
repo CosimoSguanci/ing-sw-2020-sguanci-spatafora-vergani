@@ -56,6 +56,12 @@ public class Athena extends GodStrategy {
         return !shouldBlockLevelUp || moveCell.getLevel().getLevelNumber() <= oppositeWorker.getPosition().getLevel().getLevelNumber();
     }
 
+    /**
+     * This callback is called avery time a new turn starts (so the round of turns is over).
+     * For Athena, this method reinitialize the flag which prevents other Players to move up.
+     *
+     * @param player The Player whose turn just started
+     */
     @Override
     public void onTurnStarted(Player player) {
         shouldBlockLevelUp = false;

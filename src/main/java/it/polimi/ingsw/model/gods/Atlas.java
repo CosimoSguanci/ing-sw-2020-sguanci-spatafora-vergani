@@ -21,7 +21,16 @@ public class Atlas extends GodStrategy {
         super(NAME, DESCRIPTION, POWER_DESCRIPTION);
     }
 
-
+    /**
+     * If the level being built is not a dome, this method calls the standard superclass checkBuild.
+     * Otherwise, it performs all the standard checks excepts the controls about the fact that the
+     * level being built should the existing level + 1.
+     *
+     * @param worker    the worker who want to build a new level.
+     * @param buildCell the cell in which the Player want to build a new level.
+     * @return true if the Build passed as parameter can be performed, false otherwise.
+     * @see GodStrategy#checkBuild(Worker, Cell, BlockType)
+     */
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
 
@@ -29,7 +38,7 @@ public class Atlas extends GodStrategy {
             return super.checkBuild(worker, buildCell, buildCellBlockType);
         }
 
-        return  isUsingSelectedWorker(worker) &&
+        return isUsingSelectedWorker(worker) &&
                 worker.hasMoved() &&
                 !worker.hasBuilt() &&
                 worker.getPosition().isAdjacentTo(buildCell) &&

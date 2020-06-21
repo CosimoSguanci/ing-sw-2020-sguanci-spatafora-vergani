@@ -30,7 +30,7 @@ public class Eros extends GodStrategy {
 
 
     /**
-     * This method checks that Eros Game Preparation constraints are satisfied.
+     * This method checks that Eros Game Preparation constraints are satisfied: the workers must be at opposite sides of the Match board.
      *
      * @param workerFirst      the "first" Player Worker.
      * @param workerFirstCell  the cell in which the Player wants to put the "first" Worker at startup.

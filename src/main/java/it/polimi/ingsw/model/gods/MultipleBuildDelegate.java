@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.Worker;
 /**
  * This class represent the delegate that Gods can use if their power provides the possibility to build
  * more than one time each turn.
- *
+ * <p>
  * The use of this kind of delegates allows the application of the Composition over Inheritance principle,
  * making it easy to have Gods that are not strictly categorized and that can instead share and use features which are
  * in common with other Gods, in order to also reduce redundancy and code duplication. Moreover, using Delegates instead of
@@ -26,11 +26,35 @@ class MultipleBuildDelegate {
         this.MAX_BUILD_COUNT = maxBuildCount;
     }
 
+    /**
+     * buildCount getter
+     *
+     */
     int getBuildCount() {
         return buildCount;
     }
-    void increaseBuildCount() {this.buildCount++;}
-    void reinitializeBuildCount(){this.buildCount = 0;}
+
+    /**
+     * This method increases the God's build count in order to keep track of the numbers of levels built in a turn.
+     *
+     */
+    void increaseBuildCount() {
+        this.buildCount++;
+    }
+
+    /**
+     * This method is resets the buildCount to zero.
+     *
+     */
+    void reinitializeBuildCount() {
+        this.buildCount = 0;
+    }
+
+    /**
+     * This method is used to check if a God can build again in its turn.
+     *
+     * @return true if and only if the God can build at least another time
+     */
     boolean canBuildAgain() {
         return buildCount < MAX_BUILD_COUNT;
     }
@@ -40,9 +64,9 @@ class MultipleBuildDelegate {
      * multiple builds power cannot use {@link GodStrategy} checkBuild, because it always return false if the Worker already built a block
      * (following the standard game rules).
      *
-     * @param worker            the worker who want to build a new level.
-     * @param buildCell         the cell in which the Player want to build a new level.
-     * @param selectedWorker    to check if the worker that is trying to build is the same worker that performed movement.
+     * @param worker         the worker who want to build a new level.
+     * @param buildCell      the cell in which the Player want to build a new level.
+     * @param selectedWorker to check if the worker that is trying to build is the same worker that performed movement.
      * @return true if the buildCount is less than the max number of times that the God can build each turn and other standard check are satisfied, false otherwise.
      */
     boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType, Worker selectedWorker) {

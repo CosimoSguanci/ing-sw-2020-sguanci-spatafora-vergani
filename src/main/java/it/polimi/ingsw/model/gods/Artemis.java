@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model.gods;
 
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Worker;
 
 
 /**
@@ -75,6 +78,15 @@ public class Artemis extends GodStrategy {
         previousCellNeededDelegate.reinitializeCell();
     }
 
+    /**
+     * This method calls superclass canBuild, if it returns false, the delegate canMove method is called,
+     * to determine if the Player has lost or if it can still perform another move.
+     *
+     * @param board the Match board to consider
+     * @param worker the worker whose ability to build is about to be tested
+     * @return true if the Worker passed can build, or if it can move again (and maybe build from the new position), false otherwise.
+     * @see GodStrategy#canBuild(Board, Worker)
+     */
     @Override
     public boolean canBuild(Board board, Worker worker) {
         if (super.canBuild(board, worker))
@@ -84,34 +96,6 @@ public class Artemis extends GodStrategy {
             return false;
         }
 
-        // super.canBuild is false e si può ancora muovere -> controllo che in una qualsiasi delle celle adiacenti in cui si può muovere, possa costruire
-
-        /*for (int i = 0; i < Board.WIDTH_SIZE; i++) { // todo togliere
-            for (int j = 0; j < Board.HEIGHT_SIZE; j++) {
-                if (worker.getPosition().isAdjacentTo(board.getCell(i, j)) && worker.getPosition().isLevelDifferenceOk(board.getCell(i, j)) && board.getCell(i, j).getLevel() != BlockType.DOME && board.getCell(i, j).isEmpty()) {
-
-                    /*if (buildPossibleFromCell(board, board.getCell(i, j))) {
-                        return true;
-                    }*/
-
-                 /*   return true;
-
-                }
-            }
-        }*/
-
         return false;
     }
-
-    /*private boolean buildPossibleFromCell(Board board, Cell cell) {
-
-        for (int i = 0; i < Board.WIDTH_SIZE; i++) {
-            for (int j = 0; j < Board.HEIGHT_SIZE; j++) {
-                if (board.getCell(i, j).isAdjacentTo(cell) && board.getCell(i, j).getLevel() != BlockType.DOME && board.getCell(i, j).isEmpty()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }*/
 }

@@ -52,7 +52,7 @@ public class Apollo extends GodStrategy {
     /**
      * Implements standard execute worker movement, but if moveCell is not empty,
      * the opponent's worker that is occupying moveCell must be moved out of it,
-     * and this is done delegating to {@link OpponentWorkerMoverDelegate}..
+     * and this is done delegating to {@link OpponentWorkerMoverDelegate}.
      *
      * @param worker   the worker that the Player wants to move.
      * @param moveCell the cell in which the Player want to move the worker.
@@ -69,15 +69,32 @@ public class Apollo extends GodStrategy {
         super.executeMove(worker, moveCell);
     }
 
+    /**
+     * This method checks if Apollo's Player has at least an available Cell to move to.
+     *
+     * @param board the Match board to consider
+     * @param player the Player whose ability to move is about to be tested
+     * @return true if Apollo Player can move, false otherwise.
+     * @see GodStrategy#canMove
+     */
     @Override
     public boolean canMove(Board board, Player player) {
-        Cell cellOne = player.getWorkerFirst().getPosition();  //actual cell of the first worker
-        Cell cellTwo = player.getWorkerSecond().getPosition();  //actual cell of the second worker
+        Cell cellOne = player.getWorkerFirst().getPosition();
+        Cell cellTwo = player.getWorkerSecond().getPosition();
         boolean possibleOne = canApolloMoveFromCell(board, cellOne);  //true if movement from cellOne is possible, so first worker can move somewhere
         boolean possibleTwo = canApolloMoveFromCell(board, cellTwo);  //true if movement from cellTwo is possible, so second worker can move somewhere
         return (possibleOne || possibleTwo);
     }
 
+    /**
+     * This method checks if Apollo's Worker can move from a specific Cell.
+     * The main difference from a "standard" canMove, is that here we must consider that Apollo
+     * can swap its position with an opponent Worker, so we avoid to check if adjacent cells are empty.
+     *
+     * @param board the Match board to consider
+     * @param cell the Cell from which the worker would move
+     * @return true if an Apollo movement is possible from the cell passed by parameter, false otherwise.
+     */
     private boolean canApolloMoveFromCell(Board board, Cell cell) {
 
         for (int i = 0; i < Board.WIDTH_SIZE; i++) {
