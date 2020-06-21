@@ -33,10 +33,14 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
         this.clientID = UUID.randomUUID().toString();
     }
 
-    public void sendUpdate(Update update) throws IOException {
-        objectOutputStream.reset(); // avoid cached objects
-        objectOutputStream.writeObject(update);
-        objectOutputStream.flush();
+    public void sendUpdate(Update update) {
+        try {
+            objectOutputStream.reset(); // avoid cached objects
+            objectOutputStream.writeObject(update);
+            objectOutputStream.flush();
+        } catch(IOException e) {
+            server.handleConnectionReset(this.clientSocket);
+        }
     }
 
     @Override

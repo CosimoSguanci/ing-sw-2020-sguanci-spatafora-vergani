@@ -77,14 +77,21 @@ public class Client {
         throw new IOException();
     }
 
-    public void sendCommand(Command command) throws IOException {
+    public void sendCommand(Command command) {
 
-        if (this.objectOutputStream == null) {
-            this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        try {
+
+            if (this.objectOutputStream == null) {
+                this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            }
+
+            objectOutputStream.writeObject(command);
+            objectOutputStream.flush();
+
+        } catch(IOException e) {
+            updateListener.handleConnectionReset();
         }
 
-        objectOutputStream.writeObject(command);
-        objectOutputStream.flush();
     }
 
 

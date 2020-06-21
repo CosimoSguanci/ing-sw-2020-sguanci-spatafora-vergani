@@ -11,7 +11,9 @@ public class ConnectionError {
         SwingUtilities.invokeLater(() -> {
             try {
                 draw();
-            } catch (IOException ignored) {
+            } catch (IOException e) {
+                System.err.println("Unexpected Error: " + e.getMessage());
+                System.exit(-1);
             }
         });
     }

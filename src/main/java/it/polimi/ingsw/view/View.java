@@ -40,8 +40,7 @@ public abstract class View extends Observable<Object> {
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     public static StringBuilder listToStringBuilder(List<String> value) {

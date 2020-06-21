@@ -36,10 +36,6 @@ public class RemoteView extends Observable<Command> implements Observer<Update>{
 
     @Override
     public void update(Update update) {
-        try {
-            clientHandler.sendUpdate(update);
-        } catch(IOException ignored) {
-
-        }
+        clientHandler.sendUpdate(update);
     }
 }

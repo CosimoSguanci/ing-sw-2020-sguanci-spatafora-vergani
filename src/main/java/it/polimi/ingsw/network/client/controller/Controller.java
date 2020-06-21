@@ -76,12 +76,9 @@ public class Controller extends Observable<Update> implements Observer<Object> {
                 ErrorUpdate err = new ErrorUpdate(clientPlayer, ((Command) message).commandType, ErrorType.WRONG_TURN, null);
                 notify(err);
             } else {
-                try {
-                    Command command = (Command) message;
-                    command.setPlayerID(clientPlayerID);
-                    client.sendCommand(command);
-                } catch (IOException ignored) {
-                } // todo handle ignored exceptions
+                Command command = (Command) message;
+                command.setPlayerID(clientPlayerID);
+                client.sendCommand(command);
             }
         }
     }

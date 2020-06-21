@@ -117,7 +117,8 @@ public class Gui extends View implements Observer<Update> {
         SwingUtilities.invokeLater(() -> {
             try {
                 showGui();
-            } catch (IOException ignored) {
+            } catch (IOException e) {
+                new ConnectionError().show();
             }
         });
     }
