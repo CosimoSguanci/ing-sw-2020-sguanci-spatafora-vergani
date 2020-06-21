@@ -105,6 +105,13 @@ public class GodChoice extends JPanel implements ActionListener {
         StringBuilder stringBuilder = new StringBuilder();
         String opponentsStr;
 
+        opponents = opponents.stream().map(opponent -> {
+            if(opponent.length() < 10)
+                return opponent;
+            else
+                return opponent.substring(0, 10);
+        }).collect(Collectors.toSet());
+
         if (this.gui.getPlayersNumber() == 3) {
             stringBuilder.append("<html>Waiting... Your opponents are ");
             opponents.stream().filter(p -> !p.toLowerCase().equals(this.gui.getController().getClientPlayer().getNickname().toLowerCase())).forEach(opponent -> stringBuilder.append("<strong>").append(opponent).append("</strong>").append(" and "));
