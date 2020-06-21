@@ -12,6 +12,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * PlayerNumberChoice is a class in which the first Gui-component of the game is defined.
+ *
+ * @author Roberto Spatafora
+ * @author Andrea Vergani
+ */
 public class PlayerNumberChoice extends JPanel implements ActionListener {
 
     private final JRadioButton button1;
@@ -20,6 +26,13 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
     private final String standardImgPath = "/images/PlayerNumberChoice/";
     private final Image backgroundImage = new ImageIcon(PlayerNumberChoice.class.getResource(standardImgPath + "santoriniBackground.jpg")).getImage();
 
+    /**
+     * This is the constructor of the class. At the moment of creation a JPanel is crated.
+     * Every user who connect to the server will see this initial screen.
+     * This component gives users the possibility to choose how many players
+     * he wants in the match. Users can select 2 or 3 players button and then
+     * they can confirm their preference by clicking on the continue button.
+     */
     public PlayerNumberChoice() {
         LayoutManager layoutManager = new BorderLayout();
         this.setLayout(layoutManager);
@@ -122,6 +135,11 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     }
 
+    /**
+     * This private method is a simple getter of the number of players
+     * selected for a specific match.
+     * @return the integer number which indicates how many player a user wants in his match.
+     */
     private int getPlayerNumberSelected() {
         if (this.button1.isSelected()) {
             return 2;
@@ -130,6 +148,12 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * This method manages the activities on a button clicked. From a listener of a button
+     * the reference of a button clicked is given as parameter and comparing it with the
+     * buttons of the class it manages the button selected and the other one.
+     * @param button
+     */
     public void setPlayerNumberSelected(JRadioButton button) {
         if (button.equals(this.button1)) {
             this.button1.setSelected(true);
@@ -140,17 +164,28 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * This method is used to refresh the JLabel which contains the number
+     * of players selected from a user before clicking on the continue button
+     */
     public void refresh() {
         this.resumeNumber.setText(getPlayerNumberSelected() + " Players");
     }
 
+    /**
+     * This method is used to set the background image of the component
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(this.backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
     }
 
-
+    /**
+     * This method manages the activities on the continueButton.
+     * When continue button is clicked a new gui component is generated.
+     * @param e contains reference to the event that triggered the listener.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         Gui gui = Gui.getInstance();
