@@ -13,7 +13,7 @@ public class Manual {
     private static final String play = "How to play";
     private static final String winLose = "Win and lose a match";
     private static final String generalInfo = "Santorini is a strategy board-game;" +
-            " in this version, you play online against 1 or 2 other players (you should already have decided it)." +
+            " in this version, you play online against 1 or 2 other players." +
             System.lineSeparator() +
             "Every player is identified by a unique nickname during a match.";
     private static final String howToPlay = "Players take turns, starting with the Start Player, who first" +
