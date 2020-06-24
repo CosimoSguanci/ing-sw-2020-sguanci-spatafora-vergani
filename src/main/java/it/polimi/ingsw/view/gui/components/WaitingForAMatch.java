@@ -6,6 +6,10 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+/**
+ * This class defines a waiting component. When a connections with the server
+ * is established, players wait for opponents in a waiting lobby.
+ */
 public class WaitingForAMatch extends JPanel {
     private final String standardImgPath = "/images/WaitingForAMatch/";
     private final Image backgroundImage = new ImageIcon(getClass().getResource(standardImgPath + "title_FG_grass.png")).getImage();
@@ -40,9 +44,13 @@ public class WaitingForAMatch extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(35, 20, 20, 20));
     }
 
+    /**
+     * This method is used to set the backGround image of the component
+     * @param g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
+        g.drawImage(this.backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
     }
 }
