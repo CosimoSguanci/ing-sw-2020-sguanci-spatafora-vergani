@@ -6,7 +6,24 @@ import it.polimi.ingsw.view.gui.gods.listeners.AtlasListener;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This class is the Strategy-pattern application of the interface GodGuiDrawer for Atlas.
+ * This class allows to create, only for Atlas, a button with his special power.
+ *
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
+ * @author Andrea Vergani
+ */
 public class AtlasGuiStrategy implements GodGuiDrawer {
+
+    /**
+     * This method manages the creation of a new button, which is absent in all the
+     * other Gods display through which is viewable the possibility to play a special
+     * command using Atlas' power.
+     *
+     * @param realGameComponent contains a reference to the realComponent of the gui
+     * @return a new JComponent that allow to perform a command with Atlas' special power
+     */
     @Override
     public JComponent draw(RealGame realGameComponent) {
 
