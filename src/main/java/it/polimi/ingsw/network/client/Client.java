@@ -85,7 +85,7 @@ public class Client {
 
     /**
      * This method initializes listener for updates coming from Server; in fact, client and
-     * server send/receive objects through socket. In this method, pong message sender is created
+     * server send/receive objects through socket. In this method, ping message sender is created
      * too, and it becomes active: this allows server to control if all clients are connected (if
      * not, the match must immediately end).
      *

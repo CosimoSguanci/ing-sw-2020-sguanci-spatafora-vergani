@@ -15,7 +15,7 @@ import it.polimi.ingsw.model.Worker;
 public class Athena extends GodStrategy {
 
     public static final String NAME = "Athena";
-    public static final String DESCRIPTION = "Godness of Wisdom";
+    public static final String DESCRIPTION = "Goddess of Wisdom";
     public static final String POWER_DESCRIPTION = "Opponent’s Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn";
 
     /**
