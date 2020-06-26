@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  * is based on a distributed client-server approach through socket: client is the "place" from which
  * a player sends commands to server, where he/she receives updates, ...; it connects to server's
  * specific (IP,port) and shares appropriate objects with it.
+ * Network connection between client and server is based on TCP.
  *
  * @author Andrea Mario Vergani
  * @author Cosimo Sguanci
