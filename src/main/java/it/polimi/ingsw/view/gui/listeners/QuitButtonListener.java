@@ -7,15 +7,34 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class is the listener of the QuitButton available in several components in gui.
+ * QuitButton is clicked by a player who doesn't want to continue play the match.
+ *
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
+ * @author Andrea Vergani
+ */
 public class QuitButtonListener implements ActionListener {
     Gui gui = Gui.getInstance();
     private final JPanel panel;
 
+    /**
+     * This is the creator of the class. At the moment of creation an association
+     * between listener and the panel of the relative current phase of the match is made.
+     * @param panel contains a reference to the Panel
+     */
     public QuitButtonListener(JPanel panel) {
         this.panel = panel;
     }
 
-
+    /**
+     * This method manages cases in which a player clicks on QuitButton.
+     * Once clicked it is asked to the player if is he sure to quit through
+     * an OptionDialog. If player select to quit it is asked to him if he
+     * wants to play a new match or not.
+     * @param e contains a reference to the button clicked.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String title = "Quit";
