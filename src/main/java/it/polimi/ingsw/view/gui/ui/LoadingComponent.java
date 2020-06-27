@@ -6,11 +6,25 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+/**
+ * This class defines a component which indicates a waiting for
+ * opponents to terminate their turns.
+ *
+ * @author Cosimo Sguanci
+ * @author Roberto Spatafora
+ * @author Andrea Vergani
+ */
 public class LoadingComponent extends JPanel {
 
     private String loadingMessage;
     private final JLabel waitingLabel;
 
+    /**
+     * This is the constructor of the class. At the moment of creation a new
+     * layout is created which contains a loading gif
+     * @param loadingMessage contains a message which would be displayed in order to let player know what they are waiting for
+     * @param textColor indicates the color in which message would be printed
+     */
     public LoadingComponent(String loadingMessage, Color textColor) {
         LayoutManager layoutManager = new BorderLayout();
         this.setLayout(layoutManager);
@@ -48,6 +62,10 @@ public class LoadingComponent extends JPanel {
         this.setOpaque(false);
     }
 
+    /**
+     * This is a simple setter of a String. It set the string that would be displayed as loadingMessage
+     * @param loadingMessage contains a String which would be displayed
+     */
     public void setLoadingMessage(String loadingMessage) {
         this.loadingMessage = loadingMessage;
         this.waitingLabel.setText(loadingMessage);

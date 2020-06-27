@@ -4,17 +4,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
+/**
+ * This class defines a circular button.
+ *
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
+ * @author Andrea Vergani
+ */
 public class JRoundButton extends JButton {
 
     protected Shape shape, base;
 
+    /**
+     * This is a constructor of the class. It allows to creates new
+     * instances of the class by giving as parameter only an icon which would be used in button.
+     * @param icon contains a reference to the button icon.
+     */
     public JRoundButton(Icon icon) {
-        this(null, icon);
-    }
-
-    public JRoundButton(String text, Icon icon) {
         setModel(new DefaultButtonModel());
-        init(text, icon);
+        init(null, icon);
         if (icon == null) {
             return;
         }
@@ -26,7 +34,24 @@ public class JRoundButton extends JButton {
         initShape();
     }
 
-    protected void initShape() {
+    /*public JRoundButton(String text, Icon icon) {
+        setModel(new DefaultButtonModel());
+        init(text, icon);
+        if (icon == null) {
+            return;
+        }
+        setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        setBackground(Color.BLACK);
+        setContentAreaFilled(false);
+        setFocusPainted(false);
+        setAlignmentY(Component.TOP_ALIGNMENT);
+        initShape();
+    }*/
+
+    /**
+     * This method is used to initialize the shape of the button
+     */
+    private void initShape() {
         if (!getBounds().equals(base)) {
             Dimension s = getPreferredSize();
             base = getBounds();
@@ -34,6 +59,10 @@ public class JRoundButton extends JButton {
         }
     }
 
+    /**
+     * This method gives information about a preferred size of a button
+     * @return a Dimension that would be preferred for the button
+     */
     @Override
     public Dimension getPreferredSize() {
         Icon icon = getIcon();
