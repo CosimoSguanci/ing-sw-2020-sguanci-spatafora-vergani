@@ -5,10 +5,23 @@ import it.polimi.ingsw.view.UpdateHandler;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class represents an update sent from Server to Client every time new Gods have been chosen (so the game state changed)
+ *
+ * @author Cosimo Sguanci
+ */
 public class GodsUpdate extends Update {
     private static final long serialVersionUID = -3321537110343022582L;
+
+    /**
+     * Gods which are still available to select, the God Chooser chose them but they've not been assigned yet
+     */
     private final List<String> selectableGods;
-    private final Map<String, String> selectedGods; // Nickname : GodName
+
+    /**
+     * Association between players and gods that have been selected (Nickname : godName)
+     */
+    private final Map<String, String> selectedGods;
 
     public GodsUpdate(List<String> selectableGods, Map<String, String> selectedGods) {
         super( null);
@@ -16,10 +29,18 @@ public class GodsUpdate extends Update {
         this.selectedGods = selectedGods;
     }
 
+    /**
+     * SelectableGods getter
+     * @return the list of available Gods (String rep)
+     */
     public List<String> getSelectableGods() {
         return this.selectableGods;
     }
 
+    /**
+     * SelectedGods getter
+     * @return the list of selected Gods (String rep)
+     */
     public Map<String, String> getSelectedGods() {
         return this.selectedGods;
     }
