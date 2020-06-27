@@ -28,7 +28,6 @@ class MultipleBuildDelegate {
 
     /**
      * buildCount getter
-     *
      */
     int getBuildCount() {
         return buildCount;
@@ -36,7 +35,6 @@ class MultipleBuildDelegate {
 
     /**
      * This method increases the God's build count in order to keep track of the numbers of levels built in a turn.
-     *
      */
     void increaseBuildCount() {
         this.buildCount++;
@@ -44,7 +42,6 @@ class MultipleBuildDelegate {
 
     /**
      * This method is resets the buildCount to zero.
-     *
      */
     void reinitializeBuildCount() {
         this.buildCount = 0;

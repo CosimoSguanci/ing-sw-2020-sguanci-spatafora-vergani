@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.client.controller;
 
-import it.polimi.ingsw.controller.commands.*;
+import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.model.ErrorType;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.updates.ErrorUpdate;
@@ -9,8 +9,6 @@ import it.polimi.ingsw.model.updates.Update;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
-
-import java.io.IOException;
 
 
 /**
@@ -106,7 +104,7 @@ public class Controller extends Observable<Update> implements Observer<Object> {
      * @param nickname nickname to set
      */
     public void setClientPlayerNickname(String nickname) {
-        if(this.clientPlayer != null) {
+        if (this.clientPlayer != null) {
             this.clientPlayer.setNickname(nickname);
         }
     }
@@ -128,7 +126,7 @@ public class Controller extends Observable<Update> implements Observer<Object> {
             this.currentPlayerID = currentPlayer.getPlayerID();
             this.currentPlayerNickname = currentPlayer.getNickname();
 
-            if(currentPlayerID.equals(clientPlayerID)) {
+            if (currentPlayerID.equals(clientPlayerID)) {
                 this.clientPlayer = currentPlayer;
             }
 

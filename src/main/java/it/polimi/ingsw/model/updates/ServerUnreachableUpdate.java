@@ -11,13 +11,14 @@ import it.polimi.ingsw.view.UpdateHandler;
 public class ServerUnreachableUpdate extends Update {
 
     public ServerUnreachableUpdate() {
-        super( null);
+        super(null);
     }
 
     /**
      * Utility method used to implement Visitor Pattern for Updates handling.
-     * @see UpdateHandler
+     *
      * @param handler which handle the updates to update the View
+     * @see UpdateHandler
      */
     @Override
     public void handleUpdate(UpdateHandler handler) {

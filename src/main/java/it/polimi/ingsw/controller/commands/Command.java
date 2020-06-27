@@ -22,7 +22,7 @@ public abstract class Command implements Serializable {
     /**
      * Workers String representation used by Client to send commands, useful to avoid useless
      * Worker Object serialization. Also, we don't have reference to actual Workers on Client.
-     *
+     * <p>
      * Properties used by the Client to construct a PlayerCommand without the need to have the actual reference to Player and Worker instances.
      */
     public final static String WORKER_FIRST = "w1";

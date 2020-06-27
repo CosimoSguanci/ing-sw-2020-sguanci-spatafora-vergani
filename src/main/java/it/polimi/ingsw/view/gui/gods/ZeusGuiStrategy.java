@@ -26,7 +26,7 @@ public class ZeusGuiStrategy implements GodGuiDrawer {
      */
     @Override
     public JComponent draw(RealGame realGameComponent) {
-        ImageIcon buildIcon = new ImageIcon( getClass().getResource("/images/RealGame/build_under_yourself.png"));
+        ImageIcon buildIcon = new ImageIcon(getClass().getResource("/images/RealGame/build_under_yourself.png"));
         buildIcon = new ImageIcon(buildIcon.getImage().getScaledInstance(RealGame.dimension, -1, Image.SCALE_SMOOTH));
 
         JButton buildBtn = new JButton("<html>Build<br />Under<br />Yourself</html", buildIcon);

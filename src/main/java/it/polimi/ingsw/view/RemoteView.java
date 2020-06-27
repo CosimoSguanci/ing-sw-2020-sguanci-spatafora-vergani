@@ -1,16 +1,13 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.commands.Command;
-import it.polimi.ingsw.model.updates.*;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.updates.Update;
+import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.network.server.ClientHandler;
-
-import java.io.IOException;
 
 
-public class RemoteView extends Observable<Command> implements Observer<Update>{
+public class RemoteView extends Observable<Command> implements Observer<Update> {
 
     private final ClientHandler clientHandler;
 
@@ -22,7 +19,7 @@ public class RemoteView extends Observable<Command> implements Observer<Update>{
 
         @Override
         public void update(Command command) {
-           handleCommand(command);
+            handleCommand(command);
         }
 
     }

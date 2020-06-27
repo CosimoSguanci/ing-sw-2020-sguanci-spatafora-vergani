@@ -19,12 +19,13 @@ public class InitialInfoUpdate extends Update {
     private final Map<String, PrintableColor> initialInfo;
 
     public InitialInfoUpdate(Map<String, PrintableColor> initialInfo) {
-        super( null);
+        super(null);
         this.initialInfo = initialInfo;
     }
 
     /**
      * Current Initial Info Getter
+     *
      * @return a map containing the current nickname - color association
      */
     public Map<String, PrintableColor> getInitialInfo() {
@@ -33,8 +34,9 @@ public class InitialInfoUpdate extends Update {
 
     /**
      * Utility method used to implement Visitor Pattern for Updates handling.
-     * @see UpdateHandler
+     *
      * @param handler which handle the updates to update the View
+     * @see UpdateHandler
      */
     @Override
     public void handleUpdate(UpdateHandler handler) {

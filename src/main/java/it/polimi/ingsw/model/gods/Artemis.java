@@ -82,7 +82,7 @@ public class Artemis extends GodStrategy {
      * This method calls superclass canBuild, if it returns false, the delegate canMove method is called,
      * to determine if the Player has lost or if it can still perform another move.
      *
-     * @param board the Match board to consider
+     * @param board  the Match board to consider
      * @param worker the worker whose ability to build is about to be tested
      * @return true if the Worker passed can build, or if it can move again (and maybe build from the new position), false otherwise.
      * @see GodStrategy#canBuild(Board, Worker)

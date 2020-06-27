@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.commands.Command;
-import it.polimi.ingsw.model.updates.ErrorUpdate;
 import it.polimi.ingsw.model.updates.Update;
 import it.polimi.ingsw.network.CustomThreadPoolExecutor;
 import it.polimi.ingsw.observer.Observable;
@@ -38,7 +37,7 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
             objectOutputStream.reset(); // avoid cached objects
             objectOutputStream.writeObject(update);
             objectOutputStream.flush();
-        } catch(IOException e) {
+        } catch (IOException e) {
             server.handleConnectionReset(this.clientSocket);
         }
     }
@@ -56,7 +55,7 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
 
             this.playersNum = input.readInt();
 
-            while(!Server.isValidPlayerNumber(this.playersNum)) {
+            while (!Server.isValidPlayerNumber(this.playersNum)) {
                 this.playersNum = input.readInt();
             }
 

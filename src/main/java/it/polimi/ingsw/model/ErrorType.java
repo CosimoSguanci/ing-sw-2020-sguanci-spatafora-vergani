@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 /**
  * ErrorType is the enumeration representing the specific Error which just occurred (in case a command hasn't gone well).
- *
+ * <p>
  * DENIED_BY_OPPONENT_GOD: occurs when a command attempted cannot be performed due to another God's powers.
  * DENIED_BY_PLAYER_GOD: occurs when a command attempted cannot be performed because the Player's God doesn't offer this feature in this particular game context.
  * WRONG_TURN: the command couldn't be executed because it's another Player's turn.

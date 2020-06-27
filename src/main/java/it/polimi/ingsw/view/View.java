@@ -40,7 +40,8 @@ public abstract class View extends Observable<Object> {
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     public static StringBuilder listToStringBuilder(List<String> value) {
@@ -126,6 +127,7 @@ public abstract class View extends Observable<Object> {
 
     /**
      * This getter method gives information about the number of player involved in a match
+     *
      * @return the number of player involved in the match
      */
     public int getPlayersNumber() {

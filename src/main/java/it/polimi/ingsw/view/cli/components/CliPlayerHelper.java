@@ -27,24 +27,25 @@ public class CliPlayerHelper {
     /**
      * This is the constructor of this class. At the moment of the creation
      * of a single instance of CliPlayerHelper the cli associated to it is set
+     *
      * @param cli contains reference to the Cli associated
      */
-    public CliPlayerHelper(Cli cli){
+    public CliPlayerHelper(Cli cli) {
         this.cli = cli;
     }
 
     /**
      * This method prints what is requested from users, responding to command as
      * RULES, HELP, TURN, GOD, BOARD, INFO.
+     *
      * @param splitCommand is the split string, from the entire one, received as command from user
      */
     public void helperHandle(String[] splitCommand) {
-        if(CommandType.parseCommandType(splitCommand[0]) == CommandType.RULES && splitCommand.length == 1) {
+        if (CommandType.parseCommandType(splitCommand[0]) == CommandType.RULES && splitCommand.length == 1) {
             cli.newLine();
             cli.println(Cli.toBold("MANUAL"));
             cli.println(Manual.manual());
-        }
-        else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 1)) { // todo extend help
+        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 1)) { // todo extend help
             cli.println("If you want information about a specific game-phase: help <game-phase>");
             cli.println("Game-phases are: " + GamePhase.toStringBuilder());
             cli.println("Help Specific-Phase Example: help initial_info");
@@ -54,49 +55,37 @@ public class CliPlayerHelper {
             cli.println("rules -> print game manual");
             cli.println("info <god> -> get info about a god");
             cli.println("Info Example: info Apollo");
-        }
-        else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 2)  && (GamePhase.isGamePhase(splitCommand[1]) || infoAboutGamePhase(splitCommand[1]))) {
-            if(infoAboutGamePhase(splitCommand[1])){
+        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 2) && (GamePhase.isGamePhase(splitCommand[1]) || infoAboutGamePhase(splitCommand[1]))) {
+            if (infoAboutGamePhase(splitCommand[1])) {
                 helpString(cli.getCurrentPhase());
-            }
-            else{
+            } else {
                 helpString(GamePhase.parseGamePhase(splitCommand[1]));
             }
-        }
-
-        else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.TURN  && splitCommand.length == 1) {
-            if(cli.getCurrentPhase() == GamePhase.REAL_GAME || cli.getCurrentPhase() == GamePhase.GAME_PREPARATION) {  //it's interesting to know who is playing only in these phases
+        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.TURN && splitCommand.length == 1) {
+            if (cli.getCurrentPhase() == GamePhase.REAL_GAME || cli.getCurrentPhase() == GamePhase.GAME_PREPARATION) {  //it's interesting to know who is playing only in these phases
                 cli.printCurrentTurn();
-            }
-            else {
+            } else {
                 cli.println("It is not the right moment for this command. Retry after match started");
             }
-        }
-
-        else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.GOD  && splitCommand.length == 1) {
-            if(cli.getCurrentPhase() == GamePhase.REAL_GAME || cli.getCurrentPhase() == GamePhase.GAME_PREPARATION) {  //it's interesting to know players-gods mapping only in these phases
+        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.GOD && splitCommand.length == 1) {
+            if (cli.getCurrentPhase() == GamePhase.REAL_GAME || cli.getCurrentPhase() == GamePhase.GAME_PREPARATION) {  //it's interesting to know players-gods mapping only in these phases
                 cli.printPlayerGods();
-            }
-            else {
+            } else {
                 cli.println("It is not the right moment for this command. Retry after match started");
             }
-        }
-        else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.BOARD  && splitCommand.length == 1) {
-            if(cli.getCurrentPhase() == GamePhase.REAL_GAME || cli.getCurrentPhase() == GamePhase.GAME_PREPARATION) {  //it's interesting to see the board only in these phases
+        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.BOARD && splitCommand.length == 1) {
+            if (cli.getCurrentPhase() == GamePhase.REAL_GAME || cli.getCurrentPhase() == GamePhase.GAME_PREPARATION) {  //it's interesting to see the board only in these phases
                 cli.printBoard(cli.getCurrentBoard());
-            }
-            else {
+            } else {
                 cli.println("It is not the right moment for this command. Retry after match started");
             }
-        }
-        else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.INFO) {
+        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.INFO) {
             if (splitCommand.length != 2) {
                 throw new BadCommandException();
             }
             String god = splitCommand[1];
             printGodInfo(god);
-        }
-        else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.QUIT) {
+        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.QUIT) {
             if (splitCommand.length > 1) {
                 throw new BadCommandException();
             }
@@ -107,6 +96,7 @@ public class CliPlayerHelper {
 
     /**
      * This private method, prints different strings based on gamePhase
+     *
      * @param gamePhase indicates the gamePhase that distinguishes which
      *                  string is to be printed.
      */
@@ -151,7 +141,7 @@ public class CliPlayerHelper {
     /**
      * @param input should indicates a GamePhase. More general it can be a String
      * @return true if the string received as parameter indicates the currentGamePhase
-     *         false otherwise.
+     * false otherwise.
      */
     private boolean infoAboutGamePhase(String input) {
         return input.equals(cli.getCurrentPhaseString());
@@ -159,6 +149,7 @@ public class CliPlayerHelper {
 
     /**
      * This method is used to print information about a specific requested God.
+     *
      * @param god is the God whom information is requested.
      */
     private void printGodInfo(String god) {
@@ -167,7 +158,7 @@ public class CliPlayerHelper {
             cli.println("Name: " + godInfo.get(GodsUtils.GOD_NAME));
             cli.println("Description: " + godInfo.get(GodsUtils.GOD_DESCRIPTION));
             cli.println("Power: " + godInfo.get(GodsUtils.POWER_DESCRIPTION));
-        } catch(UnknownGodException e) {
+        } catch (UnknownGodException e) {
             cli.println("Unknown God Typed");
             throw new BadCommandException(); // todo ok ?
         }

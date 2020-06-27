@@ -14,15 +14,15 @@ import java.util.function.Supplier;
 
 /**
  * Utility class which contains information about Gods and some static methods to handle them (for example, the God Factory Method).
- *
+ * <p>
  * Regarding the Gods implementation scalability, the necessary steps to add a new God to the game are:
  * 1) Add class and relative implementation in model.gods package
  * 2) Add INFO + Factory + GUI Factory Instantiation here
- *
  */
 public final class GodsUtils {
 
-    private GodsUtils(){}
+    private GodsUtils() {
+    }
 
     /**
      * Keys to be used to retrieve Gods Info from maps returned by this class
@@ -191,6 +191,7 @@ public final class GodsUtils {
 
     /**
      * Utility method used to check if the name typed by the Player is a valid god or not.
+     *
      * @param godName the name that has to be tested
      * @return true if parameter is a valid god name, false otherwise
      */
@@ -201,13 +202,14 @@ public final class GodsUtils {
 
     /**
      * Utility method used to get Gods Info from god name (useful when a Player requests info about a god)
+     *
      * @param godName the name of the God whose info are requested
      * @return the map representing the specific God Info (name, description, power description)
      * @throws UnknownGodException if the parameter is not a valid god name
      */
     public static Map<String, String> parseGodName(String godName) throws UnknownGodException {
         godName = godName.toLowerCase();
-        if(godsInfo.containsKey(godName)) {
+        if (godsInfo.containsKey(godName)) {
             return godsInfo.get(godName);
         }
         throw new UnknownGodException();
@@ -215,13 +217,14 @@ public final class GodsUtils {
 
     /**
      * Factory method used to create new {@link GodStrategy} instances
+     *
      * @param godName the name of the God that have to be instantiated
      * @return the requested brand new GodStrategy instance
      * @throws UnknownGodException if the parameter is not a valid god name
      */
     public static GodStrategy godsFactory(String godName) throws UnknownGodException {
         godName = godName.toLowerCase();
-        if(godsFactoryMap.containsKey(godName)) {
+        if (godsFactoryMap.containsKey(godName)) {
             return godsFactoryMap.get(godName).get();
         }
 
@@ -230,6 +233,7 @@ public final class GodsUtils {
 
     /**
      * Global Gods Info getter
+     *
      * @return the info of all Gods
      */
     public static Map<String, Map<String, String>> getGodsInfo() {
@@ -238,13 +242,14 @@ public final class GodsUtils {
 
     /**
      * Factory method used to create new {@link GodGuiDrawer} instances
+     *
      * @param godName the name of the God that have to be instantiated
      * @return the requested brand new GodGuiDrawer instance
      * @throws UnknownGodException if the parameter is not a valid god name
      */
     public static GodGuiDrawer godsGuiFactory(String godName) throws UnknownGodException {
         godName = godName.toLowerCase();
-        if(godsFactoryMap.containsKey(godName)) {
+        if (godsFactoryMap.containsKey(godName)) {
             return godsGuiFactoryMap.get(godName).get();
         }
 

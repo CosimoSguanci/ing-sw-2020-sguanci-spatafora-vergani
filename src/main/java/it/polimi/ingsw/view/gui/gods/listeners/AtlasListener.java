@@ -24,6 +24,7 @@ public class AtlasListener extends GodListener implements ActionListener {
     /**
      * This is the creator of the class. At the moment of the creation
      * the realComponent is associated to the class.
+     *
      * @param realGameComponent references the RealGameComponent which class refers to.
      */
     public AtlasListener(RealGame realGameComponent) {
@@ -33,6 +34,7 @@ public class AtlasListener extends GodListener implements ActionListener {
     /**
      * This method manages the activities when the player with Atlas
      * decides to use Atlas' power to build a dome.
+     *
      * @param e contains a reference to the event of the listener.
      */
     @Override
@@ -40,10 +42,9 @@ public class AtlasListener extends GodListener implements ActionListener {
         JCellButton selectedWorkerButton = realGameComponent.getSelectedWorker();
         JCellButton selectedCellButton = realGameComponent.getSelectedCellButton();
 
-        if(selectedWorkerButton == null || selectedCellButton == null) {
+        if (selectedWorkerButton == null || selectedCellButton == null) {
             SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "You must select a Worker and a Board Cell!", "Error", JOptionPane.ERROR_MESSAGE));
-        }
-        else {
+        } else {
 
             PlayerCommand playerCommand = new PlayerCommand(CommandType.BUILD, selectedWorkerButton.getWorker().workerType, selectedCellButton.getRow(), selectedCellButton.getCol(), BlockType.DOME);
             Gui.getInstance().notify(playerCommand);

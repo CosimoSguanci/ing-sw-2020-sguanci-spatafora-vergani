@@ -7,7 +7,8 @@ import java.util.LinkedHashMap;
 
 public class Manual {
 
-    private Manual() {}
+    private Manual() {
+    }
 
     private static final String info = "General information";
     private static final String play = "How to play";

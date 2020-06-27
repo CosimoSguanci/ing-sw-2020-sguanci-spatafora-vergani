@@ -24,6 +24,7 @@ public class ZeusListener extends GodListener implements ActionListener {
     /**
      * This is the creator of the class. At the moment of the creation
      * the realComponent is associated to the class.
+     *
      * @param realGameComponent references the RealGameComponent which class refers to.
      */
     public ZeusListener(RealGame realGameComponent) {
@@ -33,16 +34,16 @@ public class ZeusListener extends GodListener implements ActionListener {
     /**
      * This method manages the activities when the player with Zeus
      * decides to use Zeus' power to build a level under himself.
+     *
      * @param e contains a reference to the event of the listener.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
         JCellButton selectedWorkerButton = realGameComponent.getSelectedWorker();
 
-        if(selectedWorkerButton == null) {
+        if (selectedWorkerButton == null) {
             SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "You must select a Worker!", "Error", JOptionPane.ERROR_MESSAGE));
-        }
-        else {
+        } else {
 
             PlayerCommand playerCommand = new PlayerCommand(CommandType.BUILD, selectedWorkerButton.getWorker().workerType, selectedWorkerButton.getRow(), selectedWorkerButton.getCol(), null);
             Gui.getInstance().notify(playerCommand);

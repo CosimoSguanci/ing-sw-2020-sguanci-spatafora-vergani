@@ -20,14 +20,14 @@ import java.util.LinkedHashMap;
  */
 public class GameManual extends JDialog implements ActionListener {
     //private Font font = new Font(Font.SERIF, Font.BOLD, 13);
-    private String standardImgPath = "/images/GameManual/";
-    private Image backgroundImage = new ImageIcon(getClass().getResource(standardImgPath + "green.jpg")).getImage();
-    private int imgButtonWidth = 60;
+    private final String standardImgPath = "/images/GameManual/";
+    private final Image backgroundImage = new ImageIcon(getClass().getResource(standardImgPath + "green.jpg")).getImage();
+    private final int imgButtonWidth = 60;
     //private int imgButtonHeight = 78;
-    private Dimension buttonDimension = new Dimension(250, 100);
-    private Dimension rigidAreaDimension = new Dimension(0, 3);
+    private final Dimension buttonDimension = new Dimension(250, 100);
+    private final Dimension rigidAreaDimension = new Dimension(0, 3);
     private JButton[] ruleButtonArray;
-    private LinkedHashMap<String, String> rules = Manual.getRules();  //titles and descriptions of game's rules
+    private final LinkedHashMap<String, String> rules = Manual.getRules();  //titles and descriptions of game's rules
 
     /**
      * This is the constructor of the class. It creates a Panel in which
@@ -46,11 +46,11 @@ public class GameManual extends JDialog implements ActionListener {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
-                }
+            }
         };
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setOpaque(false);
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         JPanel panelToShow = panelToShow();
         panelToShow.setOpaque(false);
 
@@ -65,8 +65,9 @@ public class GameManual extends JDialog implements ActionListener {
     /**
      * This private method creates as many buttons as the number
      * of game manual rules.
+     *
      * @return a JPanel which contains all the different button
-     *  which contain the information about the game.
+     * which contain the information about the game.
      */
     private JPanel panelToShow() {
         //LinkedHashMap<String, String> rules = Manual.getRules();
@@ -78,9 +79,9 @@ public class GameManual extends JDialog implements ActionListener {
         grid.setOpaque(false);
 
         Object[] ruleTitle = this.rules.keySet().toArray();
-        for(int i = 0; i < ruleNumber; i++) {
+        for (int i = 0; i < ruleNumber; i++) {
             String key = (String) ruleTitle[i];  //create title-strings for rules
-            ImageIcon image = new ImageIcon(getClass().getResource(this.standardImgPath + key.toLowerCase().substring(0,3) + ".png"));
+            ImageIcon image = new ImageIcon(getClass().getResource(this.standardImgPath + key.toLowerCase().substring(0, 3) + ".png"));
             image = new ImageIcon(image.getImage().getScaledInstance(this.imgButtonWidth, -1, Image.SCALE_SMOOTH));
             this.ruleButtonArray[i] = new JButton(key, image);
             this.ruleButtonArray[i].setHorizontalTextPosition(JButton.CENTER);
@@ -102,6 +103,7 @@ public class GameManual extends JDialog implements ActionListener {
     /**
      * This method manages all the activities linked to
      * the clicks on the buttons of the class
+     *
      * @param e contains reference to the button clicked.
      */
     @Override

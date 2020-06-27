@@ -20,6 +20,7 @@ public class BoardUpdate extends Update {
 
     /**
      * Last executed command setter
+     *
      * @param executedCommand last executed command
      */
     public void setExecutedCommand(PlayerCommand executedCommand) {
@@ -28,6 +29,7 @@ public class BoardUpdate extends Update {
 
     /**
      * Last executed command getter
+     *
      * @return last executed command
      */
     public PlayerCommand getExecutedCommand() {
@@ -36,8 +38,9 @@ public class BoardUpdate extends Update {
 
     /**
      * Utility method used to implement Visitor Pattern for Updates handling.
-     * @see UpdateHandler
+     *
      * @param handler which handle the updates to update the View
+     * @see UpdateHandler
      */
     @Override
     public void handleUpdate(UpdateHandler handler) {

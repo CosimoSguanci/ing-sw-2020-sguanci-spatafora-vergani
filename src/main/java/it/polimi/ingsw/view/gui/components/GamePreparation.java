@@ -147,7 +147,6 @@ public class GamePreparation extends Game implements ActionListener {
                 this.selectedButtons.remove(button);
 
 
-
                 button.revalidate();
                 this.getBoard().revalidate();
 

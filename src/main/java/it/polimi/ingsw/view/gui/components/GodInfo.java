@@ -35,6 +35,7 @@ public class GodInfo extends JDialog {
      * At the moment of creation a list of String containing available God's names is given as parameter.
      * By the strings received the constructor generates a JDialog with as many info about God buttons as
      * the number of selectableGods.
+     *
      * @param selectableGods is a list which contains selectable Gods names.
      *                       Every String in list comports the presence of a button that
      *                       if clicked it appears a JDialog with information about the power of that God

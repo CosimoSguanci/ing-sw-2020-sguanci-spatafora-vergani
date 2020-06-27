@@ -24,7 +24,6 @@ class CommandHandlerImpl implements CommandHandler {
      * Controller class.
      *
      * @param controllerInstance controller associated with the object
-     *
      */
     CommandHandlerImpl(Controller controllerInstance) {
         this.controllerInstance = controllerInstance;

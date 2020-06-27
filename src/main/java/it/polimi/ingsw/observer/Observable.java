@@ -24,10 +24,9 @@ public class Observable<T> {
      * of observable object's observers. Only observers in this list can
      * be notified by observable object of any changes on it.
      *
-     * @param observer   observer object that wants to attach to observable's list
-     *
+     * @param observer observer object that wants to attach to observable's list
      */
-    public void addObserver(Observer<T> observer){
+    public void addObserver(Observer<T> observer) {
         synchronized (observers) {
             observers.add(observer);
         }
@@ -39,10 +38,9 @@ public class Observable<T> {
      * object they are "listening" to; on the basis of this notify, they can
      * update or do some specific operations.
      *
-     * @param message   object that represents the change, so that observers can understand what happened
-     *
+     * @param message object that represents the change, so that observers can understand what happened
      */
-    public void notify(T message){
+    public void notify(T message) {
         synchronized (observers) {
             for (Observer<T> observer : observers) {
                 observer.update(message);

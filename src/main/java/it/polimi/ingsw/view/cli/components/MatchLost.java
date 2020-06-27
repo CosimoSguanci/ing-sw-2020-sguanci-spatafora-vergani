@@ -19,6 +19,7 @@ public class MatchLost {
     /**
      * This is the constructor of this class. At the moment of the creation
      * of a single instance of MatchLost the cli associated to it is set
+     *
      * @param cli contains reference to the Cli associated
      */
     public MatchLost(Cli cli) {
@@ -30,22 +31,21 @@ public class MatchLost {
      * If a user type "yes" in this phase it means that he wants to continue to
      * watch the match. Otherwise, answering "no" to the question proposed,
      * the user express its will to quit.
+     *
      * @param command contains the answer from the user
      * @return true if the command received was "yes",
-     *         false otherwise.
+     * false otherwise.
      */
     public boolean handleMatchLost(String command) {
-        if(command.equals("yes")) {
+        if (command.equals("yes")) {
             cli.setContinueToWatch(true);
             cli.newLine();
             return true;
-        }
-        else if(command.equals("no")) {
+        } else if (command.equals("no")) {
             cli.setCurrentGamePhase(GamePhase.MATCH_ENDED);
             cli.newLine();
             cli.println("Do you want to play another match?");
-        }
-        else throw new BadCommandException(); // todo add multiple exception
+        } else throw new BadCommandException(); // todo add multiple exception
         return false;
     }
 }

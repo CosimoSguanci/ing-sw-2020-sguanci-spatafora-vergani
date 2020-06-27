@@ -34,7 +34,8 @@ public class GodScreen extends JPanel {
      * is created. It is a 4x4 GridLayout case player is GodChooser, and an only row
      * with as many columns as the number of players involved in the match. This GriLayout
      * contains buttons which contain Gods images
-     * @param playersNumber is an integer number that contains information about the number of players involved in a match.
+     *
+     * @param playersNumber  is an integer number that contains information about the number of players involved in a match.
      * @param selectableGods is a List of Strings which contains Gods names that can be chosen.
      *                       GodChooser will see all the Gods available in game. Other player see Gods chosen bu GodChooser
      * @throws IOException is used in case in which the image we are looking for is not available in specified path.
@@ -204,6 +205,7 @@ public class GodScreen extends JPanel {
      * This package protected method is a simple setter of the title of the titleLabel of the class.
      * This is a good solution in order to creates instances of this class, distinguish at the moment
      * of the invocation, different contexts and for each set the desired title.
+     *
      * @param title
      */
     void setTitle(String title) {
@@ -214,6 +216,7 @@ public class GodScreen extends JPanel {
 
     /**
      * This method is a simple getter of the Gods buttons available in this class.
+     *
      * @return an ArrayList of JButton which contains as many buttons as many Gods are available in a specific turn of GodChoice game phase.
      */
     ArrayList<JButton> getButtons() {
@@ -222,6 +225,7 @@ public class GodScreen extends JPanel {
 
     /**
      * This method is a getter of the right panel located east in this class.
+     *
      * @return a reference to the east panel of the class.
      */
     JPanel getRightPanel() {

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * BoardUpdate, DisconnectedPlayerUpdate, ErrorUpdate, GamePhaseUpdate,
  * GodsUpdate, InitialInfoUpdate, LoseUpdate, MatchStartedUpdate,
  * ServerUnreachableUpdate, TurnUpdate, WinUpdate are all managed in this class.
- *
+ * <p>
  * This class represent the Visitor in the Visitor Pattern, it implements {@link UpdateHandler}
  * to have all the necessary methods to handle all possible updates.
  *
@@ -36,8 +36,9 @@ public class CliUpdateHandler implements UpdateHandler {
     /**
      * This is the creator of the class. At the moment of the instance creation
      * an instance of Cli and Controller, to which the class refers, are set.
+     *
      * @param cliInstance is the instance of Cli associated to the CliUpdateHandle for updates.
-     * @param controller is the instance of the controller that is observed by the Cli.
+     * @param controller  is the instance of the controller that is observed by the Cli.
      */
     CliUpdateHandler(Cli cliInstance, Controller controller) {
         this.cliInstance = cliInstance;
@@ -47,6 +48,7 @@ public class CliUpdateHandler implements UpdateHandler {
     /**
      * This method handles MatchStartedUpdated arrived from client-side Controller to Cli.
      * It prints several lines in console, to let players know that match has started.
+     *
      * @param update is the instance of MatchStartedUpdate from controller.
      */
     public void handle(MatchStartedUpdate update) {
@@ -64,6 +66,7 @@ public class CliUpdateHandler implements UpdateHandler {
      * In this method there is a distinction between GodChooser and other players.
      * If the player in Cli associated is GodChooser than some lines explains him what to do,
      * In non-GodChooser case players are invited to select their Gods.
+     *
      * @param update is the instance of GodsUpdate from client-side Controller.
      */
     public void handle(GodsUpdate update) {
@@ -102,6 +105,7 @@ public class CliUpdateHandler implements UpdateHandler {
      * Once players choose how many players are involved in their match, they have to choose
      * a nickname and a color to play. This class notifies them about that, inviting them
      * to choose a nickname and a color, not already chosen from other players.
+     *
      * @param update is the instance of InitialInfoUpdate from client-side Controller.
      */
     public void handle(InitialInfoUpdate update) {
@@ -144,6 +148,7 @@ public class CliUpdateHandler implements UpdateHandler {
      * This method manages commands during REAL_GAME phase. In cases in which players
      * move or build in a specific cell, to let all players clearly know about that,
      * it is printed that player has [moved/built] with a worker in a cell.
+     *
      * @param update is the instance of BoardUpdate from client-side Controller.
      */
     public void handle(BoardUpdate update) {
@@ -201,6 +206,7 @@ public class CliUpdateHandler implements UpdateHandler {
      * an impossible action was requested.
      * DENIED_BY_PLAYER_GOD, WRONG_TURN, WRONG_GAME_PHASE, DENIED_BY_OPPONENT_GOD,
      * ALREADY_TAKEN_NICKNAME, INVALID_GOD errors are all managed in this methos
+     *
      * @param update contains the instance of the Error given from client-side Controller.
      */
     public void handle(ErrorUpdate update) {
@@ -215,20 +221,15 @@ public class CliUpdateHandler implements UpdateHandler {
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
 
                     cliInstance.println(Cli.toBold("Move Error") + ": you can't perform this move because " + inhibitorGod + " doesn't let you move in the position you specified!");
-                }
-                else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
+                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
                     cliInstance.println(Cli.toBold("Move Error") + ": you can't perform this move because you can't move to this cell now (maybe you've already moved), or your God doesn't let you move in the position you specified!");
-                }
-                else if(update.errorType == ErrorType.WRONG_TURN) {
+                } else if (update.errorType == ErrorType.WRONG_TURN) {
                     cliInstance.println(Cli.toBold("Move Error") + ": you can't perform this move because it's not your turn!");
-                }
-                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Real Game Phase");
-                }
-                else if(update.errorType == ErrorType.INVALID_CELL) {
+                } else if (update.errorType == ErrorType.INVALID_CELL) {
                     cliInstance.println(Cli.toBold("Error") + ": Invalid Cell");
-                }
-                else if(update.errorType == ErrorType.GENERIC_ERROR) {
+                } else if (update.errorType == ErrorType.GENERIC_ERROR) {
                     cliInstance.println(Cli.toBold("Generic Error") + ": please, try another command");
                 }
 
@@ -239,20 +240,15 @@ public class CliUpdateHandler implements UpdateHandler {
                 if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
                     cliInstance.println(Cli.toBold("Build Error") + ": you can't perform this build because " + inhibitorGod + " doesn't let you build in the position you specified!");
-                }
-                else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
+                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
                     cliInstance.println(Cli.toBold("Build Error") + ": you can't perform this build because you can't build in this cell (maybe you haven't moved yet), or your God doesn't let you build in the position you specified!");
-                }
-                else if(update.errorType == ErrorType.WRONG_TURN) {
+                } else if (update.errorType == ErrorType.WRONG_TURN) {
                     cliInstance.println(Cli.toBold("Build Error") + ": you can't perform this build because it's not your turn!");
-                }
-                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Real Game Phase");
-                }
-                else if(update.errorType == ErrorType.INVALID_CELL) {
+                } else if (update.errorType == ErrorType.INVALID_CELL) {
                     cliInstance.println(Cli.toBold("Error") + ": Invalid Cell");
-                }
-                else if(update.errorType == ErrorType.GENERIC_ERROR) {
+                } else if (update.errorType == ErrorType.GENERIC_ERROR) {
                     cliInstance.println(Cli.toBold("Generic Error") + ": please, try another command");
                 }
 
@@ -261,15 +257,12 @@ public class CliUpdateHandler implements UpdateHandler {
             case END_TURN:
                 if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
-                    cliInstance.println(Cli.toBold("End Turn Error") + ": " +  inhibitorGod + " doesn't let you end your turn now!"); // Your god -> specific god?
-                }
-                else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
+                    cliInstance.println(Cli.toBold("End Turn Error") + ": " + inhibitorGod + " doesn't let you end your turn now!"); // Your god -> specific god?
+                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
                     cliInstance.println(Cli.toBold("End Turn Error") + ": you can't end your turn now: maybe you must move or build!"); // Your god -> specific god?
-                }
-                else if(update.errorType == ErrorType.WRONG_TURN) {
+                } else if (update.errorType == ErrorType.WRONG_TURN) {
                     cliInstance.println(Cli.toBold("End Turn Error") + ": you can't end your turn because it's not your turn!"); // Your god -> specific god?
-                }
-                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Real Game Phase");
                 }
 
@@ -277,16 +270,13 @@ public class CliUpdateHandler implements UpdateHandler {
 
             case PICK:
 
-                if(update.errorType == ErrorType.ALREADY_TAKEN_NICKNAME) {
+                if (update.errorType == ErrorType.ALREADY_TAKEN_NICKNAME) {
                     cliInstance.println(Cli.toBold("Nickname Error") + ": already taken nickname");
-                }
-                else if(update.errorType == ErrorType.INVALID_COLOR) {
+                } else if (update.errorType == ErrorType.INVALID_COLOR) {
                     cliInstance.println(Cli.toBold("Color Error") + ": invalid or already taken color");
-                }
-                else if(update.errorType == ErrorType.WRONG_TURN) {
+                } else if (update.errorType == ErrorType.WRONG_TURN) {
                     cliInstance.println(Cli.toBold("Turn Error") + ": Not your turn!");
-                }
-                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Initial Info Phase");
                 }
 
@@ -296,27 +286,22 @@ public class CliUpdateHandler implements UpdateHandler {
                 if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
                     cliInstance.println(Cli.toBold("Game Preparation Error") + ": you can't place your Worker where you specified because " + inhibitorGod + " doesn't allow it"); // Your god -> specific god?
-                }
-                else if(update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
+                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
                     cliInstance.println(Cli.toBold("Game Preparation Error") + ": you can't place your Workers where you specified because your God doesn't allow it"); // Your god -> specific god?
-                }
-                else if(update.errorType == ErrorType.WRONG_TURN) {
+                } else if (update.errorType == ErrorType.WRONG_TURN) {
                     cliInstance.println(Cli.toBold("Game Preparation Error") + ": you can't place your Workers because it's not your turn!"); // Your god -> specific god?
-                }
-                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Game Preparation Phase");
                 }
                 break;
 
             case SELECT:
 
-                if(update.errorType == ErrorType.WRONG_TURN) {
+                if (update.errorType == ErrorType.WRONG_TURN) {
                     cliInstance.println(Cli.toBold("God Choice Error") + ": you can't choose your God because it's not your turn!"); // Your god -> specific god?
-                }
-                else if(update.errorType == ErrorType.WRONG_GAME_PHASE) {
+                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Gods Choice Phase");
-                }
-                else if(update.errorType == ErrorType.INVALID_GOD) {
+                } else if (update.errorType == ErrorType.INVALID_GOD) {
                     cliInstance.println(Cli.toBold("God Error") + ": invalid God selected, it's not in selectable Gods list!");
                 }
                 break;
@@ -329,6 +314,7 @@ public class CliUpdateHandler implements UpdateHandler {
      * This method handles GamePhaseUpdate arrived from client-side Controller to Cli.
      * Every time the game phase changes, this method prints the name of the new current phase
      * upper case font to all the players involved in the match.
+     *
      * @param update contains a reference to the new GamePhase.
      */
     public void handle(GamePhaseUpdate update) {
@@ -355,6 +341,7 @@ public class CliUpdateHandler implements UpdateHandler {
     /**
      * This method handles TurnUpdate arrived from client-side Controller to Cli.
      * When a player ends is turn, new current turn pass to the next player in game.
+     *
      * @param update contains information about the new turn, it means that new
      *               current turn needs to be updated.
      */
@@ -369,6 +356,7 @@ public class CliUpdateHandler implements UpdateHandler {
     /**
      * This method handles TurnUpdate arrived from client-side Controller to Cli.
      * When a player ends is turn, new current turn pass to the next player in game.
+     *
      * @param update contains information about the new turn, it means that new
      *               current turn needs to be updated.
      */
@@ -384,6 +372,7 @@ public class CliUpdateHandler implements UpdateHandler {
      * When a player lose, the motivation of this lose is notified to all the players.
      * In case two other players remains, player who lost is asked if he wants to continue watch
      * the match in which he was involved. In case only one player remains, it automatically wins.
+     *
      * @param update contains information about the new turn, it means that new
      *               current turn needs to be updated.
      */
@@ -393,7 +382,7 @@ public class CliUpdateHandler implements UpdateHandler {
 
         String subject = hasClientLost ? "you" : "it"; // update.getLoserPlayer().getNickname()
         String loseCauseMsg = " because " + subject + " can't " + (update.getLoseCause() == LoseUpdate.LoseCause.CANT_MOVE ? "move" : "build") +
-        " with any Worker";
+                " with any Worker";
 
         /*switch(update.getLoseCause()) {
             case CANT_MOVE:
@@ -431,6 +420,7 @@ public class CliUpdateHandler implements UpdateHandler {
     /**
      * This method handles ServerUnreachableUpdate arrived from client-side Controller to Cli.
      * This method informs players that something went wrong during connection to server phase.
+     *
      * @param update contains the instance of the serverError given from client-side Controller.
      */
     public void handle(ServerUnreachableUpdate update) {
@@ -443,6 +433,7 @@ public class CliUpdateHandler implements UpdateHandler {
      * This method handles ServerUnreachableUpdate arrived from client-side Controller to Cli.
      * When a player logs out the match ends and all the players are informed about the end
      * of the match due to "[playerDisconnectedNickname] disconnected!"
+     *
      * @param update contains the information that a player logs out.
      */
     public void handle(DisconnectedPlayerUpdate update) {
@@ -455,6 +446,7 @@ public class CliUpdateHandler implements UpdateHandler {
      * the names of all possible Gods available. It is used in CHOOSE_GODS game phase,
      * it allows GodChooser to choose as many Gods as players involved in the match,
      * having all the GodsName available in console.
+     *
      * @return a String that is printed only for GOodChooser during CHOOSE_GODS phase.
      */
     private StringBuilder availableGods() {

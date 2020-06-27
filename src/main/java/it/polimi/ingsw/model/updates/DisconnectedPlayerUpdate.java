@@ -21,6 +21,7 @@ public class DisconnectedPlayerUpdate extends Update {
 
     /**
      * Disconnected Player getter
+     *
      * @return disconnected Player
      */
     public Player getDisconnectedPlayer() {
@@ -29,8 +30,9 @@ public class DisconnectedPlayerUpdate extends Update {
 
     /**
      * Utility method used to implement Visitor Pattern for Updates handling.
-     * @see UpdateHandler
+     *
      * @param handler which handle the updates to update the View
+     * @see UpdateHandler
      */
     @Override
     public void handleUpdate(UpdateHandler handler) {
