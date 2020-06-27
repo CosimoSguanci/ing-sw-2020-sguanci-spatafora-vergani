@@ -10,6 +10,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * This class is the listener of the PlaceWorkersButton.
+ * During GamePreparation phase a new button is available to continue
+ * Players are asked to place their worker accordingly to their Gods Power
+ * and once finished they can click on the button of which this class is the listener.
+ *
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
+ * @author Andrea Vergani
+ */
 public class PlaceWorkersButtonListener implements ActionListener {
 
     private static final String errorDialogTitle = "Error";
@@ -17,10 +27,19 @@ public class PlaceWorkersButtonListener implements ActionListener {
 
     private final GamePreparation gamePreparationComponent;
 
+    /**
+     * This is the creator of the class. At the moment of creation an association
+     * between the listener and the gamePreparation component is made.
+     * @param gamePreparationComponent contains a reference to the component
+     */
     public PlaceWorkersButtonListener(GamePreparation gamePreparationComponent) {
         this.gamePreparationComponent = gamePreparationComponent;
     }
 
+    /**
+     * This method is invoked when the continue button of the gamePreparation component is clicked.
+     * @param e contains a reference to the continue button.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
