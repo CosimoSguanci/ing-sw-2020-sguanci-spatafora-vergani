@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
  * GodsUpdate, InitialInfoUpdate, LoseUpdate, MatchStartedUpdate,
  * ServerUnreachableUpdate, TurnUpdate, WinUpdate are all managed in this class.
  *
+ * This class represent the Visitor in the Visitor Pattern, it implements {@link UpdateHandler}
+ * to have all the necessary methods to handle all possible updates.
+ *
  * @author Cosimo Sguanci
  * @author Roberto Spatafora
  * @author Andrea Vergani

@@ -45,6 +45,11 @@ public class GodsUpdate extends Update {
         return this.selectedGods;
     }
 
+    /**
+     * Utility method used to implement Visitor Pattern for Updates handling.
+     * @see UpdateHandler
+     * @param handler which handle the updates to update the View
+     */
     @Override
     public void handleUpdate(UpdateHandler handler) {
         handler.handle(this);

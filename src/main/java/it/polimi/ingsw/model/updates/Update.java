@@ -32,7 +32,9 @@ public abstract class Update implements Serializable {
     }
 
     /**
-     * Method used to implement Visitor Pattern on updates handling.
+     * Utility method used to implement Visitor Pattern for Updates handling.
+     * @see UpdateHandler
+     * @param handler which handle the updates to update the View
      */
     public abstract void handleUpdate(UpdateHandler handler);
 }
