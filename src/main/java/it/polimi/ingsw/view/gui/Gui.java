@@ -283,6 +283,10 @@ public class Gui extends View implements Observer<Update> {
                     message = "End Turn Error: " + "you can't end your turn because it's not your turn!";
                 } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     message = "Wrong Game Phase: current Game Phase is not Real Game Phase";
+                }  else if (update.errorType == ErrorType.INVALID_CELL) {
+                    message = "Invalid Cell";
+                } else if (update.errorType == ErrorType.GENERIC_ERROR) {
+                    message = "Generic Error: please, try another command";
                 }
 
                 break;
@@ -302,8 +306,7 @@ public class Gui extends View implements Observer<Update> {
                 break;
 
             case PLACE:
-
-
+                
                 if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
                     message = "Game Preparation Error: you can't place your Worker where you specified because " + inhibitorGod + " doesn't allow it";
@@ -419,7 +422,11 @@ public class Gui extends View implements Observer<Update> {
         String message = "Do you want to play another match?";
 
         SwingUtilities.invokeLater(() -> {
-            int res = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            String imagePath = "/images/RealGame/question.png";
+            int iconWidth = 70;
+            ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
+            icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
+            int res = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon, null, null);
 
             switch (res) {
                 case JOptionPane.YES_OPTION:

@@ -10,12 +10,31 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class is a listener used for Zeus. It manages the case in
+ * which player using Zeus wants to build a level under himself
+ * rather than in an adjacent cell.
+ *
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
+ * @author Andrea Vergani
+ */
 public class ZeusListener extends GodListener implements ActionListener {
 
+    /**
+     * This is the creator of the class. At the moment of the creation
+     * the realComponent is associated to the class.
+     * @param realGameComponent references the RealGameComponent which class refers to.
+     */
     public ZeusListener(RealGame realGameComponent) {
         super(realGameComponent);
     }
 
+    /**
+     * This method manages the activities when the player with Zeus
+     * decides to use Zeus' power to build a level under himself.
+     * @param e contains a reference to the event of the listener.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         JCellButton selectedWorkerButton = realGameComponent.getSelectedWorker();
