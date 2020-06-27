@@ -1,17 +1,19 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.controller.GamePhase;
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.PrintableColor;
+import it.polimi.ingsw.model.updates.Update;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.cli.components.*;
+import it.polimi.ingsw.view.cli.components.GamePhaseCommandHandler;
+import it.polimi.ingsw.view.cli.components.OtherInfoHandler;
+
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.*;
+import java.util.List;
+import java.util.Scanner;
 
 
 /**
@@ -33,7 +35,7 @@ public class Cli extends View implements Observer<Update> {
     private boolean continueToWatch = false;
 
     /**
-     *  JSON representation of current board of the match
+     * JSON representation of current board of the match
      */
     private String currentBoard;
 
@@ -46,10 +48,10 @@ public class Cli extends View implements Observer<Update> {
      * A new instance of CliUpdateHandler is created which manages
      * all the updates notified by server.
      *
-     * @param client indicates the client with whom a conversation with
-     * the Cli instance created will take place.
+     * @param client     indicates the client with whom a conversation with
+     *                   the Cli instance created will take place.
      * @param controller indicates clientSideController implements client-side checks
-     * in order to avoid repeated and unnecessary interactions with the server.
+     *                   in order to avoid repeated and unnecessary interactions with the server.
      */
     public Cli(Client client, Controller controller) {
         super(client, controller);
@@ -59,6 +61,7 @@ public class Cli extends View implements Observer<Update> {
     /**
      * This is a method useful to avoid code repetitions
      * It is an abbreviation of stdout.println
+     *
      * @param string id the string printed by this method.
      */
     public void println(String string) {
@@ -113,8 +116,9 @@ public class Cli extends View implements Observer<Update> {
     /**
      * This method is a setter used to set to the received value of
      * the parameter if this client is or not the GodChooser.
+     *
      * @param value is received as boolean parameter from the server,
-     * after having it randomly from the players list.
+     *              after having it randomly from the players list.
      */
     void setInitialGodChooser(boolean value) {
         this.isInitialGodChooser = value;
@@ -123,8 +127,9 @@ public class Cli extends View implements Observer<Update> {
     /**
      * This method is a simple getter to have access to the private
      * instance of the boolean attribute isInitialGodChooser of this class.
+     *
      * @return true if isInitialGodChooser is true value set,
-     *         otherwise it returns false.
+     * otherwise it returns false.
      */
     public boolean getInitialGodChooser() {
         return this.isInitialGodChooser;
@@ -133,8 +138,9 @@ public class Cli extends View implements Observer<Update> {
     /**
      * This method make possible client who are not GodChooser to select
      * a God once the GodChooser selected Gods that will be involved in the match.
+     *
      * @param selectableGods is as list used to have references to all Gods
-     * a player can choose in a specific match (once GodChooser selected them)
+     *                       a player can choose in a specific match (once GodChooser selected them)
      */
     @Override
     public void setSelectableGods(List<String> selectableGods) {
@@ -144,8 +150,9 @@ public class Cli extends View implements Observer<Update> {
     /**
      * This is a method used to have a List that contains all the Gods a player can
      * choose after GodChooser player selected them.
+     *
      * @return a List with Gods references which are selectable from a
-     *         single player, during CHOOSE_GODS game phase.
+     * single player, during CHOOSE_GODS game phase.
      */
     public List<String> getSelectableGods() {
         return this.selectableGods;
@@ -153,6 +160,7 @@ public class Cli extends View implements Observer<Update> {
 
     /**
      * This method let clients choose a nickname unique in the match.
+     *
      * @param selectedNicknames is a list of all nickname already chosen from players.
      */
     @Override
@@ -165,8 +173,9 @@ public class Cli extends View implements Observer<Update> {
      * chosen from different Players in a match. It is used in the first phase
      * of a match, during INITIAL_INFO game phase, to avoid the possibility that
      * different players involved in a match choose the same nicknames.
+     *
      * @return a List with all the names already chosen from
-     *         other players for a single match.
+     * other players for a single match.
      */
     public List<String> getSelectedNicknames() {
         return this.selectedNicknames;
@@ -174,6 +183,7 @@ public class Cli extends View implements Observer<Update> {
 
     /**
      * This method let clients choose a color unique in the match.
+     *
      * @param selectableColors is a list of all color not yet chosen from players.
      */
     @Override
@@ -186,8 +196,9 @@ public class Cli extends View implements Observer<Update> {
      * chosen from different Players in a match. It is used in the first phase
      * of a match, during INITIAL_INFO game phase, to avoid the possibility that
      * different players involved in a match choose the same color.
+     *
      * @return a List with all the colors already chosen from
-     *         other players for a single match.
+     * other players for a single match.
      */
     public List<PrintableColor> getSelectableColors() {
         return this.selectableColors;
@@ -196,6 +207,7 @@ public class Cli extends View implements Observer<Update> {
     /**
      * This setter method is used to set a specific game phase.
      * It is necessary to have this method to change different phase during the match.
+     *
      * @param newGamePhase is the new phase that it is set with the invocation of this method.
      */
     public void setCurrentGamePhase(GamePhase newGamePhase) {
@@ -207,6 +219,7 @@ public class Cli extends View implements Observer<Update> {
      * This method manages all the message received from the server.
      * Visitor pattern used to invoke the correct method for each different
      * instance of update from server to client.
+     *
      * @param update contains references to what changes server-side
      *               and it is notified to the client.
      */
@@ -218,10 +231,11 @@ public class Cli extends View implements Observer<Update> {
     /**
      * This method converts a color given as parameter according to enum
      * defined, and it is used to have the correct correspondence Ansi color.
+     *
      * @param color is the PrintableColor you want to calculate the Ansi code
      * @return the string of the respective Ansi color.
      */
-    public static String convertColorToAnsi (PrintableColor color) {
+    public static String convertColorToAnsi(PrintableColor color) {
         return PrintableColor.convertColorToAnsi(color);
     }
 
@@ -247,15 +261,16 @@ public class Cli extends View implements Observer<Update> {
      * This method is used to print a specific nickname of a player
      * involved in a match with the same color the player choose
      * during the INITIAL_INFO game phase.
+     *
      * @param nickname is a String which contains the nickname of a player
      *                 involved in the match.
      * @return a colored String. Colored with color chosen from the player with
-     *         the nickname given as parameter.
+     * the nickname given as parameter.
      */
     public String playerWithColor(String nickname) {
-        if(this.playersColors != null) {
+        if (this.playersColors != null) {
 
-            if(!this.playersColors.containsKey(nickname) && nickname.equals("Player")) {
+            if (!this.playersColors.containsKey(nickname) && nickname.equals("Player")) {
                 return nickname;
             }
 
@@ -285,6 +300,7 @@ public class Cli extends View implements Observer<Update> {
 
     /**
      * This method gives information about the current phase of the match
+     *
      * @return the current phase of the match
      */
     public GamePhase getCurrentPhase() {
@@ -295,6 +311,7 @@ public class Cli extends View implements Observer<Update> {
      * This method is a simply getter. Once the player associated to the Cli
      * lose, this method gives information if the wants to continue watch the match
      * in which he was involved.
+     *
      * @return true if the player response to the question
      * "Do you want to continue to watch this match?" was positive, false otherwise.
      */
@@ -306,6 +323,7 @@ public class Cli extends View implements Observer<Update> {
      * This method set continueToWatch attribute to the boolean value given
      * as parameter. It indicates if a player which is involved in a match, after
      * losing the match wants to watch other players play
+     *
      * @param continueToWatch is a boolean value that indicates if the
      *                        player wants continue to watch
      */
@@ -315,6 +333,7 @@ public class Cli extends View implements Observer<Update> {
 
     /**
      * This method is used to make a string given as parameter in bold
+     *
      * @param s is the string that you want in bold
      * @return the bold String
      */
@@ -325,6 +344,7 @@ public class Cli extends View implements Observer<Update> {
 
     /**
      * This method is used to have the JSON representation of the current Board.
+     *
      * @return the String JSON-format of the board
      */
     public String getCurrentBoard() {
@@ -333,6 +353,7 @@ public class Cli extends View implements Observer<Update> {
 
     /**
      * This method is a simple setter of the String attribute currentBoard to the
+     *
      * @param board given in JSON representation.
      */
     public void setCurrentBoard(String board) {
@@ -341,6 +362,7 @@ public class Cli extends View implements Observer<Update> {
 
     /**
      * This method is a String getter which
+     *
      * @return a particular string useful in many prints
      */
     public String getCurrentPhaseString() {
@@ -351,6 +373,7 @@ public class Cli extends View implements Observer<Update> {
      * This method prints the board. It is used when a player moves one of
      * his workers, or build a level. It is also used when a player requests
      * "BOARD" command.
+     *
      * @param board is the JSON-format of the board to be printed.
      */
     public void printBoard(String board) {
@@ -359,8 +382,9 @@ public class Cli extends View implements Observer<Update> {
 
     /**
      * This method makes available what is received as input from console.
+     *
      * @return the Scanner stdin attribute in order to have access to monitor
-     *         what Cli receives as input in console.
+     * what Cli receives as input in console.
      */
     public Scanner getStdin() {
         return this.stdin;

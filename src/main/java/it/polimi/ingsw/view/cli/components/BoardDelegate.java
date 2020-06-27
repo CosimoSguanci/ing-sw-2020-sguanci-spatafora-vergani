@@ -25,6 +25,7 @@ public class BoardDelegate {
     /**
      * This is the constructor of this class. At the moment of the creation
      * of a single instance of BoardDelegate the cli associated to it is set
+     *
      * @param cli contains reference to the Cli associated
      */
     public BoardDelegate(Cli cli) {
@@ -34,6 +35,7 @@ public class BoardDelegate {
     /**
      * This method contains an algorithm to print the board game Cli version.
      * Every cell is printed as a 5x5; there are boarders which delimit each cell.
+     *
      * @param board indicates the board which is used in the relative match.
      *              It contains references to each cell (including their level
      *              and workers if there are on that cell).
@@ -100,9 +102,10 @@ public class BoardDelegate {
      * This private method bridges with BlockType enumeration.
      * With this method a correspondence between BlockType level and
      * a char that indicates it is made.
+     *
      * @param level indicates the level of which you want the letter
      * @return a String, generally a single character, due to the implementation of the
-     *         BlockType.convertBlockTypeToUnicode() method, which corresponds to the level
+     * BlockType.convertBlockTypeToUnicode() method, which corresponds to the level
      */
     private static String convertBlockTypeToUnicode(BlockType level) {
         return BlockType.convertBlockTypeToText(level);

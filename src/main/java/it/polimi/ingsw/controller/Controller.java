@@ -100,7 +100,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
             model.reportError(command.getPlayer(), command.commandType, ErrorType.INVALID_COLOR, null);
         } catch (InvalidGodException | UnknownGodException e) {
             model.reportError(command.getPlayer(), command.commandType, ErrorType.INVALID_GOD, null);
-        } catch (InvalidCellException  | CannotIncreaseLevelException | CellNotEmptyException e) {
+        } catch (InvalidCellException | CannotIncreaseLevelException | CellNotEmptyException e) {
             model.reportError(command.getPlayer(), command.commandType, ErrorType.INVALID_CELL, null);
         } catch (NullPointerException e) {
             model.reportError(command.getPlayer(), command.commandType, ErrorType.GENERIC_ERROR, null);
@@ -115,12 +115,12 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      *
      * @param initialInfoCommand command containing nickname and colour chosen by one of the
      *                           players
-     * @throws WrongPlayerException if player who gave the command is not the current player
+     * @throws WrongPlayerException          if player who gave the command is not the current player
      * @throws NicknameAlreadyTakenException if selected nickname has already been chosen by
      *                                       another player
-     * @throws InvalidColorException if selected colour has already been chosen by another player
-     *                               (or, for any other reason, is not in selectable's colour
-     *                               list)
+     * @throws InvalidColorException         if selected colour has already been chosen by another player
+     *                                       (or, for any other reason, is not in selectable's colour
+     *                                       list)
      */
     synchronized void handleInitialInfoCommand(InitialInfoCommand initialInfoCommand) {
 
@@ -158,7 +158,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
         model.initialInfoUpdate(initialInfo);
 
-        if(initialInfoDonePlayers.size() == model.getPlayersNumber()) {
+        if (initialInfoDonePlayers.size() == model.getPlayersNumber()) {
             godChoosePhase();
         }
 
@@ -174,7 +174,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * @param godChoiceCommand command containing the chosen god (not god-chooser player) or
      *                         gods(god-chooser player)
      * @throws WrongPlayerException if player who gave the command is not the current player
-     * @throws InvalidGodException if selected god is not in selectable's gods list
+     * @throws InvalidGodException  if selected god is not in selectable's gods list
      */
     synchronized void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {
         List<String> chosenGods = godChoiceCommand.getChosenGods();
@@ -189,7 +189,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         } else {
             String god = chosenGods.get(0);
 
-            if(!selectableGods.contains(god)) {
+            if (!selectableGods.contains(god)) {
                 throw new InvalidGodException();
             }
 
@@ -205,7 +205,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
         godChosenPlayers.forEach((player) -> selectedGods.put(player.getNickname(), player.getGodStrategy().NAME));
 
-        if(model.getCurrentPlayer().equals(godChooserPlayer)) { // The God Chooser is forced to pick the last remaining God
+        if (model.getCurrentPlayer().equals(godChooserPlayer)) { // The God Chooser is forced to pick the last remaining God
             String god = selectableGods.get(0);
             model.getCurrentPlayer().setGodStrategy(GodStrategy.instantiateGod(god));
 
@@ -215,8 +215,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
             model.endTurn();
             gamePreparationPhase();
 
-        }
-        else {
+        } else {
             model.godsUpdate(this.selectableGods, selectedGods);
         }
     }
@@ -230,7 +229,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * @param gamePreparationCommand command containing the positions chosen for the two workers
      * @throws WrongPlayerException if player who gave the command is not the current player
      */
-     synchronized void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) {
+    synchronized void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) {
         Player currentPlayer = model.getCurrentPlayer();
         if (!gamePreparationCommand.getPlayer().equals(model.getCurrentPlayer())) { // todo uniform use of model.getCurrentPlayer() / command.getPlayer()
             throw new WrongPlayerException();
@@ -238,18 +237,14 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
             Map<String, String> inhibitorGod = new HashMap<>();
 
-            if(!checkAllGamePreparationConstraints(gamePreparationCommand, inhibitorGod)) {
+            if (!checkAllGamePreparationConstraints(gamePreparationCommand, inhibitorGod)) {
                 model.reportError(currentPlayer, CommandType.PLACE, ErrorType.DENIED_BY_OPPONENT_GOD, inhibitorGod);
                 return;
-            }
-
-            else
-            
-            if (currentPlayer.getGodStrategy().checkGamePreparation(
-                            currentPlayer.getWorkerFirst(),
-                            gamePreparationCommand.getWorkerFirstCell(),
-                            currentPlayer.getWorkerSecond(),
-                            gamePreparationCommand.getWorkerSecondCell())
+            } else if (currentPlayer.getGodStrategy().checkGamePreparation(
+                    currentPlayer.getWorkerFirst(),
+                    gamePreparationCommand.getWorkerFirstCell(),
+                    currentPlayer.getWorkerSecond(),
+                    gamePreparationCommand.getWorkerSecondCell())
             ) {
                 currentPlayer.getGodStrategy().executeGamePreparation(currentPlayer.getWorkerFirst(), gamePreparationCommand.getWorkerFirstCell(), currentPlayer.getWorkerSecond(), gamePreparationCommand.getWorkerSecondCell());
             } else {
@@ -286,7 +281,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
             switch (playerCommand.commandType) {
                 case MOVE:
 
-                    if(!checkAllMoveConstraints(playerCommand, inhibitorGod)) {
+                    if (!checkAllMoveConstraints(playerCommand, inhibitorGod)) {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType, ErrorType.DENIED_BY_OPPONENT_GOD, inhibitorGod);
                         return;
                     }
@@ -317,8 +312,8 @@ public class Controller extends Observable<Controller> implements Observer<Comma
                     break;
                 case BUILD:
 
-                    if(!checkAllBuildConstraints(playerCommand, inhibitorGod)) {
-                        model.reportError(playerCommand.getPlayer(), playerCommand.commandType, ErrorType.DENIED_BY_OPPONENT_GOD, inhibitorGod) ;
+                    if (!checkAllBuildConstraints(playerCommand, inhibitorGod)) {
+                        model.reportError(playerCommand.getPlayer(), playerCommand.commandType, ErrorType.DENIED_BY_OPPONENT_GOD, inhibitorGod);
                         return;
                     }
 
@@ -347,7 +342,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
                     break;
                 case END_TURN:
 
-                    if(!checkAllEndTurnConstraints(playerCommand, inhibitorGod)) {
+                    if (!checkAllEndTurnConstraints(playerCommand, inhibitorGod)) {
                         model.reportError(playerCommand.getPlayer(), playerCommand.commandType, ErrorType.DENIED_BY_OPPONENT_GOD, inhibitorGod);
                         return;
                     }
@@ -380,7 +375,6 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * This method checks if the current player has a possibility to move. In fact, if the
      * current player needs to move but can't do it, he/she immediately loses the match: in
      * this case, a proper method (which will notify all the players) is called.
-     *
      */
     private void checkLoseConditionsMove() {
         if (!model.getCurrentPlayer().getGodStrategy().canMove(model.getBoard(), model.getCurrentPlayer())) {
@@ -408,7 +402,6 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * This method checks if the current player has a possibility to build. In fact, if the
      * current player needs to build but can't do it, he/she immediately loses the match: in
      * this case, a proper method (which will notify all the players) is called.
-     *
      */
     private void checkLoseConditionsBuild(PlayerCommand playerCommand) {
         if (!model.getCurrentPlayer().getGodStrategy().canBuild(model.getBoard(), playerCommand.getWorker())) {
@@ -456,8 +449,8 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * can be not-valid when, for example, some rules (mainly related to god powers) are not respected.
      *
      * @param gamePreparationCommand the given command in GamePreparation Phase
-     * @param inhibitor an empty map that, in case, is filled with the name and description of the god that
-     *                  does not allow the given command
+     * @param inhibitor              an empty map that, in case, is filled with the name and description of the god that
+     *                               does not allow the given command
      * @return true if the command is valid, false otherwise
      */
     private boolean checkAllGamePreparationConstraints(GamePreparationCommand gamePreparationCommand, Map<String, String> inhibitor) {
@@ -481,15 +474,15 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
         return true;
     }
-    
-    
+
+
     /**
      * This method checks all Players God's Move Constraints to check if there is a power which
      * prevents the Player who executed the given PlayerCommand to move.
      *
      * @param playerCommand player command from View
-     * @param inhibitor an empty map that, in case, is filled with the name and description of the god that
-     *                  does not allow the given command
+     * @param inhibitor     an empty map that, in case, is filled with the name and description of the god that
+     *                      does not allow the given command
      * @return true if move is permitted, false otherwise
      */
     private boolean checkAllMoveConstraints(PlayerCommand playerCommand, Map<String, String> inhibitor) {
@@ -511,8 +504,8 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * prevents the Player who executed the given PlayerCommand to build.
      *
      * @param playerCommand player command from View
-     * @param inhibitor an empty map that, in case, is filled with the name and description of the god that
-     *                  does not allow the given command
+     * @param inhibitor     an empty map that, in case, is filled with the name and description of the god that
+     *                      does not allow the given command
      * @return true if build is permitted, false otherwise
      */
     private boolean checkAllBuildConstraints(PlayerCommand playerCommand, Map<String, String> inhibitor) {
@@ -534,8 +527,8 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * This method checks if an End-Turn can be performed, or it is not allowed by some of the players' gods.
      *
      * @param playerCommand player command from View
-     * @param inhibitor an empty map that, in case, is filled with the name and description of the god that
-     *                  does not allow the given command
+     * @param inhibitor     an empty map that, in case, is filled with the name and description of the god that
+     *                      does not allow the given command
      * @return true if end-turn is permitted, false otherwise
      */
     private boolean checkAllEndTurnConstraints(PlayerCommand playerCommand, Map<String, String> inhibitor) {
@@ -648,7 +641,6 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * This method is the entry point from Server.java class. A random starting-player and god-chooser are chosen,
      * and the players are notified about the first turn of the match. This starting phase is followed by
      * InitialInfo phase, where players choose their nicknames and colours.
-     *
      */
     // Entry point from Server class
     public void initialPhase() {
@@ -672,7 +664,6 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     /**
      * This method must be called when GodChoice Phase starts. Every player is notified in the proper way.
-     *
      */
     private void godChoosePhase() {
         model.nextGamePhase();
@@ -682,7 +673,6 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     /**
      * This method must be called when GamePreparation Phase starts. Every player is notified in the proper way.
-     *
      */
     private void gamePreparationPhase() {
         model.nextGamePhase();
@@ -692,7 +682,6 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     /**
      * This method must be called when the real match starts. Every player is notified in the proper way.
-     *
      */
     private void startMatch() {
         model.nextGamePhase();
@@ -707,7 +696,6 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     /**
      * This method handles a disconnection from one of the clients involved in the match. In particular, when a
      * player disconnects, he/she is removed; then, everyone must be notified and the match immediately ends.
-     *
      */
     public void onPlayerDisconnected(String playerID) {
         Player disconnectedPlayer = model.getPlayers().stream().filter((player) -> player.getPlayerID().equals(playerID)).findFirst().orElse(null);
@@ -730,7 +718,6 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     /**
      * This method handles a victory by one of the players involved in the match.
-     *
      */
     private void onMatchWon() {
         notify(this);

@@ -18,6 +18,7 @@ public class WaitingForAMatch {
      * This is the constructor method of the class.
      * It make an association between an instance of this class
      * and the Cli associated to it.
+     *
      * @param cli is the instance of Cli associated to GamePreparation.
      */
     public WaitingForAMatch(Cli cli) {

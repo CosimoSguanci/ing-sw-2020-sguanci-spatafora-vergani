@@ -12,14 +12,15 @@ public class GamePhaseUpdate extends Update {
     public final GamePhase newGamePhase;
 
     public GamePhaseUpdate(GamePhase newGamePhase) {
-        super( null);
+        super(null);
         this.newGamePhase = newGamePhase;
     }
 
     /**
      * Utility method used to implement Visitor Pattern for Updates handling.
-     * @see UpdateHandler
+     *
      * @param handler which handle the updates to update the View
+     * @see UpdateHandler
      */
     @Override
     public void handleUpdate(UpdateHandler handler) {

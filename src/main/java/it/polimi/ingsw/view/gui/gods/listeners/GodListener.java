@@ -16,6 +16,7 @@ public abstract class GodListener {
     /**
      * This is the creator of the class. At the moment of a concrete class creation
      * it is necessary to have a reference of the realGameComponent.
+     *
      * @param realGameComponent contains a reference to the realGameComponent associated to gui
      */
     protected GodListener(RealGame realGameComponent) {

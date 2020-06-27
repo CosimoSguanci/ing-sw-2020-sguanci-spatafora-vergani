@@ -15,6 +15,7 @@ public class GodsGuiStrategy implements GodGuiDrawer {
 
     /**
      * This method overrides the interface method draw
+     *
      * @param realGameComponent contains a reference to the realGameComponent of the gui
      * @return null generically for all Gods.
      */

@@ -23,9 +23,10 @@ public class GodChoice {
     /**
      * This is the constructor of this class. At the moment of the creation
      * of a single instance of GodChoice the cli associated to it is set
+     *
      * @param cli contains reference to the Cli associated
      */
-    public GodChoice (Cli cli) {
+    public GodChoice(Cli cli) {
         this.cli = cli;
     }
 
@@ -33,6 +34,7 @@ public class GodChoice {
      * This method manages all the commands, during CHOOSE_GODS game phase,
      * received by GodChooser. It checks if the GodChooser select as many
      * valid Gods as many players involved in the match.
+     *
      * @param splitCommand is an array of strings which contains, separately,
      *                     all the different words entered in the console.
      *                     It is expected in a particular format, therefore
@@ -66,6 +68,7 @@ public class GodChoice {
      * This method manages all the commands, during CHOOSE_GODS game phase,
      * received by non-GodChooser players. It checks if the single player
      * select a single valid God.
+     *
      * @param splitCommand is an array of strings which contains, separately,
      *                     all the different words entered in the console.
      *                     It is expected in a particular format, therefore
@@ -81,7 +84,9 @@ public class GodChoice {
             if (!cli.getSelectableGods().contains(god)) {
                 throw new BadCommandException();
             }
-        } else {throw new WrongPlayerException();}
+        } else {
+            throw new WrongPlayerException();
+        }
 
         ArrayList<String> selected = new ArrayList<>();
         selected.add(god);
@@ -97,7 +102,8 @@ public class GodChoice {
      * There is a check for the correct name of a God received. Moreover
      * there is a check in order to control if God received is already chosen
      * from a different player.
-     * @param god is a String which indicates the name of a God chosen by a client
+     *
+     * @param god        is a String which indicates the name of a God chosen by a client
      * @param chosenGods contains different Gods chosen by other players of the match
      * @return true if the God received is a selectable God and was not already chosen from another player.
      */

@@ -19,8 +19,7 @@ public interface Observer<T> {
      * are "listening" to; on the basis of this notify, they can update or
      * do something else: the instructions are in this method.
      *
-     * @param message   object that represents the change on observable object
-     *
+     * @param message object that represents the change on observable object
      */
     void update(T message);
 }

@@ -50,9 +50,10 @@ public abstract class Game extends JPanel {
     /**
      * This method creates a list of CellButton having as input the common Board,
      * defined as a two-dimensional array.
+     *
      * @param twoDArray contains reference to the Board used in game.
      * @return a List of JCellButton containing all the button that are in
-     *      the two-dimensional array given as parameter.
+     * the two-dimensional array given as parameter.
      */
     protected static java.util.List<JCellButton> twoDArrayToList(JCellButton[][] twoDArray) {
         List<JCellButton> list = new ArrayList<>();
@@ -91,6 +92,7 @@ public abstract class Game extends JPanel {
 
     /**
      * This method is a simple getter of the BoardScreen which is a Gui-component.
+     *
      * @return a reference to the BoardScreen associated to the Gui.
      */
     BoardScreen getBoard() {
@@ -99,6 +101,7 @@ public abstract class Game extends JPanel {
 
     /**
      * This is a simple setter of the Board.
+     *
      * @param board is a String JSon-format which contains information
      *              about all the cell involved in the match board.
      */
@@ -115,6 +118,7 @@ public abstract class Game extends JPanel {
     /**
      * This method override the paintComponent method of the JPanel class.
      * It adds to the method of the super class a background image, used in the JPanel of the class.
+     *
      * @param g contains a reference to the component we want to set the background image
      */
     @Override

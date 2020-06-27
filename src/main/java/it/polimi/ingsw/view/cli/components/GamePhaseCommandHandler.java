@@ -60,7 +60,9 @@ public class GamePhaseCommandHandler {
 
             String[] splitCommand = command.toLowerCase().split("\\s+");
 
-            if (computeCommand(splitCommand)) { continue; }
+            if (computeCommand(splitCommand)) {
+                continue;
+            }
 
             if (splitCommand[0].length() == 0) {  // command starting with space
                 splitCommand = Arrays.copyOfRange(splitCommand, 1, splitCommand.length);
@@ -70,31 +72,27 @@ public class GamePhaseCommandHandler {
 
                 if (this.cli.getCurrentPhase() == GamePhase.MATCH_ENDED) {
                     boolean breakWhile = matchEnded.handle(command);
-                    if (breakWhile) { break; }
-                }
-                else if (this.cli.getCurrentPhase() == GamePhase.MATCH_LOST) {
+                    if (breakWhile) {
+                        break;
+                    }
+                } else if (this.cli.getCurrentPhase() == GamePhase.MATCH_LOST) {
                     boolean continueWhile = matchLost.handleMatchLost(command);
-                    if (continueWhile) { continue; }
-                }
-                else if (CommandType.isHelperCommandType(splitCommand[0])){
+                    if (continueWhile) {
+                        continue;
+                    }
+                } else if (CommandType.isHelperCommandType(splitCommand[0])) {
                     this.cliPlayerHelper.helperHandle(splitCommand);
-                }
-                else if (this.cli.getCurrentPhase() == GamePhase.INITIAL_INFO) {
+                } else if (this.cli.getCurrentPhase() == GamePhase.INITIAL_INFO) {
                     this.initialInfo.handleInitialInfoCommand(splitCommand);
-                }
-                else if (this.cli.getCurrentPhase() == GamePhase.CHOOSE_GODS && this.cli.getInitialGodChooser()) {
+                } else if (this.cli.getCurrentPhase() == GamePhase.CHOOSE_GODS && this.cli.getInitialGodChooser()) {
                     this.godChoice.handleIsGodChooserGodsChoice(splitCommand);
-                }
-                else if (this.cli.getCurrentPhase() == GamePhase.CHOOSE_GODS) { // but not initial god chooser
+                } else if (this.cli.getCurrentPhase() == GamePhase.CHOOSE_GODS) { // but not initial god chooser
                     this.godChoice.handleGodChoice(splitCommand);
-                }
-                else if (this.cli.getCurrentPhase() == GamePhase.GAME_PREPARATION) {
+                } else if (this.cli.getCurrentPhase() == GamePhase.GAME_PREPARATION) {
                     this.gamePreparation.handle(command);
-                }
-                else if (this.cli.getCurrentPhase() == GamePhase.REAL_GAME) {
+                } else if (this.cli.getCurrentPhase() == GamePhase.REAL_GAME) {
                     this.realGame.handleRealGame(command);
-                }
-                else {
+                } else {
                     this.cli.println("Unknown Command");
                 }
             } catch (BadCommandException e) {
@@ -114,10 +112,11 @@ public class GamePhaseCommandHandler {
     /**
      * This private method checks if a command received through
      * console is a valid command or not.
+     *
      * @param splitCommand is an array of strings which contains, separately,
      *                     all the different words entered in the console.
      * @return false if the command contains computed words, even if these are not
-     *         valid in the game; true otherwise.
+     * valid in the game; true otherwise.
      */
     private boolean computeCommand(String[] splitCommand) {
         return (splitCommand.length == 0) || (splitCommand[0].equals("") && splitCommand.length == 1);
@@ -126,6 +125,7 @@ public class GamePhaseCommandHandler {
     /**
      * This method invokes another method which contains an
      * algorithm to print the board game Cli version.
+     *
      * @param board indicates the board, JSON-format which is used in
      *              the relative match. It contains references to each cell
      */

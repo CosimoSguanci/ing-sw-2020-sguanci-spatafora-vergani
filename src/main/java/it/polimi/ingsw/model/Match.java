@@ -81,6 +81,7 @@ public class Match {
 
     /**
      * Match players list getter
+     *
      * @return the list of the currently playing users.
      */
     public List<Player> getPlayers() {
@@ -89,6 +90,7 @@ public class Match {
 
     /**
      * Players number getter
+     *
      * @return the specific Players number (2 or 3 in this version) chosen for this match.
      */
     public int getPlayersNumber() {
@@ -109,6 +111,7 @@ public class Match {
 
     /**
      * Initial Turn setter
+     *
      * @param initialTurn the initial turn for this match
      */
     public void setInitialTurn(int initialTurn) {
@@ -136,6 +139,7 @@ public class Match {
 
     /**
      * The method is the getter for current GamePhase of the match.
+     *
      * @return current GamePhase
      */
     public GamePhase getCurrentGamePhase() {

@@ -24,7 +24,7 @@ public class InitialInfoCommand extends Command {
      * selected.
      *
      * @param nickname the nickname chosen by the player
-     * @param color the colour chosen by the player
+     * @param color    the colour chosen by the player
      */
     public InitialInfoCommand(String nickname, PrintableColor color) {
         super(CommandType.PICK);

@@ -91,7 +91,7 @@ public class Client {
      * not, the match must immediately end).
      *
      * @throws IOException if an I/O error occurs when creating the output stream or if the socket
-     * is not connected
+     *                     is not connected
      */
     public void setupUpdateListener() throws IOException {
         if (this.objectOutputStream == null) {
@@ -157,7 +157,7 @@ public class Client {
             objectOutputStream.writeObject(command);
             objectOutputStream.flush();
 
-        } catch(IOException e) {
+        } catch (IOException e) {
             updateListener.handleConnectionReset();
         }
 
@@ -178,7 +178,7 @@ public class Client {
      * server is supposed to be "located" at (IP,PORT) attributes.
      *
      * @return true if server is reachable, so a socket connection with servercan be established;
-     *         false otherwise
+     * false otherwise
      */
     private boolean isServerReachable() {
         try {

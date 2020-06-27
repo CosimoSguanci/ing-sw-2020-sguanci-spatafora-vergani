@@ -72,7 +72,7 @@ public class Apollo extends GodStrategy {
     /**
      * This method checks if Apollo's Player has at least an available Cell to move to.
      *
-     * @param board the Match board to consider
+     * @param board  the Match board to consider
      * @param player the Player whose ability to move is about to be tested
      * @return true if Apollo Player can move, false otherwise.
      * @see GodStrategy#canMove
@@ -92,7 +92,7 @@ public class Apollo extends GodStrategy {
      * can swap its position with an opponent Worker, so we avoid to check if adjacent cells are empty.
      *
      * @param board the Match board to consider
-     * @param cell the Cell from which the worker would move
+     * @param cell  the Cell from which the worker would move
      * @return true if an Apollo movement is possible from the cell passed by parameter, false otherwise.
      */
     private boolean canApolloMoveFromCell(Board board, Cell cell) {

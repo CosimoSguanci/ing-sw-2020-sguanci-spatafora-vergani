@@ -23,7 +23,6 @@ public enum GamePhase {
      * This static method simply returns the first phase of a match.
      *
      * @return the (chronological) first phase
-     *
      */
     public static GamePhase firstPhase() {
         return INITIAL_INFO;
@@ -37,10 +36,9 @@ public enum GamePhase {
      * @return the (chronological) next phase
      * @throws IllegalArgumentException if parameter-phase is not valid or not followed
      *                                  by another phase
-     *
      */
     public static GamePhase nextGamePhase(GamePhase currentGamePhase) {
-        switch(currentGamePhase) {
+        switch (currentGamePhase) {
             case INITIAL_INFO:
                 return CHOOSE_GODS;
             case CHOOSE_GODS:
@@ -59,12 +57,11 @@ public enum GamePhase {
      *
      * @param input an input string, that should represent a game-phase
      * @return true if the parameter is one of the GamePhases (hypothetical .toString), false
-     *         otherwise
-     *
+     * otherwise
      */
     public static boolean isGamePhase(String input) {
         ArrayList<String> values = new ArrayList<>();
-        for(GamePhase gamePhase : GamePhase.values()) {
+        for (GamePhase gamePhase : GamePhase.values()) {
             values.add(gamePhase.toString().toLowerCase());
         }
         //values now contains all the enum values, in the form of String
@@ -77,14 +74,13 @@ public enum GamePhase {
      *
      * @param input an input string, that should represent a game-phase
      * @return the correspondent GamePhase if the parameter is one of the GamePhases
-     *         (hypothetical .toString)
+     * (hypothetical .toString)
      * @throws BadCommandException if parameter-string does not represent any GamePhase
-     *
      */
     public static GamePhase parseGamePhase(String input) {
         try {
             return Enum.valueOf(GamePhase.class, input.toUpperCase());
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             throw new BadCommandException();
         }
     }
@@ -94,20 +90,19 @@ public enum GamePhase {
      * printed, in the form "gamePhase1, gamePhase2, ..."
      *
      * @return all the game-phases that must be printed, in the form "gamePhase1, gamePhase2, ..."
-     *
      */
     public static StringBuilder toStringBuilder() {
         int j;
         GamePhase[] phases = GamePhase.class.getEnumConstants();
         StringBuilder result = new StringBuilder();
-        for(j=0; j<phases.length; j++) {
-            if(phases[j].isPrintable()) {
+        for (j = 0; j < phases.length; j++) {
+            if (phases[j].isPrintable()) {
                 result.append(phases[j].toString().toLowerCase());
                 break;
             }
         }
-        for(int i = j+1; i<phases.length; i++) {
-            if(phases[i].isPrintable()) {
+        for (int i = j + 1; i < phases.length; i++) {
+            if (phases[i].isPrintable()) {
                 result.append(", ").append(phases[i].toString().toLowerCase());
             }
         }
@@ -119,7 +114,6 @@ public enum GamePhase {
      * as a string in some help command or something like this).
      *
      * @return true if the caller is printable, false otherwise
-     *
      */
     public boolean isPrintable() {
         return this != MATCH_ENDED && this != MATCH_LOST;

@@ -11,7 +11,6 @@ import java.util.Map;
  * @author Cosimo Sguanci
  */
 public class GodsUpdate extends Update {
-    private static final long serialVersionUID = -3321537110343022582L;
 
     /**
      * Gods which are still available to select, the God Chooser chose them but they've not been assigned yet
@@ -24,13 +23,14 @@ public class GodsUpdate extends Update {
     private final Map<String, String> selectedGods;
 
     public GodsUpdate(List<String> selectableGods, Map<String, String> selectedGods) {
-        super( null);
+        super(null);
         this.selectableGods = selectableGods;
         this.selectedGods = selectedGods;
     }
 
     /**
      * SelectableGods getter
+     *
      * @return the list of available Gods (String rep)
      */
     public List<String> getSelectableGods() {
@@ -39,6 +39,7 @@ public class GodsUpdate extends Update {
 
     /**
      * SelectedGods getter
+     *
      * @return the list of selected Gods (String rep)
      */
     public Map<String, String> getSelectedGods() {
@@ -47,8 +48,9 @@ public class GodsUpdate extends Update {
 
     /**
      * Utility method used to implement Visitor Pattern for Updates handling.
-     * @see UpdateHandler
+     *
      * @param handler which handle the updates to update the View
+     * @see UpdateHandler
      */
     @Override
     public void handleUpdate(UpdateHandler handler) {

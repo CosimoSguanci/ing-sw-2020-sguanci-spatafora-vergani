@@ -30,18 +30,16 @@ public enum CommandType {
      *
      * @return the matching command-type
      * @throws BadCommandException if parameter string does not represent any CommandType
-     *
      */
     public static CommandType parseCommandType(String input) {
         try {
             return Enum.valueOf(CommandType.class, input.toUpperCase());
-        } catch(IllegalArgumentException e) {
-           if(input.toUpperCase().equals("END")) {
-               return END_TURN;
-           }
-           else {
-               throw new BadCommandException();
-           }
+        } catch (IllegalArgumentException e) {
+            if (input.toUpperCase().equals("END")) {
+                return END_TURN;
+            } else {
+                throw new BadCommandException();
+            }
         }
     }
 
@@ -52,13 +50,12 @@ public enum CommandType {
      * Matching takes place when the string is equal to a sort of .toString for CommandType.
      *
      * @return true if the string matches a CommandType of "Help class", false otherwise
-     *
      */
     public static boolean isHelperCommandType(String command) {
         CommandType enumCommand;
         try {
             enumCommand = Enum.valueOf(CommandType.class, command.toUpperCase());
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return false;
         }
         return enumCommand.equals(CommandType.HELP) || enumCommand.equals(CommandType.INFO) || enumCommand.equals(CommandType.QUIT) || enumCommand.equals(CommandType.TURN) || enumCommand.equals(CommandType.RULES) || enumCommand.equals(CommandType.GOD) || enumCommand.equals(CommandType.BOARD);

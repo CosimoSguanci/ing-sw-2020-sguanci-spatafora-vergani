@@ -25,6 +25,7 @@ public abstract class Update implements Serializable {
 
     /**
      * Serialized Board getter
+     *
      * @return JSON String Serialized version of the Match Board
      */
     public String getBoard() {
@@ -33,8 +34,9 @@ public abstract class Update implements Serializable {
 
     /**
      * Utility method used to implement Visitor Pattern for Updates handling.
-     * @see UpdateHandler
+     *
      * @param handler which handle the updates to update the View
+     * @see UpdateHandler
      */
     public abstract void handleUpdate(UpdateHandler handler);
 }

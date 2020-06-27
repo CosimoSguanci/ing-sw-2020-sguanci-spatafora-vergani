@@ -293,7 +293,7 @@ public class BoardScreen extends JPanel {
      * a different thread at the first moment in which this class is invoked.
      *
      * @return a Map which contains references to all colored workers in different
-     *      dimension due to adapt them according to window size.
+     * dimension due to adapt them according to window size.
      */
     public static Map<String, Map<String, ImageIcon>> getWorkerIcons() {
         return workerIcons;

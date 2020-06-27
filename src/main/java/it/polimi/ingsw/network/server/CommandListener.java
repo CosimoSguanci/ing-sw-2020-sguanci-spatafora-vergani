@@ -6,10 +6,8 @@ import it.polimi.ingsw.network.ObjectListenerDelegate;
 import it.polimi.ingsw.observer.Observable;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 
 public class CommandListener extends Observable<Command> implements ObjectListener, Runnable {
     private final ObjectListenerDelegate objectListenerDelegate;
@@ -41,10 +39,9 @@ public class CommandListener extends Observable<Command> implements ObjectListen
 
     @Override
     public void forwardNotify(Object command) {
-        if(command instanceof String && command.equals(Server.PING_MSG)) {
+        if (command instanceof String && command.equals(Server.PING_MSG)) {
             server.removeFromPingWaitingList(socket);
-        }
-        else {
+        } else {
             if (command instanceof Command) {
                 notify((Command) command);
             }
@@ -53,7 +50,7 @@ public class CommandListener extends Observable<Command> implements ObjectListen
 
     @Override
     public void handleConnectionTimeoutExpired() throws IOException {
-        if(server.waitingPingFrom(socket)) {
+        if (server.waitingPingFrom(socket)) {
             socket.close();
         } else {
             server.addToPingWaitingList(socket);

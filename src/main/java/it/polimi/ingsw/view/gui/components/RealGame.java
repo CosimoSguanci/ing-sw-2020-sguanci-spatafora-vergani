@@ -60,6 +60,7 @@ public class RealGame extends Game implements ActionListener {
     /**
      * This public method is a simple setter of the CommandType attribute
      * of the class lastCommand in which the last command, after clicking on a button
+     *
      * @param lastCommand contains the type of the last command generated.
      */
     public void setLastCommand(CommandType lastCommand) {
@@ -68,6 +69,7 @@ public class RealGame extends Game implements ActionListener {
 
     /**
      * This method is a simple getter of the selectedWorkerButton, attribute of the class.
+     *
      * @return a reference to a button whose cell referred contains the selected worker.
      */
     public JCellButton getSelectedWorker() {
@@ -76,8 +78,9 @@ public class RealGame extends Game implements ActionListener {
 
     /**
      * This method is a simple getter of the selectedCellButton, attribute of the class.
+     *
      * @return a reference to a button whose cell referred is the cell in which a player
-     *          wants his worker to move or build in.
+     * wants his worker to move or build in.
      */
     public JCellButton getSelectedCellButton() {
         return this.selectedCellButton;
@@ -86,6 +89,7 @@ public class RealGame extends Game implements ActionListener {
     /**
      * This method is a setter of the class. It handles the remove of the
      * content of the component and handles the draw on it.
+     *
      * @param board is a String JSon-format which contains information
      *              about all the cell involved in the match board.
      */
@@ -242,6 +246,7 @@ public class RealGame extends Game implements ActionListener {
      * border cell will be yellow-colored. Once decided the worker, player can select
      * another cell whose border will be blue-colored and it indicates the
      * cell in which the command will take place.
+     *
      * @param e contains a reference to the JCellbutton clicked
      */
     @Override

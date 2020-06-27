@@ -26,7 +26,6 @@ public class GodChoiceCommand extends Command {
      * @param chosenGods the list of gods chosen by the player: this list contains more than one
      *                   element only if the player is god-chooser; otherwise, only one god can
      *                   be selected
-     *
      */
     public GodChoiceCommand(List<String> chosenGods) {
         super(CommandType.SELECT);
@@ -38,7 +37,6 @@ public class GodChoiceCommand extends Command {
      * This method is the getter for the list of chosen gods.
      *
      * @return the list of gods chosen by the player (only one god if he/she is not god-chooser)
-     *
      */
     public List<String> getChosenGods() {
         return chosenGods;

@@ -17,22 +17,20 @@ public class ObjectListenerDelegate {
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             while (objectListener.isActive()) {
 
-              try {
+                try {
                     Object inputObject = objectInputStream.readObject();
                     objectListener.forwardNotify(inputObject);
 
-                } catch(SocketTimeoutException e) {
+                } catch (SocketTimeoutException e) {
                     objectListener.handleConnectionTimeoutExpired();
                 }
             }
-        } catch (IOException | ClassNotFoundException e){
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
 
-            if(objectListener.isActive()) {
+            if (objectListener.isActive()) {
                 objectListener.handleConnectionReset();
-            }
-
-            else {
+            } else {
                 objectListener.setIsActive(false);
             }
 

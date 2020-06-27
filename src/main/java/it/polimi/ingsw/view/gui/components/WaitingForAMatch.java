@@ -46,6 +46,7 @@ public class WaitingForAMatch extends JPanel {
 
     /**
      * This method is used to set the backGround image of the component
+     *
      * @param g
      */
     @Override

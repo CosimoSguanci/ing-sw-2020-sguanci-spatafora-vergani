@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.updates.ServerUnreachableUpdate;
 import it.polimi.ingsw.model.updates.Update;
 import it.polimi.ingsw.network.ObjectListener;
 import it.polimi.ingsw.network.ObjectListenerDelegate;
-import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.observer.Observable;
 
 import java.io.IOException;
@@ -41,14 +40,14 @@ public class UpdateListener extends Observable<Update> implements ObjectListener
 
     @Override
     public void forwardNotify(Object update) {
-        if(update instanceof Update) {
+        if (update instanceof Update) {
             notify((Update) update);
         }
     }
 
     @Override
     public void handleConnectionTimeoutExpired() throws IOException {
-        if(!isActive()) {
+        if (!isActive()) {
             socket.close();
         }
     }

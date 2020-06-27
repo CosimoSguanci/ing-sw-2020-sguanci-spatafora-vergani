@@ -16,12 +16,13 @@ public class WinUpdate extends Update {
     private final Player winnerPlayer;
 
     public WinUpdate(Player winnerPlayer) {
-        super( null);
+        super(null);
         this.winnerPlayer = winnerPlayer;
     }
 
     /**
      * Winner Player getter
+     *
      * @return the player who just won
      */
     public Player getWinnerPlayer() {
@@ -30,8 +31,9 @@ public class WinUpdate extends Update {
 
     /**
      * Utility method used to implement Visitor Pattern for Updates handling.
-     * @see UpdateHandler
+     *
      * @param handler which handle the updates to update the View
+     * @see UpdateHandler
      */
     @Override
     public void handleUpdate(UpdateHandler handler) {

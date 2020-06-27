@@ -26,9 +26,10 @@ public class InitialInfo {
     /**
      * This is the constructor of this class. At the moment of the creation
      * of a single instance of InitialInfo the cli associated to it is set
+     *
      * @param cli contains reference to the Cli associated
      */
-    public InitialInfo(Cli cli){
+    public InitialInfo(Cli cli) {
         this.cli = cli;
     }
 
@@ -36,6 +37,7 @@ public class InitialInfo {
      * This method handles all the commands received during INITIAL_INFO game phase.
      * It checks if a specified nickname or color has not already
      * been chosen from another player.
+     *
      * @param splitCommand is an array of strings which contains, separately,
      *                     all the different words entered in the console.
      *                     It is expected in a particular format, therefore
@@ -58,14 +60,14 @@ public class InitialInfo {
 
         String color = splitCommand[2];
 
-        if(!PrintableColor.isValidColor(color)) {
+        if (!PrintableColor.isValidColor(color)) {
             cli.println("Not a valid color");
             throw new BadCommandException();
         }
 
         PrintableColor actualColor = Enum.valueOf(PrintableColor.class, color.toUpperCase());
 
-        if(!cli.getSelectableColors().contains(actualColor)) {
+        if (!cli.getSelectableColors().contains(actualColor)) {
             throw new InvalidColorException();
         }
 

@@ -69,8 +69,9 @@ public class GodChoice extends JPanel implements ActionListener {
      * This method is a simple getter of all the God selectable.
      * GodChooser player will see all the names of the Gods available in Santorini Game.
      * Other players will see only the names of the Gods chosen by GodChooser
+     *
      * @return a list which contains String with references to available Gods,
-     *  based on the player.
+     * based on the player.
      */
     public List<String> getSelectableGods() {
         return this.selectableGods;
@@ -79,6 +80,7 @@ public class GodChoice extends JPanel implements ActionListener {
     /**
      * This method is used to set the selectableGods List with Gods' name
      * according to different players.
+     *
      * @param selectableGods contains a list of God names available.
      */
     public void setSelectableGods(List<String> selectableGods) {
@@ -87,6 +89,7 @@ public class GodChoice extends JPanel implements ActionListener {
 
     /**
      * This method is used to set the background of different buttons.
+     *
      * @param g contains a reference to the component we want to set a background image.
      */
     @Override
@@ -98,6 +101,7 @@ public class GodChoice extends JPanel implements ActionListener {
     /**
      * This method is used to notify to all the players involved in the match
      * the nickname of the opponents, distinguishing the case with only one or more opponents.
+     *
      * @param opponents contains a Set of string with nicknames of player involved in the match
      */
     public void setOtherPlayersNicknames(Set<String> opponents) {
@@ -106,7 +110,7 @@ public class GodChoice extends JPanel implements ActionListener {
         String opponentsStr;
 
         opponents = opponents.stream().map(opponent -> {
-            if(opponent.length() < 10)
+            if (opponent.length() < 10)
                 return opponent;
             else
                 return opponent.substring(0, 10);
@@ -131,6 +135,7 @@ public class GodChoice extends JPanel implements ActionListener {
      * This method manages all the click on the GodChoice game phase buttons.
      * When a user press a button, the God associated to the button will be made "selected".
      * To unselect a God already chosen a player may clicks a second time on it.
+     *
      * @param button contains reference to the button clicked.
      */
     public void setGodChoiceSelected(JButton button) {
@@ -286,6 +291,7 @@ public class GodChoice extends JPanel implements ActionListener {
      * This method manages the activities linked to the clicks on the continue button of the class.
      * It manages cases in which GodChooser player tries to select fewer Gods than necessary
      * and the case in which a generic player clicks continue button having no selected a God.
+     *
      * @param e contains reference to the continue button.
      */
     @Override

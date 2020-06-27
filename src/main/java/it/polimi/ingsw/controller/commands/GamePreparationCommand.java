@@ -34,11 +34,10 @@ public class GamePreparationCommand extends Command {
      * because this is what players must do in this phase; then, the positions of the workers are
      * selected.
      *
-     * @param workerFirstRow the row of the cell where the first worker must be placed
-     * @param workerFirstCol the column of the cell where the first worker must be placed
+     * @param workerFirstRow  the row of the cell where the first worker must be placed
+     * @param workerFirstCol  the column of the cell where the first worker must be placed
      * @param workerSecondRow the row of the cell where the second worker must be placed
      * @param workerSecondCol the column of the cell where the second worker must be placed
-     *
      */
     public GamePreparationCommand(int workerFirstRow, int workerFirstCol, int workerSecondRow, int workerSecondCol) { // todo command -> private constructors (updates package protected)
 
@@ -56,7 +55,6 @@ public class GamePreparationCommand extends Command {
      * This method sets the cell where the first worker must be placed.
      *
      * @param workerFirstCell first worker's selected cell
-     *
      */
     public void setWorkerFirstCell(Cell workerFirstCell) {
         this.workerFirstCell = workerFirstCell;
@@ -66,7 +64,6 @@ public class GamePreparationCommand extends Command {
      * This method sets the cell where the second worker must be placed.
      *
      * @param workerSecondCell second worker's selected cell
-     *
      */
     public void setWorkerSecondCell(Cell workerSecondCell) {
         this.workerSecondCell = workerSecondCell;
@@ -76,7 +73,6 @@ public class GamePreparationCommand extends Command {
      * This method gets the cell where the first worker must be placed.
      *
      * @return first worker's selected cell
-     *
      */
     public Cell getWorkerFirstCell() {
         return workerFirstCell;
@@ -87,7 +83,6 @@ public class GamePreparationCommand extends Command {
      * This method gets the cell where the second worker must be placed.
      *
      * @return second worker's selected cell
-     *
      */
     public Cell getWorkerSecondCell() {
         return workerSecondCell;

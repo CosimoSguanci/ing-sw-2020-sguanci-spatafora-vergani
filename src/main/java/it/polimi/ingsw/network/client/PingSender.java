@@ -29,7 +29,7 @@ public class PingSender implements Runnable {
      * given stream (from client to server) at specific times.
      *
      * @param objectOutputStream stream where ping messages must be sent
-     * @param scheduler contains time and settings for ping message sending
+     * @param scheduler          contains time and settings for ping message sending
      */
     PingSender(ObjectOutputStream objectOutputStream, ScheduledExecutorService scheduler) {
         this.objectOutputStream = objectOutputStream;
@@ -43,7 +43,7 @@ public class PingSender implements Runnable {
     public void run() {
         try {
             this.objectOutputStream.writeObject(Server.PING_MSG);
-        } catch(IOException e) {
+        } catch (IOException e) {
             scheduler.shutdown();
         }
     }

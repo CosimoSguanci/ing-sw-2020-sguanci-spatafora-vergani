@@ -2,7 +2,9 @@ package it.polimi.ingsw.controller.commands;
 
 import it.polimi.ingsw.controller.CommandHandler;
 import it.polimi.ingsw.exceptions.BadCommandException;
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.BlockType;
+import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Worker;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -42,15 +44,15 @@ public class PlayerCommand extends Command {
      * such as the commandType (move, build, ...), the interested worker, the destination-cell
      * of move/build and an optional level (in case of building a block).
      *
-     * @param commandType the type of command, specific of RealGame phase
-     * @param workerID ID of worker to move/build with; null if the operation involves no
-     *                 worker (such as an end of turn)
-     * @param row an integer representing the row of cell where to move/build in; possible
-     *            values are from 0 to number of rows in Board minus one; -1 if the operation
-     *            involves no cell (such as an end of turn)
-     * @param col an integer representing the column of cell where to move/build in; possible
-     *            values are from 0 to number of columns in Board minus one; -1 if the
-     *            operation involves no cell (such as an end of turn)
+     * @param commandType   the type of command, specific of RealGame phase
+     * @param workerID      ID of worker to move/build with; null if the operation involves no
+     *                      worker (such as an end of turn)
+     * @param row           an integer representing the row of cell where to move/build in; possible
+     *                      values are from 0 to number of rows in Board minus one; -1 if the operation
+     *                      involves no cell (such as an end of turn)
+     * @param col           an integer representing the column of cell where to move/build in; possible
+     *                      values are from 0 to number of columns in Board minus one; -1 if the
+     *                      operation involves no cell (such as an end of turn)
      * @param cellBlockType the type of block that the player wants to build; null if the
      *                      operation is not a build, or the player wants to build the default
      *                      level (so he/she wants to build just one level higher)
@@ -121,7 +123,7 @@ public class PlayerCommand extends Command {
     /**
      * Static method used to parse a String command input by the user (CLI) into a PlayerCommand instance using String-rep for Workers.
      *
-     * @param command  input String taken from Standard Input
+     * @param command input String taken from Standard Input
      * @return the corresponding PlayerCommand instance (if the command is well formatted)
      * @throws BadCommandException if the command String is not well formatted
      */

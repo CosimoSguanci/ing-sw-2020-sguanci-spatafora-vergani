@@ -57,6 +57,7 @@ public class InitialInfo extends JPanel implements ActionListener {
 
     /**
      * This is a simple setter of the List of printableColors player can choose.
+     *
      * @param selectableColors contains colors users can still select.
      */
     public void setSelectableColors(List<PrintableColor> selectableColors) {
@@ -68,6 +69,7 @@ public class InitialInfo extends JPanel implements ActionListener {
     /**
      * This method is a simple setter of the String list selectedNickname,
      * attribute of the class. It contains all the nicknames already chosen from players in a match.
+     *
      * @param selectedNicknames is a list of already chosen nicknames in the match.
      */
     public void setSelectedNicknames(List<String> selectedNicknames) {
@@ -76,6 +78,7 @@ public class InitialInfo extends JPanel implements ActionListener {
 
     /**
      * This method is used to set the background of the component layout.
+     *
      * @param g contains a reference to the component we want to set a background image.
      */
     @Override
@@ -190,6 +193,7 @@ public class InitialInfo extends JPanel implements ActionListener {
      * none information is sent to the server and the user is notified about a
      * bad nickname chosen. In a positive case it send the info to
      * the server and the game goes on.
+     *
      * @param e contains reference to the event that triggered the listener.
      */
     @Override
@@ -212,7 +216,6 @@ public class InitialInfo extends JPanel implements ActionListener {
      * This private method manages the activities once a user choose a valid nickname and a color.
      * It handles the content removal of the component, displays a loading message and set the
      * playerNickname of the Client associated to the Gui with the nickname chosen
-     *
      */
     private void onInitialInfoSent() {
         this.removeAll();

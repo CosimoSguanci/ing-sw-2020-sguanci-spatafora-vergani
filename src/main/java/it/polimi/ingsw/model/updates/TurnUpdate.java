@@ -22,6 +22,7 @@ public class TurnUpdate extends Update {
 
     /**
      * New current player getter
+     *
      * @return the new current player
      */
     public Player getCurrentPlayer() {
@@ -30,8 +31,9 @@ public class TurnUpdate extends Update {
 
     /**
      * Utility method used to implement Visitor Pattern for Updates handling.
-     * @see UpdateHandler
+     *
      * @param handler which handle the updates to update the View
+     * @see UpdateHandler
      */
     @Override
     public void handleUpdate(UpdateHandler handler) {

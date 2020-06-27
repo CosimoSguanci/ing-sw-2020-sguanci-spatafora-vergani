@@ -43,6 +43,7 @@ public class LoseUpdate extends Update {
 
     /**
      * Loser Player Getter
+     *
      * @return the Player who just lost
      */
     public Player getLoserPlayer() {
@@ -51,6 +52,7 @@ public class LoseUpdate extends Update {
 
     /**
      * Lose Cause Getter
+     *
      * @return what caused the Player to lost
      */
     public LoseCause getLoseCause() {
@@ -59,8 +61,9 @@ public class LoseUpdate extends Update {
 
     /**
      * Utility method used to implement Visitor Pattern for Updates handling.
-     * @see UpdateHandler
+     *
      * @param handler which handle the updates to update the View
+     * @see UpdateHandler
      */
     @Override
     public void handleUpdate(UpdateHandler handler) {

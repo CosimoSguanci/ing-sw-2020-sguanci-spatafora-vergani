@@ -14,7 +14,6 @@ import java.util.Map;
  * @author Cosimo Sguanci
  */
 public class ErrorUpdate extends Update {
-    private static final long serialVersionUID = -6803649711188401133L;
 
     /**
      * The command type which caused the error
@@ -43,6 +42,7 @@ public class ErrorUpdate extends Update {
 
     /**
      * Current player getter
+     *
      * @return the Player who caused the error
      */
     public Player getCurrentPlayer() {
@@ -51,6 +51,7 @@ public class ErrorUpdate extends Update {
 
     /**
      * Inhibitor God getter
+     *
      * @return String representation of the gods which denied the attempted command
      */
     public Map<String, String> getInhibitorGod() {
@@ -59,8 +60,9 @@ public class ErrorUpdate extends Update {
 
     /**
      * Utility method used to implement Visitor Pattern for Updates handling.
-     * @see UpdateHandler
+     *
      * @param handler which handle the updates to update the View
+     * @see UpdateHandler
      */
     @Override
     public void handleUpdate(UpdateHandler handler) {

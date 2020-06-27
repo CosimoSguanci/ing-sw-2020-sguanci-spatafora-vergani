@@ -20,6 +20,7 @@ public class GamePreparation {
      * This is the constructor method of the class.
      * It make an association between an instance of this class
      * and the Cli associated to it.
+     *
      * @param cli is the instance of Cli associated to GamePreparation.
      */
     public GamePreparation(Cli cli) {
@@ -30,6 +31,7 @@ public class GamePreparation {
      * This method parses the input and once it receive a well formed command
      * it notifies to the Cli, printing to wait for other players to do the same,
      * placing their workers.
+     *
      * @param command
      */
     public void handle(String command) {

@@ -138,6 +138,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
     /**
      * This private method is a simple getter of the number of players
      * selected for a specific match.
+     *
      * @return the integer number which indicates how many player a user wants in his match.
      */
     private int getPlayerNumberSelected() {
@@ -152,6 +153,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
      * This method manages the activities on a button clicked. From a listener of a button
      * the reference of a button clicked is given as parameter and comparing it with the
      * buttons of the class it manages the button selected and the other one.
+     *
      * @param button
      */
     public void setPlayerNumberSelected(JRadioButton button) {
@@ -184,6 +186,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
     /**
      * This method manages the activities on the continueButton.
      * When continue button is clicked a new gui component is generated.
+     *
      * @param e contains reference to the event that triggered the listener.
      */
     @Override

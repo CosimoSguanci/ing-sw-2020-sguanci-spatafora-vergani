@@ -17,6 +17,7 @@ public class RealGame {
     /**
      * This is the constructor of this class. At the moment of the creation
      * of a single instance of RealGame the cli associated to it is set
+     *
      * @param cli contains reference to the Cli associated
      */
     public RealGame(Cli cli) {
@@ -27,6 +28,7 @@ public class RealGame {
      * This method handles commands during REAL_GAME game phase.
      * It makes a first parse of the input received from console and
      * if it is a valid one it notifies it to the controller
+     *
      * @param command contains a command received from console.
      */
     public void handleRealGame(String command) {
