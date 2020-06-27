@@ -5,14 +5,28 @@ import it.polimi.ingsw.view.UpdateHandler;
 
 import java.util.Map;
 
+/**
+ * This class represents an update sent from Server to Client every time new initial info have been chosen (so the game state changed)
+ * (example: a Player chose its nickname and color)
+ *
+ * @author Cosimo Sguanci
+ */
 public class InitialInfoUpdate extends Update {
-    private final Map<String, PrintableColor> initialInfo; // Nickname : Color
+
+    /**
+     * Association between players nicknames and colors (Nickname : Color)
+     */
+    private final Map<String, PrintableColor> initialInfo;
 
     public InitialInfoUpdate(Map<String, PrintableColor> initialInfo) {
         super( null);
         this.initialInfo = initialInfo;
     }
 
+    /**
+     * Current Initial Info Getter
+     * @return a map containing the current nickname - color association
+     */
     public Map<String, PrintableColor> getInitialInfo() {
         return this.initialInfo;
     }

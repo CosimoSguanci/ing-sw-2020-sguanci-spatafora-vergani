@@ -3,14 +3,30 @@ package it.polimi.ingsw.model.updates;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.view.UpdateHandler;
 
+/**
+ * This class represents an update sent from Server to Client every time a Player loses.
+ *
+ * @author Cosimo Sguanci
+ */
 public class LoseUpdate extends Update {
 
+    /**
+     * Enum representing what made the Player lose, in this case a Player
+     * can lose if it can't move when its turn starts, or if it can't build after a move command.
+     */
     public enum LoseCause {
         CANT_MOVE,
         CANT_BUILD,
     }
 
+    /**
+     * The Player who lost
+     */
     private final Player loserPlayer;
+
+    /**
+     * What caused the Player to lost
+     */
     private final LoseCause loseCause;
 
     /**
@@ -25,11 +41,18 @@ public class LoseUpdate extends Update {
         this.loseCause = loseCause;
     }
 
-
+    /**
+     * Loser Player Getter
+     * @return the Player who just lost
+     */
     public Player getLoserPlayer() {
         return this.loserPlayer;
     }
 
+    /**
+     * Lose Cause Getter
+     * @return what caused the Player to lost
+     */
     public LoseCause getLoseCause() {
         return this.loseCause;
     }
