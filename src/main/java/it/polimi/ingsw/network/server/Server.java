@@ -32,13 +32,12 @@ import java.util.stream.Collectors;
  */
 public class Server implements Observer<Controller> {
 
+    public final static int TIMEOUT_MS = 2000;
+    public final static String PING_MSG = "PING";
     private static final int PORT = 12345;
     private static final int MAX_PLAYERS_NUM = 3;
     private static boolean isActive;
     private final ServerSocket serverSocket;
-    public final static int TIMEOUT_MS = 2000;
-    public final static String PING_MSG = "PING";
-
     /**
      * Cached ThreadPool without idle threads termination
      */
@@ -158,7 +157,6 @@ public class Server implements Observer<Controller> {
     /**
      * The method makes server active (effectively); through this, server is able to accept connections coming
      * from clients. A client-handler is created and executed for every client connected to server.
-     *
      */
     public void runServer() {
         System.out.println("Waiting for incoming connections...");
@@ -245,9 +243,15 @@ public class Server implements Observer<Controller> {
 
     }
 
-
+    /**
+     * Updates implemented following Observer Pattern.
+     * This method is fired from the Controller (Server is an observer of Controller) when a Player wins the Match,
+     * in order to start the procedures needed to gracefully end a match and remove all the reference to it.
+     *
+     * @param controller the Controller instance corresponding to the Match which is about to end.
+     */
     @Override
-    public void update(Controller controller) { // Notify by the Controller when a match ends, so a Player won
+    public void update(Controller controller) {
 
         Set<ClientHandler> clientHandlers = controllerClientsMap.get(controller);
 
