@@ -13,10 +13,10 @@ import it.polimi.ingsw.exceptions.CellNotEmptyException;
  * @author Cosimo Sguanci
  */
 public class Cell {
-    private BlockType level;
-    private Worker worker;
     private final int rowIdentifier;
     private final int colIdentifier;
+    private BlockType level;
+    private Worker worker;
 
 
     /**
@@ -56,7 +56,7 @@ public class Cell {
      * The method is a simple setter of the worker on the considered cell.
      */
     public void setWorker(Worker worker) {
-         this.worker = worker;
+        this.worker = worker;
     }
 
 
@@ -71,19 +71,29 @@ public class Cell {
         return this.level;
     }
 
+    /**
+     * If a level is empty, the level is changed to that passed as parameter
+     *
+     * @param level the new level to be set for this Cell
+     * @throws CellNotEmptyException if the Cell is not currently empty
+     */
+    public void setLevel(BlockType level) {
+        if (this.isEmpty()) {
+            this.level = level;
+        } else {
+            throw new CellNotEmptyException();
+        }
+    }
 
     /**
-     * The method is thought to perform a build on the considered cell. Every build
-     * increases the level of the cell of one block, if it is possible. An exception is
-     * thrown when the level is the highest one (dome), so no increase is possible
-     */
-    /*
-     * @throws Exception when someone is trying to increase the level of the cell, but the
-     * actual level is the highest one: a dome
+     * This method is thought to perform a build on the considered cell. Every build
+     * increases the level of the cell of one block, if it is possible.
+     *
+     * @throws CannotIncreaseLevelException is thrown when the level is the highest one (dome), so no increase is possible
      */
     public void increaseLevel() throws CannotIncreaseLevelException {
 
-        switch(this.level) {
+        switch (this.level) {
             case GROUND:
                 this.level = BlockType.LEVEL_ONE;
                 break;
@@ -102,17 +112,6 @@ public class Cell {
         }
     }
 
-
-    public void setLevel(BlockType level) {
-        if (this.isEmpty()) {
-            this.level = level;
-        }
-        else {
-            throw new CellNotEmptyException();
-        }
-    }
-
-
     /**
      * The method returns the difference between the level of the caller-cell and the
      * level of the parameter-cell, using attribute 'levelNumber' of class 'BlockType'.
@@ -123,12 +122,11 @@ public class Cell {
      * cells are adjacent, this method returns a value >=(-1), the parameter level is
      * not a dome and there is no worker on it
      *
-     * @param cell  cell you want to know level difference with
+     * @param cell cell you want to know level difference with
      * @return level difference between caller-cell and parameter-cell
      */
-    //tested
     public int levelDifference(Cell cell) {
-        return this.getLevel().getLevelNumber()-cell.getLevel().getLevelNumber();
+        return this.getLevel().getLevelNumber() - cell.getLevel().getLevelNumber();
     }
 
 
@@ -142,17 +140,18 @@ public class Cell {
      * cells are adjacent, this method returns true, the parameter level is
      * not a dome and there is no worker on it
      *
-     * @param destination  cell you want to move to
+     * @param destination cell you want to move to
      * @return true if level difference between caller-cell and parameter-cell is >=(-1)
      */
-    public boolean isLevelDifferenceOk (Cell destination) {
+    public boolean isLevelDifferenceOk(Cell destination) {
         return this.levelDifference(destination) >= -1;
     }
 
     /**
      * The method is a getter of the row index of the relative cell in the board.
      *
-     * @return the int number that identifies the cell in board's rows.*/
+     * @return the int number that identifies the cell in board's rows.
+     */
     public int getRowIdentifier() {
         return this.rowIdentifier;
     }
@@ -161,7 +160,8 @@ public class Cell {
     /**
      * The method is a getter of the column index of the relative cell in the board.
      *
-     * @return the int number that identifies the cell in board's columns.*/
+     * @return the int number that identifies the cell in board's columns.
+     */
     public int getColIdentifier() {
         return this.colIdentifier;
     }
@@ -172,14 +172,13 @@ public class Cell {
      * the board. Reading game rules, every cell has (up to) eight neighbouring
      * spaces: so, two cells are adjacent when they have at least one point in common
      *
-     * @param other   possible adjacent cell to the caller-cell
+     * @param other possible adjacent cell to the caller-cell
      * @return true if parameter-cell and caller-cell are adjacent; otherwise, false
-     *
      */
     public boolean isAdjacentTo(Cell other) {
-        int iDiff = this.getRowIdentifier()-other.getRowIdentifier();
-        int jDiff = this.getColIdentifier()-other.getColIdentifier();
-        if(iDiff == 0 && jDiff == 0) return false;
+        int iDiff = this.getRowIdentifier() - other.getRowIdentifier();
+        int jDiff = this.getColIdentifier() - other.getColIdentifier();
+        if (iDiff == 0 && jDiff == 0) return false;
         else return (Math.abs(iDiff) <= 1 && Math.abs(jDiff) <= 1);
     }
 }

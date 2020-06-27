@@ -5,7 +5,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This enum represent a color that the Player can choose in the Initial Info game phase.
+ *
+ * @author Roberto Spatafora
+ */
 public enum PrintableColor {
+    /**
+     * Currently available colors
+     */
     RED, GREEN, BLUE, YELLOW, PURPLE;
 
     public static final String RESET = "\u001B[0m";
@@ -17,16 +25,26 @@ public enum PrintableColor {
     static final String YELLOW_ANSI = "\u001B[33m";
     static final String PURPLE_ANSI = "\u001B[35m";
 
-
+    /**
+     * Utility method used to check if a color typed by the user is valid or not
+     *
+     * @param color the String representation of a color
+     * @return true if the parameter is a valid color, false otherwise
+     */
     public static boolean isValidColor(String color) {
         try {
             Enum.valueOf(PrintableColor.class, color.toUpperCase());
             return true;
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return false;
         }
     }
 
+    /**
+     * Method useful to get all the colors which can be chosen
+     *
+     * @return the list of all available colors when Initial Info phase starts.
+     */
     public static List<PrintableColor> getColorList() {
         ArrayList<PrintableColor> colors = new ArrayList<>();
         Collections.addAll(colors, PrintableColor.values());
@@ -36,6 +54,7 @@ public enum PrintableColor {
     /**
      * This method converts a color given as parameter according to enum
      * defined, and it is used to have the correct correspondence Ansi color.
+     *
      * @param color is the PrintableColor you want to calculate the Ansi code
      * @return the string of the respective Ansi color.
      */
@@ -54,6 +73,12 @@ public enum PrintableColor {
         }
     }
 
+    /**
+     * Utility method used to convert a PrintableColor to a displayable {@link Color} instance.
+     *
+     * @param color the printable color which has to be converted
+     * @return the right Color instance for the parameter passed
+     */
     public static Color convertToColor(PrintableColor color) {
         switch (color) {
             case RED:

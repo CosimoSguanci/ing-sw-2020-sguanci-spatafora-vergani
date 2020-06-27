@@ -33,6 +33,11 @@ public enum BlockType {
         return this.levelNumber;
     }
 
+    /**
+     * Static method used to convert a blockType to its CLI representation.
+     * @param level the BlockType whose CLI representation is requested
+     * @return the level's CLI representation, to be showed in the command line View.
+     */
     public static String convertBlockTypeToText(BlockType level) {
         switch (level) {
             case GROUND:

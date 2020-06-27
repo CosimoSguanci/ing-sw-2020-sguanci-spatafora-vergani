@@ -62,7 +62,7 @@ public class Board {
 
 
     /**
-     * The method controls if a movement is possible for a considered player, with one
+     * This method controls if a movement is possible for a considered player, with one
      * of his workers
      *
      * @param player is the considered player, so the one you want to study possible movements
@@ -76,13 +76,21 @@ public class Board {
         return (possibleOne || possibleTwo);
     }
 
+    /**
+     * This methods returns all the Cells in which a worker could currently potentially move.
+     *
+     * @param worker the worker whose available move cells are requested
+     * @return a List of the possible Cells where the Worker could move to
+     */
     public List<Cell> getAvailableMoveCells(Worker worker) {
 
         List<Cell> availableMoveCells = new ArrayList<>();
 
         for (int i = 0; i < Board.WIDTH_SIZE; i++) {
             for (int j = 0; j < Board.HEIGHT_SIZE; j++) {
-                if ((worker.getPosition().isAdjacentTo(board[i][j]) && worker.getPosition().isLevelDifferenceOk(board[i][j]) && board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()))
+                if ((worker.getPosition().isAdjacentTo(board[i][j]) &&
+                        worker.getPosition().isLevelDifferenceOk(board[i][j]) &&
+                        board[i][j].getLevel() != BlockType.DOME && board[i][j].isEmpty()))
                     availableMoveCells.add(board[i][j]);
             }
         }
@@ -111,6 +119,12 @@ public class Board {
         return false;
     }
 
+    /**
+     * This methods returns all the Cells in which a worker could currently potentially build a new level.
+     *
+     * @param worker the worker whose available build cells are requested
+     * @return a List of the possible Cells where the Worker could build a new level
+     */
     public List<Cell> getAvailableBuildCells(Worker worker) {
 
         List<Cell> availableBuildCells = new ArrayList<>();
@@ -141,6 +155,11 @@ public class Board {
         } else throw new InvalidCellException();
     }
 
+    /**
+     * Overridden version of Object's toString() method, used to create a serialized JSON version of the game Board.
+     *
+     * @return a serialized JSON string version of the game Board.
+     */
     @Override
     public String toString() {
         GsonBuilder builder = new GsonBuilder();

@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.exceptions.AlreadyInsidePlayerException;
 import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
-import it.polimi.ingsw.exceptions.NicknameAlreadyTakenException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,11 +52,12 @@ public class Match {
      * when a new player wants to enter a game room
      *
      * @param p the player who wants to join the match
-     * @throws Exception if there is no possibility for the player to join, because the selected total number has already been reached
+     * @throws InvalidPlayerNumberException if there is no possibility for the player to join, because the selected total number has already been reached
+     * @throws AlreadyInsidePlayerException if the Player passed as parameter has already been added to the match
      */
-    public void addPlayer(Player p) throws InvalidPlayerNumberException, AlreadyInsidePlayerException, NicknameAlreadyTakenException {
+    public void addPlayer(Player p) throws InvalidPlayerNumberException, AlreadyInsidePlayerException {
         if (players.size() >= playersNumber) throw new InvalidPlayerNumberException();
-        if (players.contains(p)) throw new AlreadyInsidePlayerException();  //rather than exception, notify through View
+        if (players.contains(p)) throw new AlreadyInsidePlayerException();
         players.add(p);
     }
 
@@ -67,23 +67,30 @@ public class Match {
      *
      * @param p the player to be removed from the match
      */
-    //when current player is removed, turn goes directly to the next player, without calling nextTurn()
     public void removePlayer(Player p) {
-        int position = players.indexOf(p);  //index of p in the array-list; -1 if not present
-        if (position >= 0) {  //p is in the array-list
+        int position = players.indexOf(p);
+        if (position >= 0) {
             players.remove(position);
             players.trimToSize();
-            //when current player is removed, turn goes directly to the next player, without calling nextTurn()
+            // when current player is removed, turn goes directly to the next player, without calling nextTurn()
             if (position == players.size()) {
                 turn = 0;
             }
         }
     }
 
+    /**
+     * Match players list getter
+     * @return the list of the currently playing users.
+     */
     public List<Player> getPlayers() {
         return this.players;
     }
 
+    /**
+     * Players number getter
+     * @return the specific Players number (2 or 3 in this version) chosen for this match.
+     */
     public int getPlayersNumber() {
         return this.playersNumber;
     }
@@ -100,6 +107,10 @@ public class Match {
         this.turn = (this.turn + 1) % players.size();
     }
 
+    /**
+     * Initial Turn setter
+     * @param initialTurn the initial turn for this match
+     */
     public void setInitialTurn(int initialTurn) {
         this.turn = initialTurn;
     }

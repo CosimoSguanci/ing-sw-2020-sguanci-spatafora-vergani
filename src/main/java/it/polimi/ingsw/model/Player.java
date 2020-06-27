@@ -58,10 +58,17 @@ public class Player implements Serializable {
         this.color = color;
     }
 
+    /**
+     * Determines if this Player is the GodChooser for its match, or not.
+     * @return true if the Player is the GodChooser, false otherwise.
+     */
     public boolean isGodChooser() {
         return this.isGodChooser;
     }
 
+    /**
+     * GodChooser property setter
+     */
     public void setAsGodChooser() {
         this.isGodChooser = true;
     }
@@ -103,22 +110,42 @@ public class Player implements Serializable {
         this.godStrategy = godStrategy;
     }
 
+    /**
+     * Player's nickname getter
+     * @return the Player's nickname
+     */
     public String getNickname() {
         return this.nickname;
     }
 
+    /**
+     * Player's nickname setter
+     * @param nickname the new Player's nickname to be set
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    /**
+     * Player's ID getter
+     * @return the Player ID, which identifies a player in a match
+     */
     public String getPlayerID() {
         return this.ID;
     }
 
+    /**
+     * Player's Match getter
+     * @return the Match that this Player is playing
+     */
     public Match getMatch() {
         return this.match;
     }
 
+    /**
+     * Player's Match Model getter
+     * @return the Model instance of the Match that this Player is playing
+     */
     public Model getModel() {
         return this.model;
     }

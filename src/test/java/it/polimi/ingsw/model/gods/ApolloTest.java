@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.utils.GodsUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -82,6 +83,10 @@ public class ApolloTest {
         Apollo apollo = new Apollo();
         Apollo apollo2 = new Apollo();
         assertEquals(apollo, apollo2);
+
+        GodStrategy apollo3 = GodsUtils.godsFactory("apollo");
+        GodStrategy apollo4 = GodsUtils.godsFactory("apollo");
+        assertNotSame(apollo3, apollo4);
     }
 
 }
