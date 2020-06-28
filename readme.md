@@ -31,6 +31,10 @@ java -jar gui.jar
 
 Or you can simply double click the JAR file.
 
+## Tests Coverage Details:
+
+![Coverage](https://i.ibb.co/9H0zSVj/coverage-details-readme.png)
+
 ## Features developed:
 
 - Complete rule set of the game;
