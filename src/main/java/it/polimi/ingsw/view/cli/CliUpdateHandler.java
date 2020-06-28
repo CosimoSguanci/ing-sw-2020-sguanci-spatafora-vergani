@@ -159,8 +159,6 @@ public class CliUpdateHandler implements UpdateHandler {
 
         if (update.getExecutedCommand() != null && (update.getExecutedCommand().commandType == CommandType.BUILD || update.getExecutedCommand().commandType == CommandType.MOVE)) {
             PlayerCommand executedCommand = update.getExecutedCommand();
-
-
             cliInstance.newLine();
 
             String nickname = executedCommand.getPlayerNickname() != null ? executedCommand.getPlayerNickname() : "Player";

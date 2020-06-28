@@ -64,7 +64,7 @@ class CommandHandlerImpl implements CommandHandler {
 
             setCommandPlayerInstance(command);
 
-            if (command.row != -1 && command.col != -1) {
+            if (command.commandType != CommandType.END_TURN) { // command.row != -1 && command.col != -1
                 Cell correctCell = controllerInstance.getBoard().getCell(command.row, command.col);
                 command.setCell(correctCell);
             }
