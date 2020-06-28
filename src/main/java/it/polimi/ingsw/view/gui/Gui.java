@@ -20,6 +20,21 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * Gui class represents Graphic User Interface part of the project. The game can be played
+ * through a command-line interface or a graphic environment; project purposes are those of
+ * creating a "complete" Gui, so all what can be done with Cli is possible with Gui too.
+ * This class handles general graphic part of the application; then, many components are used
+ * to implement particular screens, situations, ...
+ * Gui and Cli class share a lot of different aspects, so they both extend View class.
+ * This class observes Update because Model's state changes (MVC pattern) arrive through Update,
+ * and they determine changes in what is displayed on screen too.
+ *
+ * @author Andrea Mario Vergani
+ * @author Cosimo Sguanci
+ * @author Roberto Spatafora
+ */
 public class Gui extends View implements Observer<Update> {
 
     public static final int FONT_REGULAR = 0;
@@ -43,12 +58,27 @@ public class Gui extends View implements Observer<Update> {
     private GodGuiDrawer godGuiDrawer;
     boolean showDisconnectedDialog = true;
 
+    /**
+     * The constructor creates an instance for Graphic User Interface, connecting it to the
+     * specific client. Some images, important for next game phases, are loaded here.
+     *
+     * @param clientInstance client to which Gui must be associated
+     * @param controllerInstance controller (client-side) of the other parameter
+     */
     private Gui(Client clientInstance, Controller controllerInstance) {
         super(clientInstance, controllerInstance);
         this.updateHandler = new GuiUpdateHandler(this, controllerInstance);
         GodScreen.loadImages();
     }
 
+    /**
+     * The method returns Gui class' instance, following Singleton design pattern.
+     * If no instance exists, it is created and associated with parameters.
+     *
+     * @param client client associated to requested Gui
+     * @param controller controller (client-side) of the other parameter
+     * @return Gui instance (if not existing, it is created)
+     */
     public static Gui getInstance(Client client, Controller controller) {
         if (guiInstance == null) {
             guiInstance = new Gui(client, controller);
@@ -56,6 +86,12 @@ public class Gui extends View implements Observer<Update> {
         return guiInstance;
     }
 
+    /**
+     * The method returns local instance of Gui class, following Singleton design pattern.
+     * If no instance exists, it is created.
+     *
+     * @return Gui instance (if not existing, it is created)
+     */
     public static Gui getInstance() {
         if (guiInstance == null) {
             return new Gui(null, null);
@@ -63,6 +99,16 @@ public class Gui extends View implements Observer<Update> {
         return guiInstance;
     }
 
+
+    /**
+     * The method returns the correct font for writing on graphic user interface, based on the
+     * parameters. Only some selected fonts are possible: in this way, all Gui components will
+     * use coherent fonts.
+     *
+     * @param fontMode font type (bold or not)
+     * @param size font size
+     * @return font with selected type and size; in case of exceptions, a generic font is returned
+     */
     public static Font getFont(int fontMode, int size) {
         try {
             InputStream inputStream;
@@ -83,6 +129,15 @@ public class Gui extends View implements Observer<Update> {
         }
     }
 
+
+    /**
+     * The method creates general graphic user interface for the main frame. After calling this method,
+     * a blank frame is visible on screen, with default dimensions; default operations and images
+     * to visualize are set, too.
+     *
+     * @param frame main frame for Gui
+     * @throws IOException if an error occurs during image reading
+     */
     static void initFrame(JFrame frame) throws IOException {
         frame.pack();
         frame.setPreferredSize(new Dimension(800, 700));
@@ -93,6 +148,11 @@ public class Gui extends View implements Observer<Update> {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * The method is the getter for Gui main frame.
+     *
+     * @return Gui main frame
+     */
     public JFrame getMainFrame() {
         return frame;
     }
@@ -101,18 +161,36 @@ public class Gui extends View implements Observer<Update> {
         return this.godGuiDrawer;
     }
 
+    /**
+     * The method sets correspondence between players and Gods, after these ones have been
+     * selected. A graphic operation related to this is also performed.
+     *
+     * @param playersGods correspondence between Gods and players
+     */
     @Override
     public void setPlayersGods(Map<String, String> playersGods) {
         super.setPlayersGods(playersGods);
         this.godGuiDrawer = GodsUtils.godsGuiFactory(playersGods.get(controller.getClientPlayer().getNickname()));
     }
 
+
+    /**
+     * The method sets correspondence between players and colors, after these ones have been
+     * selected. A graphic operation related to this is also performed.
+     *
+     * @param playersColors correspondence between colors and players
+     */
     @Override
     public void setPlayersColors(Map<String, PrintableColor> playersColors) {
         super.setPlayersColors(playersColors);
         this.godsChoiceComponent.setOtherPlayersNicknames(playersColors.keySet());
     }
 
+
+    /**
+     * The method starts graphic user interface, so this is the entry point for users
+     * who want to play a match with graphic environment.
+     */
     @Override
     public void start() {
         SwingUtilities.invokeLater(() -> {
@@ -124,6 +202,12 @@ public class Gui extends View implements Observer<Update> {
         });
     }
 
+    /**
+     * The method creates Gui main frame and prepares everything (related to graphics) for
+     * next phases. A proper call to initialize main frame is done.
+     *
+     * @throws IOException if an I/O error occurs in a called-method
+     */
     private void showGui() throws IOException {
         frame = new JFrame("Santorini");
 
@@ -138,11 +222,23 @@ public class Gui extends View implements Observer<Update> {
         initFrame(frame);
     }
 
+    /**
+     * The method handles Updates, which most of the times correspond to graphic changes.
+     * In reality, what really manages Updates is a proper update handler for Gui class.
+     *
+     * @param update update received (originally coming from server)
+     */
     @Override
     public void update(Update update) {
         SwingUtilities.invokeLater(() -> update.handleUpdate(this.updateHandler));
     }
 
+
+    /**
+     * The method starts graphic visualization for the phase in which a player waits for
+     * other people, in order to start a match. Before this, selected player number for
+     * the match is sent to server.
+     */
     public void startWaitingForMatch() {
 
         try {
@@ -160,28 +256,46 @@ public class Gui extends View implements Observer<Update> {
         this.mainCardLayout.show(mainPanel, WAITING_FOR_MATCH);
     }
 
+
+    /**
+     * The method starts graphic visualization for the phase in which every player must
+     * select a nickname and a colour for the match.
+     */
     void startInitialInfoPhase() {
         this.currentGamePhase = GamePhase.INITIAL_INFO;
         this.mainCardLayout.show(mainPanel, INITIAL_INFO);
     }
 
+    /**
+     * The method starts graphic visualization for the phase in which Gods are selected,
+     * following game rules.
+     */
     void startGodChoicePhase() {
         this.currentGamePhase = GamePhase.CHOOSE_GODS;
         this.mainCardLayout.show(mainPanel, GOD_CHOICE);
     }
 
+    /**
+     * The method starts graphic visualization for the phase in which players must place
+     * their workers on initial cells.
+     */
     void startGamePreparation() {
         this.currentGamePhase = GamePhase.GAME_PREPARATION;
         this.mainCardLayout.show(mainPanel, GAME_PREPARATION);
     }
 
+    /**
+     * The method starts graphic visualization for the phase in which the real match is
+     * played, following game rules.
+     */
     void startRealGame() {
         this.currentGamePhase = GamePhase.REAL_GAME;
         this.mainCardLayout.show(mainPanel, REAL_GAME);
     }
 
     /**
-     * Callback method called when the Game Phase changes to MATCH_ENDED or MATCH_LOST
+     * Callback method called when the Game Phase changes to MATCH_ENDED or MATCH_LOST.
+     *
      * @param newGamePhase the new current game phase
      */
     void onMatchFinished(GamePhase newGamePhase) {
