@@ -2,9 +2,8 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.AlreadyInsidePlayerException;
 import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -12,13 +11,25 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MatchTest {
 
+    private Match match;
+    private Player p1;
+    private Player p2;
+    private Player p3;
+
+    @BeforeEach
+    public void initMatchProperties() {
+
+        int playersNum = 3;
+        this.match = new Match(playersNum);
+        this.p1 = new Player("Andrea", new Model(match), match);
+        this.p2 = new Player("Cosimo", new Model(match), match);
+        this.p3 = new Player("Roberto", new Model(match), match);
+
+    }
+
     @Test
     public void addPlayerTest2() {
-        int playersNum = 3;
-        Match match = new Match(playersNum);
-        Player p1 = new Player("Andrea", new Model(match), match);
-        Player p2 = new Player("Cosimo", new Model(match), match);
-        Player p3 = new Player("Roberto", new Model(match), match);
+
         match.addPlayer(p1);
         match.addPlayer(p2);
         assertThrows(AlreadyInsidePlayerException.class, () -> match.addPlayer(p2));
@@ -28,11 +39,7 @@ public class MatchTest {
 
     @Test
     public void removePlayerTest() {
-        int playersNum = 3;
-        Match match = new Match(playersNum);
-        Player p1 = new Player("Andrea", new Model(match), match);
-        Player p2 = new Player("Cosimo", new Model(match), match);
-        Player p3 = new Player("Roberto", new Model(match), match);
+
         try {
             match.addPlayer(p1);
             match.addPlayer(p2);
@@ -73,11 +80,7 @@ public class MatchTest {
 
     @Test
     public void nextTurnTest() {
-        int playersNum = 3;
-        Match match = new Match(playersNum);
-        Player p1 = new Player("Andrea", new Model(match), match);
-        Player p2 = new Player("Cosimo", new Model(match), match);
-        Player p3 = new Player("Roberto", new Model(match), match);
+
         try {
             match.addPlayer(p1);
             match.addPlayer(p2);
@@ -105,10 +108,7 @@ public class MatchTest {
 
     @Test
     public void getCurrentPlayerTest() {
-        int playersNum = 3;
-        Match match = new Match(playersNum);
-        Player p1 = new Player("Marco", new Model(match), match);
-        Player p2 = new Player("Alessandro", new Model(match), match);
+
         try {
             match.addPlayer(p1);
             match.addPlayer(p2);

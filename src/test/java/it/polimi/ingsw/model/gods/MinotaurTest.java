@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -8,12 +9,21 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MinotaurTest {
+
+    private Minotaur minotaur;
+    private Match match;
+    private Player player;
+
+    @BeforeEach
+    public void initGameProperties() {
+        this.minotaur = new Minotaur();
+        this.match = new Match(2);
+        this.player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+    }
+
     @Test
     public void minotaurCheckMoveTest() {
-        Minotaur minotaur = new Minotaur();
 
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
         Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker oppositeWorker = oppositePlayer.getWorkerFirst();
@@ -64,10 +74,7 @@ public class MinotaurTest {
 
     @Test
     public void minotaurExecuteMoveTest() {
-        Minotaur minotaur = new Minotaur();
 
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
         Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker oppositeWorker = oppositePlayer.getWorkerFirst();
@@ -92,10 +99,7 @@ public class MinotaurTest {
 
     @Test
     public void minotaurCannotMoveTest() {
-        Minotaur minotaur = new Minotaur();
 
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker workerFirst = player.getWorkerFirst();
         Worker workerSecond = player.getWorkerSecond();
 
@@ -115,10 +119,7 @@ public class MinotaurTest {
 
     @Test
     public void minotaurCanMoveBecauseEmptyTest() {
-        Minotaur minotaur = new Minotaur();
 
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker workerFirst = player.getWorkerFirst();
         Worker workerSecond = player.getWorkerSecond();
 
@@ -137,10 +138,7 @@ public class MinotaurTest {
 
     @Test
     public void minotaurCanMoveBecauseMoveOpponentTest() {
-        Minotaur minotaur = new Minotaur();
 
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker workerFirst = player.getWorkerFirst();
         Worker workerSecond = player.getWorkerSecond();
 
@@ -162,10 +160,7 @@ public class MinotaurTest {
 
     @Test
     public void minotaurInvalidCellCheckMoveTest() {
-        Minotaur minotaur = new Minotaur();
 
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
         Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker oppositeWorker = oppositePlayer.getWorkerFirst();

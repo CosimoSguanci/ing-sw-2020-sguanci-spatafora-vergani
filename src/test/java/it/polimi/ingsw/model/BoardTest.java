@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.InvalidCellException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,21 +9,32 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTest {
 
+    private Board board;
+    private Player player;
+    private Worker w1;
+    private Worker w2;
+    private Player opponent;
+    private Worker wOpp1;
+    private Worker wOpp2;
+
+    @BeforeEach
+    public void initBoardProperties() {
+        int playersNum = 2;
+        Match match = new Match(playersNum);
+        this.board = match.getMatchBoard();
+
+        this.player = new Player("Andrea", new Model(match), match);
+        this.w1 = player.getWorkerFirst();
+        this.w2 = player.getWorkerSecond();
+
+        this.opponent = new Player("Marco", new Model(match), match);
+        this.wOpp1 = opponent.getWorkerFirst();
+        this.wOpp2 = opponent.getWorkerSecond();
+    }
+
 
     @Test
     public void canMoveTrueTest() {
-
-        int playersNum = 2;
-        Match match = new Match(playersNum);
-        Board board = match.getMatchBoard();
-
-        Player player = new Player("Andrea", new Model(match), match);
-        Worker w1 = player.getWorkerFirst();
-        Worker w2 = player.getWorkerSecond();
-
-        Player opponent = new Player("Marco", new Model(match), match);
-        Worker wOpp1 = opponent.getWorkerFirst();
-        Worker wOpp2 = opponent.getWorkerSecond();
 
         board.getCell(4, 1).setLevel(BlockType.LEVEL_TWO);
 
@@ -53,16 +65,6 @@ public class BoardTest {
 
     @Test
     public void canMoveFalseTest() {
-        int playersNum = 2;
-        Match match = new Match(playersNum);
-        Board board = match.getMatchBoard();
-        Player player = new Player("Andrea", new Model(match), match);
-        Worker w1 = player.getWorkerFirst();
-        Worker w2 = player.getWorkerSecond();
-
-        Player opponent = new Player("Marco", new Model(match), match);
-        Worker wOpp1 = opponent.getWorkerFirst();
-        Worker wOpp2 = opponent.getWorkerSecond();
 
         try {
             w1.setInitialPosition(2, 3);
@@ -92,17 +94,6 @@ public class BoardTest {
 
     @Test
     public void canBuildTrueTest() {
-
-        int playersNum = 2;
-        Match match = new Match(playersNum);
-        Board board = match.getMatchBoard();
-        Player player = new Player("Andrea", new Model(match), match);
-        Worker w1 = player.getWorkerFirst();
-        Worker w2 = player.getWorkerSecond();
-
-        Player opponent = new Player("Marco", new Model(match), match);
-        Worker wOpp1 = opponent.getWorkerFirst();
-        Worker wOpp2 = opponent.getWorkerSecond();
 
         board.getCell(4, 1).setLevel(BlockType.LEVEL_TWO);
 
@@ -135,13 +126,6 @@ public class BoardTest {
 
     @Test
     public void canBuildFalseTest() {
-
-        int playersNum = 2;
-        Match match = new Match(playersNum);
-        Board board = match.getMatchBoard();
-        Player player = new Player("Andrea", new Model(match), match);
-        Worker w1 = player.getWorkerFirst();
-        Worker w2 = player.getWorkerSecond();
 
         try {
             w1.setInitialPosition(0, 4);

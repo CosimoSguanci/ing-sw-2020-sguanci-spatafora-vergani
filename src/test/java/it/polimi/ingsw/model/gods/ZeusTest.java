@@ -11,7 +11,6 @@ public class ZeusTest {
     @Test
     public void zeusCheckBuildTest() { // Zeus Worker can build under itself
 
-
         Zeus zeus = new Zeus();
 
         Match match = new Match(2);

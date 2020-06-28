@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -9,14 +10,23 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PoseidonTest {
+
+    private Poseidon poseidon;
+    private Match match;
+    private Player player;
+
+    @BeforeEach
+    public void initGameProperties() {
+
+        this.poseidon = new Poseidon();
+        this.match = new Match(2);
+        this.player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+
+    }
+
     @Test
     public void poseidonCheckBuildGroundTest() { // Unmoved worker is on ground at the end of the turn
 
-
-        Poseidon poseidon = new Poseidon();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker movedWorker = player.getWorkerFirst();
         Worker unmovedWorker = player.getWorkerSecond();
 
@@ -42,11 +52,6 @@ public class PoseidonTest {
     @Test
     public void poseidonCheckBuildNotGroundTest() { // Unmoved worker is NOT on ground at the end of the turn
 
-
-        Poseidon poseidon = new Poseidon();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker movedWorker = player.getWorkerFirst();
         Worker unmovedWorker = player.getWorkerSecond();
 
@@ -67,10 +72,6 @@ public class PoseidonTest {
     public void poseidonEndTurnTest() {
 
 
-        Poseidon poseidon = new Poseidon();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
         Worker unmovedWorker = player.getWorkerSecond();
 

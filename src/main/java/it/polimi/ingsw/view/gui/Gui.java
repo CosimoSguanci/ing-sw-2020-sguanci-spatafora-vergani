@@ -504,7 +504,7 @@ public class Gui extends View implements Observer<Update> {
         mainPanel.add(realGame, REAL_GAME);
     }
 
-    private void reinitializeConnection() { // todo in view class
+    private void reinitializeConnection() {
         try {
             client.getUpdateListener().setIsActive(false);
             client.reinitializeConnection();

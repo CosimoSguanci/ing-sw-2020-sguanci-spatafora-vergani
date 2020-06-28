@@ -423,7 +423,7 @@ public class CliUpdateHandler implements UpdateHandler {
      */
     public void handle(ServerUnreachableUpdate update) {
         cliInstance.println("Cannot communicate to the Server, maybe it's down. Otherwise, check your connection.");
-        cliInstance.println("Quitting..."); // todo method quit()
+        cliInstance.println("Quitting...");
         System.exit(0);
     }
 

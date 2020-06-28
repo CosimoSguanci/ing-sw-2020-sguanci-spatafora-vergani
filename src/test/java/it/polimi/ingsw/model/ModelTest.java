@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.commands.Command;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -10,13 +11,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ModelTest {
 
+    private Match match;
+    private Model model;
+    private Player p1;
+    private Player p2;
+    private Player p3;
+
+    @BeforeEach
+    public void initModelProperties() {
+        int playersNum = 3;
+        this.match = new Match(playersNum);
+        this.model = new Model(match);
+        this.p1 = new Player("Roberto", model, match);
+        this.p2 = new Player("Cosimo", model, match);
+        this.p3 = new Player("Andrea", model, match);
+    }
+
     @Test
     public void getCurrentPlayerTest() {
-        int playersNum = 2;
-        Match match = new Match(playersNum);
-        Model model = new Model(match);
-        Player p1 = new Player("Marco", model, match);
-        Player p2 = new Player("Alessandro", model, match);
+
         try {
             match.addPlayer(p1);
             match.addPlayer(p2);
@@ -36,16 +49,11 @@ public class ModelTest {
 
     @Test
     public void getBoardTest() {
-        int playersNum = 3;
-        Match match = new Match(playersNum);
+
         Board board = match.getMatchBoard();
-        Model model = new Model(match);
 
         assertEquals(board, model.getBoard());
 
-        Player p1 = new Player("Andrea", model, match);
-        Player p2 = new Player("Cosimo", model, match);
-        Player p3 = new Player("Roberto", model, match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         match.addPlayer(p3);
@@ -58,12 +66,7 @@ public class ModelTest {
 
     @Test
     public void endTurnTest() {
-        int playersNum = 3;
-        Match match = new Match(playersNum);
-        Model model = new Model(match);
-        Player p1 = new Player("Roberto", model, match);
-        Player p2 = new Player("Cosimo", model, match);
-        Player p3 = new Player("Andrea", model, match);
+
         try {
             match.addPlayer(p1);
             match.addPlayer(p2);
@@ -85,13 +88,7 @@ public class ModelTest {
 
     @Test
     public void getPlayersTest() {
-        int playersNum = 3;
-        Match match = new Match(playersNum);
-        Model model = new Model(match);
 
-        Player p1 = new Player("Andrea", model, match);
-        Player p2 = new Player("Cosimo", model, match);
-        Player p3 = new Player("Roberto", model, match);
         ArrayList<Player> players = new ArrayList<>();
 
         match.addPlayer(p1);

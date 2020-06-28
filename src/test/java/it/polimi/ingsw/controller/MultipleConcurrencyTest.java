@@ -17,7 +17,7 @@ public class MultipleConcurrencyTest {
     @Disabled
     @Test
     public void runAll() {
-       while(true) {
+        while (true) {
             runOne();
         }
     }

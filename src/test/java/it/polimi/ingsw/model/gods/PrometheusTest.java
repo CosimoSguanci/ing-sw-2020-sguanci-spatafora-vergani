@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -9,16 +10,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PrometheusTest {
 
+    private Prometheus prometheus;
+    private Match match;
+    private Player player;
+    private Worker worker;
+
+    @BeforeEach
+    public void initGameProperties() {
+
+        this.prometheus = new Prometheus();
+        this.match = new Match(2);
+        this.player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        this.worker = player.getWorkerFirst();
+        this.worker.setInitialPosition(0, 0);
+
+    }
+
     @Test
     public void prometheusBuildThenMoveTest() {
-
-        Prometheus prometheus = new Prometheus();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
-
-        worker.setInitialPosition(0, 0);
 
         assertTrue(prometheus.checkBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE));
         prometheus.executeBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE);
@@ -30,14 +39,6 @@ public class PrometheusTest {
     @Test
     public void prometheusCannotMoveUpIfBuiltBeforeMovingTest() {
 
-        Prometheus prometheus = new Prometheus();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
-
-        worker.setInitialPosition(0, 0);
-
         assertTrue(prometheus.checkBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE));
         prometheus.executeBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE);
 
@@ -47,13 +48,6 @@ public class PrometheusTest {
 
     @Test
     public void prometheusCannotMultipleBuildIfMoveBeforeBuildTest() {
-        Prometheus prometheus = new Prometheus();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
-
-        worker.setInitialPosition(0, 0);
 
         assertTrue(prometheus.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
         prometheus.executeMove(worker, match.getMatchBoard().getCell(0, 1));
@@ -67,14 +61,6 @@ public class PrometheusTest {
 
     @Test
     public void prometheusEndTurnTest() {
-
-        Prometheus prometheus = new Prometheus();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
-
-        worker.setInitialPosition(0, 0);
 
         assertTrue(prometheus.checkBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE));
         prometheus.executeBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE);
@@ -100,13 +86,6 @@ public class PrometheusTest {
     @Test
     public void prometheusEndTurnTest_standard() {
 
-        Prometheus prometheus = new Prometheus();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
-
-        worker.setInitialPosition(0, 0);
 
         assertTrue(prometheus.checkMove(worker, match.getMatchBoard().getCell(1, 1)));
         prometheus.executeMove(worker, match.getMatchBoard().getCell(1, 1));
@@ -123,8 +102,6 @@ public class PrometheusTest {
 
     @Test
     public void prometheusCannotMoveAfterBuildTest_standardCantMove() {
-
-        Prometheus prometheus = new Prometheus();
 
         Match match = new Match(2);
         Model model = new Model(match);
@@ -163,8 +140,6 @@ public class PrometheusTest {
     @Test
     public void prometheusCannotMoveAfterBuildTest_PrometheusConstraints() {
 
-        Prometheus prometheus = new Prometheus();
-
         Match match = new Match(2);
         Model model = new Model(match);
         Player player = new Player(UUID.randomUUID().toString(), model, match);
@@ -201,7 +176,6 @@ public class PrometheusTest {
 
     @Test
     public void cannotBuildWithWorkerNotSelectedPrometheus() {
-        Prometheus prometheus = new Prometheus();
 
         Match match = new Match(2);
         Model model = new Model(match);

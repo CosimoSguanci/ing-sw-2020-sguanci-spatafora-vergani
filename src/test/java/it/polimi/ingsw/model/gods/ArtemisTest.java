@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -10,14 +11,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ArtemisTest {
 
+    private Artemis artemis;
+    private Match match;
+    private Player player;
+    private Worker worker;
+    private Worker otherWorker;
+
+    @BeforeEach
+    public void initGameProperties() {
+
+        this.artemis = new Artemis();
+        this.match = new Match(2);
+        this.player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        this.worker = player.getWorkerFirst();
+        this.otherWorker = player.getWorkerSecond();
+    }
+
     @Test
     public void artemisCheckMultipleMoveTest() {
-        Artemis artemis = new Artemis();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
-        Worker otherWorker = player.getWorkerSecond();
 
         worker.setInitialPosition(0, 0);
         otherWorker.setInitialPosition(3, 2);
@@ -35,11 +46,6 @@ public class ArtemisTest {
 
     @Test
     public void artemisCheckMultipleMoveInitialPositionTest() {
-        Artemis artemis = new Artemis();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
 
@@ -53,11 +59,6 @@ public class ArtemisTest {
 
     @Test
     public void artemisEndTurnTest() {
-        Artemis artemis = new Artemis();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
 
@@ -85,12 +86,6 @@ public class ArtemisTest {
 
     @Test
     public void artemisCannotBuildTest() {
-        Artemis artemis = new Artemis();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
-        Worker otherWorker = player.getWorkerSecond();
 
         worker.setInitialPosition(0, 1);
         otherWorker.setInitialPosition(3, 2);
@@ -104,9 +99,6 @@ public class ArtemisTest {
 
         assertFalse(artemis.canBuild(match.getMatchBoard(), worker));
 
-        /*match.getMatchBoard().getCell(1, 1).setLevel(BlockType.GROUND);
-
-        assertTrue(artemis.canBuild(match.getMatchBoard(), worker));*/
 
         match.getMatchBoard().getCell(1, 1).setLevel(BlockType.LEVEL_ONE);
         assertTrue(artemis.checkMove(worker, match.getMatchBoard().getCell(1, 1)));

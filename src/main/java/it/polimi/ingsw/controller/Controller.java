@@ -30,7 +30,7 @@ import static it.polimi.ingsw.model.utils.GodsUtils.*;
  * @author Roberto Spatafora
  */
 public class Controller extends Observable<Controller> implements Observer<Command> {
-    private final Model model; // todo handle attribute visibility and immutability
+    private final Model model;
     private final CommandHandler commandHandler;
     private Player godChooserPlayer;
     private List<String> selectableGods;
@@ -124,7 +124,9 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      */
     synchronized void handleInitialInfoCommand(InitialInfoCommand initialInfoCommand) {
 
-        if (!initialInfoCommand.getPlayer().equals(model.getCurrentPlayer())) {
+        Player currentPlayer = model.getCurrentPlayer();
+
+        if (!initialInfoCommand.getPlayer().equals(currentPlayer)) {
             throw new WrongPlayerException();
         }
 
@@ -177,9 +179,12 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * @throws InvalidGodException  if selected god is not in selectable's gods list
      */
     synchronized void handleGodChoiceCommand(GodChoiceCommand godChoiceCommand) {
+
+        Player currentPlayer = model.getCurrentPlayer();
+
         List<String> chosenGods = godChoiceCommand.getChosenGods();
 
-        if (!godChoiceCommand.getPlayer().equals(model.getCurrentPlayer())) {
+        if (!godChoiceCommand.getPlayer().equals(currentPlayer)) {
             throw new WrongPlayerException();
         }
 
@@ -231,7 +236,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      */
     synchronized void handleGamePreparationCommand(GamePreparationCommand gamePreparationCommand) {
         Player currentPlayer = model.getCurrentPlayer();
-        if (!gamePreparationCommand.getPlayer().equals(model.getCurrentPlayer())) { // todo uniform use of model.getCurrentPlayer() / command.getPlayer()
+        if (!gamePreparationCommand.getPlayer().equals(currentPlayer)) {
             throw new WrongPlayerException();
         } else {
 
