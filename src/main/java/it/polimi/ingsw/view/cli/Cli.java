@@ -26,6 +26,8 @@ import java.util.Scanner;
  * @author Andrea Vergani
  */
 public class Cli extends View implements Observer<Update> {
+    private final GamePhaseCommandHandler gamePhaseCommandHandler = new GamePhaseCommandHandler(this);
+    private final OtherInfoHandler otherInfoHandler = new OtherInfoHandler(this);
     private Scanner stdin;
     private PrintStream stdout;
     private List<String> selectedNicknames;
@@ -33,14 +35,10 @@ public class Cli extends View implements Observer<Update> {
     private List<String> selectableGods;
     private boolean isInitialGodChooser = false;
     private boolean continueToWatch = false;
-
     /**
      * JSON representation of current board of the match
      */
     private String currentBoard;
-
-    private final GamePhaseCommandHandler gamePhaseCommandHandler = new GamePhaseCommandHandler(this);
-    private final OtherInfoHandler otherInfoHandler = new OtherInfoHandler(this);
 
     /**
      * Cli is the builder of the class. At the moment of the Cli creation
@@ -56,6 +54,27 @@ public class Cli extends View implements Observer<Update> {
     public Cli(Client client, Controller controller) {
         super(client, controller);
         this.updateHandler = new CliUpdateHandler(this, controller);
+    }
+
+    /**
+     * This method converts a color given as parameter according to enum
+     * defined, and it is used to have the correct correspondence Ansi color.
+     *
+     * @param color is the PrintableColor you want to calculate the Ansi code
+     * @return the string of the respective Ansi color.
+     */
+    public static String convertColorToAnsi(PrintableColor color) {
+        return PrintableColor.convertColorToAnsi(color);
+    }
+
+    /**
+     * This method is used to make a string given as parameter in bold
+     *
+     * @param s is the string that you want in bold
+     * @return the bold String
+     */
+    public static String toBold(String s) {
+        return PrintableColor.BOLD + s + PrintableColor.RESET;
     }
 
     /**
@@ -113,17 +132,6 @@ public class Cli extends View implements Observer<Update> {
     }
 
     /**
-     * This method is a setter used to set to the received value of
-     * the parameter if this client is or not the GodChooser.
-     *
-     * @param value is received as boolean parameter from the server,
-     *              after having it randomly from the players list.
-     */
-    void setInitialGodChooser(boolean value) {
-        this.isInitialGodChooser = value;
-    }
-
-    /**
      * This method is a simple getter to have access to the private
      * instance of the boolean attribute isInitialGodChooser of this class.
      *
@@ -135,15 +143,14 @@ public class Cli extends View implements Observer<Update> {
     }
 
     /**
-     * This method make possible client who are not GodChooser to select
-     * a God once the GodChooser selected Gods that will be involved in the match.
+     * This method is a setter used to set to the received value of
+     * the parameter if this client is or not the GodChooser.
      *
-     * @param selectableGods is as list used to have references to all Gods
-     *                       a player can choose in a specific match (once GodChooser selected them)
+     * @param value is received as boolean parameter from the server,
+     *              after having it randomly from the players list.
      */
-    @Override
-    public void setSelectableGods(List<String> selectableGods) {
-        this.selectableGods = selectableGods;
+    void setInitialGodChooser(boolean value) {
+        this.isInitialGodChooser = value;
     }
 
     /**
@@ -158,13 +165,15 @@ public class Cli extends View implements Observer<Update> {
     }
 
     /**
-     * This method let clients choose a nickname unique in the match.
+     * This method make possible client who are not GodChooser to select
+     * a God once the GodChooser selected Gods that will be involved in the match.
      *
-     * @param selectedNicknames is a list of all nickname already chosen from players.
+     * @param selectableGods is as list used to have references to all Gods
+     *                       a player can choose in a specific match (once GodChooser selected them)
      */
     @Override
-    public void setSelectedNicknames(List<String> selectedNicknames) {
-        this.selectedNicknames = selectedNicknames;
+    public void setSelectableGods(List<String> selectableGods) {
+        this.selectableGods = selectableGods;
     }
 
     /**
@@ -181,13 +190,13 @@ public class Cli extends View implements Observer<Update> {
     }
 
     /**
-     * This method let clients choose a color unique in the match.
+     * This method let clients choose a nickname unique in the match.
      *
-     * @param selectableColors is a list of all color not yet chosen from players.
+     * @param selectedNicknames is a list of all nickname already chosen from players.
      */
     @Override
-    public void setSelectableColors(List<PrintableColor> selectableColors) {
-        this.selectableColors = selectableColors;
+    public void setSelectedNicknames(List<String> selectedNicknames) {
+        this.selectedNicknames = selectedNicknames;
     }
 
     /**
@@ -201,6 +210,16 @@ public class Cli extends View implements Observer<Update> {
      */
     public List<PrintableColor> getSelectableColors() {
         return this.selectableColors;
+    }
+
+    /**
+     * This method let clients choose a color unique in the match.
+     *
+     * @param selectableColors is a list of all color not yet chosen from players.
+     */
+    @Override
+    public void setSelectableColors(List<PrintableColor> selectableColors) {
+        this.selectableColors = selectableColors;
     }
 
     /**
@@ -225,17 +244,6 @@ public class Cli extends View implements Observer<Update> {
     @Override
     public void update(Update update) {
         update.handleUpdate(this.updateHandler);
-    }
-
-    /**
-     * This method converts a color given as parameter according to enum
-     * defined, and it is used to have the correct correspondence Ansi color.
-     *
-     * @param color is the PrintableColor you want to calculate the Ansi code
-     * @return the string of the respective Ansi color.
-     */
-    public static String convertColorToAnsi(PrintableColor color) {
-        return PrintableColor.convertColorToAnsi(color);
     }
 
     /**
@@ -329,17 +337,6 @@ public class Cli extends View implements Observer<Update> {
     public void setContinueToWatch(boolean continueToWatch) {
         this.continueToWatch = continueToWatch;
     }
-
-    /**
-     * This method is used to make a string given as parameter in bold
-     *
-     * @param s is the string that you want in bold
-     * @return the bold String
-     */
-    public static String toBold(String s) {
-        return PrintableColor.BOLD + s + PrintableColor.RESET;
-    }
-
 
     /**
      * This method is used to have the JSON representation of the current Board.

@@ -1,4 +1,5 @@
 package it.polimi.ingsw.controller;
+
 import it.polimi.ingsw.exceptions.BadCommandException;
 import org.junit.jupiter.api.Test;
 

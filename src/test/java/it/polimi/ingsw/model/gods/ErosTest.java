@@ -3,17 +3,14 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// TODO Game Preparation Test
 public class ErosTest {
     @Test
-    public void erosWinConditionThreePlayersTest()  {
-
-
+    public void erosWinConditionThreePlayersTest() {
 
 
         Eros eros = new Eros();
@@ -35,9 +32,7 @@ public class ErosTest {
     }
 
     @Test
-    public void erosWinConditionTwoPlayersTest()  {
-
-
+    public void erosWinConditionTwoPlayersTest() {
 
 
         Eros eros = new Eros();
@@ -66,7 +61,6 @@ public class ErosTest {
     public void erosCheckGamePreparationTest() {
 
 
-
         Eros eros = new Eros();
 
         Match match = new Match(2);
@@ -75,15 +69,14 @@ public class ErosTest {
         Worker workerSecond = player.getWorkerFirst();
 
         // not opposite borders -> not ok with Eros constraints
-        assertFalse(eros.checkGamePreparation(workerFirst, match.getMatchBoard().getCell(0, 1), workerSecond, match.getMatchBoard().getCell(0,2)));
+        assertFalse(eros.checkGamePreparation(workerFirst, match.getMatchBoard().getCell(0, 1), workerSecond, match.getMatchBoard().getCell(0, 2)));
 
-        assertTrue(eros.checkGamePreparation(workerFirst, match.getMatchBoard().getCell(0, 1), workerSecond, match.getMatchBoard().getCell(4,1)));
+        assertTrue(eros.checkGamePreparation(workerFirst, match.getMatchBoard().getCell(0, 1), workerSecond, match.getMatchBoard().getCell(4, 1)));
     }
 
 
     @Test
     public void erosEndTurnTest() {
-
 
 
         Eros eros = new Eros();

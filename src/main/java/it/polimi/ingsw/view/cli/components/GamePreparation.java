@@ -32,7 +32,7 @@ public class GamePreparation {
      * it notifies to the Cli, printing to wait for other players to do the same,
      * placing their workers.
      *
-     * @param command
+     * @param command the command typed by the user
      */
     public void handle(String command) {
 

@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.utils.GodsUtils;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ApolloTest {
 
     @Test
-    public void apolloCheckMoveTest()  {
+    public void apolloCheckMoveTest() {
 
-         // TODO Use @BeforeEach
+        // TODO Use @BeforeEach
 
         Apollo apollo = new Apollo();
 
@@ -32,7 +31,7 @@ public class ApolloTest {
     }
 
     @Test
-    public void apolloExecuteMoveTest()  {
+    public void apolloExecuteMoveTest() {
         Apollo apollo = new Apollo();
 
         Match match = new Match(2);

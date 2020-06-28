@@ -4,9 +4,6 @@ import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.view.UpdateHandler;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 

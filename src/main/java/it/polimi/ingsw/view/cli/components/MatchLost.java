@@ -45,7 +45,7 @@ public class MatchLost {
             cli.setCurrentGamePhase(GamePhase.MATCH_ENDED);
             cli.newLine();
             cli.println("Do you want to play another match?");
-        } else throw new BadCommandException(); // todo add multiple exception
+        } else throw new BadCommandException();
         return false;
     }
 }

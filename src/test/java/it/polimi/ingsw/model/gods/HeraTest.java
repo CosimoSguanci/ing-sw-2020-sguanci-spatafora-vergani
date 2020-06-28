@@ -3,17 +3,15 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HeraTest {
 
     @Test
-    public void heraWinConstraintsTest()  {
-
-
+    public void heraWinConstraintsTest() {
 
 
         Hera hera = new Hera();
@@ -28,9 +26,9 @@ public class HeraTest {
         opponentWorker.setInitialPosition(0, 0);
 
         // Constructing win situation...
-        match.getMatchBoard().getCell(0,1).setLevel(BlockType.LEVEL_TWO);
+        match.getMatchBoard().getCell(0, 1).setLevel(BlockType.LEVEL_TWO);
         opponentWorker.move(match.getMatchBoard().getCell(0, 1));
-        match.getMatchBoard().getCell(0,2).setLevel(BlockType.LEVEL_THREE);
+        match.getMatchBoard().getCell(0, 2).setLevel(BlockType.LEVEL_THREE);
         opponentWorker.move(match.getMatchBoard().getCell(0, 2));
 
         // Win conditions should be satisfied, but...

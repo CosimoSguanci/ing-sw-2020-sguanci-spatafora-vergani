@@ -3,16 +3,14 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HephaestusTest {
     @Test
-    public void hephaestusCheckMultipleBuildTest()  {
-
-
+    public void hephaestusCheckMultipleBuildTest() {
 
 
         Hephaestus hephaestus = new Hephaestus();
@@ -25,8 +23,6 @@ public class HephaestusTest {
 
         hephaestus.executeMove(worker, match.getMatchBoard().getCell(1, 1)); // needed to set the right selected worker
 
-        //assertTrue(hephaestus.checkBuild()); Check also "normal" things?
-
         hephaestus.executeBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE);
 
         assertTrue(hephaestus.checkBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_TWO));
@@ -38,9 +34,7 @@ public class HephaestusTest {
     }
 
     @Test
-    public void hephaestusCheckMultipleBuildAnotherCellTest()  { // check multiple build on different positions, should always fail
-
-
+    public void hephaestusCheckMultipleBuildAnotherCellTest() { // check multiple build on different positions, should always fail
 
 
         Hephaestus hephaestus = new Hephaestus();
@@ -62,9 +56,7 @@ public class HephaestusTest {
     }
 
     @Test
-    public void hephaestusCheckMultipleBuildDomeTest()  { // check multiple build on same position but with a dome, should fail
-
-
+    public void hephaestusCheckMultipleBuildDomeTest() { // check multiple build on same position but with a dome, should fail
 
 
         Hephaestus hephaestus = new Hephaestus();
@@ -88,7 +80,7 @@ public class HephaestusTest {
     }
 
     @Test
-    public void hephaestusEndTurnTest() { // TODO Add tests to check previousCell was reset?
+    public void hephaestusEndTurnTest() {
 
 
         Hephaestus hephaestus = new Hephaestus();

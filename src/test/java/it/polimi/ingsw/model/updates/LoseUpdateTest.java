@@ -6,11 +6,6 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.view.UpdateHandler;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.times;

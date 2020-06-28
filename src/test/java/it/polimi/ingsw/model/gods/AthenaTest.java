@@ -3,15 +3,14 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AthenaTest {
     @Test
-    public void athenaCheckMoveConstraintsTest()  {
+    public void athenaCheckMoveConstraintsTest() {
         Athena athena = new Athena();
 
         Match match = new Match(2);
@@ -78,14 +77,14 @@ public class AthenaTest {
         worker.setInitialPosition(0, 0);
         match.getMatchBoard().getCell(0, 1).setLevel(BlockType.LEVEL_ONE);
         assertTrue(athena.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
-        athena.executeMove(worker,  match.getMatchBoard().getCell(0, 1));
+        athena.executeMove(worker, match.getMatchBoard().getCell(0, 1));
 
         oppositeWorker.setInitialPosition(3, 3);
         match.getMatchBoard().getCell(3, 4).setLevel(BlockType.LEVEL_ONE);
 
-        assertFalse(athena.checkMoveConstraints(oppositeWorker, match.getMatchBoard().getCell(3, 4 )));
+        assertFalse(athena.checkMoveConstraints(oppositeWorker, match.getMatchBoard().getCell(3, 4)));
         athena.onTurnStarted(player);
 
-        assertTrue(athena.checkMoveConstraints(oppositeWorker, match.getMatchBoard().getCell(3, 4 )));
+        assertTrue(athena.checkMoveConstraints(oppositeWorker, match.getMatchBoard().getCell(3, 4)));
     }
 }

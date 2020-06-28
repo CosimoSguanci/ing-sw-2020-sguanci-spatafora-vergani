@@ -45,7 +45,7 @@ public class CliPlayerHelper {
             cli.newLine();
             cli.println(Cli.toBold("MANUAL"));
             cli.println(Manual.manual());
-        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 1)) { // todo extend help
+        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP && (splitCommand.length == 1)) {
             cli.println("If you want information about a specific game-phase: help <game-phase>");
             cli.println("Game-phases are: " + GamePhase.toStringBuilder());
             cli.println("Help Specific-Phase Example: help initial_info");
@@ -160,7 +160,7 @@ public class CliPlayerHelper {
             cli.println("Power: " + godInfo.get(GodsUtils.POWER_DESCRIPTION));
         } catch (UnknownGodException e) {
             cli.println("Unknown God Typed");
-            throw new BadCommandException(); // todo ok ?
+            throw new BadCommandException();
         }
     }
 }

@@ -3,14 +3,13 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AtlasTest {
     @Test
-    public void atlasBuildDomeAnywhereTest()  {
+    public void atlasBuildDomeAnywhereTest() {
         Atlas atlas = new Atlas();
 
         Match match = new Match(2);
@@ -25,7 +24,7 @@ public class AtlasTest {
     }
 
     @Test
-    public void atlasStandardBuildTest()  {
+    public void atlasStandardBuildTest() {
         Atlas atlas = new Atlas();
 
         Match match = new Match(2);

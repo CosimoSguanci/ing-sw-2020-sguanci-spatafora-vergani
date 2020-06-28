@@ -9,13 +9,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerCommandTest {
 
     @Test
-    void parseInputEndTest()  {
+    void parseInputEndTest() {
         PlayerCommand playerCommand = PlayerCommand.parseInput("end");
         assertEquals(CommandType.END_TURN, playerCommand.commandType);
     }
 
     @Test
-    void parseInputMoveTest()  {
+    void parseInputMoveTest() {
         PlayerCommand playerCommand = PlayerCommand.parseInput("move w2 c4");
         playerCommand.setPlayerID("Player1");
         assertEquals("Player1", playerCommand.getPlayerID());
@@ -26,7 +26,7 @@ class PlayerCommandTest {
     }
 
     @Test
-    void parseInputBuildTest()  {
+    void parseInputBuildTest() {
         PlayerCommand playerCommand = PlayerCommand.parseInput("buiLD   w1  B2 domE");
         playerCommand.setPlayerID("Player1");
         playerCommand.setPlayerNickname("Player1Nick");
@@ -68,7 +68,7 @@ class PlayerCommandTest {
 
 
     @Test
-    void parseInputStartWithSpaceBarTest()  {
+    void parseInputStartWithSpaceBarTest() {
         PlayerCommand playerCommand = PlayerCommand.parseInput(" buiLD   w1  B2 domE");
         playerCommand.setPlayerID("Player1");
         assertEquals("Player1", playerCommand.getPlayerID());
@@ -89,7 +89,7 @@ class PlayerCommandTest {
     }
 
     @Test
-    void parseInputEndWithSpaceBarTest()  {
+    void parseInputEndWithSpaceBarTest() {
         PlayerCommand playerCommand = PlayerCommand.parseInput("buiLD   w1  B2 TwO ");
         playerCommand.setPlayerID("Player1");
         assertEquals("Player1", playerCommand.getPlayerID());
@@ -101,9 +101,9 @@ class PlayerCommandTest {
     }
 
     @Test
-    void parseInputInvalidCommandTest()  {
+    void parseInputInvalidCommandTest() {
         assertThrows(BadCommandException.class,
-                    () -> PlayerCommand.parseInput("buiLD   w3  B2 domE "));
+                () -> PlayerCommand.parseInput("buiLD   w3  B2 domE "));
         assertThrows(BadCommandException.class,
                 () -> PlayerCommand.parseInput("builw w1 B2 dome"));
         assertThrows(BadCommandException.class,

@@ -17,8 +17,7 @@ public class PlayerTest {
         System.out.println("testing getColor() and setColor()...");
 
         int playersNum = 2;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Player instanceTest = new Player("Roberto", new Model(match), match);
         PrintableColor colorTest = PrintableColor.GREEN;
         instanceTest.setColor(colorTest);
@@ -31,8 +30,7 @@ public class PlayerTest {
         System.out.println("testing setAsGodChooser() and isGodChooser()...");
 
         int playersNum = 2;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Player instanceTest = new Player("Roberto", new Model(match), match);
         instanceTest.setAsGodChooser();
         assertTrue(instanceTest.isGodChooser());
@@ -40,13 +38,11 @@ public class PlayerTest {
     }
 
     @Test
-    public void testGetSetWorkerFirst()  {
+    public void testGetSetWorkerFirst() {
         System.out.println("testing getWorkerFirst() and setWorkerFirst()...");
 
         int playersNum = 2;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
-        Board board = match.getMatchBoard();
+        Match match = new Match(playersNum);
         Player instancePlayerTest = new Player("Roberto", new Model(match), match);
         Worker instanceWorkerTest = instancePlayerTest.getWorkerFirst();
         assertEquals(instanceWorkerTest, instancePlayerTest.getWorkerFirst());
@@ -55,13 +51,11 @@ public class PlayerTest {
     }
 
     @Test
-    public void testGetSetWorkerSecond()  {
+    public void testGetSetWorkerSecond() {
         System.out.println("testing getWorkerSecond() and setWorkerSecond()...");
 
         int playersNum = 2;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
-        Board board = match.getMatchBoard();
+        Match match = new Match(playersNum);
         Player instancePlayerTest = new Player("Roberto", new Model(match), match);
         Worker instanceWorkerTest = instancePlayerTest.getWorkerSecond();
         assertEquals(instanceWorkerTest, instancePlayerTest.getWorkerSecond());
@@ -70,12 +64,11 @@ public class PlayerTest {
     }
 
     @Test
-    public void testGetSetGodStrategy()  {
+    public void testGetSetGodStrategy() {
         System.out.println("testing getGod() and setGod()...");
 
         int playersNum = 2;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Player instancePlayerTest = new Player("Roberto", new Model(match), match);
 
         GodStrategy instanceGodTest = new Apollo();

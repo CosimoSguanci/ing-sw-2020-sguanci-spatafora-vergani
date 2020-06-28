@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PrometheusTest {
 
     @Test
-    public void prometheusBuildThenMoveTest()  {
+    public void prometheusBuildThenMoveTest() {
 
         Prometheus prometheus = new Prometheus();
 
@@ -29,7 +28,7 @@ public class PrometheusTest {
     }
 
     @Test
-    public void prometheusCannotMoveUpIfBuiltBeforeMovingTest()  {
+    public void prometheusCannotMoveUpIfBuiltBeforeMovingTest() {
 
         Prometheus prometheus = new Prometheus();
 
@@ -47,7 +46,7 @@ public class PrometheusTest {
     }
 
     @Test
-    public void prometheusCannotMultipleBuildIfMoveBeforeBuildTest()  {
+    public void prometheusCannotMultipleBuildIfMoveBeforeBuildTest() {
         Prometheus prometheus = new Prometheus();
 
         Match match = new Match(2);

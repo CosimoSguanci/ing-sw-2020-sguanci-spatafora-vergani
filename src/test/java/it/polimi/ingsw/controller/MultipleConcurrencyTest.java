@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
-import org.junit.platform.launcher.TestPlan;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
@@ -15,12 +14,12 @@ public class MultipleConcurrencyTest {
 
     SummaryGeneratingListener listener = new SummaryGeneratingListener();
 
-    //@Disabled
+    @Disabled
     @Test
     public void runAll() {
-       /* while(true) {
+       while(true) {
             runOne();
-        } */
+        }
     }
 
 

@@ -3,24 +3,21 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HestiaTest {
 
     @Test
-    public void hestiaCheckMultipleBuildTest()  {
-
-
+    public void hestiaCheckMultipleBuildTest() {
 
 
         Hestia hestia = new Hestia();
 
         Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(),  new Model(match), match);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
@@ -38,15 +35,13 @@ public class HestiaTest {
     }
 
     @Test
-    public void demeterCheckMultipleBuildPerimeterSpaceTest()  {
-
-
+    public void demeterCheckMultipleBuildPerimeterSpaceTest() {
 
 
         Hestia hestia = new Hestia();
 
         Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(),  new Model(match), match);
+        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
@@ -63,7 +58,6 @@ public class HestiaTest {
 
     @Test
     public void hestiaEndTurnTest() {
-
 
 
         Hestia hestia = new Hestia();

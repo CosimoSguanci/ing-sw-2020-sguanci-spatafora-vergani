@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 public class GodChoice extends JPanel implements ActionListener {
 
     private final String standardImgPath = "/images/GodChoice/";
-    private final Image backgroundImage = new ImageIcon(getClass().getResource(standardImgPath + "title_sky.png")).getImage(); // todo background ok? Or Olympus
+    private final Image backgroundImage = new ImageIcon(getClass().getResource(standardImgPath + "title_sky.png")).getImage();
     private final Gui gui;
     private final LoadingComponent loadingComponent;
     GodScreen godScreen;
@@ -50,15 +50,6 @@ public class GodChoice extends JPanel implements ActionListener {
 
         this.gui = Gui.getInstance();
         this.selectedGods = new ArrayList<>();
-        //Set<String> opponents = gui.getPlayersColors().keySet();
-        /*String loadingMsg = "You're playing against ";
-
-        int i = 0;
-
-        while(i < opponents.size()) {
-            loadingMsg += opponents
-            i++;
-        }*/ // todo
 
         this.loadingComponent = new LoadingComponent("Waiting...", Color.BLACK);
 

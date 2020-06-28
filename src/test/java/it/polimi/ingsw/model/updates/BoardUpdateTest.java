@@ -1,17 +1,10 @@
 package it.polimi.ingsw.model.updates;
 
-import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.controller.commands.PlayerCommand;
-import it.polimi.ingsw.model.Match;
-import it.polimi.ingsw.model.Model;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.view.UpdateHandler;
-import it.polimi.ingsw.view.cli.CliUpdateHandler;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 

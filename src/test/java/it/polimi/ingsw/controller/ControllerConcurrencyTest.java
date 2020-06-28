@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.Athena;
 import it.polimi.ingsw.model.gods.Atlas;
 import it.polimi.ingsw.model.utils.GodsUtils;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class ControllerConcurrencyTest {
 
@@ -30,7 +28,7 @@ public class ControllerConcurrencyTest {
         System.out.println("TESTING INITIAL INFO CONCURRENCY ...");
         System.out.println();
 
-        for(int i = 0; i < 500; i++) {
+        for (int i = 0; i < 500; i++) {
             Match match = new Match(3);
             Model model = new Model(match);
             Controller controller = new Controller(model);
@@ -118,7 +116,7 @@ public class ControllerConcurrencyTest {
                         model.getPlayers().get(1).getColor().equals(color2) &&
                         model.getPlayers().get(2).getNickname().equals(nickname3) &&
                         model.getPlayers().get(2).getColor().equals(color3));
-            } catch(NullPointerException e) {
+            } catch (NullPointerException e) {
                 System.out.println();
                 System.out.println("NULL POINTER EXCEPTION CAUGHT: Maybe all threads from a Player who's not the God Chooser where executed before the God Chooser?");
                 System.out.println();
@@ -132,7 +130,7 @@ public class ControllerConcurrencyTest {
         System.out.println("TESTING GOD CHOICE CONCURRENCY ...");
         System.out.println();
 
-        for(int i = 0; i < 500; i++) {
+        for (int i = 0; i < 500; i++) {
             Match match = new Match(3);
             Model model = new Model(match);
             Controller controller = new Controller(model);
@@ -166,15 +164,15 @@ public class ControllerConcurrencyTest {
 
             Player godChooser = model.getCurrentPlayer();
 
-            Thread [] threads = new Thread[150];
+            Thread[] threads = new Thread[150];
             int k = 0;
-            for(int j = 0; j < 50; j++) {
+            for (int j = 0; j < 50; j++) {
 
                 threads[k] = new Thread(new Runnable() {
                     @Override
                     public void run() {
 
-                        if(p1.equals(godChooser)) {
+                        if (p1.equals(godChooser)) {
                             List<String> gods = new ArrayList<>();
                             gods.add("athena");
                             gods.add("apollo");
@@ -199,7 +197,7 @@ public class ControllerConcurrencyTest {
                 threads[k] = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        if(p2.equals(godChooser)) {
+                        if (p2.equals(godChooser)) {
                             List<String> gods = new ArrayList<>();
                             gods.add("athena");
                             gods.add("apollo");
@@ -224,7 +222,7 @@ public class ControllerConcurrencyTest {
                 threads[k] = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        if(p3.equals(godChooser)) {
+                        if (p3.equals(godChooser)) {
                             List<String> gods = new ArrayList<>();
                             gods.add("athena");
                             gods.add("apollo");
@@ -248,15 +246,15 @@ public class ControllerConcurrencyTest {
 
             }
 
-            for(int z = 0; z < k; z++) {
+            for (int z = 0; z < k; z++) {
                 try {
                     threads[z].join();
-                } catch(InterruptedException e) {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
-            System.out.println(i+ "th MATCH");
+            System.out.println(i + "th MATCH");
 
             try {
                 assertTrue(model.getPlayers().get(0).getGodStrategy().equals(new Athena()) &&
@@ -265,7 +263,7 @@ public class ControllerConcurrencyTest {
                 );
 
 
-            } catch(NullPointerException e) {
+            } catch (NullPointerException e) {
                 System.out.println();
                 System.out.println("NULL POINTER EXCEPTION CAUGHT: Maybe all threads from a Player who's not the model.getCurrentPlayer() where executed before model.getCurrentPlayer()?");
                 System.out.println();
@@ -279,7 +277,7 @@ public class ControllerConcurrencyTest {
         System.out.println("TESTING GAME PREPARATION CONCURRENCY ...");
         System.out.println();
 
-        for(int i = 0; i < 500; i++) {
+        for (int i = 0; i < 500; i++) {
             Match match = new Match(3);
             Model model = new Model(match);
             Controller controller = new Controller(model);
@@ -319,9 +317,9 @@ public class ControllerConcurrencyTest {
             model.endTurn();
 
 
-            Thread [] threads = new Thread[150];
+            Thread[] threads = new Thread[150];
             int k = 0;
-            for(int j = 0; j < 50; j++) {
+            for (int j = 0; j < 50; j++) {
 
                 threads[k] = new Thread(new Runnable() {
                     @Override
@@ -364,10 +362,10 @@ public class ControllerConcurrencyTest {
 
             }
 
-            for(int z = 0; z < k; z++) {
+            for (int z = 0; z < k; z++) {
                 try {
                     threads[z].join();
-                } catch(InterruptedException e) {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -413,9 +411,7 @@ public class ControllerConcurrencyTest {
            } */
 
 
-
-
-            System.out.println(i+ "th MATCH");
+            System.out.println(i + "th MATCH");
 
             try {
                 assertTrue(
@@ -431,11 +427,11 @@ public class ControllerConcurrencyTest {
                 );
 
 
-            } catch(NullPointerException e) {
+            } catch (NullPointerException e) {
                 //fail(); //
-                System.out.println("");
+                System.out.println();
                 System.out.println("NULL POINTER EXCEPTION CAUGHT: Maybe all threads from a Player who's not the model.getCurrentPlayer() where executed before model.getCurrentPlayer()?");
-                System.out.println("");
+                System.out.println();
             }
 
         }
@@ -446,7 +442,7 @@ public class ControllerConcurrencyTest {
         System.out.println("TESTING REAL GAME CONCURRENCY ...");
         System.out.println();
 
-        for(int i = 0; i < 500; i++) {
+        for (int i = 0; i < 500; i++) {
             Match match = new Match(3);
             Model model = new Model(match);
             Controller controller = new Controller(model);
@@ -494,9 +490,9 @@ public class ControllerConcurrencyTest {
             p3.getWorkerSecond().setInitialPosition(1, 4);
 
 
-            Thread [] threads = new Thread[300];
+            Thread[] threads = new Thread[300];
             int k = 0;
-            for(int j = 0; j < 50; j++) {
+            for (int j = 0; j < 50; j++) {
 
                 threads[k] = new Thread(new Runnable() {
                     @Override
@@ -602,16 +598,16 @@ public class ControllerConcurrencyTest {
 
             }
 
-            for(int z = 0; z < k; z++) {
+            for (int z = 0; z < k; z++) {
                 try {
                     threads[z].join();
-                } catch(InterruptedException e) {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
 
-            System.out.println(i+ "th MATCH");
+            System.out.println(i + "th MATCH");
 
             try {
                 assertTrue(
@@ -637,11 +633,11 @@ public class ControllerConcurrencyTest {
                 );
 
 
-            } catch(NullPointerException e) {
+            } catch (NullPointerException e) {
                 //fail(); //
-                System.out.println("");
+                System.out.println();
                 System.out.println("NULL POINTER EXCEPTION CAUGHT: Maybe all threads from a Player who's not the model.getCurrentPlayer() where executed before model.getCurrentPlayer()?");
-                System.out.println("");
+                System.out.println();
             }
 
         }

@@ -1,29 +1,26 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.commands.Command;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class ModelTest {
 
     @Test
-    public void getCurrentPlayerTest()  {
+    public void getCurrentPlayerTest() {
         int playersNum = 2;
         Match match = new Match(playersNum);
         Model model = new Model(match);
-        Player p1 = new Player("Marco",  model, match);
-        Player p2 = new Player("Alessandro", model,  match);
-        try{
+        Player p1 = new Player("Marco", model, match);
+        Player p2 = new Player("Alessandro", model, match);
+        try {
             match.addPlayer(p1);
             match.addPlayer(p2);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -40,15 +37,15 @@ public class ModelTest {
     @Test
     public void getBoardTest() {
         int playersNum = 3;
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Board board = match.getMatchBoard();
         Model model = new Model(match);
 
         assertEquals(board, model.getBoard());
 
-        Player p1 = new Player("Andrea",  model, match);
-        Player p2 = new Player("Cosimo",  model, match);
-        Player p3 = new Player("Roberto",  model, match);
+        Player p1 = new Player("Andrea", model, match);
+        Player p2 = new Player("Cosimo", model, match);
+        Player p3 = new Player("Roberto", model, match);
         match.addPlayer(p1);
         match.addPlayer(p2);
         match.addPlayer(p3);
@@ -60,18 +57,18 @@ public class ModelTest {
     }
 
     @Test
-    public void endTurnTest()  {
+    public void endTurnTest() {
         int playersNum = 3;
         Match match = new Match(playersNum);
         Model model = new Model(match);
-        Player p1 = new Player("Roberto",  model, match);
-        Player p2 = new Player("Cosimo",  model, match);
-        Player p3 = new Player("Andrea",  model, match);
-        try{
+        Player p1 = new Player("Roberto", model, match);
+        Player p2 = new Player("Cosimo", model, match);
+        Player p3 = new Player("Andrea", model, match);
+        try {
             match.addPlayer(p1);
             match.addPlayer(p2);
             match.addPlayer(p3);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -92,9 +89,9 @@ public class ModelTest {
         Match match = new Match(playersNum);
         Model model = new Model(match);
 
-        Player p1 = new Player("Andrea",  model, match);
-        Player p2 = new Player("Cosimo",  model, match);
-        Player p3 = new Player("Roberto", model,  match);
+        Player p1 = new Player("Andrea", model, match);
+        Player p2 = new Player("Cosimo", model, match);
+        Player p3 = new Player("Roberto", model, match);
         ArrayList<Player> players = new ArrayList<>();
 
         match.addPlayer(p1);

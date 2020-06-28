@@ -39,7 +39,7 @@ public class GamePreparationCommand extends Command {
      * @param workerSecondRow the row of the cell where the second worker must be placed
      * @param workerSecondCol the column of the cell where the second worker must be placed
      */
-    public GamePreparationCommand(int workerFirstRow, int workerFirstCol, int workerSecondRow, int workerSecondCol) { // todo command -> private constructors (updates package protected)
+    public GamePreparationCommand(int workerFirstRow, int workerFirstCol, int workerSecondRow, int workerSecondCol) {
 
         super(CommandType.PLACE);
 

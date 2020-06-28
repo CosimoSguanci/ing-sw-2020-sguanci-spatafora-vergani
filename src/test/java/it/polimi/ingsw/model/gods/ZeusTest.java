@@ -3,17 +3,13 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ZeusTest {
     @Test
     public void zeusCheckBuildTest() { // Zeus Worker can build under itself
-
-
 
 
         Zeus zeus = new Zeus();

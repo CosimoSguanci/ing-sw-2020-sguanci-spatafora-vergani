@@ -29,7 +29,7 @@ import static it.polimi.ingsw.model.utils.GodsUtils.*;
  * @author Cosimo Sguanci
  * @author Roberto Spatafora
  */
-public class Controller extends Observable<Controller> implements Observer<Command> { // TODO Refactor Controller in submodules ?
+public class Controller extends Observable<Controller> implements Observer<Command> {
     private final Model model; // todo handle attribute visibility and immutability
     private final CommandHandler commandHandler;
     private Player godChooserPlayer;

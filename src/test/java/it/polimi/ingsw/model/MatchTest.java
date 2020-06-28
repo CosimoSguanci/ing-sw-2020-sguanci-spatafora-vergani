@@ -2,8 +2,6 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.AlreadyInsidePlayerException;
 import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
-import it.polimi.ingsw.exceptions.NicknameAlreadyTakenException;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -18,8 +16,8 @@ public class MatchTest {
     public void addPlayerTest2() {
         int playersNum = 3;
         Match match = new Match(playersNum);
-        Player p1 = new Player("Andrea",  new Model(match), match);
-        Player p2 = new Player("Cosimo",  new Model(match), match);
+        Player p1 = new Player("Andrea", new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
         Player p3 = new Player("Roberto", new Model(match), match);
         match.addPlayer(p1);
         match.addPlayer(p2);
@@ -74,13 +72,12 @@ public class MatchTest {
 
 
     @Test
-    public void nextTurnTest()  {
+    public void nextTurnTest() {
         int playersNum = 3;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Player p1 = new Player("Andrea", new Model(match), match);
-        Player p2 = new Player("Cosimo",  new Model(match), match);
-        Player p3 = new Player("Roberto",  new Model(match), match);
+        Player p2 = new Player("Cosimo", new Model(match), match);
+        Player p3 = new Player("Roberto", new Model(match), match);
         try {
             match.addPlayer(p1);
             match.addPlayer(p2);
@@ -107,16 +104,15 @@ public class MatchTest {
     }
 
     @Test
-    public void getCurrentPlayerTest()  {
+    public void getCurrentPlayerTest() {
         int playersNum = 3;
-        String key = UUID.randomUUID().toString();
-        Match match =new Match(playersNum);
+        Match match = new Match(playersNum);
         Player p1 = new Player("Marco", new Model(match), match);
         Player p2 = new Player("Alessandro", new Model(match), match);
-        try{
+        try {
             match.addPlayer(p1);
             match.addPlayer(p2);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

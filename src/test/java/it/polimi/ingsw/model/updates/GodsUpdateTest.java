@@ -1,10 +1,5 @@
 package it.polimi.ingsw.model.updates;
 
-import it.polimi.ingsw.controller.commands.CommandType;
-import it.polimi.ingsw.model.ErrorType;
-import it.polimi.ingsw.model.Match;
-import it.polimi.ingsw.model.Model;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.view.UpdateHandler;
 import org.junit.jupiter.api.Test;
 

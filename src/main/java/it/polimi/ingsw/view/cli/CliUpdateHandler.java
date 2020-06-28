@@ -133,9 +133,7 @@ public class CliUpdateHandler implements UpdateHandler {
             cliInstance.setSelectedNicknames(selectedNicknames);
             cliInstance.println("Available colors are: ");
 
-            selectableColors.forEach((color) -> {
-                cliInstance.println(Cli.convertColorToAnsi(color) + color + PrintableColor.RESET);
-            });
+            selectableColors.forEach((color) -> cliInstance.println(Cli.convertColorToAnsi(color) + color + PrintableColor.RESET));
 
 
             cliInstance.setSelectableColors(selectableColors);
@@ -225,12 +223,8 @@ public class CliUpdateHandler implements UpdateHandler {
                     cliInstance.println(Cli.toBold("Move Error") + ": you can't perform this move because you can't move to this cell now (maybe you've already moved), or your God doesn't let you move in the position you specified!");
                 } else if (update.errorType == ErrorType.WRONG_TURN) {
                     cliInstance.println(Cli.toBold("Move Error") + ": you can't perform this move because it's not your turn!");
-                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
-                    cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Real Game Phase");
-                } else if (update.errorType == ErrorType.INVALID_CELL) {
-                    cliInstance.println(Cli.toBold("Error") + ": Invalid Cell");
-                } else if (update.errorType == ErrorType.GENERIC_ERROR) {
-                    cliInstance.println(Cli.toBold("Generic Error") + ": please, try another command");
+                } else {
+                    commonErrorHandling(update);
                 }
 
                 break;
@@ -244,24 +238,18 @@ public class CliUpdateHandler implements UpdateHandler {
                     cliInstance.println(Cli.toBold("Build Error") + ": you can't perform this build because you can't build in this cell (maybe you haven't moved yet), or your God doesn't let you build in the position you specified!");
                 } else if (update.errorType == ErrorType.WRONG_TURN) {
                     cliInstance.println(Cli.toBold("Build Error") + ": you can't perform this build because it's not your turn!");
-                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
-                    cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Real Game Phase");
-                } else if (update.errorType == ErrorType.INVALID_CELL) {
-                    cliInstance.println(Cli.toBold("Error") + ": Invalid Cell");
-                } else if (update.errorType == ErrorType.GENERIC_ERROR) {
-                    cliInstance.println(Cli.toBold("Generic Error") + ": please, try another command");
-                }
+                } else commonErrorHandling(update);
 
                 break;
 
             case END_TURN:
                 if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
-                    cliInstance.println(Cli.toBold("End Turn Error") + ": " + inhibitorGod + " doesn't let you end your turn now!"); // Your god -> specific god?
+                    cliInstance.println(Cli.toBold("End Turn Error") + ": " + inhibitorGod + " doesn't let you end your turn now!");
                 } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
-                    cliInstance.println(Cli.toBold("End Turn Error") + ": you can't end your turn now: maybe you must move or build!"); // Your god -> specific god?
+                    cliInstance.println(Cli.toBold("End Turn Error") + ": you can't end your turn now: maybe you must move or build!");
                 } else if (update.errorType == ErrorType.WRONG_TURN) {
-                    cliInstance.println(Cli.toBold("End Turn Error") + ": you can't end your turn because it's not your turn!"); // Your god -> specific god?
+                    cliInstance.println(Cli.toBold("End Turn Error") + ": you can't end your turn because it's not your turn!");
                 } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Real Game Phase");
                 }
@@ -285,11 +273,11 @@ public class CliUpdateHandler implements UpdateHandler {
             case PLACE:
                 if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {
                     String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);
-                    cliInstance.println(Cli.toBold("Game Preparation Error") + ": you can't place your Worker where you specified because " + inhibitorGod + " doesn't allow it"); // Your god -> specific god?
+                    cliInstance.println(Cli.toBold("Game Preparation Error") + ": you can't place your Worker where you specified because " + inhibitorGod + " doesn't allow it");
                 } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {
-                    cliInstance.println(Cli.toBold("Game Preparation Error") + ": you can't place your Workers where you specified because your God doesn't allow it"); // Your god -> specific god?
+                    cliInstance.println(Cli.toBold("Game Preparation Error") + ": you can't place your Workers where you specified because your God doesn't allow it");
                 } else if (update.errorType == ErrorType.WRONG_TURN) {
-                    cliInstance.println(Cli.toBold("Game Preparation Error") + ": you can't place your Workers because it's not your turn!"); // Your god -> specific god?
+                    cliInstance.println(Cli.toBold("Game Preparation Error") + ": you can't place your Workers because it's not your turn!");
                 } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Game Preparation Phase");
                 }
@@ -298,7 +286,7 @@ public class CliUpdateHandler implements UpdateHandler {
             case SELECT:
 
                 if (update.errorType == ErrorType.WRONG_TURN) {
-                    cliInstance.println(Cli.toBold("God Choice Error") + ": you can't choose your God because it's not your turn!"); // Your god -> specific god?
+                    cliInstance.println(Cli.toBold("God Choice Error") + ": you can't choose your God because it's not your turn!");
                 } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
                     cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Gods Choice Phase");
                 } else if (update.errorType == ErrorType.INVALID_GOD) {
@@ -308,6 +296,16 @@ public class CliUpdateHandler implements UpdateHandler {
         }
         cliInstance.println("For more information about commands or rules, type 'help " + cliInstance.getCurrentPhaseString() + "' or 'rules'");
         cliInstance.newLine();
+    }
+
+    private void commonErrorHandling(ErrorUpdate update) {
+        if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
+            cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Real Game Phase");
+        } else if (update.errorType == ErrorType.INVALID_CELL) {
+            cliInstance.println(Cli.toBold("Error") + ": Invalid Cell");
+        } else if (update.errorType == ErrorType.GENERIC_ERROR) {
+            cliInstance.println(Cli.toBold("Generic Error") + ": please, try another command");
+        }
     }
 
     /**
@@ -400,7 +398,7 @@ public class CliUpdateHandler implements UpdateHandler {
             cliInstance.setCurrentGamePhase(GamePhase.MATCH_LOST);
 
             if (update.onePlayerRemaining) {
-                cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED); // todo method to avoid duplicate
+                cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);
             } else {
                 cliInstance.println("Do you want to continue to watch this match?");
             }

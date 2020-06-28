@@ -40,7 +40,7 @@ public class MatchEnded {
     public boolean handle(String command) {
         if (command.equals("yes")) {
             manage();
-            return true;        //break while in cli
+            return true;
         } else if (command.equals("no")) {
             cli.println("Quitting...");
             System.exit(0);
