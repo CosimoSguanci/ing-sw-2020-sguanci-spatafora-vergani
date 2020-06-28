@@ -46,8 +46,8 @@
     <profiles>
         <profile>
             <id>server</id>
-
             <build>
+                <finalName>server</finalName>
                 <plugins>
                     <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
                     <plugin>
@@ -130,6 +130,7 @@
         <profile>
             <id>client-cli</id>
             <build>
+                <finalName>cli</finalName>
                 <plugins>
                     <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
                     <plugin>
@@ -211,6 +212,7 @@
         <profile>
             <id>client-gui</id>
             <build>
+                <finalName>gui</finalName>
                 <plugins>
                     <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
                     <plugin>
