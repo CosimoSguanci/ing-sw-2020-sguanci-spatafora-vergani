@@ -78,10 +78,6 @@ public class OtherInfoHandler {
                 }
 
                 break;
-            /*case MATCH_ENDED:
-                this.cli.println("Do you want to play another match?");
-                this.cli.newLine();
-                break;*/
         }
     }
 }

@@ -32,13 +32,26 @@ public class Zeus extends GodStrategy {
      */
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        return isUsingSelectedWorker(worker) &&
+        if(!worker.getPosition().equals(buildCell)) {
+            return super.checkBuild(worker, buildCell, buildCellBlockType);
+        }
+        else return isUsingSelectedWorker(worker) &&
                 worker.hasMoved() &&
                 !worker.hasBuilt() &&
                 (worker.getPosition().isAdjacentTo(buildCell) || worker.getPosition().equals(buildCell)) &&
                 (buildCell.getLevel() != BlockType.DOME) &&
                 (!worker.getPosition().equals(buildCell) || buildCell.getLevel() != BlockType.LEVEL_THREE) &&
                 (buildCellBlockType == null || buildCellBlockType.getLevelNumber() == buildCell.getLevel().getLevelNumber() + 1);
+    }
+
+    @Override
+    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+        if(!worker.getPosition().equals(buildCell) || buildCellBlockType == null) {
+            super.executeBuild(worker, buildCell, buildCellBlockType);
+        }
+        else {
+            buildCell.increaseLevel();
+        }
     }
 
     /**
