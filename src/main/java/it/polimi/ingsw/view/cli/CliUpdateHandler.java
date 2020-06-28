@@ -385,7 +385,7 @@ public class CliUpdateHandler implements UpdateHandler {
 
         boolean hasClientLost = controller.getClientPlayerID().equals(update.getLoserPlayer().getPlayerID());
 
-        String subject = hasClientLost ? "you" : "it"; // update.getLoserPlayer().getNickname()
+        String subject = hasClientLost ? "you" : "he/she"; // update.getLoserPlayer().getNickname()
         String loseCauseMsg = " because " + subject + " can't " + (update.getLoseCause() == LoseUpdate.LoseCause.CANT_MOVE ? "move" : "build") +
                 " with any Worker";
 
