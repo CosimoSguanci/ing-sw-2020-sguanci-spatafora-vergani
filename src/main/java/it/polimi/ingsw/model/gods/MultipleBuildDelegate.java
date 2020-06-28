@@ -28,6 +28,8 @@ class MultipleBuildDelegate {
 
     /**
      * buildCount getter
+     *
+     * @return the number of times the god has built in this turn
      */
     int getBuildCount() {
         return buildCount;
@@ -63,6 +65,7 @@ class MultipleBuildDelegate {
      *
      * @param worker         the worker who want to build a new level.
      * @param buildCell      the cell in which the Player want to build a new level.
+     * @param buildCellBlockType [optional] the level that the Worker wants to build.
      * @param selectedWorker to check if the worker that is trying to build is the same worker that performed movement.
      * @return true if the buildCount is less than the max number of times that the God can build each turn and other standard check are satisfied, false otherwise.
      */

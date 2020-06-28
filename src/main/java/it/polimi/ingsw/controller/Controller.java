@@ -407,6 +407,8 @@ public class Controller extends Observable<Controller> implements Observer<Comma
      * This method checks if the current player has a possibility to build. In fact, if the
      * current player needs to build but can't do it, he/she immediately loses the match: in
      * this case, a proper method (which will notify all the players) is called.
+     *
+     * @param playerCommand the last {@link PlayerCommand} executed
      */
     private void checkLoseConditionsBuild(PlayerCommand playerCommand) {
         if (!model.getCurrentPlayer().getGodStrategy().canBuild(model.getBoard(), playerCommand.getWorker())) {

@@ -89,6 +89,7 @@ public class Minotaur extends GodStrategy {
      * This method finds opponent Worker backward Cell, using the original Player Worker to determine
      * the moving direction (diagonal or not).
      *
+     * @param board the game board
      * @param workerCell the position of worker that the Player wants to move.
      * @param moveCell   the cell in which the Player want to move the worker.
      * @return The Cell that is backward of moveCell.

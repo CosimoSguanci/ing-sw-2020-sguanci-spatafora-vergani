@@ -131,6 +131,7 @@ public class JCellButton extends JButton {
      * This private method computes the image that will be set as background image of the button
      *
      * @return an Image which would be used as background
+     * @throws IOException when some error is encountered while getting the needed resources
      */
     private Image computeImage() throws IOException {
         switch (blockLevel) {

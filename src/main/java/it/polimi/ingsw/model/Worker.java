@@ -30,6 +30,9 @@ public class Worker {
      *
      * @param player indicates the player who has the control on the worker being created.
      * @param board  indicates the board table in which the player is involved in.
+     * @param workerType the type of the Worker. Can be WORKER_FIRST or WORKER_SECOND.
+     * @see it.polimi.ingsw.controller.commands.Command#WORKER_FIRST
+     * @see it.polimi.ingsw.controller.commands.Command#WORKER_SECOND
      */
     Worker(Player player, Board board, String workerType) {
         this.player = player;

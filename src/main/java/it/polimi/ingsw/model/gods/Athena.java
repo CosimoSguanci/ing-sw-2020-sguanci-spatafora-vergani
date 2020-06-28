@@ -57,7 +57,7 @@ public class Athena extends GodStrategy {
     }
 
     /**
-     * This callback is called avery time a new turn starts (so the round of turns is over).
+     * This callback is called every time a new turn starts (so the round of turns is over).
      * For Athena, this method reinitialize the flag which prevents other Players to move up.
      *
      * @param player The Player whose turn just started

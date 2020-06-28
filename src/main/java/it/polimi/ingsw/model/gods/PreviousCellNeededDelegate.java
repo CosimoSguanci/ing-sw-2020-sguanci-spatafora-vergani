@@ -20,6 +20,8 @@ class PreviousCellNeededDelegate {
 
     /**
      * Previous Cell getter
+     *
+     * @return the previous Cell saved
      */
     Cell getPreviousCell() {
         return this.previousCell;
@@ -27,6 +29,8 @@ class PreviousCellNeededDelegate {
 
     /**
      * Previous Cell setter
+     *
+     * @param cell the "new" previous Cell
      */
     void setPreviousCell(Cell cell) {
         this.previousCell = cell;

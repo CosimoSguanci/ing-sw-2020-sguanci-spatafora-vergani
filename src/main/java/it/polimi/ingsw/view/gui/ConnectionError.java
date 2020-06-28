@@ -33,6 +33,8 @@ public class ConnectionError {
     /**
      * This private method creates a new ConnectionErrorPanel through which a player
      * is notified about the error in the connection with the server.
+     *
+     * @throws IOException if some unexpected error is encountered getting the resources.
      */
     private void draw() throws IOException {
         JFrame frame = new JFrame("Santorini");
