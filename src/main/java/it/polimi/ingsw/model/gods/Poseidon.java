@@ -43,6 +43,9 @@ public class Poseidon extends GodStrategy {
      */
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+
+        if(selectedWorker == null) return false;
+
         unmovedWorker = worker.player.getWorkerFirst().equals(selectedWorker) ?
                 worker.player.getWorkerSecond() : worker.player.getWorkerFirst();
 
