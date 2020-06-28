@@ -360,8 +360,15 @@ public class CliUpdateHandler implements UpdateHandler {
      */
     public void handle(WinUpdate update) {
         cliInstance.newLine();
-        cliInstance.println(cliInstance.playerWithColor(update.getWinnerPlayer().getNickname()) + " wins!");
 
+        if(update.getWinnerPlayer().getNickname().toLowerCase().equals(controller.getClientPlayer().getNickname().toLowerCase())) {
+            cliInstance.println("You Win!");
+        }
+        else {
+            cliInstance.println(cliInstance.playerWithColor(update.getWinnerPlayer().getNickname()) + " Wins!");
+        }
+        cliInstance.newLine();
+        cliInstance.println("Do you want to play another match?");
         cliInstance.newLine();
     }
 
@@ -437,6 +444,9 @@ public class CliUpdateHandler implements UpdateHandler {
     public void handle(DisconnectedPlayerUpdate update) {
         String nicknameToShow = update.getDisconnectedPlayer().getNickname() != null ? update.getDisconnectedPlayer().getNickname() : "A player";
         cliInstance.println(nicknameToShow + " disconnected!");
+        this.cliInstance.println("Do you want to play another match?");
+        this.cliInstance.newLine();
+
     }
 
     /**
