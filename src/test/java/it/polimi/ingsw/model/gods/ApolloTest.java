@@ -30,7 +30,7 @@ public class ApolloTest {
 
     @Test
     public void apolloCheckMoveTest() {
-        
+
         worker.setInitialPosition(0, 0);
         oppositeWorker.setInitialPosition(0, 1);
 
