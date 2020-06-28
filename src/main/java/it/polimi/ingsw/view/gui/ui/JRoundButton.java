@@ -38,6 +38,9 @@ public class JRoundButton extends JButton {
 
     /**
      * This method is used to initialize the circular shape of the button
+     * This method is used to create an ellipse that is defined by a framing rectangle.
+     * The {@code Float} class defines an ellipse specified in precision.
+     *
      */
     private void initShape() {
         if (!getBounds().equals(base)) {
