@@ -305,14 +305,6 @@ public class Cli extends View implements Observer<Update> {
         newLine();
     }
 
-    /**
-     * This method gives information about the current phase of the match
-     *
-     * @return the current phase of the match
-     */
-    public GamePhase getCurrentPhase() {
-        return this.currentGamePhase;
-    }
 
     /**
      * This method is a simply getter. Once the player associated to the Cli

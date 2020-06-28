@@ -115,7 +115,6 @@ public class GamePreparation extends Game implements ActionListener {
 
                         ImageIcon imageIcon = getWorkerImageIconFromBtnSize(size, color);
 
-
                         JLabel overImage = new JLabel(imageIcon);
                         btn.add(overImage, BorderLayout.CENTER);
 

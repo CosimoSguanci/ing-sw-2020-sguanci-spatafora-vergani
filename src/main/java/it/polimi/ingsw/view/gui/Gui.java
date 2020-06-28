@@ -41,6 +41,7 @@ public class Gui extends View implements Observer<Update> {
     private GamePreparation gamePreparation;
     private RealGame realGame;
     private GodGuiDrawer godGuiDrawer;
+    boolean showDisconnectedDialog = true;
 
     private Gui(Client clientInstance, Controller controllerInstance) {
         super(clientInstance, controllerInstance);
@@ -134,10 +135,6 @@ public class Gui extends View implements Observer<Update> {
         initializeComponents();
         frame.add(mainPanel);
 
-        //useful for testing WIP panels
-        //JPanel currentPanel = new GameManual();
-        //frame.add(currentPanel);
-
         initFrame(frame);
     }
 
@@ -164,10 +161,12 @@ public class Gui extends View implements Observer<Update> {
     }
 
     void startInitialInfoPhase() {
+        this.currentGamePhase = GamePhase.INITIAL_INFO;
         this.mainCardLayout.show(mainPanel, INITIAL_INFO);
     }
 
     void startGodChoicePhase() {
+        this.currentGamePhase = GamePhase.CHOOSE_GODS;
         this.mainCardLayout.show(mainPanel, GOD_CHOICE);
     }
 
@@ -179,6 +178,14 @@ public class Gui extends View implements Observer<Update> {
     void startRealGame() {
         this.currentGamePhase = GamePhase.REAL_GAME;
         this.mainCardLayout.show(mainPanel, REAL_GAME);
+    }
+
+    /**
+     * Callback method called when the Game Phase changes to MATCH_ENDED or MATCH_LOST
+     * @param newGamePhase the new current game phase
+     */
+    void onMatchFinished(GamePhase newGamePhase) {
+        this.currentGamePhase = newGamePhase;
     }
 
     void showInitialInfoOnTurn() {
@@ -388,11 +395,15 @@ public class Gui extends View implements Observer<Update> {
                 icon = new ImageIcon(getClass().getResource(imagePath));
                 icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
                 JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE, icon);
-                askContinueToWatch();
+                if(!update.onePlayerRemaining) {
+                    askContinueToWatch();
+                }
+                else {
+                    askPlayAgainDialog();
+                }
             });
 
         } else if (update.onePlayerRemaining) {
-
 
             SwingUtilities.invokeLater(() -> {
                 String titleWin = "Win";
@@ -419,11 +430,7 @@ public class Gui extends View implements Observer<Update> {
         String message = "Do you want to play another match?";
 
         SwingUtilities.invokeLater(() -> {
-            String imagePath = "/images/RealGame/question.png";
-            int iconWidth = 70;
-            ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
-            icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
-            int res = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon, null, null);
+            int res = buildQuestionDialog(title, message);
 
             switch (res) {
                 case JOptionPane.YES_OPTION:
@@ -439,15 +446,17 @@ public class Gui extends View implements Observer<Update> {
     }
 
     private void askContinueToWatch() {
+        this.showDisconnectedDialog = false;
         String title = "Continue to watch";
         String message = "Do you want to continue to watch this match?";
 
         SwingUtilities.invokeLater(() -> {
-            int res = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            int res = buildQuestionDialog(title, message);
 
             switch (res) {
                 case JOptionPane.YES_OPTION:
                     this.realGame.disableButtons();
+                    this.showDisconnectedDialog = true;
                     break;
                 case JOptionPane.NO_OPTION:
                 case JOptionPane.CLOSED_OPTION:
@@ -455,6 +464,21 @@ public class Gui extends View implements Observer<Update> {
                     break;
             }
         });
+    }
+
+    /**
+     * Builds a dialog which asks a question to the user (examples: "Do you want to continue to watch?"
+     * "Do you want to play again?")
+     * @param title the title of the dialog
+     * @param message the message contained in the dialog
+     * @return the choice made by the user
+     */
+    private int buildQuestionDialog(String title, String message) {
+        String imagePath = "/images/RealGame/question.png";
+        int iconWidth = 70;
+        ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
+        icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
+        return JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon, null, null);
     }
 
     public void showServerUnreachableDialog() {

@@ -143,6 +143,15 @@ public abstract class View extends Observable<Object> {
     public abstract void setSelectableColors(List<PrintableColor> selectableColors);
 
     /**
+     * This method gives information about the current phase of the match
+     *
+     * @return the current phase of the match
+     */
+    public GamePhase getCurrentPhase() {
+        return this.currentGamePhase;
+    }
+
+    /**
      * This method forwards an update received to the
      * client-side Controller
      *

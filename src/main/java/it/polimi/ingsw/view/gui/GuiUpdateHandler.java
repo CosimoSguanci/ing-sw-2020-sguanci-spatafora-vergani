@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.model.PrintableColor;
 import it.polimi.ingsw.model.updates.*;
 import it.polimi.ingsw.network.client.controller.Controller;
@@ -37,6 +38,10 @@ public class GuiUpdateHandler implements UpdateHandler {
             case REAL_GAME:
                 guiInstance.startRealGame();
                 break;
+            case MATCH_ENDED:
+            case MATCH_LOST:
+                guiInstance.onMatchFinished(update.newGamePhase);
+
         }
     }
 
@@ -100,7 +105,9 @@ public class GuiUpdateHandler implements UpdateHandler {
     }
 
     public void handle(DisconnectedPlayerUpdate update) {
-        guiInstance.showDisconnectedPlayerDialog(update);
+        if(guiInstance.getCurrentPhase() != GamePhase.MATCH_ENDED && guiInstance.showDisconnectedDialog) {
+            guiInstance.showDisconnectedPlayerDialog(update);
+        }
     }
 
     public void handle(ServerUnreachableUpdate update) {
