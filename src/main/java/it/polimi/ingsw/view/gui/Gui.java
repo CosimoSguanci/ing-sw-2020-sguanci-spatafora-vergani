@@ -600,7 +600,13 @@ public class Gui extends View implements Observer<Update> {
             title = "Lost";
             message = update.getLoserPlayer().getNickname() + " Lost!";
 
-            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE));
+            SwingUtilities.invokeLater(() -> {
+                ImageIcon icon;
+                String imagePath = "/images/RealGame/game-over.png";
+                icon = new ImageIcon(getClass().getResource(imagePath));
+                icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
+                JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE, icon);
+            });
         }
 
     }
