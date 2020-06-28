@@ -1,4 +1,4 @@
-# Santorini - Sguanci_Spatafora_Vergani INGSW 19-20
+# Santorini - Sguanci Spatafora Vergani INGSW 19-20
 ![Santorini](https://i.ibb.co/nszm4hX/santorini-logo.png)
 
 ## In order to run these executables, you need to install JDK 1.8 (available [here](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html))
@@ -31,7 +31,14 @@ java -jar gui.jar
 
 Or you can simply double click the JAR file.
 
-## Additional Features developed:
+## Features developed:
+
+- Complete rule set of the game;
+- CLI;
+- GUI;
+- Socket communication between server and client.
+
+### Additional features:
 
 - Multiple matches at the same time;
 - 5 Advanced Gods implemented.
