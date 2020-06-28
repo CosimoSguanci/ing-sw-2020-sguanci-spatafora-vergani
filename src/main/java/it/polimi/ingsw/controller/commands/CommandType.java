@@ -12,7 +12,7 @@ import it.polimi.ingsw.exceptions.BadCommandException;
  * workers on the board; HELP, to receive some information about what to do; INFO,
  * to have more specific information; QUIT, to leave a match; TURN, to "ask" who is
  * playing his/her turn; RULES, to read a short version of Santorini's manual; GOD,
- * to know the association player <-> god during a match; BOARD, to see the current
+ * to know the association between player and god during a match; BOARD, to see the current
  * board (and situation) of the match.
  *
  * @author Roberto Spatafora
@@ -28,6 +28,7 @@ public enum CommandType {
      * Matching takes place when the string is equal to a sort of .toString for CommandType; note
      * that the string "end" is considered to match with CommandType.END_TURN.
      *
+     * @param input the String that the user typed
      * @return the matching command-type
      * @throws BadCommandException if parameter string does not represent any CommandType
      */
@@ -49,6 +50,7 @@ public enum CommandType {
      * to help to play a better match.
      * Matching takes place when the string is equal to a sort of .toString for CommandType.
      *
+     * @param command the String that the user typed
      * @return true if the string matches a CommandType of "Help class", false otherwise
      */
     public static boolean isHelperCommandType(String command) {

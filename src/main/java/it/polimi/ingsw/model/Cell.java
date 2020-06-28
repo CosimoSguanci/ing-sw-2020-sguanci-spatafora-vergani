@@ -22,6 +22,8 @@ public class Cell {
     /**
      * Cell is the builder of the class. When a cell is created, its level is the ground
      * level and no worker is on it
+     * @param rowIdentifier the row coordinate of this Cell
+     * @param colIdentifier the col coordinate of this Cell
      */
     public Cell(int rowIdentifier, int colIdentifier) {
         this.level = BlockType.GROUND;
@@ -54,6 +56,7 @@ public class Cell {
 
     /**
      * The method is a simple setter of the worker on the considered cell.
+     * @param worker the Worker that must be set for this Cell
      */
     public void setWorker(Worker worker) {
         this.worker = worker;
@@ -119,7 +122,7 @@ public class Cell {
      * return value will be 2; instead, if the caller is level two and the parameter is
      * level three, return value will be -1.
      * Note that a movement from caller-cell to parameter-cell is possible only if the two
-     * cells are adjacent, this method returns a value >=(-1), the parameter level is
+     * cells are adjacent, this method returns a value greater than or equal to -1, the parameter level is
      * not a dome and there is no worker on it
      *
      * @param cell cell you want to know level difference with
@@ -141,7 +144,7 @@ public class Cell {
      * not a dome and there is no worker on it
      *
      * @param destination cell you want to move to
-     * @return true if level difference between caller-cell and parameter-cell is >=(-1)
+     * @return true if level difference between caller-cell and parameter-cell is greater than or equal to -1
      */
     public boolean isLevelDifferenceOk(Cell destination) {
         return this.levelDifference(destination) >= -1;

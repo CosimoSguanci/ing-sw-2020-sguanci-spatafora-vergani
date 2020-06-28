@@ -63,6 +63,13 @@ public abstract class GodStrategy {
      * if game preparation constraints (if present) are satisfied.
      * The standard behavior is that no constraints are imposed to the game preparation phase.
      * The gods that have a particular Game preparation behavior will override this method.
+     *
+     * @param workerFirst the first Worker placed
+     * @param workerFirstCell the position of the first Worker placed
+     * @param workerSecond the second Worker placed
+     * @param workerSecondCell the position of the second Worker placed
+     *
+     * @return true if the Workers can be placed in the positions specified, false otherwise.
      */
     public boolean checkGamePreparation(Worker workerFirst, Cell workerFirstCell, Worker workerSecond, Cell workerSecondCell) {
         return workerFirstCell.isEmpty() && workerSecondCell.isEmpty();
@@ -74,6 +81,13 @@ public abstract class GodStrategy {
      * The standard behavior is that no constraints are imposed to the game preparation phase.
      * The gods that impose particular Game preparation constraints will override this method.
      * However, in this version, there are not Gods which set Game Preparation constraints.
+     *
+     * @param workerFirst the first Worker placed
+     * @param workerFirstCell the position of the first Worker placed
+     * @param workerSecond the second Worker placed
+     * @param workerSecondCell the position of the second Worker placed
+     *
+     * @return true if the Workers can be placed in the positions specified, false otherwise.
      */
     public boolean checkGamePreparationConstraints(Worker workerFirst, Cell workerFirstCell, Worker workerSecond, Cell workerSecondCell) {
         return true;
@@ -100,6 +114,7 @@ public abstract class GodStrategy {
      *
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
+     * @param buildCellBlockType [optional] the level that the Worker wants to build.
      * @return true if the Build passed as parameter can be performed, false otherwise.
      * @see Worker#standardCheckBuild(Cell, BlockType)
      */
@@ -111,6 +126,8 @@ public abstract class GodStrategy {
      * This method is called once a turn, to check if end turn constraints are satisfied.
      * The standard behavior is that a Player must move AND build with the selected worker in order to end the turn.
      * The gods that have a particular end turn behavior will override this method.
+     *
+     * @return true if the turn can be ended now, false otherwise.
      */
     public boolean checkEndTurn() {
         return selectedWorker != null && selectedWorker.hasMoved() && selectedWorker.hasBuilt();
@@ -121,6 +138,10 @@ public abstract class GodStrategy {
      * The standard behavior is that there are no constraints other than those imposed by checkEndTurn.
      * The gods that impose particular End Turn constraints will override this method.
      * However, in this version, there are not Gods which set End Turn constraints.
+     *
+     * @param player the Player that wants to end its turn.
+     *
+     * @return true if the turn can be ended now, false otherwise.
      */
     public boolean checkEndTurnConstraints(Player player) {
         return true;
@@ -130,6 +151,11 @@ public abstract class GodStrategy {
      * This method is called once a match (for every player), to execute
      * the game preparation phase and respect the god's constraints.
      * The gods that have a particular Game preparation behavior will override this method.
+     *
+     * @param workerFirst the first Worker placed
+     * @param workerFirstCell the position of the first Worker placed
+     * @param workerSecond the second Worker placed
+     * @param workerSecondCell the position of the second Worker placed
      */
     public void executeGamePreparation(Worker workerFirst, Cell workerFirstCell, Worker workerSecond, Cell workerSecondCell) {
         workerFirst.setInitialPosition(workerFirstCell.getRowIdentifier(), workerFirstCell.getColIdentifier());
@@ -159,6 +185,7 @@ public abstract class GodStrategy {
      *
      * @param worker    the worker who want to build a new level.
      * @param buildCell the cell in which the Player want to build a new level.
+     * @param buildCellBlockType [optional] the level that the Worker wants to build.
      */
     public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
         worker.build(buildCell, buildCellBlockType);
@@ -208,6 +235,7 @@ public abstract class GodStrategy {
      *
      * @param oppositeWorker Worker whose building action could be prevented by God's power
      * @param buildCell      the cell in which the Player want to build a new level.
+     * @param buildCellBlockType [optional] the level that the Worker wants to build.
      * @return true if no constraint prevent the move passed as parameter, false otherwise.
      */
     public boolean checkBuildConstraints(Worker oppositeWorker, Cell buildCell, BlockType buildCellBlockType) {

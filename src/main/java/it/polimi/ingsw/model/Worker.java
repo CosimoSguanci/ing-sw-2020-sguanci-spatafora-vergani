@@ -98,11 +98,13 @@ public class Worker {
      * following the standard set of rules.
      *
      * @param buildCell the cell in which the Player want to build a new level.
+     * @param buildCellBlockType [optional] the specific level that the Worker wants to build.
+     *
      * @return true if (AND conditions):
      * - The Worker has already performed a move but NOT another build;
      * - The build Cell is adjacent to the current Worker's position;
      * - The build Cell is empty;
-     * - The build Cell level is not DOME.
+     * - The build Cell level is not DOME.     * @param buildCell
      */
     public boolean standardCheckBuild(Cell buildCell, BlockType buildCellBlockType) {
         return this.hasMoved &&
@@ -142,6 +144,8 @@ public class Worker {
      * As a result of this method the level of a cell is increased.
      *
      * @param buildCell indicates the Cell in which a player wants his worker to build in.
+     * @param buildCellBlockType [optional] the specific level that the Worker wants to build.
+     *
      * @throws CannotIncreaseLevelException if the worker tries to build where there's a Dome.
      * @throws CellNotEmptyException        if the worker tries to build in an occupied Cell.
      */

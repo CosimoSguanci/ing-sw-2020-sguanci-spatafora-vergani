@@ -701,6 +701,8 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     /**
      * This method handles a disconnection from one of the clients involved in the match. In particular, when a
      * player disconnects, he/she is removed; then, everyone must be notified and the match immediately ends.
+     *
+     * @param playerID the ID of the Player that disconnected
      */
     public void onPlayerDisconnected(String playerID) {
         Player disconnectedPlayer = model.getPlayers().stream().filter((player) -> player.getPlayerID().equals(playerID)).findFirst().orElse(null);

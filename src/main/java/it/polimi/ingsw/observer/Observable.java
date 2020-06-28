@@ -9,7 +9,7 @@ import java.util.List;
  * object is "listened" by other objects. So, an observable object has one
  * or more observers that are interested to be notified when some changes
  * occur (in observed object).
- * Note that an observer is an object implementing interface Observer<T>.
+ * Note that an observer is an object implementing interface Observer.
  * When an observable object is created, no observers are "listening" to it.
  *
  * @author Andrea Mario Vergani
