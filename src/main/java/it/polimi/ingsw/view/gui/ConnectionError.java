@@ -5,8 +5,20 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.io.IOException;
 
+/**
+ * This class manages errors during connection to server phase.
+ * When a Client cannot connect to the server a new Panel, in which
+ * he is notified that something went wrong in connection, appears in his screen
+ *
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
+ * @author Andrea Vergani
+ */
 public class ConnectionError {
 
+    /**
+     * This method handles the notification of an error when trying to connect to server
+     */
     public void show() {
         SwingUtilities.invokeLater(() -> {
             try {
@@ -18,6 +30,10 @@ public class ConnectionError {
         });
     }
 
+    /**
+     * This private method creates a new ConnectionErrorPanel through which a player
+     * is notified about the error in the connection with the server.
+     */
     private void draw() throws IOException {
         JFrame frame = new JFrame("Santorini");
         ConnectionErrorPanel mainPanel = new ConnectionErrorPanel();
@@ -25,10 +41,17 @@ public class ConnectionError {
         Gui.initFrame(frame);
     }
 
+    /**
+     * This is a private class used to create instances of a particular panel
+     * used to notify users that something went wrong during connection with server
+     */
     private static class ConnectionErrorPanel extends JPanel {
         private final Image backgroundImage = new ImageIcon(getClass().getResource("/images/connection_error_bg.png")).getImage();
 
-
+        /**
+         * This is the constructor of the private Class. It set the background,
+         * the label which explains the problem to the user, color and font text is set.
+         */
         private ConnectionErrorPanel() {
 
             LayoutManager layoutManager = new BorderLayout();
@@ -58,6 +81,10 @@ public class ConnectionError {
 
         }
 
+        /**
+         * This method set the background image of the panel
+         * @param g contains a reference to the component which we want to set the background image.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);

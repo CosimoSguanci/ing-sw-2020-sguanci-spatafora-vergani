@@ -4,7 +4,13 @@ import it.polimi.ingsw.model.PrintableColor;
 
 import java.util.LinkedHashMap;
 
-
+/**
+ * This class defines a Game Manual. This manual is available to all players in all game phases
+ *
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
+ * @author Andrea Vergani
+ */
 public class Manual {
 
     private static final String info = "General information";
@@ -44,6 +50,10 @@ public class Manual {
     private Manual() {
     }
 
+    /**
+     * This method is used to generate a String which contains all the game rules
+     * @return a String which contains information about info, play, win conditions, gods and info about them
+     */
     public static String manual() {
         String info = PrintableColor.BOLD + Manual.info + PrintableColor.RESET;
         String play = PrintableColor.BOLD + Manual.play + PrintableColor.RESET;
@@ -58,7 +68,10 @@ public class Manual {
                 infoGods + System.lineSeparator() + gameWithGods + System.lineSeparator();
     }
 
-
+    /**
+     * This method is a simple getter of a correspondence between info Title and the explanation of them
+     * @return a Map which contains a correspondence between info title and the explanation
+     */
     public static LinkedHashMap<String, String> getRules() {
         LinkedHashMap<String, String> result = new LinkedHashMap<>();
         result.put(info, generalInfo);
