@@ -189,6 +189,13 @@ public class Worker {
     }
 
     /**
+     * hasBuilt flag setter
+     */ // todo test
+    public void setHasBuilt() {
+        this.hasBuilt = true;
+    }
+
+    /**
      * Used to reset move and build flags. Used at the end of every Player's turn.
      *
      * @see it.polimi.ingsw.model.gods.GodStrategy#endPlayerTurn(Player)

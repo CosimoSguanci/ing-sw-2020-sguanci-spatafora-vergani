@@ -45,12 +45,13 @@ public class Zeus extends GodStrategy {
     }
 
     @Override
-    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) { // todo test
         if(!worker.getPosition().equals(buildCell) || buildCellBlockType == null) {
             super.executeBuild(worker, buildCell, buildCellBlockType);
         }
         else {
             buildCell.increaseLevel();
+            worker.setHasBuilt();
         }
     }
 
