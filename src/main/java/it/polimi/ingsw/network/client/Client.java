@@ -30,7 +30,6 @@ public class Client {
     //private final static String IP = "SantoriniServer-env.eba-idxatybv.us-east-1.elasticbeanstalk.com";
     //private final static String IP = "cosimosguanci.ddns.net";
     private final static String IP = "116.203.106.110";
-    //private final static String IP = "127.0.0.1";
     private final static int PORT = 12345;
     private final static int TIMEOUT_MS = 2000;
     private final static int PONG_SCHEDULE_TIME_MS = 500;
@@ -97,7 +96,7 @@ public class Client {
         if (this.objectOutputStream == null) {
             this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         }
-        this.updateListener = new UpdateListener(socket, objectOutputStream);
+        this.updateListener = new UpdateListener(socket);
         executor.execute(updateListener);
         this.pongScheduler = Executors.newScheduledThreadPool(1);
         pongScheduler.scheduleAtFixedRate(new PingSender(this.objectOutputStream, this.pongScheduler), 0, PONG_SCHEDULE_TIME_MS, TimeUnit.MILLISECONDS);

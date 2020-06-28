@@ -17,8 +17,20 @@ import java.util.concurrent.ExecutorService;
 
 import static it.polimi.ingsw.network.server.Server.TIMEOUT_MS;
 
+/**
+ * Runnable implementation which is instantiated every time a new client establishes a connection with the server.
+ * It handles the initial messages exchanged by client and server, and gets notified from {@link CommandListener}
+ * every time a new {@link Command} is received from a player.
+ *
+ * @author Andrea Mario Vergani
+ * @author Roberto Spatafora
+ * @author Cosimo Sguanci
+ */
 public class ClientHandler extends Observable<Command> implements Runnable, Observer<Command> {
 
+    /**
+     * The client identifier (random UUID String)
+     */
     public final String clientID;
     final Socket clientSocket;
     private final Server server;
@@ -26,12 +38,21 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
     int playersNum;
     private ObjectOutputStream objectOutputStream;
 
+    /**
+     * In the constructor, the random client ID is generated.
+     * @param server server instance to call the lobby method.
+     * @param clientSocket the socket which identifies the client to be handled by this instance.
+     */
     ClientHandler(Server server, Socket clientSocket) {
         this.server = server;
         this.clientSocket = clientSocket;
         this.clientID = UUID.randomUUID().toString();
     }
 
+    /**
+     * Method called to send an {@link Update} from server to client (Model-View communication in MVC pattern).
+     * @param update the update representing game state changes, used to notify all the clients.
+     */
     public void sendUpdate(Update update) {
         try {
             objectOutputStream.reset(); // necessary to avoid cached objects
@@ -42,11 +63,22 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
         }
     }
 
+    /**
+     * update method from Observer pattern. Specifically, this class observes {@link CommandListener} in order to notify the {@link it.polimi.ingsw.controller.Controller}
+     * that a new {@link Command} has been sent. The controller will then handle the command and change the game state accordingly.
+     * @param command the command object received from the client.
+     */
     @Override
     public void update(Command command) {
         notify(command);
     }
 
+    /**
+     * In the Thread execution flow, this class handle the initial communication between client and server. It receives the
+     * players number chosen by the client (and checks its correctness), and send to the client its unique ID, generate using UUID random method.
+     * Then, the {@link CommandListener} Thread responsible to listen for commands is started, and the {@link Server#lobby(ClientHandler)} method is called
+     * to insert the client in the waiting connections list (or start a new match if the right number of players is reached).
+     */
     @Override
     public void run() {
         try {

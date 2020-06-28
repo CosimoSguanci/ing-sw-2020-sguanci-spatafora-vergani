@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit;
  * The creation of a custom implementation is necessary because neither {@link java.util.concurrent.Executors#newFixedThreadPool(int)} nor
  * {@link Executors#newCachedThreadPool()} matches our needs, but we still want to have the abstraction benefits of using an {@link java.util.concurrent.ExecutorService}
  * instead of a raw Thread to enable concurrency.
+ *
+ * @author Cosimo Sguanci
  */
 public final class CustomThreadPoolExecutor {
 
