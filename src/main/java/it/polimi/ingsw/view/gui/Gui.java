@@ -609,6 +609,7 @@ public class Gui extends View implements Observer<Update> {
      * The method creates a dialog to ask the player if he/she wants to play another match.
      * This dialog can be visualized, for example, when a match ends, or when a player
      * wants to leave the match and maybe wants to start another one.
+     * Decision by the player is managed in the proper way.
      */
     public void askPlayAgainDialog() {
         String title = "Play Again";
@@ -630,6 +631,12 @@ public class Gui extends View implements Observer<Update> {
         });
     }
 
+    /**
+     * The method creates a dialog to manage the situation in which one of the players
+     * loses, so (if the match continues) he/she can decide whether to continue to watch
+     * or quit. Decision of continuing to watch or quitting is managed in the proper way.
+     *
+     */
     private void askContinueToWatch() {
         this.showDisconnectedDialog = false;
         String title = "Continue to watch";
@@ -652,7 +659,7 @@ public class Gui extends View implements Observer<Update> {
     }
 
     /**
-     * Builds a dialog which asks a question to the user (examples: "Do you want to continue to watch?"
+     * Builds a dialog which asks a question to the user (examples: "Do you want to continue to watch?",
      * "Do you want to play again?")
      * @param title the title of the dialog
      * @param message the message contained in the dialog
@@ -666,6 +673,14 @@ public class Gui extends View implements Observer<Update> {
         return JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon, null, null);
     }
 
+    /**
+     * The method creates a dialog to manage the situation in which server is unreachable.
+     * In this case, the player is notified with a brief possible explanation of the problem;
+     * after that, the game is closed, since it is an online game.
+     * Server can be unreachable for a connection problem, because it is down or for other
+     * reasons.
+     *
+     */
     public void showServerUnreachableDialog() {
         SwingUtilities.invokeLater(() -> {
             JOptionPane.showMessageDialog(null, "Cannot communicate to the Server, maybe it's down. Otherwise, check your connection." + System.lineSeparator() + "Quitting...", "Server Unreachable", JOptionPane.ERROR_MESSAGE);
@@ -673,6 +688,15 @@ public class Gui extends View implements Observer<Update> {
         });
     }
 
+
+    /**
+     * The method creates a dialog to manage the situation in which one of the players
+     * disconnects from the match. In this case, all other players are notified and the
+     * match immediately ends.
+     *
+     * @param update update coming form server, which first sees the disconnection (through
+     *               ping messages)
+     */
     public void showDisconnectedPlayerDialog(DisconnectedPlayerUpdate update) {
         String imagePath = "/images/RealGame/player_disconnected.png";
         int iconWidth = 70;
@@ -692,11 +716,20 @@ public class Gui extends View implements Observer<Update> {
         }
     }
 
+    /**
+     * The method performs a reinitialization of all graphic components. It can be useful,
+     * for example, when a match ends, and all graphic environment must be re-loaded to
+     * manage a new match.
+     */
     private void reinitializeComponents() {
         mainPanel.removeAll();
         initializeComponents();
     }
 
+    /**
+     * The method initializes all Gui components, related to the different situations and
+     * Game-Phases.
+     */
     private void initializeComponents() {
         this.playerNumberChoiceComponent = new PlayerNumberChoice();
         this.waitingForAMatchComponent = new WaitingForAMatch();
@@ -713,6 +746,10 @@ public class Gui extends View implements Observer<Update> {
         mainPanel.add(realGame, REAL_GAME);
     }
 
+    /**
+     * The method performs a connection reinitialization. It is mainly useful when a
+     * match ends, so connection is closed and must be reinitialized in case of new match.
+     */
     private void reinitializeConnection() {
         try {
             client.getUpdateListener().setIsActive(false);
