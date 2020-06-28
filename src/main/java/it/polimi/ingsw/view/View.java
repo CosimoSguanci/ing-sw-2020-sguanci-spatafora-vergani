@@ -16,6 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This abstract class defines general methods which are used both in Cli and Gui
+ * related to the experience of users in game. Both Cli and Gui extends this abstract
+ * class in which general useful methods are defined.
+ *
+ * @author Cosimo Sguanci
+ * @author Roberto Spatafora
+ * @author Andrea Vergani
+ */
 public abstract class View extends Observable<Object> {
 
     protected final Client client;
@@ -33,6 +42,9 @@ public abstract class View extends Observable<Object> {
         this.controller = controller;
     }
 
+    /**
+     * This method allows players to hear a sound at the beginning of their turn.
+     */
     public static void playOnTurnSound() {
         try {
             URL defaultSound = View.class.getResource("/sounds/turn.wav");
@@ -44,6 +56,12 @@ public abstract class View extends Observable<Object> {
         }
     }
 
+    /**
+     * This static method is used to generate an only String by giving as parameter several, different Strings in a list
+     *
+     * @param value is a list that contains the strings to join according to the logic of the method
+     * @return an only String, created by joining all the strings in value list given as parameter
+     */
     public static StringBuilder listToStringBuilder(List<String> value) {
         if (value.size() == 0) {
             return null;
@@ -55,6 +73,11 @@ public abstract class View extends Observable<Object> {
         return result;
     }
 
+    /**
+     * This method is a simple getter of the Gods' names
+     *
+     * @return a List containing Gods names.
+     */
     public static List<String> getGodsNamesList() {
         return new ArrayList<>(GodsUtils.getGodsInfo().keySet());  //list of gods' names
     }
@@ -77,10 +100,22 @@ public abstract class View extends Observable<Object> {
         return this.controller;
     }
 
+    /**
+     * This method is a simple getter of the current game phase.
+     * When the game phase changed this method, set the currentGamePhase attribute of
+     * the class to the new current game phase of the match
+     *
+     * @param currentGamePhase contains a reference to the new current game phase of the match
+     */
     public void setCurrentGamePhase(GamePhase currentGamePhase) {
         this.currentGamePhase = currentGamePhase;
     }
 
+    /**
+     * This method gives the possibility to know the association between nicknames and their God
+     *
+     * @return a Map containing an association between nickname of players involved in match and relative God.
+     */
     public Map<String, String> getPlayersGods() {
         return this.playersGods;
     }
@@ -134,12 +169,34 @@ public abstract class View extends Observable<Object> {
         this.playersNumber = playersNumber;
     }
 
+    /**
+     * This abstract method is declared in order to manages the start of the match for classes that extends View.
+     */
     public abstract void start();
 
+    /**
+     * This is an abstract setter method. It is used to set in classes which extends View
+     * a List of all the possible Gods a user related to the View can select
+     *
+     * @param selectableGods contains a list of all selectable Gods.
+     */
     public abstract void setSelectableGods(List<String> selectableGods);
 
+    /**
+     * This is an abstract setter method. At the moment of registration to the match,
+     * player are asked to set a nickname for the match. This method set a list which contains
+     * all the already chosen nickname in order to have different nicknames in the same game
+     *
+     * @param selectedNicknames contains all the already chosen nicknames
+     */
     public abstract void setSelectedNicknames(List<String> selectedNicknames);
 
+    /**
+     * This is an abstract setter method. It is used to set in classes which extends View
+     * a List of all the possible colors a user related to the View can select
+     *
+     * @param selectableColors contains a list of all selectable colors.
+     */
     public abstract void setSelectableColors(List<PrintableColor> selectableColors);
 
     /**

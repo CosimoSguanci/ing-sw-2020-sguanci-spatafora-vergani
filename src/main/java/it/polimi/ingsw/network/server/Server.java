@@ -125,7 +125,7 @@ public class Server implements Observer<Controller> {
 
         int playersNum = newClientHandler.playersNum;
 
-        waitingConnections.add(newClientHandler);
+        this.waitingConnections.add(newClientHandler);
 
         Set<ClientHandler> suitableConnections = getSuitableConnectionsForMatch(playersNum);
 
@@ -137,8 +137,8 @@ public class Server implements Observer<Controller> {
 
             for (ClientHandler clientHandler : suitableConnections) {
                 Player player = new Player(clientHandler.clientID, model, match);
-                playingConnections.add(clientHandler);
-                waitingConnections.remove(clientHandler);
+                this.playingConnections.add(clientHandler);
+                this.waitingConnections.remove(clientHandler);
                 match.addPlayer(player);
                 RemoteView remoteView = new RemoteView(clientHandler);
                 model.addObserver(remoteView);
@@ -148,7 +148,7 @@ public class Server implements Observer<Controller> {
             }
 
 
-            controllerClientsMap.put(controller, suitableConnections);
+            this.controllerClientsMap.put(controller, suitableConnections);
 
             controller.initialPhase();
         }
@@ -165,7 +165,7 @@ public class Server implements Observer<Controller> {
                 Socket socket = serverSocket.accept();
                 System.out.println("Player connected " + socket.getInetAddress() + " : " + socket.getPort());
                 ClientHandler clientHandler = new ClientHandler(this, socket);
-                executor.execute(clientHandler);
+                this.executor.execute(clientHandler);
             } catch (IOException e) {
                 System.err.println("Connection error");
             }

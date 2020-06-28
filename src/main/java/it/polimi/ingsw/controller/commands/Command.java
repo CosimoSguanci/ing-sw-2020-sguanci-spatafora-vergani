@@ -106,7 +106,7 @@ public abstract class Command implements Serializable {
 
 
     /**
-     * This method handles the command received by Server in the proper way.
+     * This abstract method handles the command received by Server in the proper way.
      *
      * @param handler the object that is going to handle the command
      */
