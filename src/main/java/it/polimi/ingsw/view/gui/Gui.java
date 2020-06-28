@@ -157,6 +157,7 @@ public class Gui extends View implements Observer<Update> {
         return frame;
     }
 
+    //TODO JavaDoc for this method
     public GodGuiDrawer getGodGuiDrawer() {
         return this.godGuiDrawer;
     }
@@ -302,14 +303,31 @@ public class Gui extends View implements Observer<Update> {
         this.currentGamePhase = newGamePhase;
     }
 
+    /**
+     * The method handles graphic visualization for nickname and colour effective selection.
+     * In fact, the phase is composed of a waiting moment and the real selection, and this
+     * method makes a call to manage the latter.
+     */
     void showInitialInfoOnTurn() {
         this.initialInfoComponent.showGuiOnTurn();
     }
 
+    /**
+     * The method handles graphic visualization for God (or Gods, in case of god-chooser)
+     * effective selection. In fact, the phase is composed of a waiting moment and the
+     * real selection, and this method makes a call to manage the latter.
+     */
     void showGodsChoiceOnTurn() {
         this.godsChoiceComponent.showGuiOnTurn();
     }
 
+    /**
+     * The method makes a call to manage in a proper way a change of turn. It is useful
+     * when this change does not modify all what is visualized on screen, but just some
+     * images/graphic components. For example, this often happens during real match, when
+     * the board is always visualized, but on the basis of current turn a player can do
+     * (or not) specific things through graphic interface.
+     */
     void onTurnChanged() {
         switch (currentGamePhase) {
             case GAME_PREPARATION:
@@ -321,6 +339,11 @@ public class Gui extends View implements Observer<Update> {
         }
     }
 
+    /**
+     * The method makes a call to manage in a proper way a change of board's state. It is
+     * useful when this change does not modify all what is visualized on screen, but just
+     * the board itself. For example, during real match, the board often changes.
+     */
     void onBoardChanged(String board) {
         switch (currentGamePhase) {
             case GAME_PREPARATION:
@@ -332,21 +355,49 @@ public class Gui extends View implements Observer<Update> {
         }
     }
 
+    /**
+     * The method calls the proper component in order to set the list of selectable colors
+     * at the current moment. In fact, when a color is selected by one of the players, no
+     * one can select it again during this match.
+     *
+     * @param selectableColors list of selectable colors at current time
+     */
     @Override
     public void setSelectableColors(List<PrintableColor> selectableColors) {
         this.initialInfoComponent.setSelectableColors(selectableColors);
     }
 
+    /**
+     * The method calls the proper component in order to set the list of already chosen
+     * nicknames for the match. In fact, when a nickname is chosen by one of the players,
+     * no one can choose it again during this match.
+     *
+     * @param selectedNicknames list of already selected nicknames
+     */
     @Override
     public void setSelectedNicknames(List<String> selectedNicknames) {
         this.initialInfoComponent.setSelectedNicknames(selectedNicknames);
     }
 
+    /**
+     * The method calls the proper component in order to set the list of selectable Gods
+     * at the current moment. In fact, only Gods in this list can be chosen by the player
+     * who plays the current turn.
+     *
+     * @param selectableGods list of selectable gods at current time
+     */
     @Override
     public void setSelectableGods(List<String> selectableGods) {
         this.godsChoiceComponent.setSelectableGods(selectableGods);
     }
 
+    /**
+     * The method creates a dialog to show an error message; this message can derive from
+     * invalid commands, game rules not respected, ...
+     * The error message contains a brief explanation of what went wrong.
+     *
+     * @param update update coming form server, which first sees the error and notifies it
+     */
     void showError(ErrorUpdate update) {
 
         String title = "Error";
@@ -461,6 +512,13 @@ public class Gui extends View implements Observer<Update> {
     }
 
 
+    /**
+     * The method creates a dialog to manage the situation in which one of the players wins.
+     * One of the players (the one who won the match) is notified of his/her victory, while
+     * the other/others are notified of their loss.
+     *
+     * @param update update coming form server, which first sees the winning situation
+     */
     void showWinMessageDialog(WinUpdate update) {
 
         String title;
@@ -490,6 +548,14 @@ public class Gui extends View implements Observer<Update> {
         });
     }
 
+    /**
+     * The method creates a dialog to manage the situation in which one of the players
+     * loses. The player is notified of his/her loss, with a brief explanation about it.
+     * In general, if the match continues, the player who loses can decide whether to continue
+     * to watch or quit.
+     *
+     * @param update update coming form server, which first sees the losing situation
+     */
     public void showLoseMessageDialog(LoseUpdate update) {
         String title;
         String message;
@@ -539,6 +605,11 @@ public class Gui extends View implements Observer<Update> {
 
     }
 
+    /**
+     * The method creates a dialog to ask the player if he/she wants to play another match.
+     * This dialog can be visualized, for example, when a match ends, or when a player
+     * wants to leave the match and maybe wants to start another one.
+     */
     public void askPlayAgainDialog() {
         String title = "Play Again";
         String message = "Do you want to play another match?";
