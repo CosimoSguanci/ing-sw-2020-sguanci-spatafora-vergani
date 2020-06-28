@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -9,13 +10,24 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AthenaTest {
+
+    private Athena athena;
+    private Match match;
+    private Player player;
+    private Worker worker;
+
+    @BeforeEach
+    public void initGameProperties() {
+
+        this.athena = new Athena();
+        this.match = new Match(2);
+        this.player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        this.worker = player.getWorkerFirst();
+    }
+
     @Test
     public void athenaCheckMoveConstraintsTest() {
-        Athena athena = new Athena();
 
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
         Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker oppositeWorker = oppositePlayer.getWorkerFirst();
 
@@ -36,11 +48,6 @@ public class AthenaTest {
 
     @Test
     public void athenaEndTurnTest() {
-        Athena athena = new Athena();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
 
@@ -65,11 +72,6 @@ public class AthenaTest {
 
     @Test
     public void onTurnStartedTest() {
-        Athena athena = new Athena();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
 
         Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker oppositeWorker = oppositePlayer.getWorkerFirst();

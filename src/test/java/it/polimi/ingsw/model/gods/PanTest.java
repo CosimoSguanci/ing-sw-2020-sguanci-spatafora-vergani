@@ -12,7 +12,6 @@ public class PanTest {
     @Test
     public void panWinConditionTest() {
 
-
         Pan pan = new Pan();
 
         Match match = new Match(3);

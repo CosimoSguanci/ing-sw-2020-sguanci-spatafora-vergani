@@ -3,25 +3,30 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.GodStrategy;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PlayerTest {
 
+    private Player player;
+
+    @BeforeEach
+    public void initPlayerProperties() {
+        int playersNum = 2;
+        Match match = new Match(playersNum);
+        this.player = new Player("Roberto", new Model(match), match);
+    }
+
     @Test
     public void testGetSetColor() {
         System.out.println("testing getColor() and setColor()...");
 
-        int playersNum = 2;
-        Match match = new Match(playersNum);
-        Player instanceTest = new Player("Roberto", new Model(match), match);
         PrintableColor colorTest = PrintableColor.GREEN;
-        instanceTest.setColor(colorTest);
-        assertEquals(PrintableColor.GREEN, instanceTest.getColor());
+        player.setColor(colorTest);
+        assertEquals(PrintableColor.GREEN, player.getColor());
         System.out.println("Test successfully completed.");
     }
 
@@ -29,11 +34,8 @@ public class PlayerTest {
     public void testGetGodChooser() {
         System.out.println("testing setAsGodChooser() and isGodChooser()...");
 
-        int playersNum = 2;
-        Match match = new Match(playersNum);
-        Player instanceTest = new Player("Roberto", new Model(match), match);
-        instanceTest.setAsGodChooser();
-        assertTrue(instanceTest.isGodChooser());
+        player.setAsGodChooser();
+        assertTrue(player.isGodChooser());
         System.out.println("Test successfully completed.");
     }
 
@@ -41,11 +43,8 @@ public class PlayerTest {
     public void testGetSetWorkerFirst() {
         System.out.println("testing getWorkerFirst() and setWorkerFirst()...");
 
-        int playersNum = 2;
-        Match match = new Match(playersNum);
-        Player instancePlayerTest = new Player("Roberto", new Model(match), match);
-        Worker instanceWorkerTest = instancePlayerTest.getWorkerFirst();
-        assertEquals(instanceWorkerTest, instancePlayerTest.getWorkerFirst());
+        Worker instanceWorkerTest = player.getWorkerFirst();
+        assertEquals(instanceWorkerTest, player.getWorkerFirst());
 
         System.out.println("Test successfully completed.");
     }
@@ -54,11 +53,8 @@ public class PlayerTest {
     public void testGetSetWorkerSecond() {
         System.out.println("testing getWorkerSecond() and setWorkerSecond()...");
 
-        int playersNum = 2;
-        Match match = new Match(playersNum);
-        Player instancePlayerTest = new Player("Roberto", new Model(match), match);
-        Worker instanceWorkerTest = instancePlayerTest.getWorkerSecond();
-        assertEquals(instanceWorkerTest, instancePlayerTest.getWorkerSecond());
+        Worker instanceWorkerTest = player.getWorkerSecond();
+        assertEquals(instanceWorkerTest, player.getWorkerSecond());
 
         System.out.println("Test successfully completed.");
     }
@@ -67,13 +63,9 @@ public class PlayerTest {
     public void testGetSetGodStrategy() {
         System.out.println("testing getGod() and setGod()...");
 
-        int playersNum = 2;
-        Match match = new Match(playersNum);
-        Player instancePlayerTest = new Player("Roberto", new Model(match), match);
-
         GodStrategy instanceGodTest = new Apollo();
-        instancePlayerTest.setGodStrategy(instanceGodTest);
-        assertEquals(instanceGodTest, instancePlayerTest.getGodStrategy());
+        player.setGodStrategy(instanceGodTest);
+        assertEquals(instanceGodTest, player.getGodStrategy());
 
         System.out.println("Test successfully completed.");
     }

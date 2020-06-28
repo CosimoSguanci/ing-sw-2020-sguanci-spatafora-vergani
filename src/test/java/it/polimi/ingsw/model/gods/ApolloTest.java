@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.utils.GodsUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -10,19 +11,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ApolloTest {
 
+    private Apollo apollo;
+    private Match match;
+    private Player player;
+    private Worker worker;
+    private Worker oppositeWorker;
+
+    @BeforeEach
+    public void initGameProperties() {
+        this.apollo = new Apollo();
+        this.match = new Match(2);
+        this.player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        this.worker = player.getWorkerFirst();
+        Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        this.oppositeWorker = oppositePlayer.getWorkerFirst();
+    }
+
+
     @Test
     public void apolloCheckMoveTest() {
-
-        // TODO Use @BeforeEach
-
-        Apollo apollo = new Apollo();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
-        Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker oppositeWorker = oppositePlayer.getWorkerFirst();
-
+        
         worker.setInitialPosition(0, 0);
         oppositeWorker.setInitialPosition(0, 1);
 
@@ -32,13 +40,6 @@ public class ApolloTest {
 
     @Test
     public void apolloExecuteMoveTest() {
-        Apollo apollo = new Apollo();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
-        Player oppositePlayer = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker oppositeWorker = oppositePlayer.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
         oppositeWorker.setInitialPosition(0, 1);
@@ -56,10 +57,7 @@ public class ApolloTest {
 
     @Test
     public void apolloCannotMoveTest() {
-        Apollo apollo = new Apollo();
 
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
         Worker workerFirst = player.getWorkerFirst();
         Worker workerSecond = player.getWorkerSecond();
 

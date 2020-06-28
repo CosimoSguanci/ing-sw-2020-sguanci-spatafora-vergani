@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -9,17 +10,24 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HephaestusTest {
+
+    private Hephaestus hephaestus;
+    private Match match;
+    private Player player;
+    private Worker worker;
+
+    @BeforeEach
+    public void initGameProperties() {
+
+        this.hephaestus = new Hephaestus();
+        this.match = new Match(2);
+        this.player = new Player(UUID.randomUUID().toString(), new Model(match), match);
+        this.worker = player.getWorkerFirst();
+        this.worker.setInitialPosition(0, 0);
+    }
+
     @Test
     public void hephaestusCheckMultipleBuildTest() {
-
-
-        Hephaestus hephaestus = new Hephaestus();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
-
-        worker.setInitialPosition(0, 0);
 
         hephaestus.executeMove(worker, match.getMatchBoard().getCell(1, 1)); // needed to set the right selected worker
 
@@ -36,18 +44,7 @@ public class HephaestusTest {
     @Test
     public void hephaestusCheckMultipleBuildAnotherCellTest() { // check multiple build on different positions, should always fail
 
-
-        Hephaestus hephaestus = new Hephaestus();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
-
-        worker.setInitialPosition(0, 0);
-
         hephaestus.executeMove(worker, match.getMatchBoard().getCell(1, 1)); // needed to set the right selected worker
-
-        //assertTrue(hephaestus.checkBuild()); Check also "normal" things?
 
         hephaestus.executeBuild(worker, match.getMatchBoard().getCell(0, 1), BlockType.LEVEL_ONE);
 
@@ -58,18 +55,7 @@ public class HephaestusTest {
     @Test
     public void hephaestusCheckMultipleBuildDomeTest() { // check multiple build on same position but with a dome, should fail
 
-
-        Hephaestus hephaestus = new Hephaestus();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
-
-        worker.setInitialPosition(0, 0);
-
         hephaestus.executeMove(worker, match.getMatchBoard().getCell(1, 1)); // needed to set the right selected worker
-
-        //assertTrue(hephaestus.checkBuild()); Check also "normal" things?
 
         match.getMatchBoard().getCell(0, 1).setLevel(BlockType.LEVEL_TWO);
 
@@ -81,15 +67,6 @@ public class HephaestusTest {
 
     @Test
     public void hephaestusEndTurnTest() {
-
-
-        Hephaestus hephaestus = new Hephaestus();
-
-        Match match = new Match(2);
-        Player player = new Player(UUID.randomUUID().toString(), new Model(match), match);
-        Worker worker = player.getWorkerFirst();
-
-        worker.setInitialPosition(0, 0);
 
         assertTrue(hephaestus.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
         hephaestus.executeMove(worker, match.getMatchBoard().getCell(0, 1));

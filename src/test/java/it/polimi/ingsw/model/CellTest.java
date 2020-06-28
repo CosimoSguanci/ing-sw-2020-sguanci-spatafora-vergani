@@ -15,7 +15,7 @@ public class CellTest {
     }
 
     @Test
-    public void increaseLevelTest() /**/ {
+    public void increaseLevelTest() {
         Cell cell = new Cell(2, 1);
         cell.increaseLevel();
         assertEquals(BlockType.LEVEL_ONE, cell.getLevel());
@@ -56,7 +56,7 @@ public class CellTest {
     }
 
     @Test
-    public void isLevelDifferenceOkTest() /**/ {
+    public void isLevelDifferenceOkTest() {
         Cell cell = new Cell(4, 2);
         cell.increaseLevel();
         cell.increaseLevel();  //cell is level two
@@ -80,7 +80,7 @@ public class CellTest {
 
 
     @Test
-    public void levelDifferenceTest() /**/ {
+    public void levelDifferenceTest() {
         Cell cell = new Cell(4, 2);
         cell.increaseLevel();
         cell.increaseLevel();  //cell is level two
