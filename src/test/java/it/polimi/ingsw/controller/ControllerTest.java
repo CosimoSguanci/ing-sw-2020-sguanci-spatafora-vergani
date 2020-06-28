@@ -1532,6 +1532,5 @@ public class ControllerTest {
 
         verify(model, times(1)).reportError(p1, CommandType.PLACE, ErrorType.INVALID_CELL, null);
 
-
     }
 }
