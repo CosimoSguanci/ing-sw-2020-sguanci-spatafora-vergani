@@ -19,14 +19,10 @@ import java.util.LinkedHashMap;
  * @author Roberto Spatafora
  */
 public class GameManual extends JDialog implements ActionListener {
-    //private Font font = new Font(Font.SERIF, Font.BOLD, 13);
     private final String standardImgPath = "/images/GameManual/";
     private final Image backgroundImage = new ImageIcon(getClass().getResource(standardImgPath + "green.jpg")).getImage();
-    private final int imgButtonWidth = 60;
-    //private int imgButtonHeight = 78;
     private final Dimension buttonDimension = new Dimension(250, 100);
     private final Dimension rigidAreaDimension = new Dimension(0, 3);
-    private JButton[] ruleButtonArray;
     private final LinkedHashMap<String, String> rules = Manual.getRules();  //titles and descriptions of game's rules
 
     /**
@@ -70,9 +66,8 @@ public class GameManual extends JDialog implements ActionListener {
      * which contain the information about the game.
      */
     private JPanel panelToShow() {
-        //LinkedHashMap<String, String> rules = Manual.getRules();
         int ruleNumber = this.rules.size();
-        this.ruleButtonArray = new JButton[ruleNumber];
+        JButton[] ruleButtonArray = new JButton[ruleNumber];
 
         JPanel grid = new JPanel();
         grid.setLayout(new BoxLayout(grid, BoxLayout.Y_AXIS));
@@ -82,22 +77,21 @@ public class GameManual extends JDialog implements ActionListener {
         for (int i = 0; i < ruleNumber; i++) {
             String key = (String) ruleTitle[i];  //create title-strings for rules
             ImageIcon image = new ImageIcon(getClass().getResource(this.standardImgPath + key.toLowerCase().substring(0, 3) + ".png"));
-            image = new ImageIcon(image.getImage().getScaledInstance(this.imgButtonWidth, -1, Image.SCALE_SMOOTH));
-            this.ruleButtonArray[i] = new JButton(key, image);
-            this.ruleButtonArray[i].setHorizontalTextPosition(JButton.CENTER);
-            this.ruleButtonArray[i].setVerticalTextPosition(JButton.BOTTOM);
-            //this.ruleButtonArray[i].setFont(this.font);
-            this.ruleButtonArray[i].setPreferredSize(this.buttonDimension);
-            this.ruleButtonArray[i].setMaximumSize(this.buttonDimension);
-            this.ruleButtonArray[i].setMinimumSize(this.buttonDimension);
-            this.ruleButtonArray[i].addActionListener(this);
+            int imgButtonWidth = 60;
+            image = new ImageIcon(image.getImage().getScaledInstance(imgButtonWidth, -1, Image.SCALE_SMOOTH));
+            ruleButtonArray[i] = new JButton(key, image);
+            ruleButtonArray[i].setHorizontalTextPosition(JButton.CENTER);
+            ruleButtonArray[i].setVerticalTextPosition(JButton.BOTTOM);
+            ruleButtonArray[i].setPreferredSize(this.buttonDimension);
+            ruleButtonArray[i].setMaximumSize(this.buttonDimension);
+            ruleButtonArray[i].setMinimumSize(this.buttonDimension);
+            ruleButtonArray[i].addActionListener(this);
             grid.add(Box.createRigidArea(this.rigidAreaDimension));
-            grid.add(this.ruleButtonArray[i]);
+            grid.add(ruleButtonArray[i]);
             grid.add(Box.createRigidArea(this.rigidAreaDimension));
         }
 
         return grid;
-        //this.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
     }
 
     /**

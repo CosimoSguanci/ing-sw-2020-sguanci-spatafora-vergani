@@ -2,6 +2,9 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.network.server.Server;
 
+/**
+ * Server main class, the class which starts the backend of the game in the command line.
+ */
 public class ServerApp {
     public static void main(String[] args) {
         try {

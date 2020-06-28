@@ -26,6 +26,7 @@ public class GameManualListener implements ActionListener {
      * This is the constructor of the class. At the moment of creation
      * an association between the listener and the mainPanel associated
      * to the component related to the current game phase is made.
+     *
      * @param mainPanel contains a reference of the Panel related to the
      */
     public GameManualListener(JPanel mainPanel) {
@@ -35,6 +36,7 @@ public class GameManualListener implements ActionListener {
     /**
      * This method is invoked every time the infoButton is clicked.
      * It shows a Dialog in which GameManual is presented.
+     *
      * @param e contains a reference to the button clicked.
      */
     @Override
@@ -44,7 +46,7 @@ public class GameManualListener implements ActionListener {
                     try {
                         showDialog();
                     } catch (IOException exception) {
-                        exception.printStackTrace();
+                        System.err.println("Error loading some Game Manual resource");
                     }
                 }
         );
@@ -52,6 +54,7 @@ public class GameManualListener implements ActionListener {
 
     /**
      * This private method creates a GameManual instance
+     *
      * @throws IOException case something went wrong.
      */
     private void showDialog() throws IOException {

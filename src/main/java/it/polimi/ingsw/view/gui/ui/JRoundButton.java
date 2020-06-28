@@ -18,6 +18,7 @@ public class JRoundButton extends JButton {
     /**
      * This is a constructor of the class. It allows to creates new
      * instances of the class by giving as parameter only an icon which would be used in button.
+     *
      * @param icon contains a reference to the button icon.
      */
     public JRoundButton(Icon icon) {
@@ -34,22 +35,9 @@ public class JRoundButton extends JButton {
         initShape();
     }
 
-    /*public JRoundButton(String text, Icon icon) {
-        setModel(new DefaultButtonModel());
-        init(text, icon);
-        if (icon == null) {
-            return;
-        }
-        setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        setBackground(Color.BLACK);
-        setContentAreaFilled(false);
-        setFocusPainted(false);
-        setAlignmentY(Component.TOP_ALIGNMENT);
-        initShape();
-    }*/
 
     /**
-     * This method is used to initialize the shape of the button
+     * This method is used to initialize the circular shape of the button
      */
     private void initShape() {
         if (!getBounds().equals(base)) {
@@ -61,6 +49,7 @@ public class JRoundButton extends JButton {
 
     /**
      * This method gives information about a preferred size of a button
+     *
      * @return a Dimension that would be preferred for the button
      */
     @Override

@@ -16,14 +16,15 @@ import java.awt.*;
  */
 public class LoadingComponent extends JPanel {
 
-    private String loadingMessage;
     private final JLabel waitingLabel;
+    private String loadingMessage;
 
     /**
      * This is the constructor of the class. At the moment of creation a new
      * layout is created which contains a loading gif
+     *
      * @param loadingMessage contains a message which would be displayed in order to let player know what they are waiting for
-     * @param textColor indicates the color in which message would be printed
+     * @param textColor      indicates the color in which message would be printed
      */
     public LoadingComponent(String loadingMessage, Color textColor) {
         LayoutManager layoutManager = new BorderLayout();
@@ -64,6 +65,7 @@ public class LoadingComponent extends JPanel {
 
     /**
      * This is a simple setter of a String. It set the string that would be displayed as loadingMessage
+     *
      * @param loadingMessage contains a String which would be displayed
      */
     public void setLoadingMessage(String loadingMessage) {

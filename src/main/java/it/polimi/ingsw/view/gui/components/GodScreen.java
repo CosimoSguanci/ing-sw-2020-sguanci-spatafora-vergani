@@ -24,10 +24,10 @@ import java.util.Map;
  */
 public class GodScreen extends JPanel {
     private static final Map<String, Map<String, ImageIcon>> allIconGods = new HashMap<>();
-    Gui gui = Gui.getInstance();
     private final JLabel titleLabel;
     private final JPanel rightPanel;
     private final ArrayList<JButton> buttons = new ArrayList<>();
+    Gui gui = Gui.getInstance();
 
     /**
      * This is the constructor of the class. At the moment of creation a new GridLayout
@@ -60,10 +60,6 @@ public class GodScreen extends JPanel {
         this.add(titlePanel, BorderLayout.NORTH);
         this.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
-        // GridLayout gridLayout = new GridLayout(4, 4);
-        // gridLayout.setVgap(10);
-        // possibleGodsPanel.setLayout(gridLayout); Uncomment for SINGLE BUTTONS GOD
-
         GridLayout gridLayout = isGodChooser ? new GridLayout(4, 4) : new GridLayout(1, playersNumber);
 
         possibleGodsPanel.setLayout(gridLayout);
@@ -73,7 +69,6 @@ public class GodScreen extends JPanel {
 
         List<String> gods = isGodChooser ? View.getGodsNamesList() : selectableGods;
 
-        /*this.godChoiceJButtonListener = new GodChoiceJButtonListener(this);*/
         for (int i = 0; i < gods.size(); i++) {
             imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource("/images/GodChoice/" + gods.get(i).toLowerCase() + ".png")));
             imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(60, -1, Image.SCALE_SMOOTH));
@@ -83,7 +78,7 @@ public class GodScreen extends JPanel {
 
             Font godLabelFont = Gui.getFont(Gui.FONT_BOLD, 14);
             godBtn.setFont(godLabelFont);
-            godBtn.setForeground(Color.BLACK); // Color.decode("0xc8102e")
+            godBtn.setForeground(Color.BLACK);
 
             godBtn.addComponentListener(new ComponentAdapter() {
 
@@ -114,7 +109,6 @@ public class GodScreen extends JPanel {
             });
 
             this.buttons.add(godBtn);
-            //this.buttons.get(i).addActionListener(godChoiceJButtonListener);
 
             godBtn.setHorizontalTextPosition(JButton.CENTER);
             godBtn.setVerticalTextPosition(JButton.BOTTOM);
@@ -127,21 +121,10 @@ public class GodScreen extends JPanel {
             possibleGodsPanel.add(godBtn);
 
 
-          /*  JPanel pannel = new JPanel();
-            pannel.setLayout(new BoxLayout(pannel, BoxLayout.Y_AXIS));
-            godBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-            pannel.add(godBtn);
-
-            pannel.setOpaque(false);
-
-            possibleGodsPanel.add(pannel); */
         }
 
-        //commonGodChoose(possibleGodsPanel, continueButton, innerPanel, innerPanel2);
 
         titlePanel.setOpaque(false);
-        //innerPanel.setOpaque(false);
-        //innerPanel2.setOpaque(false);
         possibleGodsPanel.setOpaque(false);
 
         this.add(possibleGodsPanel, BorderLayout.CENTER);
@@ -191,7 +174,7 @@ public class GodScreen extends JPanel {
 
 
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.err.println("Error loading some God Screen resource");
                 }
 
 
@@ -206,7 +189,7 @@ public class GodScreen extends JPanel {
      * This is a good solution in order to creates instances of this class, distinguish at the moment
      * of the invocation, different contexts and for each set the desired title.
      *
-     * @param title
+     * @param title the title of the main label
      */
     void setTitle(String title) {
         this.titleLabel.setText(title);

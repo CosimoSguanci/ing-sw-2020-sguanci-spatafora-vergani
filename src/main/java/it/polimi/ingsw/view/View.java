@@ -77,16 +77,6 @@ public abstract class View extends Observable<Object> {
         return this.controller;
     }
 
-    /**
-     * This method is a simple setter that set the number of the player involved in a match
-     *
-     * @param playersNumber is an integer number that indicates how many player are involved
-     *                      in the match the particular Cli instance is involved in.
-     */
-    public void setPlayersNumber(int playersNumber) {
-        this.playersNumber = playersNumber;
-    }
-
     public void setCurrentGamePhase(GamePhase currentGamePhase) {
         this.currentGamePhase = currentGamePhase;
     }
@@ -132,6 +122,16 @@ public abstract class View extends Observable<Object> {
      */
     public int getPlayersNumber() {
         return this.playersNumber;
+    }
+
+    /**
+     * This method is a simple setter that set the number of the player involved in a match
+     *
+     * @param playersNumber is an integer number that indicates how many player are involved
+     *                      in the match the particular Cli instance is involved in.
+     */
+    public void setPlayersNumber(int playersNumber) {
+        this.playersNumber = playersNumber;
     }
 
     public abstract void start();

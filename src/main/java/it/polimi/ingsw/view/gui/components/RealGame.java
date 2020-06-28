@@ -143,9 +143,7 @@ public class RealGame extends Game implements ActionListener {
 
         List<JCellButton> cells = twoDArrayToList(this.getBoard().getBoardCells());
 
-        cells.forEach(cell -> {
-            cell.addActionListener(this);
-        });
+        cells.forEach(cell -> cell.addActionListener(this));
 
         if (this.buttonsEnabled) {
 

@@ -11,8 +11,18 @@ public class RemoteView extends Observable<Command> implements Observer<Update> 
 
     private final ClientHandler clientHandler;
 
+    public RemoteView(ClientHandler clientHandler) {
+        this.clientHandler = clientHandler;
+        clientHandler.addObserver(new CommandReceiver());
+    }
+
     void handleCommand(Command command) {
         notify(command);
+    }
+
+    @Override
+    public void update(Update update) {
+        clientHandler.sendUpdate(update);
     }
 
     private class CommandReceiver implements Observer<Command> {
@@ -22,17 +32,5 @@ public class RemoteView extends Observable<Command> implements Observer<Update> 
             handleCommand(command);
         }
 
-    }
-
-
-    public RemoteView(ClientHandler clientHandler) {
-        this.clientHandler = clientHandler;
-        clientHandler.addObserver(new CommandReceiver());
-    }
-
-
-    @Override
-    public void update(Update update) {
-        clientHandler.sendUpdate(update);
     }
 }

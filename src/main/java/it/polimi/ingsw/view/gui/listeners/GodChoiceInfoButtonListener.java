@@ -28,6 +28,7 @@ public class GodChoiceInfoButtonListener implements ActionListener {
     /**
      * This is the constructor of the class. At the moment of creation
      * an association between the listener and GodChoice component is made.
+     *
      * @param godChoice contains a reference to the GodChoice component
      */
     public GodChoiceInfoButtonListener(GodChoice godChoice) {
@@ -37,6 +38,7 @@ public class GodChoiceInfoButtonListener implements ActionListener {
     /**
      * This method is invoked at the moment of clicking on the info round button in God choice game phase
      * If invoked it will display a Dialog with information about Gods available.
+     *
      * @param e contains a reference to the GodChoiceInfoButton clicked.
      */
     @Override
@@ -46,7 +48,7 @@ public class GodChoiceInfoButtonListener implements ActionListener {
                     try {
                         showDialog();
                     } catch (IOException exception) {
-                        exception.printStackTrace();
+                        System.err.println("Error loading some God Choice Info Button resource");
                     }
                 }
         );
@@ -54,6 +56,7 @@ public class GodChoiceInfoButtonListener implements ActionListener {
 
     /**
      * This private method creates a GodInfo instance
+     *
      * @throws IOException case something went wrong.
      */
     private void showDialog() throws IOException {

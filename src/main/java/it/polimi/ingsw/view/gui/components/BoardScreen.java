@@ -57,7 +57,8 @@ public class BoardScreen extends JPanel {
                 domeIcon.put("very_big", veryBigImageIcon);
 
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("Error loading some Board Screen resource");
+
             }
 
         }).start();
@@ -96,7 +97,7 @@ public class BoardScreen extends JPanel {
                     workerIcons.put("worker_" + color.toString().toLowerCase(), m);
 
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.err.println("Error loading some Worker resource in Board Screen");
                 }
             });
         }).start();
@@ -110,7 +111,7 @@ public class BoardScreen extends JPanel {
      * Every button contains information about its relative cell level,
      * if a worker is on that cell or a dome if the level raised the maximum.
      *
-     * @param boardString
+     * @param boardString serialized JSON Board Game received from Server
      */
     public BoardScreen(String boardString) {
 

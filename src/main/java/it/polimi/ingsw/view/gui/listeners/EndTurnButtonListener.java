@@ -23,6 +23,7 @@ public class EndTurnButtonListener implements ActionListener {
     /**
      * This is the constructor of the class. At the moment of creation
      * an association between the listener and the RealGame component is made.
+     *
      * @param realGameComponent contains a reference to the RealGame component.
      */
     public EndTurnButtonListener(RealGame realGameComponent) {
@@ -32,6 +33,7 @@ public class EndTurnButtonListener implements ActionListener {
     /**
      * This method is invoked at the moment of clicking on the EndTurnButton.
      * When the EndTurnButton is clicked it generates a new END_TURN PlayerCommand.
+     *
      * @param e contains a reference to the EndTurnButton
      */
     @Override

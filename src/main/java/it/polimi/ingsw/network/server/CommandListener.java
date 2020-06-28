@@ -6,13 +6,11 @@ import it.polimi.ingsw.network.ObjectListenerDelegate;
 import it.polimi.ingsw.observer.Observable;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class CommandListener extends Observable<Command> implements ObjectListener, Runnable {
     private final ObjectListenerDelegate objectListenerDelegate;
     private final Socket socket;
-    private final ObjectOutputStream objectOutputStream;
     private final Server server; // needed to handle clients disconnection
     private boolean isActive;
 
@@ -24,10 +22,9 @@ public class CommandListener extends Observable<Command> implements ObjectListen
         this.isActive = active;
     }
 
-    public CommandListener(Socket socket, ObjectOutputStream objectOutputStream, Server server) {
+    public CommandListener(Socket socket, Server server) {
         objectListenerDelegate = new ObjectListenerDelegate(socket);
         this.socket = socket;
-        this.objectOutputStream = objectOutputStream;
         this.server = server;
     }
 

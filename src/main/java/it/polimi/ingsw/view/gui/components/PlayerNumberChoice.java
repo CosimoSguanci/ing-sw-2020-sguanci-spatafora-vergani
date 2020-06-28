@@ -154,7 +154,7 @@ public class PlayerNumberChoice extends JPanel implements ActionListener {
      * the reference of a button clicked is given as parameter and comparing it with the
      * buttons of the class it manages the button selected and the other one.
      *
-     * @param button
+     * @param button the radio button which was pressed
      */
     public void setPlayerNumberSelected(JRadioButton button) {
         if (button.equals(this.button1)) {

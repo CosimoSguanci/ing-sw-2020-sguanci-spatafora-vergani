@@ -4,6 +4,9 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.cli.Cli;
 
+/**
+ * CLI main class, the class which starts the game in the command line.
+ */
 public class CliApp {
     public static void main(String[] args) {
         try {

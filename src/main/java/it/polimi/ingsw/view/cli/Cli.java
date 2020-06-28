@@ -107,7 +107,6 @@ public class Cli extends View implements Observer<Update> {
             client.getUpdateListener().addObserver(this); // Register to UpdateListener
             this.gamePhaseCommandHandler.gameLoop();
         } catch (IOException e) {
-            e.printStackTrace();
             System.err.println("The Game couldn't start, maybe there was some network error or the server isn't available.");
             System.exit(0);
         }

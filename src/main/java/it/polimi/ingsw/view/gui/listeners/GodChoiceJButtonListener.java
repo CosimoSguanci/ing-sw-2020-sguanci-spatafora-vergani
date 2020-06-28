@@ -20,6 +20,7 @@ public class GodChoiceJButtonListener implements ActionListener {
     /**
      * This is the constructor of the class. At the moment of creation an association between
      * listener and GodChoice Gui component is made.
+     *
      * @param godChoice contains a reference to the GodChoice component
      */
     public GodChoiceJButtonListener(GodChoice godChoice) {
@@ -31,6 +32,7 @@ public class GodChoiceJButtonListener implements ActionListener {
      * In this method setGodChoiceSelected method is invoked giving btn as parameter.
      * GodChoice method manages cases of button selected or not yet selected, cases in which
      * a player has already chosen a God and handles differently for GodChooser.
+     *
      * @param e contains a reference to the button clicked.
      */
     @Override

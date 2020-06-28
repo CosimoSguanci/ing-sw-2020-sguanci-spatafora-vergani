@@ -34,7 +34,7 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
 
     public void sendUpdate(Update update) {
         try {
-            objectOutputStream.reset(); // avoid cached objects
+            objectOutputStream.reset(); // necessary to avoid cached objects
             objectOutputStream.writeObject(update);
             objectOutputStream.flush();
         } catch (IOException e) {
@@ -63,9 +63,10 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
 
             this.clientSocket.setSoTimeout(TIMEOUT_MS);
 
-            this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream()); // NB SE NON APRI LO STREAM IN OUTPUT DA SERVER A CLIENT LA GETINPUTSTREAM DEL CLIENT SI BLOCCA -> e va in timeoutexception se c'è un timeout
+            // Note that, if we don't open now the output stream from server to client, the client's getInputStream would block
+            this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
 
-            CommandListener commandListener = new CommandListener(clientSocket, objectOutputStream, server);
+            CommandListener commandListener = new CommandListener(clientSocket, server);
             commandListener.addObserver(this);
             executor.execute(commandListener);
 
@@ -73,7 +74,6 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
 
         } catch (IOException | NoSuchElementException e) {
             server.handleConnectionReset(clientSocket);
-            //System.err.println("Error! " + e.getMessage());
         }
     }
 }

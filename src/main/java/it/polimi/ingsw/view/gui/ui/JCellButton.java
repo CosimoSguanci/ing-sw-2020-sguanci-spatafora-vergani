@@ -6,6 +6,7 @@ import it.polimi.ingsw.view.gui.Gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * This class defines a button which is used in RealGame phase.
@@ -23,10 +24,11 @@ public class JCellButton extends JButton {
 
     /**
      * This is the creator of the class. At the moment of creation:
-     * @param worker contains a reference of a Worker. If no worker is in referred cell it would be null
+     *
+     * @param worker     contains a reference of a Worker. If no worker is in referred cell it would be null
      * @param blockLevel contains information about the level of the cell
-     * @param row is an integer which indicates the number of row which identifies the cell in the Board
-     * @param col is an integer which indicates the number of column which identifies the cell in the Board
+     * @param row        is an integer which indicates the number of row which identifies the cell in the Board
+     * @param col        is an integer which indicates the number of column which identifies the cell in the Board
      */
     public JCellButton(Worker worker, BlockType blockLevel, int row, int col) {
         this.worker = worker;
@@ -37,6 +39,7 @@ public class JCellButton extends JButton {
 
     /**
      * This method is a simple getter of the Worker inside the cell.
+     *
      * @return a Worker if inside a cell
      */
     public Worker getWorker() {
@@ -45,6 +48,7 @@ public class JCellButton extends JButton {
 
     /**
      * This method is a simple setter of the class.
+     *
      * @param worker contains a reference of the worker that is in the cell
      */
     public void setWorker(Worker worker) {
@@ -53,6 +57,7 @@ public class JCellButton extends JButton {
 
     /**
      * This method is a getter of the boolean attribute of the class.
+     *
      * @return true if the cell doesn't contains any worker inside, false otherwise.
      */
     public boolean isEmpty() {
@@ -61,6 +66,7 @@ public class JCellButton extends JButton {
 
     /**
      * This method is a simple setter of the boolean attribute of the cell
+     *
      * @param isEmpty is a boolean value which if true indicates that no worker is in the cell.
      */
     public void setEmpty(boolean isEmpty) {
@@ -69,6 +75,7 @@ public class JCellButton extends JButton {
 
     /**
      * This method is a simple getter of the class.
+     *
      * @return a JLabel which indicates the presence of a worker in the cell.
      */
     public JLabel getWorkerLabel() {
@@ -77,6 +84,7 @@ public class JCellButton extends JButton {
 
     /**
      * This method is a simple setter of the class attribute workerLabel.
+     *
      * @param workerLabel contains an image which indicates the presence of a worker
      */
     public void setWorkerLabel(JLabel workerLabel) {
@@ -85,6 +93,7 @@ public class JCellButton extends JButton {
 
     /**
      * This is a simple getter of the integer number which identifies the column of the cell related to the button
+     *
      * @return the integer number which identifies the cell row in the board.
      */
     public int getRow() {
@@ -93,6 +102,7 @@ public class JCellButton extends JButton {
 
     /**
      * This is a simple getter of the integer number which identifies the column of the cell related to the button
+     *
      * @return the integer number which identifies the cell column in the board.
      */
     public int getCol() {
@@ -101,6 +111,7 @@ public class JCellButton extends JButton {
 
     /**
      * This method is used to set the background of the cell.
+     *
      * @param g contains a reference to the button of which we want to set the background
      */
     @Override
@@ -109,8 +120,8 @@ public class JCellButton extends JButton {
         Image backgroundImage = null;
         try {
             backgroundImage = computeImage();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println("Error loading some Cell Button resource");
         }
 
         g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
@@ -118,9 +129,10 @@ public class JCellButton extends JButton {
 
     /**
      * This private method computes the image that will be set as background image of the button
+     *
      * @return an Image which would be used as background
      */
-    private Image computeImage() throws Exception {
+    private Image computeImage() throws IOException {
         switch (blockLevel) {
             case DOME:
             case GROUND:
@@ -132,7 +144,7 @@ public class JCellButton extends JButton {
             case LEVEL_THREE:
                 return new ImageIcon(Gui.class.getResource("/images/BoardScreen/row-" + (row + 1) + "-col-" + (col + 1) + "-level3.png")).getImage();
             default:
-                throw new Exception();
+                throw new IOException();
         }
     }
 }

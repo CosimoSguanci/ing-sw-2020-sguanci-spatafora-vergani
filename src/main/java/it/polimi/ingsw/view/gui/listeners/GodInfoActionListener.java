@@ -24,6 +24,7 @@ public class GodInfoActionListener implements ActionListener {
     /**
      * This is the creator of the class. At the moment of creation an association
      * between the listener and the component in which is contained is made.
+     *
      * @param container contains a reference to the component which contains the lisener
      */
     public GodInfoActionListener(Container container) {
@@ -33,6 +34,7 @@ public class GodInfoActionListener implements ActionListener {
     /**
      * This method is invoked when a particular God is clicked in GodInfo component.
      * When a button is clicked it displays a Dialog in which is specified the power of the selected God.
+     *
      * @param e contains a reference to the button clicked.
      */
     @Override

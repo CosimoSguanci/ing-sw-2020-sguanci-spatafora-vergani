@@ -30,6 +30,7 @@ public class PlaceWorkersButtonListener implements ActionListener {
     /**
      * This is the creator of the class. At the moment of creation an association
      * between the listener and the gamePreparation component is made.
+     *
      * @param gamePreparationComponent contains a reference to the component
      */
     public PlaceWorkersButtonListener(GamePreparation gamePreparationComponent) {
@@ -38,6 +39,7 @@ public class PlaceWorkersButtonListener implements ActionListener {
 
     /**
      * This method is invoked when the continue button of the gamePreparation component is clicked.
+     *
      * @param e contains a reference to the continue button.
      */
     @Override

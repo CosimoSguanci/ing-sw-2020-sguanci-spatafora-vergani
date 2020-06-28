@@ -7,9 +7,6 @@ import java.util.LinkedHashMap;
 
 public class Manual {
 
-    private Manual() {
-    }
-
     private static final String info = "General information";
     private static final String play = "How to play";
     private static final String winLose = "Win and lose a match";
@@ -44,6 +41,8 @@ public class Manual {
             "For example, being 'forced' to move up at level 3 does not mean winning!";
     private static final String gods = "Gods";
     private static final String infoGods = "More about gods";
+    private Manual() {
+    }
 
     public static String manual() {
         String info = PrintableColor.BOLD + Manual.info + PrintableColor.RESET;

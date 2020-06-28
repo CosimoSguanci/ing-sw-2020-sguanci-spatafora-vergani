@@ -54,9 +54,7 @@ public class GamePreparation extends Game implements ActionListener {
 
         List<JCellButton> cells = twoDArrayToList(this.getBoard().getBoardCells());
 
-        cells.forEach(cell -> {
-            cell.addActionListener(this);
-        });
+        cells.forEach(cell -> cell.addActionListener(this));
 
         //need to set rightPanel's layout, with a "continue" button in the southern part
         ImageIcon continueImg = new ImageIcon(getClass().getResource("/images/done.png"));

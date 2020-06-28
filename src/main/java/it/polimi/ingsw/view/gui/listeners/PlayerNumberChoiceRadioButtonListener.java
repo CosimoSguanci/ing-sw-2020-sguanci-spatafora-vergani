@@ -22,7 +22,8 @@ public class PlayerNumberChoiceRadioButtonListener implements ActionListener {
     /**
      * This is the constructor of the class. At the moment of creation an association
      * between listener and PlayerNumberChoice component is made
-     * @param playerNumberChoice
+     *
+     * @param playerNumberChoice the number of players that are playing the match
      */
     public PlayerNumberChoiceRadioButtonListener(PlayerNumberChoice playerNumberChoice) {
         this.playerNumberChoice = playerNumberChoice;
@@ -33,6 +34,7 @@ public class PlayerNumberChoiceRadioButtonListener implements ActionListener {
      * gives him the possibility to choose how many player he wants in his match.
      * In this method a PlayerNumberChoice method is invoked giving button
      * clicked as parameter and it will manages all the possibilities.
+     *
      * @param e contains a reference to the button clicked.
      */
     @Override

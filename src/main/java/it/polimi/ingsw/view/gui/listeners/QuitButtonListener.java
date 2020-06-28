@@ -16,12 +16,13 @@ import java.awt.event.ActionListener;
  * @author Andrea Vergani
  */
 public class QuitButtonListener implements ActionListener {
-    Gui gui = Gui.getInstance();
     private final JPanel panel;
+    Gui gui = Gui.getInstance();
 
     /**
      * This is the creator of the class. At the moment of creation an association
      * between listener and the panel of the relative current phase of the match is made.
+     *
      * @param panel contains a reference to the Panel
      */
     public QuitButtonListener(JPanel panel) {
@@ -33,6 +34,7 @@ public class QuitButtonListener implements ActionListener {
      * Once clicked it is asked to the player if is he sure to quit through
      * an OptionDialog. If player select to quit it is asked to him if he
      * wants to play a new match or not.
+     *
      * @param e contains a reference to the button clicked.
      */
     @Override

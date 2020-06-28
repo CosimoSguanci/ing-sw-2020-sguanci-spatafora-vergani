@@ -5,6 +5,9 @@ import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.gui.ConnectionError;
 import it.polimi.ingsw.view.gui.Gui;
 
+/**
+ * GUI main class, the class which starts the game in the graphic environment.
+ */
 public class GuiApp {
     public static void main(String[] args) {
         try {

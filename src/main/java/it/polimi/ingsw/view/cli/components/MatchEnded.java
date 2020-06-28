@@ -61,7 +61,6 @@ public class MatchEnded {
             cli.setContinueToWatch(false);
 
         } catch (IOException e) {
-            e.printStackTrace();
             System.err.println("The Game couldn't start, maybe there was some network error or the server isn't available.");
             System.exit(0);
         }

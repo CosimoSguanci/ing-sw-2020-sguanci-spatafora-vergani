@@ -25,6 +25,7 @@ public class MoveButtonListener implements ActionListener {
     /**
      * This is the constructor of the class. At the moment of creation
      * an association between the listener and the RealGame component is made.
+     *
      * @param realGameComponent contains a reference to the RealGame component.
      */
     public MoveButtonListener(RealGame realGameComponent) {
@@ -34,6 +35,7 @@ public class MoveButtonListener implements ActionListener {
     /**
      * This method is invoked at the moment of clicking on the MoveButton.
      * When the MoveButton is clicked it generates a new MOVE PlayerCommand.
+     *
      * @param e contains a reference to the MoveButton
      */
     @Override
