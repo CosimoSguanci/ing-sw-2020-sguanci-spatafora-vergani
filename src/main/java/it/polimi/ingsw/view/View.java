@@ -27,14 +27,34 @@ import java.util.Map;
  */
 public abstract class View extends Observable<Object> {
 
+    /**
+     * Reference to the component which is responsible to establish and keep a connection to
+     * the server.
+     */
     protected final Client client;
+
+    /**
+     * Reference to the client-side {@link Controller}, which is the component that keeps a little part
+     * of the game logic in order to avoid to send useless commands to the server ("fat" client implementation).
+     */
     protected final Controller controller;
+
+    /**
+     * Reference to Visitor, which handles all possible updates received from server, and updates the view accordingly.
+     */
     protected UpdateHandler updateHandler;
 
     protected GamePhase currentGamePhase;
     protected int playersNumber;
 
+    /**
+     * Association between players nicknames and their gods.
+     */
     protected Map<String, String> playersGods;
+
+    /**
+     * Association between players nicknames and their {@link PrintableColor}.
+     */
     protected Map<String, PrintableColor> playersColors;
 
     protected View(Client client, Controller controller) {

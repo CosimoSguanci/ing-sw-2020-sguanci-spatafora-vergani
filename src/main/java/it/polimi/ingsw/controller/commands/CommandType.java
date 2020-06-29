@@ -4,23 +4,77 @@ import it.polimi.ingsw.exceptions.BadCommandException;
 
 /**
  * CommandType is the enumeration for the type of command a player can do.
- * In Santorini there are different type of possible commands: MOVE, used to
- * move a player's worker to a different cell; BUILD, used to build in a cell
- * according to its restrictions; END_TURN, to declare the end of the turn (and
- * then the turn passes to another player); PICK, to select nickname and colour;
- * SELECT, to choose a god/some gods; PLACE, to decide the initial position of the
- * workers on the board; HELP, to receive some information about what to do; INFO,
- * to have more specific information; QUIT, to leave a match; TURN, to "ask" who is
- * playing his/her turn; RULES, to read a short version of Santorini's manual; GOD,
- * to know the association between player and god during a match; BOARD, to see the current
- * board (and situation) of the match.
+ * In Santorini there are different type of possible commands.
  *
  * @author Roberto Spatafora
  * @author Cosimo Sguanci
  */
 public enum CommandType {
 
-    MOVE, BUILD, END_TURN, PICK, SELECT, PLACE, HELP, INFO, QUIT, TURN, RULES, GOD, BOARD;
+    /**
+     * Used to move a player's worker to a different cell.
+     */
+    MOVE,
+
+    /**
+     * Used to build in a cell according to its restrictions.
+     */
+    BUILD,
+
+    /**
+     * Used to declare the end of the turn (and then the turn passes to another player).
+     */
+    END_TURN,
+
+    /**
+     * Used to select nickname and color.
+     */
+    PICK,
+
+    /**
+     * Used to choose a god or some gods if it's the god chooser.
+     */
+    SELECT,
+
+    /**
+     * Used to decide the initial position of the workers on the board.
+     */
+    PLACE,
+
+    /**
+     * Used to receive some information about what to do.
+     */
+    HELP,
+
+    /**
+     * Used to have more specific information than HELP.
+     */
+    INFO,
+
+    /**
+     * Used to leave a match.
+     */
+    QUIT,
+
+    /**
+     * Used to "ask" who is playing his/her turn.
+     */
+    TURN,
+
+    /**
+     * Used to read a short version of Santorini's manual.
+     */
+    RULES,
+
+    /**
+     * Used to know the association between player and god during a match.
+     */
+    GOD,
+
+    /**
+     * Used to see the current board (and situation) of the match.
+     */
+    BOARD;
 
 
     /**

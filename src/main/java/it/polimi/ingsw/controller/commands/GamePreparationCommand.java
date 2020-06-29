@@ -9,7 +9,7 @@ import java.util.Map;
 
 
 /**
- * GamePreparationCommand is the class that represents a Command specific for GamePreparation
+ * GamePreparationCommand is the class that represents a {@link Command} specific for Game Preparation
  * phase. In particular, in this phase every player places his/her workers in two of the board's
  * cells.
  *
@@ -19,18 +19,38 @@ import java.util.Map;
  */
 public class GamePreparationCommand extends Command {
 
-
+    /**
+     * "First" {@link it.polimi.ingsw.model.Worker} position (to be set by the {@link it.polimi.ingsw.controller.Controller} on server.
+     */
     private transient Cell workerFirstCell;
+
+    /**
+     * "Second" {@link it.polimi.ingsw.model.Worker} position (to be set by the {@link it.polimi.ingsw.controller.Controller} on server.
+     */
     private transient Cell workerSecondCell;
 
+    /**
+     * "First" {@link it.polimi.ingsw.model.Worker} row coordinate. Got from the command typed by the user.
+     */
     public final int workerFirstRow;
+
+    /**
+     * "First" {@link it.polimi.ingsw.model.Worker} column coordinate. Got from the command typed by the user.
+     */
     public final int workerFirstCol;
 
+    /**
+     * "Second" {@link it.polimi.ingsw.model.Worker} row coordinate. Got from the command typed by the user.
+     */
     public final int workerSecondRow;
+
+    /**
+     * "Second" {@link it.polimi.ingsw.model.Worker} column coordinate. Got from the command typed by the user.
+     */
     public final int workerSecondCol;
 
     /**
-     * The constructor creates a Command specific for GamePreparation phase: CommandType is PLACE
+     * The constructor creates a {@link Command} specific for Game Preparation phase: {@link CommandType} is {@link CommandType#PLACE}
      * because this is what players must do in this phase; then, the positions of the workers are
      * selected.
      *

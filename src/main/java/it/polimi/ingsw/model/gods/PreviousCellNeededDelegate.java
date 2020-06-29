@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.Cell;
 
 /**
- * This class represent the delegate that Gods can use if their power needs to save any previous position of a worker.
+ * This class represent the delegate that Gods can use if their power needs to save any previous position of a {@link it.polimi.ingsw.model.Worker}.
  * <p>
  * The use of this kind of delegates allows the application of the Composition over Inheritance principle,
  * making it easy to have Gods that are not strictly categorized and that can instead share and use features which are
@@ -19,34 +19,34 @@ class PreviousCellNeededDelegate {
     private Cell previousCell;
 
     /**
-     * Previous Cell getter
+     * Previous {@link Cell} getter
      *
-     * @return the previous Cell saved
+     * @return the previous {@link Cell} saved
      */
     Cell getPreviousCell() {
         return this.previousCell;
     }
 
     /**
-     * Previous Cell setter
+     * Previous {@link Cell} setter
      *
-     * @param cell the "new" previous Cell
+     * @param cell the "new" previous {@link Cell}
      */
     void setPreviousCell(Cell cell) {
         this.previousCell = cell;
     }
 
     /**
-     * Method used to check if previousCell has been set or not.
+     * Method used to check if previous {@link Cell} has been set or not.
      *
-     * @return true if and only if the previous cell is not null
+     * @return true if and only if the previous {@link Cell} is not null
      */
     boolean hasPreviousCell() {
         return this.previousCell != null;
     }
 
     /**
-     * Reinitialize previousCell to null
+     * Reinitialize previous {@link Cell} to null
      */
     void reinitializeCell() {
         this.previousCell = null;

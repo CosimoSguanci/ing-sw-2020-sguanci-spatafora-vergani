@@ -142,7 +142,7 @@ public class Board {
     }
 
     /**
-     * The method controls if it is possible to return a reference to a Cell of the board
+     * The method controls if it is possible to return a reference to a {@link Cell} of the board
      *
      * @param row indicates the row of the Cell requested in the board
      * @param col indicates the column of the Cell requested in the board
@@ -156,7 +156,7 @@ public class Board {
     }
 
     /**
-     * Overridden version of Object's toString() method, used to create a serialized JSON version of the game Board.
+     * Overridden version of {@link Object#toString()} method, used to create a serialized JSON version of the game Board.
      *
      * @return a serialized JSON string version of the game Board.
      */

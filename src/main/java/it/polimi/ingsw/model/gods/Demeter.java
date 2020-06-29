@@ -6,8 +6,8 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
 /**
- * This class implements the Demeter strategy used by the Player who chose the powers of this God.
- * Specifically, an Demeter Worker can build one additional time, but not at the same time.
+ * This class implements the Demeter strategy used by the {@link Player} who chose the powers of this God.
+ * Specifically, an Demeter {@link Worker} can build one additional time, but not in the same position.
  * {@link MultipleBuildDelegate} is used to handle multiple build phases, {@link PreviousCellNeededDelegate} is used to save
  * previous build cell in order to check constraints on the additional build.
  *
@@ -20,8 +20,19 @@ public class Demeter extends GodStrategy {
     public static final String DESCRIPTION = "Goddess of the Harvest";
     public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build one additional time, but not on the same space";
 
+    /**
+     * Max number of levels buildable by Demeter in the same turn.
+     */
     final int DEMETER_MAX_BUILD_NUM = 2;
+
+    /**
+     * Delegate used to handle the fact that Demeter can build more than one time in the same turn.
+     */
     private final MultipleBuildDelegate multipleBuildDelegate;
+
+    /**
+     * Delegate used to handle the fact that Demeter cannot build in the same position twice in the same turn.
+     */
     private final PreviousCellNeededDelegate previousCellNeededDelegate;
 
 

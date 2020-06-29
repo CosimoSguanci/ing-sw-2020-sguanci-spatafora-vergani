@@ -7,8 +7,8 @@ import it.polimi.ingsw.model.Worker;
 
 
 /**
- * This class implements the Artemis strategy used by the Player who chose the powers of this God.
- * Specifically, Artemis allows the Worker to move one additional time using {@link MultipleMovementDelegate}, but not back to
+ * This class implements the Artemis strategy used by the {@link Player} who chose the powers of this God.
+ * Specifically, Artemis allows the {@link Worker} to move one additional time using {@link MultipleMovementDelegate}, but not back to
  * its initial position, which is saved using {@link PreviousCellNeededDelegate}.
  *
  * @author Cosimo Sguanci
@@ -21,10 +21,18 @@ public class Artemis extends GodStrategy {
     public static final String POWER_DESCRIPTION = "Your Move: Your Worker may move one additional time, but not back to its initial space";
 
     /**
-     * Constant representing the max number of times this God can move.
+     * Constant representing the max number of times Artemis can move in the same turn.
      */
     final int ARTEMIS_MAX_MOVE_NUM = 2;
+
+    /**
+     * Delegate used to handle the fact that Artemis can move more than one time in the same turn.
+     */
     private final MultipleMovementDelegate multipleMovementDelegate;
+
+    /**
+     * Delegate used to handle the fact that Artemis cannot move back to its initial position in the same turn.
+     */
     private final PreviousCellNeededDelegate previousCellNeededDelegate;
 
 
@@ -66,9 +74,9 @@ public class Artemis extends GodStrategy {
     }
 
     /**
-     * This method calls superclass endTurn, then resets movement count and previous cell at the end of Player's turn.
+     * This method calls superclass endTurn method, then resets movement count and previous cell at the end of Player's turn.
      *
-     * @param player Player corresponding to the current turn.
+     * @param player {@link Player} corresponding to the current turn.
      * @see GodStrategy#endPlayerTurn(Player)
      */
     @Override
@@ -79,7 +87,7 @@ public class Artemis extends GodStrategy {
     }
 
     /**
-     * This method calls superclass canBuild, if it returns false, the delegate canMove method is called,
+     * This method calls superclass canBuild method, if it returns false, the {@link MultipleMovementDelegate} canMove method is called,
      * to determine if the Player has lost or if it can still perform another move.
      *
      * @param board  the Match board to consider

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
 /**
@@ -50,7 +51,7 @@ class MultipleMovementDelegate {
     }
 
     /**
-     * This method is used to check if the move action that Player attempted can be performed. It is necessary because the Gods which have
+     * This method is used to check if the move action that {@link Player} attempted can be performed. It is necessary because the Gods which have
      * multiple movement power cannot use {@link GodStrategy} checkMove, because it always return false if the Worker has already moved one time
      * (following the standard game rules).
      *

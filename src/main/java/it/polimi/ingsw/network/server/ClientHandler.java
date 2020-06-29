@@ -40,7 +40,8 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
 
     /**
      * In the constructor, the random client ID is generated.
-     * @param server server instance to call the lobby method.
+     *
+     * @param server       server instance to call the lobby method.
      * @param clientSocket the socket which identifies the client to be handled by this instance.
      */
     ClientHandler(Server server, Socket clientSocket) {
@@ -51,6 +52,7 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
 
     /**
      * Method called to send an {@link Update} from server to client (Model-View communication in MVC pattern).
+     *
      * @param update the update representing game state changes, used to notify all the clients.
      */
     public void sendUpdate(Update update) {
@@ -66,6 +68,7 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
     /**
      * update method from Observer pattern. Specifically, this class observes {@link CommandListener} in order to notify the {@link it.polimi.ingsw.controller.Controller}
      * that a new {@link Command} has been sent. The controller will then handle the command and change the game state accordingly.
+     *
      * @param command the command object received from the client.
      */
     @Override

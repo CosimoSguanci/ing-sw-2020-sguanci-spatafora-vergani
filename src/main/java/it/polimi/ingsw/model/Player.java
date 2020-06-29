@@ -28,7 +28,8 @@ public class Player implements Serializable {
     /**
      * This is the builder of the class. When a Player is created its id, nickname and
      * the match he is enrolled in are set.
-     * @param id the String random identifier for this Player.
+     *
+     * @param id    the String random identifier for this Player.
      * @param model the Model corresponding to this Player instance.
      * @param match the Match that this Player is about to play.
      */

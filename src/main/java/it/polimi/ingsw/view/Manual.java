@@ -47,11 +47,13 @@ public class Manual {
             "For example, being 'forced' to move up at level 3 does not mean winning!";
     private static final String gods = "Gods";
     private static final String infoGods = "More about gods";
+
     private Manual() {
     }
 
     /**
      * This method is used to generate a String which contains all the game rules
+     *
      * @return a String which contains information about info, play, win conditions, gods and info about them
      */
     public static String manual() {
@@ -70,6 +72,7 @@ public class Manual {
 
     /**
      * This method is a simple getter of a correspondence between info Title and the explanation of them
+     *
      * @return a Map which contains a correspondence between info title and the explanation
      */
     public static LinkedHashMap<String, String> getRules() {

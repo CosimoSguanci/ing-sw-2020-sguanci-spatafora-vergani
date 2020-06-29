@@ -4,7 +4,7 @@ import it.polimi.ingsw.exceptions.InvalidCellException;
 import it.polimi.ingsw.model.*;
 
 /**
- * This class implements the Minotaur strategy used by the Player who chose the powers of this God.
+ * This class implements the Minotaur strategy used by the {@link Player} who chose the powers of this God.
  * Specifically, Minotaur allows the selected worker to move to an opponent Worker's space, if the
  * opponent Worker can be forced on space straight backwards to an unoccupied space at any level.
  *
@@ -17,7 +17,18 @@ public class Minotaur extends GodStrategy {
     public static final String DESCRIPTION = "Bull-headed Monster";
     public static final String POWER_DESCRIPTION = "Your Move: Your Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level";
 
+    /**
+     * Delegation pattern (composition over inheritance) is used to share common behaviours
+     * between gods and to allow a single god to inherit multiple common properties.
+     * <p>
+     * {@link OpponentWorkerMoverDelegate} is used by Minotaur to move an opponent worker, if necessary.
+     */
     private final OpponentWorkerMoverDelegate opponentWorkerMoverDelegate;
+
+    /**
+     * This {@link Cell} represents the new position of the opponent, if the {@link Cell} where Minotaur wants
+     * to move is already occupied.
+     */
     private Cell backwardCell;
 
     public Minotaur() {
@@ -89,7 +100,7 @@ public class Minotaur extends GodStrategy {
      * This method finds opponent Worker backward Cell, using the original Player Worker to determine
      * the moving direction (diagonal or not).
      *
-     * @param board the game board
+     * @param board      the game board
      * @param workerCell the position of worker that the Player wants to move.
      * @param moveCell   the cell in which the Player want to move the worker.
      * @return The Cell that is backward of moveCell.

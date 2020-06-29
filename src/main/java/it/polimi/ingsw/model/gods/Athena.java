@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.Worker;
 
 
 /**
- * This class implements the Athena strategy used by the Player who chose the powers of this God.
+ * This class implements the Athena strategy used by the {@link Player} who chose the powers of this God.
  * Specifically, if Athena has moved up, she doesn't allow other Player's workers to move up in the current turn.
  *
  * @author Cosimo Sguanci

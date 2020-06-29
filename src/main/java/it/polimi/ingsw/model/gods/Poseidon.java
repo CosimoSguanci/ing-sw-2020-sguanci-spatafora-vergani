@@ -6,8 +6,8 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
 /**
- * This class implements the Poseidon strategy used by the Player who chose the powers of this God.
- * Specifically, at the end of the turn, if the Player's unmoved Worker is on the ground level, it can build
+ * This class implements the Poseidon strategy used by the {@link Player} who chose the powers of this God.
+ * Specifically, at the end of the turn, if the {@link Player}'s unmoved {@link Worker} is on the ground level, it can build
  * up to 3 times.
  *
  * @author Cosimo Sguanci
@@ -19,8 +19,21 @@ public class Poseidon extends GodStrategy {
     public static final String DESCRIPTION = "God of the Sea";
     public static final String POWER_DESCRIPTION = "End of Your Turn: If your unmoved Worker is on the ground level, it may build up to three times";
 
+    /**
+     * Max number of levels buildable by Poseidon's unmoved {@link Worker} in the same turn.
+     */
     final int POSEIDON_MAX_BUILD_NUM = 3;
+
+    /**
+     * Delegate used to handle the fact that Poseidon's unmoved {@link Worker} can build more than one time in the same turn.
+     */
     private final MultipleBuildDelegate multipleBuildDelegate;
+
+    /**
+     * The {@link Player}'s {@link Worker} that is not the selected {@link Worker} for this turn.
+     *
+     * @see GodStrategy#selectedWorker
+     */
     private Worker unmovedWorker;
 
 
@@ -44,7 +57,7 @@ public class Poseidon extends GodStrategy {
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
 
-        if(selectedWorker == null) return false;
+        if (selectedWorker == null) return false;
 
         unmovedWorker = worker.player.getWorkerFirst().equals(selectedWorker) ?
                 worker.player.getWorkerSecond() : worker.player.getWorkerFirst();

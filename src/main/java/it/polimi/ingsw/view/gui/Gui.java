@@ -62,7 +62,7 @@ public class Gui extends View implements Observer<Update> {
      * The constructor creates an instance for Graphic User Interface, connecting it to the
      * specific client. Some images, important for next game phases, are loaded here.
      *
-     * @param clientInstance client to which Gui must be associated
+     * @param clientInstance     client to which Gui must be associated
      * @param controllerInstance controller (client-side) of the other parameter
      */
     private Gui(Client clientInstance, Controller controllerInstance) {
@@ -75,7 +75,7 @@ public class Gui extends View implements Observer<Update> {
      * The method returns Gui class' instance, following Singleton design pattern.
      * If no instance exists, it is created and associated with parameters.
      *
-     * @param client client associated to requested Gui
+     * @param client     client associated to requested Gui
      * @param controller controller (client-side) of the other parameter
      * @return Gui instance (if not existing, it is created)
      */
@@ -106,7 +106,7 @@ public class Gui extends View implements Observer<Update> {
      * use coherent fonts.
      *
      * @param fontMode font type (bold or not)
-     * @param size font size
+     * @param size     font size
      * @return font with selected type and size; in case of exceptions, a generic font is returned
      */
     public static Font getFont(int fontMode, int size) {
@@ -157,7 +157,12 @@ public class Gui extends View implements Observer<Update> {
         return frame;
     }
 
-    //TODO JavaDoc for this method
+    /**
+     * This method returns a reference to the user {@link GodGuiDrawer}, in order
+     * to draw specific buttons for the user's god (if necessary).
+     *
+     * @return a reference to the correct user's {@link GodGuiDrawer}
+     */
     public GodGuiDrawer getGodGuiDrawer() {
         return this.godGuiDrawer;
     }
@@ -343,6 +348,8 @@ public class Gui extends View implements Observer<Update> {
      * The method makes a call to manage in a proper way a change of board's state. It is
      * useful when this change does not modify all what is visualized on screen, but just
      * the board itself. For example, during real match, the board often changes.
+     *
+     * @param board the new JSON-serialized {@link it.polimi.ingsw.model.Board} received from server.
      */
     void onBoardChanged(String board) {
         switch (currentGamePhase) {
@@ -575,10 +582,9 @@ public class Gui extends View implements Observer<Update> {
                 icon = new ImageIcon(getClass().getResource(imagePath));
                 icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));
                 JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE, icon);
-                if(!update.onePlayerRemaining) {
+                if (!update.onePlayerRemaining) {
                     askContinueToWatch();
-                }
-                else {
+                } else {
                     askPlayAgainDialog();
                 }
             });
@@ -641,7 +647,6 @@ public class Gui extends View implements Observer<Update> {
      * The method creates a dialog to manage the situation in which one of the players
      * loses, so (if the match continues) he/she can decide whether to continue to watch
      * or quit. Decision of continuing to watch or quitting is managed in the proper way.
-     *
      */
     private void askContinueToWatch() {
         this.showDisconnectedDialog = false;
@@ -667,7 +672,8 @@ public class Gui extends View implements Observer<Update> {
     /**
      * Builds a dialog which asks a question to the user (examples: "Do you want to continue to watch?",
      * "Do you want to play again?")
-     * @param title the title of the dialog
+     *
+     * @param title   the title of the dialog
      * @param message the message contained in the dialog
      * @return the choice made by the user
      */
@@ -685,7 +691,6 @@ public class Gui extends View implements Observer<Update> {
      * after that, the game is closed, since it is an online game.
      * Server can be unreachable for a connection problem, because it is down or for other
      * reasons.
-     *
      */
     public void showServerUnreachableDialog() {
         SwingUtilities.invokeLater(() -> {

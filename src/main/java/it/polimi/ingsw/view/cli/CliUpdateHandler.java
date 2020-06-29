@@ -11,13 +11,11 @@ import it.polimi.ingsw.network.client.controller.Controller;
 import it.polimi.ingsw.view.UpdateHandler;
 import it.polimi.ingsw.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * This class handles all the updates from server to different clients.
- * Every possible updates go to this class before it's viewable from users.
+ * Every possible updates go to this class before it's viewable from users (in the CLI).
  * BoardUpdate, DisconnectedPlayerUpdate, ErrorUpdate, GamePhaseUpdate,
  * GodsUpdate, InitialInfoUpdate, LoseUpdate, MatchStartedUpdate,
  * ServerUnreachableUpdate, TurnUpdate, WinUpdate are all managed in this class.
@@ -28,32 +26,36 @@ import java.util.stream.Collectors;
  * @author Cosimo Sguanci
  * @author Roberto Spatafora
  * @author Andrea Vergani
+ * @see UpdateHandler
  */
-public class CliUpdateHandler implements UpdateHandler {
+public class CliUpdateHandler extends UpdateHandler {
+
+    /**
+     * Instance of the {@link Cli} which this handler has to update
+     */
     private final Cli cliInstance;
-    private final Controller controller;
 
     /**
      * This is the creator of the class. At the moment of the instance creation
-     * an instance of Cli and Controller, to which the class refers, are set.
+     * an instance of {@link Cli} and {@link Controller}, to which the class refers, are set.
      *
-     * @param cliInstance is the instance of Cli associated to the CliUpdateHandle for updates.
-     * @param controller  is the instance of the controller that is observed by the Cli.
+     * @param cliInstance is the instance of {@link Cli} associated to the CliUpdateHandler for updates.
+     * @param controller  is the instance of the controller that is observed by the {@link Cli}.
      */
     CliUpdateHandler(Cli cliInstance, Controller controller) {
+        super(controller);
         this.cliInstance = cliInstance;
-        this.controller = controller;
     }
 
     /**
-     * This method handles MatchStartedUpdated arrived from client-side Controller to Cli.
+     * This method handles {@link MatchStartedUpdate} arrived from the {@link Cli}.
      * It prints several lines in console, to let players know that match has started.
      *
-     * @param update is the instance of MatchStartedUpdate from controller.
+     * @param update is the instance of {@link MatchStartedUpdate} from {@link Cli}.
      */
+    @Override
     public void handle(MatchStartedUpdate update) {
         cliInstance.printBoard(update.getBoard());
-
         cliInstance.println(Cli.toBold("MATCH STARTED!"));
         cliInstance.newLine();
         cliInstance.println(Cli.toBold("Tip") + ": type 'help " + cliInstance.getCurrentPhaseString() + "' to know command format");
@@ -62,13 +64,14 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     /**
-     * This method handles GodUpdate arrived from client-side Controller to Cli.
+     * This method handles {@link GodsUpdate} arrived from the {@link Cli}.
      * In this method there is a distinction between GodChooser and other players.
      * If the player in Cli associated is GodChooser than some lines explains him what to do,
      * In non-GodChooser case players are invited to select their Gods.
      *
-     * @param update is the instance of GodsUpdate from client-side Controller.
+     * @param update is the instance of {@link GodsUpdate} from {@link Cli}.
      */
+    @Override
     public void handle(GodsUpdate update) {
         if (update.getSelectedGods().size() == cliInstance.getPlayersNumber()) {
             cliInstance.setPlayersGods(update.getSelectedGods());
@@ -101,13 +104,14 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     /**
-     * This method handles InitialInfoUpdate arrived from client-side Controller to Cli.
+     * This method handles {@link InitialInfoUpdate} arrived from the {@link Cli}.
      * Once players choose how many players are involved in their match, they have to choose
      * a nickname and a color to play. This class notifies them about that, inviting them
      * to choose a nickname and a color, not already chosen from other players.
      *
-     * @param update is the instance of InitialInfoUpdate from client-side Controller.
+     * @param update is the instance of {@link InitialInfoUpdate} from {@link Cli}.
      */
+    @Override
     public void handle(InitialInfoUpdate update) {
 
         if (update.getInitialInfo().size() == cliInstance.getPlayersNumber()) {
@@ -118,9 +122,9 @@ public class CliUpdateHandler implements UpdateHandler {
 
             cliInstance.println("Type your " + Cli.toBold("nickname and color") + " separated by a space.    Command " + Cli.toBold("format") + " expected: pick [nickname] [color]");
 
-            List<String> selectedNicknames = new ArrayList<>(update.getInitialInfo().keySet());
-            List<PrintableColor> selectedColors = new ArrayList<>(update.getInitialInfo().values());
-            List<PrintableColor> selectableColors = PrintableColor.getColorList().stream().filter(color -> !selectedColors.contains(color)).collect(Collectors.toList());
+            List<String> selectedNicknames = extractSelectedNicknames(update);
+            List<PrintableColor> selectedColors = extractSelectedColors(update);
+            List<PrintableColor> selectableColors = extractSelectableColors(selectedColors);
 
 
             if (!selectedNicknames.isEmpty()) {
@@ -142,13 +146,14 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     /**
-     * This method handles BoardUpdate arrived from client-side Controller to Cli.
+     * This method handles {@link BoardUpdate} arrived from the {@link Cli}.
      * This method manages commands during REAL_GAME phase. In cases in which players
      * move or build in a specific cell, to let all players clearly know about that,
      * it is printed that player has [moved/built] with a worker in a cell.
      *
-     * @param update is the instance of BoardUpdate from client-side Controller.
+     * @param update is the instance of {@link BoardUpdate} from {@link Cli}.
      */
+    @Override
     public void handle(BoardUpdate update) {
 
         if (cliInstance.getCurrentPhase().equals(GamePhase.MATCH_LOST) && !cliInstance.wantsToContinueToWatch()) return;
@@ -159,8 +164,6 @@ public class CliUpdateHandler implements UpdateHandler {
 
         if (update.getExecutedCommand() != null && (update.getExecutedCommand().commandType == CommandType.BUILD || update.getExecutedCommand().commandType == CommandType.MOVE)) {
             PlayerCommand executedCommand = update.getExecutedCommand();
-
-
             cliInstance.newLine();
 
             String nickname = executedCommand.getPlayerNickname() != null ? executedCommand.getPlayerNickname() : "Player";
@@ -197,16 +200,15 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     /**
-     * This method handles ErrorUpdate arrived from client-side Controller to Cli.
+     * This method handles {@link ErrorUpdate}  arrived from the {@link Cli}.
      * This method manages all the wrong command generated. Once the command is parsed
      * for the correct-format it is notified to the Controller, after some checks server-side
      * if an ErrorUpdate is notified it means that the command was correct in syntax but
      * an impossible action was requested.
-     * DENIED_BY_PLAYER_GOD, WRONG_TURN, WRONG_GAME_PHASE, DENIED_BY_OPPONENT_GOD,
-     * ALREADY_TAKEN_NICKNAME, INVALID_GOD errors are all managed in this methos
      *
-     * @param update contains the instance of the Error given from client-side Controller.
+     * @param update the instance of {@link ErrorUpdate} given from {@link Cli}.
      */
+    @Override
     public void handle(ErrorUpdate update) {
 
         if (!update.getCurrentPlayer().getPlayerID().equals(controller.getClientPlayerID())) return;
@@ -298,6 +300,12 @@ public class CliUpdateHandler implements UpdateHandler {
         cliInstance.newLine();
     }
 
+    /**
+     * This private method was extracted from error handling procedure, to avoid duplicates for errors handled the same way for different {@link CommandType}.
+     * Specifically, this handles {@link ErrorType#WRONG_GAME_PHASE}, {@link ErrorType#INVALID_CELL} and {@link ErrorType#GENERIC_ERROR}.
+     *
+     * @param update the error update which arrived from {@link Cli}.
+     */
     private void commonErrorHandling(ErrorUpdate update) {
         if (update.errorType == ErrorType.WRONG_GAME_PHASE) {
             cliInstance.println(Cli.toBold("Wrong Game Phase") + ": current Game Phase is not Real Game Phase");
@@ -309,12 +317,13 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     /**
-     * This method handles GamePhaseUpdate arrived from client-side Controller to Cli.
+     * This method handles {@link GamePhaseUpdate}  arrived from the {@link Cli}.
      * Every time the game phase changes, this method prints the name of the new current phase
      * upper case font to all the players involved in the match.
      *
-     * @param update contains a reference to the new GamePhase.
+     * @param update contains a reference to the new {@link GamePhase}.
      */
+    @Override
     public void handle(GamePhaseUpdate update) {
         cliInstance.newLine();
         if (update.newGamePhase.isPrintable()) {
@@ -337,12 +346,13 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     /**
-     * This method handles TurnUpdate arrived from client-side Controller to Cli.
+     * This method handles {@link TurnUpdate}  arrived from the {@link Cli}.
      * When a player ends is turn, new current turn pass to the next player in game.
      *
      * @param update contains information about the new turn, it means that new
      *               current turn needs to be updated.
      */
+    @Override
     public void handle(TurnUpdate update) {
         cliInstance.forwardNotify(update);
 
@@ -352,19 +362,19 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     /**
-     * This method handles TurnUpdate arrived from client-side Controller to Cli.
-     * When a player ends is turn, new current turn pass to the next player in game.
+     * This method handles {@link WinUpdate}  arrived from the {@link Cli}.
+     * When a player wins the match, all the players are notified, and they can decide
+     * to play another game or exit the game.
      *
-     * @param update contains information about the new turn, it means that new
-     *               current turn needs to be updated.
+     * @param update contains information who won the match.
      */
+    @Override
     public void handle(WinUpdate update) {
         cliInstance.newLine();
 
-        if(update.getWinnerPlayer().getNickname().toLowerCase().equals(controller.getClientPlayer().getNickname().toLowerCase())) {
+        if (update.getWinnerPlayer().getNickname().toLowerCase().equals(controller.getClientPlayer().getNickname().toLowerCase())) {
             cliInstance.println("You Win!");
-        }
-        else {
+        } else {
             cliInstance.println(cliInstance.playerWithColor(update.getWinnerPlayer().getNickname()) + " Wins!");
         }
         cliInstance.newLine();
@@ -373,7 +383,7 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     /**
-     * This method handles LoseUpdate arrived from client-side Controller to Cli.
+     * This method handles {@link LoseUpdate}  arrived from the {@link Cli}.
      * When a player lose, the motivation of this lose is notified to all the players.
      * In case two other players remains, player who lost is asked if he wants to continue watch
      * the match in which he was involved. In case only one player remains, it automatically wins.
@@ -381,6 +391,7 @@ public class CliUpdateHandler implements UpdateHandler {
      * @param update contains information about the new turn, it means that new
      *               current turn needs to be updated.
      */
+    @Override
     public void handle(LoseUpdate update) {
 
         boolean hasClientLost = controller.getClientPlayerID().equals(update.getLoserPlayer().getPlayerID());
@@ -389,14 +400,6 @@ public class CliUpdateHandler implements UpdateHandler {
         String loseCauseMsg = " because " + subject + " can't " + (update.getLoseCause() == LoseUpdate.LoseCause.CANT_MOVE ? "move" : "build") +
                 " with any Worker";
 
-        /*switch(update.getLoseCause()) {
-            case CANT_MOVE:
-                loseCauseMsg = " because " + subject + " can't move with any Worker";
-                break;
-            case CANT_BUILD:
-                loseCauseMsg = " because " + subject + " can't build with any Worker";
-                break;
-        }*/
 
         if (controller.getClientPlayerID().equals(update.getLoserPlayer().getPlayerID())) {
             cliInstance.newLine();
@@ -423,11 +426,12 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     /**
-     * This method handles ServerUnreachableUpdate arrived from client-side Controller to Cli.
-     * This method informs players that something went wrong during connection to server phase.
+     * This method handles {@link ServerUnreachableUpdate}  arrived from the {@link it.polimi.ingsw.network.client.UpdateListener}.
+     * This method informs players that something went wrong during connection to server phase, and quits the game.
      *
      * @param update contains the instance of the serverError given from client-side Controller.
      */
+    @Override
     public void handle(ServerUnreachableUpdate update) {
         cliInstance.println("Cannot communicate to the Server, maybe it's down. Otherwise, check your connection.");
         cliInstance.println("Quitting...");
@@ -435,12 +439,13 @@ public class CliUpdateHandler implements UpdateHandler {
     }
 
     /**
-     * This method handles ServerUnreachableUpdate arrived from client-side Controller to Cli.
+     * This method handles {@link DisconnectedPlayerUpdate} arrived from the {@link Cli}.
      * When a player logs out the match ends and all the players are informed about the end
      * of the match due to "[playerDisconnectedNickname] disconnected!"
      *
-     * @param update contains the information that a player logs out.
+     * @param update contains the information about which player logged out.
      */
+    @Override
     public void handle(DisconnectedPlayerUpdate update) {
         String nicknameToShow = update.getDisconnectedPlayer().getNickname() != null ? update.getDisconnectedPlayer().getNickname() : "A player";
         cliInstance.println(nicknameToShow + " disconnected!");
@@ -455,7 +460,7 @@ public class CliUpdateHandler implements UpdateHandler {
      * it allows GodChooser to choose as many Gods as players involved in the match,
      * having all the GodsName available in console.
      *
-     * @return a String that is printed only for GOodChooser during CHOOSE_GODS phase.
+     * @return a String that is printed only for GodChooser during CHOOSE_GODS phase.
      */
     private StringBuilder availableGods() {
         List<String> godNames = View.getGodsNamesList();

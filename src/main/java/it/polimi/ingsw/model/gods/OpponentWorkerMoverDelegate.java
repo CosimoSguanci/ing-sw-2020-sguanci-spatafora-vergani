@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
 /**
@@ -19,7 +20,7 @@ import it.polimi.ingsw.model.Worker;
 class OpponentWorkerMoverDelegate {
 
     /**
-     * Simply calls the opponent Workers move method to change its position to the forced one passed as parameter
+     * Simply calls the opponent {@link Worker} move method to change its position to the forced one passed as parameter
      *
      * @param opponent            opponent Worker that has to be moved
      * @param opponentNewPosition new opponent Worker position
@@ -30,7 +31,7 @@ class OpponentWorkerMoverDelegate {
     }
 
     /**
-     * This method is used to check if moveCell is occupied by the other Worker of the Player.
+     * This method is used to check if moveCell is occupied by the other {@link Worker} of the {@link Player}.
      *
      * @param worker   Player's Worker that is about to move
      * @param moveCell new Worker position

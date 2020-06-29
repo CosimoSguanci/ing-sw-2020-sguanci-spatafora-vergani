@@ -2,10 +2,11 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
 /**
- * This class implements the Hera strategy used by the Player who chose the powers of this God.
+ * This class implements the Hera strategy used by the {@link Player} who chose the powers of this God.
  * Specifically, Hera imposes Win constraints to other players: an opponent cannot win by moving into a perimeter space.
  *
  * @author Cosimo Sguanci
@@ -36,10 +37,12 @@ public class Hera extends GodStrategy {
     }
 
     /**
-     * Checks if the Cell passed is on the perimeter of the game Board.
+     * Checks if the {@link Cell} passed is on the perimeter of the game {@link Board}.
      *
      * @param cell the Cell in which the Opponent Worker was moved
      * @return true if the Cell is in the perimeter of the game Board, false otherwise.
+     * @see Board#WIDTH_SIZE
+     * @see Board#HEIGHT_SIZE
      */
     private boolean isPerimeterCell(Cell cell) {
         return cell.getColIdentifier() == Board.WIDTH_SIZE - 1 || cell.getRowIdentifier() == Board.HEIGHT_SIZE - 1
