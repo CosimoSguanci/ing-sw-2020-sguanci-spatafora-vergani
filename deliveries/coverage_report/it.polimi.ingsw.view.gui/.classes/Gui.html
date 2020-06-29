@@ -1,0 +1,882 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Gui</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.gui</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Gui (it.polimi.ingsw.view.gui)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Gui</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 46)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 283)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Gui$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 47)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 285)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.gui;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.GamePhase;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.ErrorType;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.PrintableColor;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.updates.*;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.utils.GodsUtils;
+<i>8</i>&nbsp;import it.polimi.ingsw.network.client.Client;
+<i>9</i>&nbsp;import it.polimi.ingsw.network.client.controller.Controller;
+<i>10</i>&nbsp;import it.polimi.ingsw.observer.Observer;
+<i>11</i>&nbsp;import it.polimi.ingsw.view.View;
+<i>12</i>&nbsp;import it.polimi.ingsw.view.gui.components.*;
+<i>13</i>&nbsp;import it.polimi.ingsw.view.gui.gods.GodGuiDrawer;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;import javax.imageio.ImageIO;
+<i>16</i>&nbsp;import javax.swing.*;
+<i>17</i>&nbsp;import java.awt.*;
+<i>18</i>&nbsp;import java.io.IOException;
+<i>19</i>&nbsp;import java.io.InputStream;
+<i>20</i>&nbsp;import java.util.List;
+<i>21</i>&nbsp;import java.util.Map;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;/**
+<i>25</i>&nbsp; * Gui class represents Graphic User Interface part of the project. The game can be played
+<i>26</i>&nbsp; * through a command-line interface or a graphic environment; project purposes are those of
+<i>27</i>&nbsp; * creating a &quot;complete&quot; Gui, so all what can be done with Cli is possible with Gui too.
+<i>28</i>&nbsp; * This class handles general graphic part of the application; then, many components are used
+<i>29</i>&nbsp; * to implement particular screens, situations, ...
+<i>30</i>&nbsp; * Gui and Cli class share a lot of different aspects, so they both extend View class.
+<i>31</i>&nbsp; * This class observes Update because Model&#39;s state changes (MVC pattern) arrive through Update,
+<i>32</i>&nbsp; * and they determine changes in what is displayed on screen too.
+<i>33</i>&nbsp; *
+<i>34</i>&nbsp; * @author Andrea Mario Vergani
+<i>35</i>&nbsp; * @author Cosimo Sguanci
+<i>36</i>&nbsp; * @author Roberto Spatafora
+<i>37</i>&nbsp; */
+<i>38</i>&nbsp;public class Gui extends View implements Observer&lt;Update&gt; {
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    public static final int FONT_REGULAR = 0;
+<i>41</i>&nbsp;    public static final int FONT_BOLD = 1;
+<i>42</i>&nbsp;    private final static String PLAYERS_NUMBER_CHOICE = &quot;players_number_choice&quot;;
+<i>43</i>&nbsp;    private final static String WAITING_FOR_MATCH = &quot;waiting_for_match&quot;;
+<i>44</i>&nbsp;    private final static String INITIAL_INFO = &quot;initial_info&quot;;
+<i>45</i>&nbsp;    private final static String GOD_CHOICE = &quot;god_choice&quot;;
+<i>46</i>&nbsp;    private final static String GAME_PREPARATION = &quot;game_preparation&quot;;
+<i>47</i>&nbsp;    private final static String REAL_GAME = &quot;real_game&quot;;
+<b class="nc"><i>48</i>&nbsp;    private static Gui guiInstance = null;</b>
+<i>49</i>&nbsp;    private JFrame frame;
+<i>50</i>&nbsp;    private CardLayout mainCardLayout;
+<i>51</i>&nbsp;    private JPanel mainPanel;
+<i>52</i>&nbsp;    private PlayerNumberChoice playerNumberChoiceComponent;
+<i>53</i>&nbsp;    private WaitingForAMatch waitingForAMatchComponent;
+<i>54</i>&nbsp;    private InitialInfo initialInfoComponent;
+<i>55</i>&nbsp;    private GodChoice godsChoiceComponent;
+<i>56</i>&nbsp;    private GamePreparation gamePreparation;
+<i>57</i>&nbsp;    private RealGame realGame;
+<i>58</i>&nbsp;    private GodGuiDrawer godGuiDrawer;
+<b class="nc"><i>59</i>&nbsp;    boolean showDisconnectedDialog = true;</b>
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    /**
+<i>62</i>&nbsp;     * The constructor creates an instance for Graphic User Interface, connecting it to the
+<i>63</i>&nbsp;     * specific client. Some images, important for next game phases, are loaded here.
+<i>64</i>&nbsp;     *
+<i>65</i>&nbsp;     * @param clientInstance     client to which Gui must be associated
+<i>66</i>&nbsp;     * @param controllerInstance controller (client-side) of the other parameter
+<i>67</i>&nbsp;     */
+<i>68</i>&nbsp;    private Gui(Client clientInstance, Controller controllerInstance) {
+<b class="nc"><i>69</i>&nbsp;        super(clientInstance, controllerInstance);</b>
+<b class="nc"><i>70</i>&nbsp;        this.updateHandler = new GuiUpdateHandler(this, controllerInstance);</b>
+<b class="nc"><i>71</i>&nbsp;        GodScreen.loadImages();</b>
+<b class="nc"><i>72</i>&nbsp;    }</b>
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    /**
+<i>75</i>&nbsp;     * The method returns Gui class&#39; instance, following Singleton design pattern.
+<i>76</i>&nbsp;     * If no instance exists, it is created and associated with parameters.
+<i>77</i>&nbsp;     *
+<i>78</i>&nbsp;     * @param client     client associated to requested Gui
+<i>79</i>&nbsp;     * @param controller controller (client-side) of the other parameter
+<i>80</i>&nbsp;     * @return Gui instance (if not existing, it is created)
+<i>81</i>&nbsp;     */
+<i>82</i>&nbsp;    public static Gui getInstance(Client client, Controller controller) {
+<b class="nc"><i>83</i>&nbsp;        if (guiInstance == null) {</b>
+<b class="nc"><i>84</i>&nbsp;            guiInstance = new Gui(client, controller);</b>
+<i>85</i>&nbsp;        }
+<b class="nc"><i>86</i>&nbsp;        return guiInstance;</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    /**
+<i>90</i>&nbsp;     * The method returns local instance of Gui class, following Singleton design pattern.
+<i>91</i>&nbsp;     * If no instance exists, it is created.
+<i>92</i>&nbsp;     *
+<i>93</i>&nbsp;     * @return Gui instance (if not existing, it is created)
+<i>94</i>&nbsp;     */
+<i>95</i>&nbsp;    public static Gui getInstance() {
+<b class="nc"><i>96</i>&nbsp;        if (guiInstance == null) {</b>
+<b class="nc"><i>97</i>&nbsp;            return new Gui(null, null);</b>
+<i>98</i>&nbsp;        }
+<b class="nc"><i>99</i>&nbsp;        return guiInstance;</b>
+<i>100</i>&nbsp;    }
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;    /**
+<i>104</i>&nbsp;     * The method returns the correct font for writing on graphic user interface, based on the
+<i>105</i>&nbsp;     * parameters. Only some selected fonts are possible: in this way, all Gui components will
+<i>106</i>&nbsp;     * use coherent fonts.
+<i>107</i>&nbsp;     *
+<i>108</i>&nbsp;     * @param fontMode font type (bold or not)
+<i>109</i>&nbsp;     * @param size     font size
+<i>110</i>&nbsp;     * @return font with selected type and size; in case of exceptions, a generic font is returned
+<i>111</i>&nbsp;     */
+<i>112</i>&nbsp;    public static Font getFont(int fontMode, int size) {
+<i>113</i>&nbsp;        try {
+<i>114</i>&nbsp;            InputStream inputStream;
+<i>115</i>&nbsp;
+<b class="nc"><i>116</i>&nbsp;            switch (fontMode) {</b>
+<i>117</i>&nbsp;                case FONT_BOLD:
+<b class="nc"><i>118</i>&nbsp;                    inputStream = Gui.class.getResourceAsStream(&quot;/fonts/Lato-Bold.ttf&quot;);</b>
+<b class="nc"><i>119</i>&nbsp;                    break;</b>
+<i>120</i>&nbsp;                case FONT_REGULAR:
+<i>121</i>&nbsp;                default:
+<b class="nc"><i>122</i>&nbsp;                    inputStream = Gui.class.getResourceAsStream(&quot;/fonts/Lato-Regular.ttf&quot;);</b>
+<i>123</i>&nbsp;                    break;
+<i>124</i>&nbsp;            }
+<i>125</i>&nbsp;
+<b class="nc"><i>126</i>&nbsp;            return Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(Font.PLAIN, size);</b>
+<b class="nc"><i>127</i>&nbsp;        } catch (FontFormatException | IOException ex) {</b>
+<b class="nc"><i>128</i>&nbsp;            return new Font(Font.SERIF, Font.BOLD, 14);</b>
+<i>129</i>&nbsp;        }
+<i>130</i>&nbsp;    }
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;
+<i>133</i>&nbsp;    /**
+<i>134</i>&nbsp;     * The method creates general graphic user interface for the main frame. After calling this method,
+<i>135</i>&nbsp;     * a blank frame is visible on screen, with default dimensions; default operations and images
+<i>136</i>&nbsp;     * to visualize are set, too.
+<i>137</i>&nbsp;     *
+<i>138</i>&nbsp;     * @param frame main frame for Gui
+<i>139</i>&nbsp;     * @throws IOException if an error occurs during image reading
+<i>140</i>&nbsp;     */
+<i>141</i>&nbsp;    static void initFrame(JFrame frame) throws IOException {
+<b class="nc"><i>142</i>&nbsp;        frame.pack();</b>
+<b class="nc"><i>143</i>&nbsp;        frame.setPreferredSize(new Dimension(800, 700));</b>
+<b class="nc"><i>144</i>&nbsp;        frame.setMinimumSize(frame.getPreferredSize());</b>
+<b class="nc"><i>145</i>&nbsp;        frame.setIconImage(ImageIO.read(Gui.class.getResource(&quot;/images/title_island.png&quot;)));</b>
+<b class="nc"><i>146</i>&nbsp;        frame.setLocationRelativeTo(null);</b>
+<b class="nc"><i>147</i>&nbsp;        frame.setVisible(true);</b>
+<b class="nc"><i>148</i>&nbsp;        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</b>
+<b class="nc"><i>149</i>&nbsp;    }</b>
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;    /**
+<i>152</i>&nbsp;     * The method is the getter for Gui main frame.
+<i>153</i>&nbsp;     *
+<i>154</i>&nbsp;     * @return Gui main frame
+<i>155</i>&nbsp;     */
+<i>156</i>&nbsp;    public JFrame getMainFrame() {
+<b class="nc"><i>157</i>&nbsp;        return frame;</b>
+<i>158</i>&nbsp;    }
+<i>159</i>&nbsp;
+<i>160</i>&nbsp;    /**
+<i>161</i>&nbsp;     * This method returns a reference to the user {@link GodGuiDrawer}, in order
+<i>162</i>&nbsp;     * to draw specific buttons for the user&#39;s god (if necessary).
+<i>163</i>&nbsp;     *
+<i>164</i>&nbsp;     * @return a reference to the correct user&#39;s {@link GodGuiDrawer}
+<i>165</i>&nbsp;     */
+<i>166</i>&nbsp;    public GodGuiDrawer getGodGuiDrawer() {
+<b class="nc"><i>167</i>&nbsp;        return this.godGuiDrawer;</b>
+<i>168</i>&nbsp;    }
+<i>169</i>&nbsp;
+<i>170</i>&nbsp;    /**
+<i>171</i>&nbsp;     * The method sets correspondence between players and Gods, after these ones have been
+<i>172</i>&nbsp;     * selected. A graphic operation related to this is also performed.
+<i>173</i>&nbsp;     *
+<i>174</i>&nbsp;     * @param playersGods correspondence between Gods and players
+<i>175</i>&nbsp;     */
+<i>176</i>&nbsp;    @Override
+<i>177</i>&nbsp;    public void setPlayersGods(Map&lt;String, String&gt; playersGods) {
+<b class="nc"><i>178</i>&nbsp;        super.setPlayersGods(playersGods);</b>
+<b class="nc"><i>179</i>&nbsp;        this.godGuiDrawer = GodsUtils.godsGuiFactory(playersGods.get(controller.getClientPlayer().getNickname()));</b>
+<b class="nc"><i>180</i>&nbsp;    }</b>
+<i>181</i>&nbsp;
+<i>182</i>&nbsp;
+<i>183</i>&nbsp;    /**
+<i>184</i>&nbsp;     * The method sets correspondence between players and colors, after these ones have been
+<i>185</i>&nbsp;     * selected. A graphic operation related to this is also performed.
+<i>186</i>&nbsp;     *
+<i>187</i>&nbsp;     * @param playersColors correspondence between colors and players
+<i>188</i>&nbsp;     */
+<i>189</i>&nbsp;    @Override
+<i>190</i>&nbsp;    public void setPlayersColors(Map&lt;String, PrintableColor&gt; playersColors) {
+<b class="nc"><i>191</i>&nbsp;        super.setPlayersColors(playersColors);</b>
+<b class="nc"><i>192</i>&nbsp;        this.godsChoiceComponent.setOtherPlayersNicknames(playersColors.keySet());</b>
+<b class="nc"><i>193</i>&nbsp;    }</b>
+<i>194</i>&nbsp;
+<i>195</i>&nbsp;
+<i>196</i>&nbsp;    /**
+<i>197</i>&nbsp;     * The method starts graphic user interface, so this is the entry point for users
+<i>198</i>&nbsp;     * who want to play a match with graphic environment.
+<i>199</i>&nbsp;     */
+<i>200</i>&nbsp;    @Override
+<i>201</i>&nbsp;    public void start() {
+<b class="nc"><i>202</i>&nbsp;        SwingUtilities.invokeLater(() -&gt; {</b>
+<i>203</i>&nbsp;            try {
+<b class="nc"><i>204</i>&nbsp;                showGui();</b>
+<b class="nc"><i>205</i>&nbsp;            } catch (IOException e) {</b>
+<b class="nc"><i>206</i>&nbsp;                new ConnectionError().show();</b>
+<b class="nc"><i>207</i>&nbsp;            }</b>
+<b class="nc"><i>208</i>&nbsp;        });</b>
+<b class="nc"><i>209</i>&nbsp;    }</b>
+<i>210</i>&nbsp;
+<i>211</i>&nbsp;    /**
+<i>212</i>&nbsp;     * The method creates Gui main frame and prepares everything (related to graphics) for
+<i>213</i>&nbsp;     * next phases. A proper call to initialize main frame is done.
+<i>214</i>&nbsp;     *
+<i>215</i>&nbsp;     * @throws IOException if an I/O error occurs in a called-method
+<i>216</i>&nbsp;     */
+<i>217</i>&nbsp;    private void showGui() throws IOException {
+<b class="nc"><i>218</i>&nbsp;        frame = new JFrame(&quot;Santorini&quot;);</b>
+<i>219</i>&nbsp;
+<b class="nc"><i>220</i>&nbsp;        this.mainPanel = new JPanel();</b>
+<b class="nc"><i>221</i>&nbsp;        this.mainCardLayout = new CardLayout();</b>
+<i>222</i>&nbsp;
+<b class="nc"><i>223</i>&nbsp;        mainPanel.setLayout(mainCardLayout);</b>
+<i>224</i>&nbsp;
+<b class="nc"><i>225</i>&nbsp;        initializeComponents();</b>
+<b class="nc"><i>226</i>&nbsp;        frame.add(mainPanel);</b>
+<i>227</i>&nbsp;
+<b class="nc"><i>228</i>&nbsp;        initFrame(frame);</b>
+<b class="nc"><i>229</i>&nbsp;    }</b>
+<i>230</i>&nbsp;
+<i>231</i>&nbsp;    /**
+<i>232</i>&nbsp;     * The method handles Updates, which most of the times correspond to graphic changes.
+<i>233</i>&nbsp;     * In reality, what really manages Updates is a proper update handler for Gui class.
+<i>234</i>&nbsp;     *
+<i>235</i>&nbsp;     * @param update update received (originally coming from server)
+<i>236</i>&nbsp;     */
+<i>237</i>&nbsp;    @Override
+<i>238</i>&nbsp;    public void update(Update update) {
+<b class="nc"><i>239</i>&nbsp;        SwingUtilities.invokeLater(() -&gt; update.handleUpdate(this.updateHandler));</b>
+<b class="nc"><i>240</i>&nbsp;    }</b>
+<i>241</i>&nbsp;
+<i>242</i>&nbsp;
+<i>243</i>&nbsp;    /**
+<i>244</i>&nbsp;     * The method starts graphic visualization for the phase in which a player waits for
+<i>245</i>&nbsp;     * other people, in order to start a match. Before this, selected player number for
+<i>246</i>&nbsp;     * the match is sent to server.
+<i>247</i>&nbsp;     */
+<i>248</i>&nbsp;    public void startWaitingForMatch() {
+<i>249</i>&nbsp;
+<i>250</i>&nbsp;        try {
+<i>251</i>&nbsp;
+<b class="nc"><i>252</i>&nbsp;            client.sendPlayersNumber(playersNumber);</b>
+<b class="nc"><i>253</i>&nbsp;            String playerID = client.readPlayerID();</b>
+<b class="nc"><i>254</i>&nbsp;            controller.setClientPlayerID(playerID);</b>
+<b class="nc"><i>255</i>&nbsp;            client.setupUpdateListener();</b>
+<b class="nc"><i>256</i>&nbsp;            client.getUpdateListener().addObserver(this);</b>
+<i>257</i>&nbsp;
+<b class="nc"><i>258</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>259</i>&nbsp;            showServerUnreachableDialog();</b>
+<b class="nc"><i>260</i>&nbsp;        }</b>
+<i>261</i>&nbsp;
+<b class="nc"><i>262</i>&nbsp;        this.mainCardLayout.show(mainPanel, WAITING_FOR_MATCH);</b>
+<b class="nc"><i>263</i>&nbsp;    }</b>
+<i>264</i>&nbsp;
+<i>265</i>&nbsp;
+<i>266</i>&nbsp;    /**
+<i>267</i>&nbsp;     * The method starts graphic visualization for the phase in which every player must
+<i>268</i>&nbsp;     * select a nickname and a colour for the match.
+<i>269</i>&nbsp;     */
+<i>270</i>&nbsp;    void startInitialInfoPhase() {
+<b class="nc"><i>271</i>&nbsp;        this.currentGamePhase = GamePhase.INITIAL_INFO;</b>
+<b class="nc"><i>272</i>&nbsp;        this.mainCardLayout.show(mainPanel, INITIAL_INFO);</b>
+<b class="nc"><i>273</i>&nbsp;    }</b>
+<i>274</i>&nbsp;
+<i>275</i>&nbsp;    /**
+<i>276</i>&nbsp;     * The method starts graphic visualization for the phase in which Gods are selected,
+<i>277</i>&nbsp;     * following game rules.
+<i>278</i>&nbsp;     */
+<i>279</i>&nbsp;    void startGodChoicePhase() {
+<b class="nc"><i>280</i>&nbsp;        this.currentGamePhase = GamePhase.CHOOSE_GODS;</b>
+<b class="nc"><i>281</i>&nbsp;        this.mainCardLayout.show(mainPanel, GOD_CHOICE);</b>
+<b class="nc"><i>282</i>&nbsp;    }</b>
+<i>283</i>&nbsp;
+<i>284</i>&nbsp;    /**
+<i>285</i>&nbsp;     * The method starts graphic visualization for the phase in which players must place
+<i>286</i>&nbsp;     * their workers on initial cells.
+<i>287</i>&nbsp;     */
+<i>288</i>&nbsp;    void startGamePreparation() {
+<b class="nc"><i>289</i>&nbsp;        this.currentGamePhase = GamePhase.GAME_PREPARATION;</b>
+<b class="nc"><i>290</i>&nbsp;        this.mainCardLayout.show(mainPanel, GAME_PREPARATION);</b>
+<b class="nc"><i>291</i>&nbsp;    }</b>
+<i>292</i>&nbsp;
+<i>293</i>&nbsp;    /**
+<i>294</i>&nbsp;     * The method starts graphic visualization for the phase in which the real match is
+<i>295</i>&nbsp;     * played, following game rules.
+<i>296</i>&nbsp;     */
+<i>297</i>&nbsp;    void startRealGame() {
+<b class="nc"><i>298</i>&nbsp;        this.currentGamePhase = GamePhase.REAL_GAME;</b>
+<b class="nc"><i>299</i>&nbsp;        this.mainCardLayout.show(mainPanel, REAL_GAME);</b>
+<b class="nc"><i>300</i>&nbsp;    }</b>
+<i>301</i>&nbsp;
+<i>302</i>&nbsp;    /**
+<i>303</i>&nbsp;     * Callback method called when the Game Phase changes to MATCH_ENDED or MATCH_LOST.
+<i>304</i>&nbsp;     *
+<i>305</i>&nbsp;     * @param newGamePhase the new current game phase
+<i>306</i>&nbsp;     */
+<i>307</i>&nbsp;    void onMatchFinished(GamePhase newGamePhase) {
+<b class="nc"><i>308</i>&nbsp;        this.currentGamePhase = newGamePhase;</b>
+<b class="nc"><i>309</i>&nbsp;    }</b>
+<i>310</i>&nbsp;
+<i>311</i>&nbsp;    /**
+<i>312</i>&nbsp;     * The method handles graphic visualization for nickname and colour effective selection.
+<i>313</i>&nbsp;     * In fact, the phase is composed of a waiting moment and the real selection, and this
+<i>314</i>&nbsp;     * method makes a call to manage the latter.
+<i>315</i>&nbsp;     */
+<i>316</i>&nbsp;    void showInitialInfoOnTurn() {
+<b class="nc"><i>317</i>&nbsp;        this.initialInfoComponent.showGuiOnTurn();</b>
+<b class="nc"><i>318</i>&nbsp;    }</b>
+<i>319</i>&nbsp;
+<i>320</i>&nbsp;    /**
+<i>321</i>&nbsp;     * The method handles graphic visualization for God (or Gods, in case of god-chooser)
+<i>322</i>&nbsp;     * effective selection. In fact, the phase is composed of a waiting moment and the
+<i>323</i>&nbsp;     * real selection, and this method makes a call to manage the latter.
+<i>324</i>&nbsp;     */
+<i>325</i>&nbsp;    void showGodsChoiceOnTurn() {
+<b class="nc"><i>326</i>&nbsp;        this.godsChoiceComponent.showGuiOnTurn();</b>
+<b class="nc"><i>327</i>&nbsp;    }</b>
+<i>328</i>&nbsp;
+<i>329</i>&nbsp;    /**
+<i>330</i>&nbsp;     * The method makes a call to manage in a proper way a change of turn. It is useful
+<i>331</i>&nbsp;     * when this change does not modify all what is visualized on screen, but just some
+<i>332</i>&nbsp;     * images/graphic components. For example, this often happens during real match, when
+<i>333</i>&nbsp;     * the board is always visualized, but on the basis of current turn a player can do
+<i>334</i>&nbsp;     * (or not) specific things through graphic interface.
+<i>335</i>&nbsp;     */
+<i>336</i>&nbsp;    void onTurnChanged() {
+<b class="nc"><i>337</i>&nbsp;        switch (currentGamePhase) {</b>
+<i>338</i>&nbsp;            case GAME_PREPARATION:
+<b class="nc"><i>339</i>&nbsp;                this.gamePreparation.changeTurn();</b>
+<b class="nc"><i>340</i>&nbsp;                break;</b>
+<i>341</i>&nbsp;            case REAL_GAME:
+<b class="nc"><i>342</i>&nbsp;                this.realGame.changeTurn();</b>
+<i>343</i>&nbsp;                break;
+<i>344</i>&nbsp;        }
+<b class="nc"><i>345</i>&nbsp;    }</b>
+<i>346</i>&nbsp;
+<i>347</i>&nbsp;    /**
+<i>348</i>&nbsp;     * The method makes a call to manage in a proper way a change of board&#39;s state. It is
+<i>349</i>&nbsp;     * useful when this change does not modify all what is visualized on screen, but just
+<i>350</i>&nbsp;     * the board itself. For example, during real match, the board often changes.
+<i>351</i>&nbsp;     *
+<i>352</i>&nbsp;     * @param board the new JSON-serialized {@link it.polimi.ingsw.model.Board} received from server.
+<i>353</i>&nbsp;     */
+<i>354</i>&nbsp;    void onBoardChanged(String board) {
+<b class="nc"><i>355</i>&nbsp;        switch (currentGamePhase) {</b>
+<i>356</i>&nbsp;            case GAME_PREPARATION:
+<b class="nc"><i>357</i>&nbsp;                this.gamePreparation.setBoard(board);</b>
+<b class="nc"><i>358</i>&nbsp;                break;</b>
+<i>359</i>&nbsp;            case REAL_GAME:
+<b class="nc"><i>360</i>&nbsp;                this.realGame.setBoard(board);</b>
+<i>361</i>&nbsp;                break;
+<i>362</i>&nbsp;        }
+<b class="nc"><i>363</i>&nbsp;    }</b>
+<i>364</i>&nbsp;
+<i>365</i>&nbsp;    /**
+<i>366</i>&nbsp;     * The method calls the proper component in order to set the list of selectable colors
+<i>367</i>&nbsp;     * at the current moment. In fact, when a color is selected by one of the players, no
+<i>368</i>&nbsp;     * one can select it again during this match.
+<i>369</i>&nbsp;     *
+<i>370</i>&nbsp;     * @param selectableColors list of selectable colors at current time
+<i>371</i>&nbsp;     */
+<i>372</i>&nbsp;    @Override
+<i>373</i>&nbsp;    public void setSelectableColors(List&lt;PrintableColor&gt; selectableColors) {
+<b class="nc"><i>374</i>&nbsp;        this.initialInfoComponent.setSelectableColors(selectableColors);</b>
+<b class="nc"><i>375</i>&nbsp;    }</b>
+<i>376</i>&nbsp;
+<i>377</i>&nbsp;    /**
+<i>378</i>&nbsp;     * The method calls the proper component in order to set the list of already chosen
+<i>379</i>&nbsp;     * nicknames for the match. In fact, when a nickname is chosen by one of the players,
+<i>380</i>&nbsp;     * no one can choose it again during this match.
+<i>381</i>&nbsp;     *
+<i>382</i>&nbsp;     * @param selectedNicknames list of already selected nicknames
+<i>383</i>&nbsp;     */
+<i>384</i>&nbsp;    @Override
+<i>385</i>&nbsp;    public void setSelectedNicknames(List&lt;String&gt; selectedNicknames) {
+<b class="nc"><i>386</i>&nbsp;        this.initialInfoComponent.setSelectedNicknames(selectedNicknames);</b>
+<b class="nc"><i>387</i>&nbsp;    }</b>
+<i>388</i>&nbsp;
+<i>389</i>&nbsp;    /**
+<i>390</i>&nbsp;     * The method calls the proper component in order to set the list of selectable Gods
+<i>391</i>&nbsp;     * at the current moment. In fact, only Gods in this list can be chosen by the player
+<i>392</i>&nbsp;     * who plays the current turn.
+<i>393</i>&nbsp;     *
+<i>394</i>&nbsp;     * @param selectableGods list of selectable gods at current time
+<i>395</i>&nbsp;     */
+<i>396</i>&nbsp;    @Override
+<i>397</i>&nbsp;    public void setSelectableGods(List&lt;String&gt; selectableGods) {
+<b class="nc"><i>398</i>&nbsp;        this.godsChoiceComponent.setSelectableGods(selectableGods);</b>
+<b class="nc"><i>399</i>&nbsp;    }</b>
+<i>400</i>&nbsp;
+<i>401</i>&nbsp;    /**
+<i>402</i>&nbsp;     * The method creates a dialog to show an error message; this message can derive from
+<i>403</i>&nbsp;     * invalid commands, game rules not respected, ...
+<i>404</i>&nbsp;     * The error message contains a brief explanation of what went wrong.
+<i>405</i>&nbsp;     *
+<i>406</i>&nbsp;     * @param update update coming form server, which first sees the error and notifies it
+<i>407</i>&nbsp;     */
+<i>408</i>&nbsp;    void showError(ErrorUpdate update) {
+<i>409</i>&nbsp;
+<b class="nc"><i>410</i>&nbsp;        String title = &quot;Error&quot;;</b>
+<b class="nc"><i>411</i>&nbsp;        String message = &quot;&quot;;</b>
+<i>412</i>&nbsp;
+<b class="nc"><i>413</i>&nbsp;        switch (update.command) {</b>
+<i>414</i>&nbsp;            case MOVE:
+<i>415</i>&nbsp;
+<b class="nc"><i>416</i>&nbsp;                if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {</b>
+<i>417</i>&nbsp;
+<b class="nc"><i>418</i>&nbsp;                    String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);</b>
+<i>419</i>&nbsp;
+<b class="nc"><i>420</i>&nbsp;                    message = &quot;Move Error: you can&#39;t perform this move because &quot; + inhibitorGod + &quot; doesn&#39;t let you move in the position you specified!&quot;;</b>
+<b class="nc"><i>421</i>&nbsp;                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {</b>
+<b class="nc"><i>422</i>&nbsp;                    message = &quot;Move Error: you can&#39;t perform this move because you can&#39;t move to this cell (maybe you&#39;ve already moved), or your God doesn&#39;t let you move in the position you specified!&quot;;</b>
+<b class="nc"><i>423</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_TURN) {</b>
+<b class="nc"><i>424</i>&nbsp;                    message = &quot;Move Error: you can&#39;t perform this move because it&#39;s not your turn!&quot;;</b>
+<b class="nc"><i>425</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {</b>
+<b class="nc"><i>426</i>&nbsp;                    message = &quot;Wrong Game Phase: current Game Phase is not Real Game Phase&quot;;</b>
+<b class="nc"><i>427</i>&nbsp;                } else if (update.errorType == ErrorType.INVALID_CELL) {</b>
+<b class="nc"><i>428</i>&nbsp;                    message = &quot;Invalid Cell&quot;;</b>
+<b class="nc"><i>429</i>&nbsp;                } else if (update.errorType == ErrorType.GENERIC_ERROR) {</b>
+<b class="nc"><i>430</i>&nbsp;                    message = &quot;Generic Error: please, try another command&quot;;</b>
+<i>431</i>&nbsp;                }
+<i>432</i>&nbsp;
+<i>433</i>&nbsp;                break;
+<i>434</i>&nbsp;
+<i>435</i>&nbsp;            case BUILD:
+<i>436</i>&nbsp;
+<b class="nc"><i>437</i>&nbsp;                if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {</b>
+<b class="nc"><i>438</i>&nbsp;                    String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);</b>
+<b class="nc"><i>439</i>&nbsp;                    message = &quot;Build Error: you can&#39;t perform this build because &quot; + inhibitorGod + &quot; doesn&#39;t let you build in the position you specified!&quot;;</b>
+<b class="nc"><i>440</i>&nbsp;                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {</b>
+<b class="nc"><i>441</i>&nbsp;                    message = &quot;Build Error: you can&#39;t perform this build because you can&#39;t build in this cell (maybe you haven&#39;t moved yet), or your God doesn&#39;t let you build in the position you specified!&quot;;</b>
+<b class="nc"><i>442</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_TURN) {</b>
+<b class="nc"><i>443</i>&nbsp;                    message = &quot;Build Error: you can&#39;t perform this build because it&#39;s not your turn!&quot;;</b>
+<b class="nc"><i>444</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {</b>
+<b class="nc"><i>445</i>&nbsp;                    message = &quot;Wrong Game Phase: current Game Phase is not Real Game Phase&quot;;</b>
+<b class="nc"><i>446</i>&nbsp;                } else if (update.errorType == ErrorType.INVALID_CELL) {</b>
+<b class="nc"><i>447</i>&nbsp;                    message = &quot;Invalid Cell&quot;;</b>
+<b class="nc"><i>448</i>&nbsp;                } else if (update.errorType == ErrorType.GENERIC_ERROR) {</b>
+<b class="nc"><i>449</i>&nbsp;                    message = &quot;Generic Error: please, try another command&quot;;</b>
+<i>450</i>&nbsp;                }
+<i>451</i>&nbsp;
+<i>452</i>&nbsp;                break;
+<i>453</i>&nbsp;
+<i>454</i>&nbsp;            case END_TURN:
+<i>455</i>&nbsp;
+<b class="nc"><i>456</i>&nbsp;                if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {</b>
+<b class="nc"><i>457</i>&nbsp;                    String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);</b>
+<b class="nc"><i>458</i>&nbsp;                    message = &quot;End Turn Error: &quot; + inhibitorGod + &quot; doesn&#39;t let you end your turn now!&quot;;</b>
+<b class="nc"><i>459</i>&nbsp;                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {</b>
+<b class="nc"><i>460</i>&nbsp;                    message = &quot;End Turn Error: &quot; + &quot;you can&#39;t end your turn now: maybe you must move or build!&quot;;</b>
+<b class="nc"><i>461</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_TURN) {</b>
+<b class="nc"><i>462</i>&nbsp;                    message = &quot;End Turn Error: &quot; + &quot;you can&#39;t end your turn because it&#39;s not your turn!&quot;;</b>
+<b class="nc"><i>463</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {</b>
+<b class="nc"><i>464</i>&nbsp;                    message = &quot;Wrong Game Phase: current Game Phase is not Real Game Phase&quot;;</b>
+<b class="nc"><i>465</i>&nbsp;                } else if (update.errorType == ErrorType.INVALID_CELL) {</b>
+<b class="nc"><i>466</i>&nbsp;                    message = &quot;Invalid Cell&quot;;</b>
+<b class="nc"><i>467</i>&nbsp;                } else if (update.errorType == ErrorType.GENERIC_ERROR) {</b>
+<b class="nc"><i>468</i>&nbsp;                    message = &quot;Generic Error: please, try another command&quot;;</b>
+<i>469</i>&nbsp;                }
+<i>470</i>&nbsp;
+<i>471</i>&nbsp;                break;
+<i>472</i>&nbsp;
+<i>473</i>&nbsp;            case PICK:
+<i>474</i>&nbsp;
+<b class="nc"><i>475</i>&nbsp;                if (update.errorType == ErrorType.ALREADY_TAKEN_NICKNAME) {</b>
+<b class="nc"><i>476</i>&nbsp;                    message = &quot;Nickname Error: already taken nickname&quot;;</b>
+<b class="nc"><i>477</i>&nbsp;                } else if (update.errorType == ErrorType.INVALID_COLOR) {</b>
+<b class="nc"><i>478</i>&nbsp;                    message = &quot;Color Error: invalid or already taken color&quot;;</b>
+<b class="nc"><i>479</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_TURN) {</b>
+<b class="nc"><i>480</i>&nbsp;                    message = &quot;Turn Error: Not your turn!&quot;;</b>
+<b class="nc"><i>481</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {</b>
+<b class="nc"><i>482</i>&nbsp;                    message = &quot;Wrong Game Phase: current Game Phase is not Initial Info Phase&quot;;</b>
+<i>483</i>&nbsp;                }
+<i>484</i>&nbsp;
+<i>485</i>&nbsp;                break;
+<i>486</i>&nbsp;
+<i>487</i>&nbsp;            case PLACE:
+<i>488</i>&nbsp;
+<b class="nc"><i>489</i>&nbsp;                if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {</b>
+<b class="nc"><i>490</i>&nbsp;                    String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);</b>
+<b class="nc"><i>491</i>&nbsp;                    message = &quot;Game Preparation Error: you can&#39;t place your Worker where you specified because &quot; + inhibitorGod + &quot; doesn&#39;t allow it&quot;;</b>
+<b class="nc"><i>492</i>&nbsp;                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {</b>
+<b class="nc"><i>493</i>&nbsp;                    message = &quot;Game Preparation Error: you can&#39;t place your Workers where you specified because your God doesn&#39;t allow it&quot;;</b>
+<b class="nc"><i>494</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_TURN) {</b>
+<b class="nc"><i>495</i>&nbsp;                    message = &quot;Game Preparation Error: you can&#39;t place your Workers because it&#39;s not your turn!&quot;;</b>
+<b class="nc"><i>496</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {</b>
+<b class="nc"><i>497</i>&nbsp;                    message = &quot;Wrong Game Phase: current Game Phase is not Game Preparation Phase&quot;;</b>
+<b class="nc"><i>498</i>&nbsp;                } else if (update.errorType == ErrorType.INVALID_CELL) {</b>
+<b class="nc"><i>499</i>&nbsp;                    message = &quot;Invalid Cell&quot;;</b>
+<i>500</i>&nbsp;                }
+<i>501</i>&nbsp;                break;
+<i>502</i>&nbsp;
+<i>503</i>&nbsp;            case SELECT:
+<i>504</i>&nbsp;
+<b class="nc"><i>505</i>&nbsp;                if (update.errorType == ErrorType.WRONG_TURN) {</b>
+<b class="nc"><i>506</i>&nbsp;                    message = &quot;God Choice Error: you can&#39;t choose your God because it&#39;s not your turn!&quot;;</b>
+<b class="nc"><i>507</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {</b>
+<b class="nc"><i>508</i>&nbsp;                    message = &quot;Wrong Game Phase: current Game Phase is not Gods Choice Phase&quot;;</b>
+<b class="nc"><i>509</i>&nbsp;                } else if (update.errorType == ErrorType.INVALID_GOD) {</b>
+<b class="nc"><i>510</i>&nbsp;                    message = &quot;God Error: invalid God selected, it&#39;s not in selectable Gods list!&quot;;</b>
+<i>511</i>&nbsp;                }
+<i>512</i>&nbsp;                break;
+<i>513</i>&nbsp;        }
+<i>514</i>&nbsp;
+<b class="nc"><i>515</i>&nbsp;        String finalMessage = message;</b>
+<i>516</i>&nbsp;
+<b class="nc"><i>517</i>&nbsp;        SwingUtilities.invokeLater(() -&gt; JOptionPane.showMessageDialog(frame, finalMessage, title, JOptionPane.ERROR_MESSAGE));</b>
+<i>518</i>&nbsp;
+<b class="nc"><i>519</i>&nbsp;    }</b>
+<i>520</i>&nbsp;
+<i>521</i>&nbsp;
+<i>522</i>&nbsp;    /**
+<i>523</i>&nbsp;     * The method creates a dialog to manage the situation in which one of the players wins.
+<i>524</i>&nbsp;     * One of the players (the one who won the match) is notified of his/her victory, while
+<i>525</i>&nbsp;     * the other/others are notified of their loss.
+<i>526</i>&nbsp;     *
+<i>527</i>&nbsp;     * @param update update coming form server, which first sees the winning situation
+<i>528</i>&nbsp;     */
+<i>529</i>&nbsp;    void showWinMessageDialog(WinUpdate update) {
+<i>530</i>&nbsp;
+<i>531</i>&nbsp;        String title;
+<i>532</i>&nbsp;        String message;
+<i>533</i>&nbsp;        ImageIcon icon;
+<b class="nc"><i>534</i>&nbsp;        String imagePath = &quot;/images/RealGame/&quot;;</b>
+<i>535</i>&nbsp;
+<b class="nc"><i>536</i>&nbsp;        int iconWidth = 70;</b>
+<i>537</i>&nbsp;
+<b class="nc"><i>538</i>&nbsp;        if (update.getWinnerPlayer().getPlayerID().equals(this.controller.getClientPlayerID())) {</b>
+<b class="nc"><i>539</i>&nbsp;            title = &quot;Win&quot;;</b>
+<b class="nc"><i>540</i>&nbsp;            message = &quot;You Won!&quot;;</b>
+<b class="nc"><i>541</i>&nbsp;            icon = new ImageIcon(getClass().getResource(imagePath + &quot;trophy.png&quot;));</b>
+<b class="nc"><i>542</i>&nbsp;            icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));</b>
+<i>543</i>&nbsp;        } else {
+<b class="nc"><i>544</i>&nbsp;            title = &quot;You Lost&quot;;</b>
+<b class="nc"><i>545</i>&nbsp;            message = update.getWinnerPlayer().getNickname() + &quot; Won!&quot;;</b>
+<b class="nc"><i>546</i>&nbsp;            icon = new ImageIcon(getClass().getResource(imagePath + &quot;game-over.png&quot;));</b>
+<b class="nc"><i>547</i>&nbsp;            icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));</b>
+<i>548</i>&nbsp;        }
+<i>549</i>&nbsp;
+<b class="nc"><i>550</i>&nbsp;        ImageIcon finalIcon = icon;</b>
+<i>551</i>&nbsp;
+<b class="nc"><i>552</i>&nbsp;        SwingUtilities.invokeLater(() -&gt; {</b>
+<b class="nc"><i>553</i>&nbsp;            JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE, finalIcon);</b>
+<b class="nc"><i>554</i>&nbsp;            askPlayAgainDialog();</b>
+<b class="nc"><i>555</i>&nbsp;        });</b>
+<b class="nc"><i>556</i>&nbsp;    }</b>
+<i>557</i>&nbsp;
+<i>558</i>&nbsp;    /**
+<i>559</i>&nbsp;     * The method creates a dialog to manage the situation in which one of the players
+<i>560</i>&nbsp;     * loses. The player is notified of his/her loss, with a brief explanation about it.
+<i>561</i>&nbsp;     * In general, if the match continues, the player who loses can decide whether to continue
+<i>562</i>&nbsp;     * to watch or quit.
+<i>563</i>&nbsp;     *
+<i>564</i>&nbsp;     * @param update update coming form server, which first sees the losing situation
+<i>565</i>&nbsp;     */
+<i>566</i>&nbsp;    public void showLoseMessageDialog(LoseUpdate update) {
+<i>567</i>&nbsp;        String title;
+<i>568</i>&nbsp;        String message;
+<b class="nc"><i>569</i>&nbsp;        int iconWidth = 70;</b>
+<i>570</i>&nbsp;
+<b class="nc"><i>571</i>&nbsp;        if (update.getLoserPlayer().getPlayerID().equals(this.controller.getClientPlayerID())) {</b>
+<i>572</i>&nbsp;
+<b class="nc"><i>573</i>&nbsp;            String loseCauseMsg = &quot;because you can&#39;t &quot; + (update.getLoseCause() == LoseUpdate.LoseCause.CANT_MOVE ? &quot;move&quot; : &quot;build&quot;) +</b>
+<i>574</i>&nbsp;                    &quot; with any Worker&quot;;
+<i>575</i>&nbsp;
+<b class="nc"><i>576</i>&nbsp;            title = &quot;Lost&quot;;</b>
+<b class="nc"><i>577</i>&nbsp;            message = &quot;You Lost &quot; + loseCauseMsg;</b>
+<i>578</i>&nbsp;
+<b class="nc"><i>579</i>&nbsp;            SwingUtilities.invokeLater(() -&gt; {</b>
+<i>580</i>&nbsp;                ImageIcon icon;
+<b class="nc"><i>581</i>&nbsp;                String imagePath = &quot;/images/RealGame/game-over.png&quot;;</b>
+<b class="nc"><i>582</i>&nbsp;                icon = new ImageIcon(getClass().getResource(imagePath));</b>
+<b class="nc"><i>583</i>&nbsp;                icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));</b>
+<b class="nc"><i>584</i>&nbsp;                JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE, icon);</b>
+<b class="nc"><i>585</i>&nbsp;                if (!update.onePlayerRemaining) {</b>
+<b class="nc"><i>586</i>&nbsp;                    askContinueToWatch();</b>
+<i>587</i>&nbsp;                } else {
+<b class="nc"><i>588</i>&nbsp;                    askPlayAgainDialog();</b>
+<i>589</i>&nbsp;                }
+<b class="nc"><i>590</i>&nbsp;            });</b>
+<i>591</i>&nbsp;
+<b class="nc"><i>592</i>&nbsp;        } else if (update.onePlayerRemaining) {</b>
+<i>593</i>&nbsp;
+<b class="nc"><i>594</i>&nbsp;            SwingUtilities.invokeLater(() -&gt; {</b>
+<b class="nc"><i>595</i>&nbsp;                String titleWin = &quot;Win&quot;;</b>
+<b class="nc"><i>596</i>&nbsp;                String messageWin = &quot;You Won because &quot; + update.getLoserPlayer().getNickname() + &quot; lost!&quot;;</b>
+<i>597</i>&nbsp;
+<b class="nc"><i>598</i>&nbsp;                ImageIcon icon = new ImageIcon(getClass().getResource(&quot;/images/RealGame/trophy.png&quot;));</b>
+<b class="nc"><i>599</i>&nbsp;                icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));</b>
+<b class="nc"><i>600</i>&nbsp;                JOptionPane.showMessageDialog(null, messageWin, titleWin, JOptionPane.INFORMATION_MESSAGE, icon);</b>
+<b class="nc"><i>601</i>&nbsp;                askPlayAgainDialog();</b>
+<b class="nc"><i>602</i>&nbsp;            });</b>
+<i>603</i>&nbsp;
+<i>604</i>&nbsp;
+<i>605</i>&nbsp;        } else {
+<b class="nc"><i>606</i>&nbsp;            title = &quot;Lost&quot;;</b>
+<b class="nc"><i>607</i>&nbsp;            message = update.getLoserPlayer().getNickname() + &quot; Lost!&quot;;</b>
+<i>608</i>&nbsp;
+<b class="nc"><i>609</i>&nbsp;            SwingUtilities.invokeLater(() -&gt; {</b>
+<i>610</i>&nbsp;                ImageIcon icon;
+<b class="nc"><i>611</i>&nbsp;                String imagePath = &quot;/images/RealGame/game-over.png&quot;;</b>
+<b class="nc"><i>612</i>&nbsp;                icon = new ImageIcon(getClass().getResource(imagePath));</b>
+<b class="nc"><i>613</i>&nbsp;                icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));</b>
+<b class="nc"><i>614</i>&nbsp;                JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE, icon);</b>
+<b class="nc"><i>615</i>&nbsp;            });</b>
+<i>616</i>&nbsp;        }
+<i>617</i>&nbsp;
+<b class="nc"><i>618</i>&nbsp;    }</b>
+<i>619</i>&nbsp;
+<i>620</i>&nbsp;    /**
+<i>621</i>&nbsp;     * The method creates a dialog to ask the player if he/she wants to play another match.
+<i>622</i>&nbsp;     * This dialog can be visualized, for example, when a match ends, or when a player
+<i>623</i>&nbsp;     * wants to leave the match and maybe wants to start another one.
+<i>624</i>&nbsp;     * Decision by the player is managed in the proper way.
+<i>625</i>&nbsp;     */
+<i>626</i>&nbsp;    public void askPlayAgainDialog() {
+<b class="nc"><i>627</i>&nbsp;        String title = &quot;Play Again&quot;;</b>
+<b class="nc"><i>628</i>&nbsp;        String message = &quot;Do you want to play another match?&quot;;</b>
+<i>629</i>&nbsp;
+<b class="nc"><i>630</i>&nbsp;        SwingUtilities.invokeLater(() -&gt; {</b>
+<b class="nc"><i>631</i>&nbsp;            int res = buildQuestionDialog(title, message);</b>
+<i>632</i>&nbsp;
+<b class="nc"><i>633</i>&nbsp;            switch (res) {</b>
+<i>634</i>&nbsp;                case JOptionPane.YES_OPTION:
+<b class="nc"><i>635</i>&nbsp;                    this.reinitializeConnection();</b>
+<b class="nc"><i>636</i>&nbsp;                    this.reinitializeComponents();</b>
+<b class="nc"><i>637</i>&nbsp;                    break;</b>
+<i>638</i>&nbsp;                case JOptionPane.NO_OPTION:
+<i>639</i>&nbsp;                case JOptionPane.CLOSED_OPTION:
+<b class="nc"><i>640</i>&nbsp;                    System.exit(0);</b>
+<i>641</i>&nbsp;                    break;
+<i>642</i>&nbsp;            }
+<b class="nc"><i>643</i>&nbsp;        });</b>
+<b class="nc"><i>644</i>&nbsp;    }</b>
+<i>645</i>&nbsp;
+<i>646</i>&nbsp;    /**
+<i>647</i>&nbsp;     * The method creates a dialog to manage the situation in which one of the players
+<i>648</i>&nbsp;     * loses, so (if the match continues) he/she can decide whether to continue to watch
+<i>649</i>&nbsp;     * or quit. Decision of continuing to watch or quitting is managed in the proper way.
+<i>650</i>&nbsp;     */
+<i>651</i>&nbsp;    private void askContinueToWatch() {
+<b class="nc"><i>652</i>&nbsp;        this.showDisconnectedDialog = false;</b>
+<b class="nc"><i>653</i>&nbsp;        String title = &quot;Continue to watch&quot;;</b>
+<b class="nc"><i>654</i>&nbsp;        String message = &quot;Do you want to continue to watch this match?&quot;;</b>
+<i>655</i>&nbsp;
+<b class="nc"><i>656</i>&nbsp;        SwingUtilities.invokeLater(() -&gt; {</b>
+<b class="nc"><i>657</i>&nbsp;            int res = buildQuestionDialog(title, message);</b>
+<i>658</i>&nbsp;
+<b class="nc"><i>659</i>&nbsp;            switch (res) {</b>
+<i>660</i>&nbsp;                case JOptionPane.YES_OPTION:
+<b class="nc"><i>661</i>&nbsp;                    this.realGame.disableButtons();</b>
+<b class="nc"><i>662</i>&nbsp;                    this.showDisconnectedDialog = true;</b>
+<b class="nc"><i>663</i>&nbsp;                    break;</b>
+<i>664</i>&nbsp;                case JOptionPane.NO_OPTION:
+<i>665</i>&nbsp;                case JOptionPane.CLOSED_OPTION:
+<b class="nc"><i>666</i>&nbsp;                    askPlayAgainDialog();</b>
+<i>667</i>&nbsp;                    break;
+<i>668</i>&nbsp;            }
+<b class="nc"><i>669</i>&nbsp;        });</b>
+<b class="nc"><i>670</i>&nbsp;    }</b>
+<i>671</i>&nbsp;
+<i>672</i>&nbsp;    /**
+<i>673</i>&nbsp;     * Builds a dialog which asks a question to the user (examples: &quot;Do you want to continue to watch?&quot;,
+<i>674</i>&nbsp;     * &quot;Do you want to play again?&quot;)
+<i>675</i>&nbsp;     *
+<i>676</i>&nbsp;     * @param title   the title of the dialog
+<i>677</i>&nbsp;     * @param message the message contained in the dialog
+<i>678</i>&nbsp;     * @return the choice made by the user
+<i>679</i>&nbsp;     */
+<i>680</i>&nbsp;    private int buildQuestionDialog(String title, String message) {
+<b class="nc"><i>681</i>&nbsp;        String imagePath = &quot;/images/RealGame/question.png&quot;;</b>
+<b class="nc"><i>682</i>&nbsp;        int iconWidth = 70;</b>
+<b class="nc"><i>683</i>&nbsp;        ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));</b>
+<b class="nc"><i>684</i>&nbsp;        icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));</b>
+<b class="nc"><i>685</i>&nbsp;        return JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon, null, null);</b>
+<i>686</i>&nbsp;    }
+<i>687</i>&nbsp;
+<i>688</i>&nbsp;    /**
+<i>689</i>&nbsp;     * The method creates a dialog to manage the situation in which server is unreachable.
+<i>690</i>&nbsp;     * In this case, the player is notified with a brief possible explanation of the problem;
+<i>691</i>&nbsp;     * after that, the game is closed, since it is an online game.
+<i>692</i>&nbsp;     * Server can be unreachable for a connection problem, because it is down or for other
+<i>693</i>&nbsp;     * reasons.
+<i>694</i>&nbsp;     */
+<i>695</i>&nbsp;    public void showServerUnreachableDialog() {
+<b class="nc"><i>696</i>&nbsp;        SwingUtilities.invokeLater(() -&gt; {</b>
+<b class="nc"><i>697</i>&nbsp;            JOptionPane.showMessageDialog(null, &quot;Cannot communicate to the Server, maybe it&#39;s down. Otherwise, check your connection.&quot; + System.lineSeparator() + &quot;Quitting...&quot;, &quot;Server Unreachable&quot;, JOptionPane.ERROR_MESSAGE);</b>
+<b class="nc"><i>698</i>&nbsp;            System.exit(0);</b>
+<b class="nc"><i>699</i>&nbsp;        });</b>
+<b class="nc"><i>700</i>&nbsp;    }</b>
+<i>701</i>&nbsp;
+<i>702</i>&nbsp;
+<i>703</i>&nbsp;    /**
+<i>704</i>&nbsp;     * The method creates a dialog to manage the situation in which one of the players
+<i>705</i>&nbsp;     * disconnects from the match. In this case, all other players are notified and the
+<i>706</i>&nbsp;     * match immediately ends.
+<i>707</i>&nbsp;     *
+<i>708</i>&nbsp;     * @param update update coming form server, which first sees the disconnection (through
+<i>709</i>&nbsp;     *               ping messages)
+<i>710</i>&nbsp;     */
+<i>711</i>&nbsp;    public void showDisconnectedPlayerDialog(DisconnectedPlayerUpdate update) {
+<b class="nc"><i>712</i>&nbsp;        String imagePath = &quot;/images/RealGame/player_disconnected.png&quot;;</b>
+<b class="nc"><i>713</i>&nbsp;        int iconWidth = 70;</b>
+<i>714</i>&nbsp;
+<b class="nc"><i>715</i>&nbsp;        ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));</b>
+<b class="nc"><i>716</i>&nbsp;        icon = new ImageIcon(icon.getImage().getScaledInstance(iconWidth, -1, Image.SCALE_SMOOTH));</b>
+<i>717</i>&nbsp;
+<b class="nc"><i>718</i>&nbsp;        String player = update.getDisconnectedPlayer().getNickname() != null ? update.getDisconnectedPlayer().getNickname() : &quot;A Player&quot;;</b>
+<i>719</i>&nbsp;
+<b class="nc"><i>720</i>&nbsp;        ImageIcon finalIcon = icon;</b>
+<i>721</i>&nbsp;
+<b class="nc"><i>722</i>&nbsp;        if (this.currentGamePhase != GamePhase.MATCH_ENDED) {</b>
+<b class="nc"><i>723</i>&nbsp;            SwingUtilities.invokeLater(() -&gt; {</b>
+<b class="nc"><i>724</i>&nbsp;                JOptionPane.showOptionDialog(null, player + &quot; disconnected&quot;, &quot;Disconnection&quot;, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, finalIcon, null, null);</b>
+<b class="nc"><i>725</i>&nbsp;                askPlayAgainDialog();</b>
+<b class="nc"><i>726</i>&nbsp;            });</b>
+<i>727</i>&nbsp;        }
+<b class="nc"><i>728</i>&nbsp;    }</b>
+<i>729</i>&nbsp;
+<i>730</i>&nbsp;    /**
+<i>731</i>&nbsp;     * The method performs a reinitialization of all graphic components. It can be useful,
+<i>732</i>&nbsp;     * for example, when a match ends, and all graphic environment must be re-loaded to
+<i>733</i>&nbsp;     * manage a new match.
+<i>734</i>&nbsp;     */
+<i>735</i>&nbsp;    private void reinitializeComponents() {
+<b class="nc"><i>736</i>&nbsp;        mainPanel.removeAll();</b>
+<b class="nc"><i>737</i>&nbsp;        initializeComponents();</b>
+<b class="nc"><i>738</i>&nbsp;    }</b>
+<i>739</i>&nbsp;
+<i>740</i>&nbsp;    /**
+<i>741</i>&nbsp;     * The method initializes all Gui components, related to the different situations and
+<i>742</i>&nbsp;     * Game-Phases.
+<i>743</i>&nbsp;     */
+<i>744</i>&nbsp;    private void initializeComponents() {
+<b class="nc"><i>745</i>&nbsp;        this.playerNumberChoiceComponent = new PlayerNumberChoice();</b>
+<b class="nc"><i>746</i>&nbsp;        this.waitingForAMatchComponent = new WaitingForAMatch();</b>
+<b class="nc"><i>747</i>&nbsp;        this.initialInfoComponent = new InitialInfo();</b>
+<b class="nc"><i>748</i>&nbsp;        this.godsChoiceComponent = new GodChoice();</b>
+<b class="nc"><i>749</i>&nbsp;        this.gamePreparation = new GamePreparation();</b>
+<b class="nc"><i>750</i>&nbsp;        this.realGame = new RealGame();</b>
+<i>751</i>&nbsp;
+<b class="nc"><i>752</i>&nbsp;        mainPanel.add(playerNumberChoiceComponent, PLAYERS_NUMBER_CHOICE);</b>
+<b class="nc"><i>753</i>&nbsp;        mainPanel.add(waitingForAMatchComponent, WAITING_FOR_MATCH);</b>
+<b class="nc"><i>754</i>&nbsp;        mainPanel.add(initialInfoComponent, INITIAL_INFO);</b>
+<b class="nc"><i>755</i>&nbsp;        mainPanel.add(godsChoiceComponent, GOD_CHOICE);</b>
+<b class="nc"><i>756</i>&nbsp;        mainPanel.add(gamePreparation, GAME_PREPARATION);</b>
+<b class="nc"><i>757</i>&nbsp;        mainPanel.add(realGame, REAL_GAME);</b>
+<b class="nc"><i>758</i>&nbsp;    }</b>
+<i>759</i>&nbsp;
+<i>760</i>&nbsp;    /**
+<i>761</i>&nbsp;     * The method performs a connection reinitialization. It is mainly useful when a
+<i>762</i>&nbsp;     * match ends, so connection is closed and must be reinitialized in case of new match.
+<i>763</i>&nbsp;     */
+<i>764</i>&nbsp;    private void reinitializeConnection() {
+<i>765</i>&nbsp;        try {
+<b class="nc"><i>766</i>&nbsp;            client.getUpdateListener().setIsActive(false);</b>
+<b class="nc"><i>767</i>&nbsp;            client.reinitializeConnection();</b>
+<b class="nc"><i>768</i>&nbsp;            this.playersNumber = 0;</b>
+<b class="nc"><i>769</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>770</i>&nbsp;            showServerUnreachableDialog();</b>
+<b class="nc"><i>771</i>&nbsp;        }</b>
+<b class="nc"><i>772</i>&nbsp;    }</b>
+<i>773</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

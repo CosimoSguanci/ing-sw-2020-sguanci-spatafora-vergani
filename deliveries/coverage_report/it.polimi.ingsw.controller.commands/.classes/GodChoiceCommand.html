@@ -1,0 +1,143 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GodChoiceCommand</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.controller.commands</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GodChoiceCommand (it.polimi.ingsw.controller.commands)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GodChoiceCommand</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.controller.commands;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.CommandHandler;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.util.List;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * GodChoiceCommand is the class that represents a {@link Command} specific for God Choice
+<i>10</i>&nbsp; * phase. In particular, in this phase a god-chooser selects a number of gods equal
+<i>11</i>&nbsp; * to the number of players involved in the match; then, every player chooses the god
+<i>12</i>&nbsp; * he/she likes most.
+<i>13</i>&nbsp; *
+<i>14</i>&nbsp; * @author Andrea Mario Vergani
+<i>15</i>&nbsp; * @author Cosimo Sguanci
+<i>16</i>&nbsp; * @author Roberto Spatafora
+<i>17</i>&nbsp; */
+<i>18</i>&nbsp;public class GodChoiceCommand extends Command {
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * List of the gods (represented as strings - &quot;apollo&quot;, &quot;athena&quot; ...) chosen with this {@link Command}.
+<i>22</i>&nbsp;     * This list will have a length greater than 1 only if the user is the god chooser.
+<i>23</i>&nbsp;     */
+<i>24</i>&nbsp;    private final List&lt;String&gt; chosenGods;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * The constructor creates a {@link Command} specific for God Choice phase: {@link CommandType} is {@link CommandType#SELECT}
+<i>29</i>&nbsp;     * because this is what players must do in this phase; then, the god/gods are selected.
+<i>30</i>&nbsp;     *
+<i>31</i>&nbsp;     * @param chosenGods the list of gods chosen by the player: this list contains more than one
+<i>32</i>&nbsp;     *                   element only if the player is god-chooser; otherwise, only one god can
+<i>33</i>&nbsp;     *                   be selected
+<i>34</i>&nbsp;     */
+<i>35</i>&nbsp;    public GodChoiceCommand(List&lt;String&gt; chosenGods) {
+<b class="fc"><i>36</i>&nbsp;        super(CommandType.SELECT);</b>
+<b class="fc"><i>37</i>&nbsp;        this.chosenGods = chosenGods;</b>
+<b class="fc"><i>38</i>&nbsp;    }</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    /**
+<i>42</i>&nbsp;     * This method is the getter for the list of chosen gods.
+<i>43</i>&nbsp;     *
+<i>44</i>&nbsp;     * @return the list of gods chosen by the player (only one god if he/she is not god-chooser)
+<i>45</i>&nbsp;     */
+<i>46</i>&nbsp;    public List&lt;String&gt; getChosenGods() {
+<b class="fc"><i>47</i>&nbsp;        return chosenGods;</b>
+<i>48</i>&nbsp;    }
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    /**
+<i>52</i>&nbsp;     * This method handles the GodChoiceCommand received by Server in the proper way.
+<i>53</i>&nbsp;     *
+<i>54</i>&nbsp;     * @param handler the object that is going to handle the command
+<i>55</i>&nbsp;     */
+<i>56</i>&nbsp;    @Override
+<i>57</i>&nbsp;    public void handleCommand(CommandHandler handler) {
+<b class="fc"><i>58</i>&nbsp;        handler.handle(this);</b>
+<b class="fc"><i>59</i>&nbsp;    }</b>
+<i>60</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

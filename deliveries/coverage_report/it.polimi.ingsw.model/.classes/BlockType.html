@@ -1,0 +1,170 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: BlockType</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: BlockType (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BlockType</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/ 12)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">BlockType$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/ 13)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;/**
+<i>4</i>&nbsp; * BlockType is the enumeration for the type of a block. In Santorini there are
+<i>5</i>&nbsp; * four types of blocks: block of level one, block of level two, block of level three and
+<i>6</i>&nbsp; * dome. Except particular conditions, a build increases the height of a tower, passing
+<i>7</i>&nbsp; * from ground level to the first, then second, ... to a dome. No {@link Worker} can build over
+<i>8</i>&nbsp; * a dome.
+<i>9</i>&nbsp; * Ground level is part of the enumeration because it is convenient to know the height of
+<i>10</i>&nbsp; * every cell, even the ones where no one has ever built during the game.
+<i>11</i>&nbsp; *
+<i>12</i>&nbsp; * @author Andrea Mario Vergani
+<i>13</i>&nbsp; */
+<b class="fc"><i>14</i>&nbsp;public enum BlockType {</b>
+<b class="fc"><i>15</i>&nbsp;    GROUND(0), LEVEL_ONE(1), LEVEL_TWO(2), LEVEL_THREE(3), DOME(4);</b>
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    /**
+<i>18</i>&nbsp;     * Integer representing the level, useful to make comparisons.
+<i>19</i>&nbsp;     */
+<i>20</i>&nbsp;    private final int levelNumber;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    /**
+<i>23</i>&nbsp;     * The constructor simply associates the enumeration with the level number
+<i>24</i>&nbsp;     *
+<i>25</i>&nbsp;     * @param levelNumber is the int value associated with different levels
+<i>26</i>&nbsp;     */
+<b class="fc"><i>27</i>&nbsp;    BlockType(int levelNumber) {</b>
+<b class="fc"><i>28</i>&nbsp;        this.levelNumber = levelNumber;</b>
+<b class="fc"><i>29</i>&nbsp;    }</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    /**
+<i>32</i>&nbsp;     * The method is getter for levelNumber
+<i>33</i>&nbsp;     *
+<i>34</i>&nbsp;     * @return the value of attribute called &#39;levelNumber&#39;, associated one-by-one with BlockType level
+<i>35</i>&nbsp;     */
+<i>36</i>&nbsp;    public int getLevelNumber() {
+<b class="fc"><i>37</i>&nbsp;        return this.levelNumber;</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    /**
+<i>41</i>&nbsp;     * Static method used to convert a blockType to its CLI representation.
+<i>42</i>&nbsp;     *
+<i>43</i>&nbsp;     * @param level the BlockType whose CLI representation is requested
+<i>44</i>&nbsp;     * @return the level&#39;s CLI representation, to be showed in the command line View.
+<i>45</i>&nbsp;     */
+<i>46</i>&nbsp;    public static String convertBlockTypeToText(BlockType level) {
+<b class="fc"><i>47</i>&nbsp;        switch (level) {</b>
+<i>48</i>&nbsp;            case GROUND:
+<b class="fc"><i>49</i>&nbsp;                return &quot;0&quot;;</b>
+<i>50</i>&nbsp;            case LEVEL_ONE:
+<b class="fc"><i>51</i>&nbsp;                return &quot;1&quot;;</b>
+<i>52</i>&nbsp;            case LEVEL_TWO:
+<b class="fc"><i>53</i>&nbsp;                return &quot;2&quot;;</b>
+<i>54</i>&nbsp;            case LEVEL_THREE:
+<b class="fc"><i>55</i>&nbsp;                return &quot;3&quot;;</b>
+<i>56</i>&nbsp;            default:
+<b class="fc"><i>57</i>&nbsp;                return &quot;D&quot;;</b>
+<i>58</i>&nbsp;        }
+<i>59</i>&nbsp;    }
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

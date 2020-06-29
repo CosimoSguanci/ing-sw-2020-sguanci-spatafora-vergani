@@ -1,0 +1,326 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GodScreen</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.gui.components</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GodScreen (it.polimi.ingsw.view.gui.components)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GodScreen</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 81)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GodScreen$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 16)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 97)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.gui.components;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.view.View;
+<i>4</i>&nbsp;import it.polimi.ingsw.view.gui.Gui;
+<i>5</i>&nbsp;import it.polimi.ingsw.view.gui.ui.JGodButton;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import javax.imageio.ImageIO;
+<i>8</i>&nbsp;import javax.swing.*;
+<i>9</i>&nbsp;import java.awt.*;
+<i>10</i>&nbsp;import java.awt.event.ComponentAdapter;
+<i>11</i>&nbsp;import java.awt.event.ComponentEvent;
+<i>12</i>&nbsp;import java.io.IOException;
+<i>13</i>&nbsp;import java.util.ArrayList;
+<i>14</i>&nbsp;import java.util.HashMap;
+<i>15</i>&nbsp;import java.util.List;
+<i>16</i>&nbsp;import java.util.Map;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;/**
+<i>19</i>&nbsp; * GodScreen is a class which manages the display of Gods during GodChoice gamePhase.
+<i>20</i>&nbsp; * In this class there is a distinction between GodChooser and other players.
+<i>21</i>&nbsp; *
+<i>22</i>&nbsp; * @author Roberto Spatafora
+<i>23</i>&nbsp; * @author Andrea Vergani
+<i>24</i>&nbsp; */
+<b class="nc"><i>25</i>&nbsp;public class GodScreen extends JPanel {</b>
+<b class="nc"><i>26</i>&nbsp;    private static final Map&lt;String, Map&lt;String, ImageIcon&gt;&gt; allIconGods = new HashMap&lt;&gt;();</b>
+<i>27</i>&nbsp;    private final JLabel titleLabel;
+<i>28</i>&nbsp;    private final JPanel rightPanel;
+<b class="nc"><i>29</i>&nbsp;    private final ArrayList&lt;JButton&gt; buttons = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>30</i>&nbsp;    Gui gui = Gui.getInstance();</b>
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    /**
+<i>33</i>&nbsp;     * This is the constructor of the class. At the moment of creation a new GridLayout
+<i>34</i>&nbsp;     * is created. It is a 4x4 GridLayout case player is GodChooser, and an only row
+<i>35</i>&nbsp;     * with as many columns as the number of players involved in the match. This GriLayout
+<i>36</i>&nbsp;     * contains buttons which contain Gods images
+<i>37</i>&nbsp;     *
+<i>38</i>&nbsp;     * @param playersNumber  is an integer number that contains information about the number of players involved in a match.
+<i>39</i>&nbsp;     * @param selectableGods is a List of Strings which contains Gods names that can be chosen.
+<i>40</i>&nbsp;     *                       GodChooser will see all the Gods available in game. Other player see Gods chosen bu GodChooser
+<i>41</i>&nbsp;     * @throws IOException is used in case in which the image we are looking for is not available in specified path.
+<i>42</i>&nbsp;     */
+<b class="nc"><i>43</i>&nbsp;    public GodScreen(int playersNumber, List&lt;String&gt; selectableGods) throws IOException {</b>
+<b class="nc"><i>44</i>&nbsp;        boolean isGodChooser = this.gui.getController().isClientPlayerGodChooser();</b>
+<i>45</i>&nbsp;
+<b class="nc"><i>46</i>&nbsp;        LayoutManager layoutManager = new BorderLayout();</b>
+<b class="nc"><i>47</i>&nbsp;        this.setLayout(layoutManager);</b>
+<i>48</i>&nbsp;
+<b class="nc"><i>49</i>&nbsp;        JPanel titlePanel = new JPanel();</b>
+<b class="nc"><i>50</i>&nbsp;        JPanel possibleGodsPanel = new JPanel();</b>
+<b class="nc"><i>51</i>&nbsp;        this.rightPanel = new JPanel();</b>
+<b class="nc"><i>52</i>&nbsp;        this.rightPanel.setLayout(new BorderLayout());</b>
+<b class="nc"><i>53</i>&nbsp;        this.rightPanel.setOpaque(false);</b>
+<i>54</i>&nbsp;
+<b class="nc"><i>55</i>&nbsp;        this.titleLabel = new JLabel();</b>
+<b class="nc"><i>56</i>&nbsp;        Font titleFont = Gui.getFont(Gui.FONT_BOLD, 20);</b>
+<b class="nc"><i>57</i>&nbsp;        this.titleLabel.setFont(titleFont);</b>
+<b class="nc"><i>58</i>&nbsp;        titlePanel.add(this.titleLabel);</b>
+<b class="nc"><i>59</i>&nbsp;        titlePanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));</b>
+<b class="nc"><i>60</i>&nbsp;        this.add(titlePanel, BorderLayout.NORTH);</b>
+<b class="nc"><i>61</i>&nbsp;        this.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));</b>
+<i>62</i>&nbsp;
+<b class="nc"><i>63</i>&nbsp;        GridLayout gridLayout = isGodChooser ? new GridLayout(4, 4) : new GridLayout(1, playersNumber);</b>
+<i>64</i>&nbsp;
+<b class="nc"><i>65</i>&nbsp;        possibleGodsPanel.setLayout(gridLayout);</b>
+<i>66</i>&nbsp;
+<b class="nc"><i>67</i>&nbsp;        ArrayList&lt;ImageIcon&gt; iconGods = new ArrayList&lt;&gt;();</b>
+<i>68</i>&nbsp;        ImageIcon imageIcon;
+<i>69</i>&nbsp;
+<b class="nc"><i>70</i>&nbsp;        List&lt;String&gt; gods = isGodChooser ? View.getGodsNamesList() : selectableGods;</b>
+<i>71</i>&nbsp;
+<b class="nc"><i>72</i>&nbsp;        for (int i = 0; i &lt; gods.size(); i++) {</b>
+<b class="nc"><i>73</i>&nbsp;            imageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource(&quot;/images/GodChoice/&quot; + gods.get(i).toLowerCase() + &quot;.png&quot;)));</b>
+<b class="nc"><i>74</i>&nbsp;            imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(60, -1, Image.SCALE_SMOOTH));</b>
+<b class="nc"><i>75</i>&nbsp;            iconGods.add(imageIcon);</b>
+<i>76</i>&nbsp;
+<b class="nc"><i>77</i>&nbsp;            JGodButton godBtn = new JGodButton(gods.get(i).toUpperCase(), iconGods.get(i), gods.get(i).toLowerCase());</b>
+<i>78</i>&nbsp;
+<b class="nc"><i>79</i>&nbsp;            Font godLabelFont = Gui.getFont(Gui.FONT_BOLD, 14);</b>
+<b class="nc"><i>80</i>&nbsp;            godBtn.setFont(godLabelFont);</b>
+<b class="nc"><i>81</i>&nbsp;            godBtn.setForeground(Color.BLACK);</b>
+<i>82</i>&nbsp;
+<b class="nc"><i>83</i>&nbsp;            godBtn.addComponentListener(new ComponentAdapter() {</b>
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;                @Override
+<i>86</i>&nbsp;                public void componentResized(ComponentEvent e) {
+<b class="nc"><i>87</i>&nbsp;                    JButton btn = (JButton) e.getComponent();</b>
+<b class="nc"><i>88</i>&nbsp;                    Dimension size = btn.getSize();</b>
+<i>89</i>&nbsp;
+<b class="nc"><i>90</i>&nbsp;                    String god = btn.getText().toLowerCase();</b>
+<i>91</i>&nbsp;
+<b class="nc"><i>92</i>&nbsp;                    if (size.width &gt; 600 || size.height &gt; 600) {</b>
+<b class="nc"><i>93</i>&nbsp;                        btn.setIcon(allIconGods.get(god).get(&quot;very_big&quot;));</b>
+<b class="nc"><i>94</i>&nbsp;                    } else if (size.width &gt; 400 || size.height &gt; 400) {</b>
+<b class="nc"><i>95</i>&nbsp;                        btn.setIcon(allIconGods.get(god).get(&quot;big&quot;));</b>
+<b class="nc"><i>96</i>&nbsp;                    } else if (size.width &gt; 260 || size.height &gt; 260) {</b>
+<b class="nc"><i>97</i>&nbsp;                        btn.setIcon(allIconGods.get(god).get(&quot;medium_big&quot;));</b>
+<b class="nc"><i>98</i>&nbsp;                    } else if (size.width &gt; 70 || size.height &gt; 70) {</b>
+<b class="nc"><i>99</i>&nbsp;                        btn.setIcon(allIconGods.get(god).get(&quot;medium&quot;));</b>
+<b class="nc"><i>100</i>&nbsp;                    } else if (size.width &gt; 40 || size.height &gt; 40) {</b>
+<b class="nc"><i>101</i>&nbsp;                        btn.setIcon(allIconGods.get(god).get(&quot;medium_small&quot;));</b>
+<i>102</i>&nbsp;                    } else {
+<b class="nc"><i>103</i>&nbsp;                        btn.setIcon(allIconGods.get(god).get(&quot;small&quot;));</b>
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;                    }
+<i>106</i>&nbsp;
+<b class="nc"><i>107</i>&nbsp;                }</b>
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;            });
+<i>110</i>&nbsp;
+<b class="nc"><i>111</i>&nbsp;            this.buttons.add(godBtn);</b>
+<i>112</i>&nbsp;
+<b class="nc"><i>113</i>&nbsp;            godBtn.setHorizontalTextPosition(JButton.CENTER);</b>
+<b class="nc"><i>114</i>&nbsp;            godBtn.setVerticalTextPosition(JButton.BOTTOM);</b>
+<b class="nc"><i>115</i>&nbsp;            godBtn.setOpaque(false);</b>
+<b class="nc"><i>116</i>&nbsp;            godBtn.setContentAreaFilled(false);</b>
+<i>117</i>&nbsp;
+<b class="nc"><i>118</i>&nbsp;            String operSys = System.getProperty(&quot;os.name&quot;).toLowerCase();</b>
+<i>119</i>&nbsp;
+<b class="nc"><i>120</i>&nbsp;            godBtn.setBorderPainted(!operSys.contains(&quot;mac&quot;));</b>
+<b class="nc"><i>121</i>&nbsp;            possibleGodsPanel.add(godBtn);</b>
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;        }
+<i>125</i>&nbsp;
+<i>126</i>&nbsp;
+<b class="nc"><i>127</i>&nbsp;        titlePanel.setOpaque(false);</b>
+<b class="nc"><i>128</i>&nbsp;        possibleGodsPanel.setOpaque(false);</b>
+<i>129</i>&nbsp;
+<b class="nc"><i>130</i>&nbsp;        this.add(possibleGodsPanel, BorderLayout.CENTER);</b>
+<b class="nc"><i>131</i>&nbsp;        this.add(this.rightPanel, BorderLayout.EAST);</b>
+<b class="nc"><i>132</i>&nbsp;    }</b>
+<i>133</i>&nbsp;
+<i>134</i>&nbsp;    /**
+<i>135</i>&nbsp;     * This static method has the function to load all the Gods images in different dimension.
+<i>136</i>&nbsp;     * This function was meant to be in a different thread from the main one of the execution.
+<i>137</i>&nbsp;     * Different dimensions are used to re-size images after a window re-size.
+<i>138</i>&nbsp;     */
+<i>139</i>&nbsp;    public static void loadImages() {
+<b class="nc"><i>140</i>&nbsp;        new Thread(() -&gt; {</b>
+<b class="nc"><i>141</i>&nbsp;            List&lt;String&gt; gods = View.getGodsNamesList();</b>
+<i>142</i>&nbsp;
+<b class="nc"><i>143</i>&nbsp;            gods.forEach(god -&gt; {</b>
+<i>144</i>&nbsp;
+<i>145</i>&nbsp;                try {
+<i>146</i>&nbsp;
+<b class="nc"><i>147</i>&nbsp;                    ImageIcon smallImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource(&quot;/images/GodChoice/&quot; + god + &quot;.png&quot;)));</b>
+<b class="nc"><i>148</i>&nbsp;                    smallImageIcon = new ImageIcon(smallImageIcon.getImage().getScaledInstance(20, -1, Image.SCALE_SMOOTH));</b>
+<i>149</i>&nbsp;
+<b class="nc"><i>150</i>&nbsp;                    ImageIcon mediumSmallImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource(&quot;/images/GodChoice/&quot; + god + &quot;.png&quot;)));</b>
+<b class="nc"><i>151</i>&nbsp;                    mediumSmallImageIcon = new ImageIcon(mediumSmallImageIcon.getImage().getScaledInstance(40, -1, Image.SCALE_SMOOTH));</b>
+<i>152</i>&nbsp;
+<b class="nc"><i>153</i>&nbsp;                    ImageIcon mediumImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource(&quot;/images/GodChoice/&quot; + god + &quot;.png&quot;)));</b>
+<b class="nc"><i>154</i>&nbsp;                    mediumImageIcon = new ImageIcon(mediumImageIcon.getImage().getScaledInstance(65, -1, Image.SCALE_SMOOTH));</b>
+<i>155</i>&nbsp;
+<b class="nc"><i>156</i>&nbsp;                    ImageIcon mediumBigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource(&quot;/images/GodChoice/&quot; + god + &quot;.png&quot;)));</b>
+<b class="nc"><i>157</i>&nbsp;                    mediumBigImageIcon = new ImageIcon(mediumBigImageIcon.getImage().getScaledInstance(85, -1, Image.SCALE_SMOOTH));</b>
+<i>158</i>&nbsp;
+<b class="nc"><i>159</i>&nbsp;                    ImageIcon bigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource(&quot;/images/GodChoice/&quot; + god + &quot;.png&quot;)));</b>
+<b class="nc"><i>160</i>&nbsp;                    bigImageIcon = new ImageIcon(bigImageIcon.getImage().getScaledInstance(110, -1, Image.SCALE_SMOOTH));</b>
+<i>161</i>&nbsp;
+<b class="nc"><i>162</i>&nbsp;                    ImageIcon veryBigImageIcon = new ImageIcon(ImageIO.read(Gui.class.getResource(&quot;/images/GodChoice/&quot; + god + &quot;.png&quot;)));</b>
+<b class="nc"><i>163</i>&nbsp;                    veryBigImageIcon = new ImageIcon(veryBigImageIcon.getImage().getScaledInstance(180, -1, Image.SCALE_SMOOTH));</b>
+<i>164</i>&nbsp;
+<b class="nc"><i>165</i>&nbsp;                    Map&lt;String, ImageIcon&gt; m = new HashMap&lt;&gt;();</b>
+<b class="nc"><i>166</i>&nbsp;                    m.put(&quot;small&quot;, smallImageIcon);</b>
+<b class="nc"><i>167</i>&nbsp;                    m.put(&quot;medium_small&quot;, mediumSmallImageIcon);</b>
+<b class="nc"><i>168</i>&nbsp;                    m.put(&quot;medium&quot;, mediumImageIcon);</b>
+<b class="nc"><i>169</i>&nbsp;                    m.put(&quot;medium_big&quot;, mediumBigImageIcon);</b>
+<b class="nc"><i>170</i>&nbsp;                    m.put(&quot;big&quot;, bigImageIcon);</b>
+<b class="nc"><i>171</i>&nbsp;                    m.put(&quot;very_big&quot;, veryBigImageIcon);</b>
+<i>172</i>&nbsp;
+<b class="nc"><i>173</i>&nbsp;                    allIconGods.put(god, m);</b>
+<i>174</i>&nbsp;
+<i>175</i>&nbsp;
+<b class="nc"><i>176</i>&nbsp;                } catch (IOException e) {</b>
+<b class="nc"><i>177</i>&nbsp;                    System.err.println(&quot;Error loading some God Screen resource&quot;);</b>
+<b class="nc"><i>178</i>&nbsp;                }</b>
+<i>179</i>&nbsp;
+<i>180</i>&nbsp;
+<b class="nc"><i>181</i>&nbsp;            });</b>
+<i>182</i>&nbsp;
+<i>183</i>&nbsp;
+<b class="nc"><i>184</i>&nbsp;        }).start();</b>
+<b class="nc"><i>185</i>&nbsp;    }</b>
+<i>186</i>&nbsp;
+<i>187</i>&nbsp;    /**
+<i>188</i>&nbsp;     * This package protected method is a simple setter of the title of the titleLabel of the class.
+<i>189</i>&nbsp;     * This is a good solution in order to creates instances of this class, distinguish at the moment
+<i>190</i>&nbsp;     * of the invocation, different contexts and for each set the desired title.
+<i>191</i>&nbsp;     *
+<i>192</i>&nbsp;     * @param title the title of the main label
+<i>193</i>&nbsp;     */
+<i>194</i>&nbsp;    void setTitle(String title) {
+<b class="nc"><i>195</i>&nbsp;        this.titleLabel.setText(title);</b>
+<b class="nc"><i>196</i>&nbsp;        this.revalidate();</b>
+<b class="nc"><i>197</i>&nbsp;        this.repaint();</b>
+<b class="nc"><i>198</i>&nbsp;    }</b>
+<i>199</i>&nbsp;
+<i>200</i>&nbsp;    /**
+<i>201</i>&nbsp;     * This method is a simple getter of the Gods buttons available in this class.
+<i>202</i>&nbsp;     *
+<i>203</i>&nbsp;     * @return an ArrayList of JButton which contains as many buttons as many Gods are available in a specific turn of GodChoice game phase.
+<i>204</i>&nbsp;     */
+<i>205</i>&nbsp;    ArrayList&lt;JButton&gt; getButtons() {
+<b class="nc"><i>206</i>&nbsp;        return this.buttons;</b>
+<i>207</i>&nbsp;    }
+<i>208</i>&nbsp;
+<i>209</i>&nbsp;    /**
+<i>210</i>&nbsp;     * This method is a getter of the right panel located east in this class.
+<i>211</i>&nbsp;     *
+<i>212</i>&nbsp;     * @return a reference to the east panel of the class.
+<i>213</i>&nbsp;     */
+<i>214</i>&nbsp;    JPanel getRightPanel() {
+<b class="nc"><i>215</i>&nbsp;        return this.rightPanel;</b>
+<i>216</i>&nbsp;    }
+<i>217</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

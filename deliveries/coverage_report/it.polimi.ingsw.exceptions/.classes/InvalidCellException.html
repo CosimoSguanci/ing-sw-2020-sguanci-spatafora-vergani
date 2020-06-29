@@ -1,0 +1,102 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: InvalidCellException</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.exceptions</a> ]
+</div>
+
+<h1>Coverage Summary for Class: InvalidCellException (it.polimi.ingsw.exceptions)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">InvalidCellException</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.exceptions;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;/**
+<i>4</i>&nbsp; * This exception is raised when an action on a {@link it.polimi.ingsw.model.Cell} which is not valid is attempted.
+<i>5</i>&nbsp; * For example, when a client generates a {@link it.polimi.ingsw.controller.commands.Command} which contains invalid
+<i>6</i>&nbsp; * rows/cols values (a {@link it.polimi.ingsw.controller.commands.CommandType#MOVE} to a {@link it.polimi.ingsw.model.Cell}
+<i>7</i>&nbsp; * with row x and col y, with x greater than 4 and/or y greater than 4).
+<i>8</i>&nbsp; *
+<i>9</i>&nbsp; * @author Cosimo Sguanci
+<i>10</i>&nbsp; * @author Roberto Spatafora
+<i>11</i>&nbsp; * @author Andrea Mario Vergani
+<i>12</i>&nbsp; */
+<i>13</i>&nbsp;public class InvalidCellException extends RuntimeException {
+<i>14</i>&nbsp;    private final static String ERROR_MESSAGE = &quot;Invalid Cell used&quot;;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    public InvalidCellException() {
+<b class="fc"><i>17</i>&nbsp;        super(ERROR_MESSAGE);</b>
+<b class="fc"><i>18</i>&nbsp;    }</b>
+<i>19</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,584 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CliUpdateHandler</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.cli</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CliUpdateHandler (it.polimi.ingsw.view.cli)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CliUpdateHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 195)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">CliUpdateHandler$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 197)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.cli;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.GamePhase;
+<i>4</i>&nbsp;import it.polimi.ingsw.controller.commands.CommandType;
+<i>5</i>&nbsp;import it.polimi.ingsw.controller.commands.PlayerCommand;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.ErrorType;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.PrintableColor;
+<i>8</i>&nbsp;import it.polimi.ingsw.model.updates.*;
+<i>9</i>&nbsp;import it.polimi.ingsw.model.utils.GodsUtils;
+<i>10</i>&nbsp;import it.polimi.ingsw.network.client.controller.Controller;
+<i>11</i>&nbsp;import it.polimi.ingsw.view.UpdateHandler;
+<i>12</i>&nbsp;import it.polimi.ingsw.view.View;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;import java.util.List;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;/**
+<i>17</i>&nbsp; * This class handles all the updates from server to different clients.
+<i>18</i>&nbsp; * Every possible updates go to this class before it&#39;s viewable from users (in the CLI).
+<i>19</i>&nbsp; * BoardUpdate, DisconnectedPlayerUpdate, ErrorUpdate, GamePhaseUpdate,
+<i>20</i>&nbsp; * GodsUpdate, InitialInfoUpdate, LoseUpdate, MatchStartedUpdate,
+<i>21</i>&nbsp; * ServerUnreachableUpdate, TurnUpdate, WinUpdate are all managed in this class.
+<i>22</i>&nbsp; * &lt;p&gt;
+<i>23</i>&nbsp; * This class represent the Visitor in the Visitor Pattern, it implements {@link UpdateHandler}
+<i>24</i>&nbsp; * to have all the necessary methods to handle all possible updates.
+<i>25</i>&nbsp; *
+<i>26</i>&nbsp; * @author Cosimo Sguanci
+<i>27</i>&nbsp; * @author Roberto Spatafora
+<i>28</i>&nbsp; * @author Andrea Vergani
+<i>29</i>&nbsp; * @see UpdateHandler
+<i>30</i>&nbsp; */
+<i>31</i>&nbsp;public class CliUpdateHandler extends UpdateHandler {
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    /**
+<i>34</i>&nbsp;     * Instance of the {@link Cli} which this handler has to update
+<i>35</i>&nbsp;     */
+<i>36</i>&nbsp;    private final Cli cliInstance;
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * This is the creator of the class. At the moment of the instance creation
+<i>40</i>&nbsp;     * an instance of {@link Cli} and {@link Controller}, to which the class refers, are set.
+<i>41</i>&nbsp;     *
+<i>42</i>&nbsp;     * @param cliInstance is the instance of {@link Cli} associated to the CliUpdateHandler for updates.
+<i>43</i>&nbsp;     * @param controller  is the instance of the controller that is observed by the {@link Cli}.
+<i>44</i>&nbsp;     */
+<i>45</i>&nbsp;    CliUpdateHandler(Cli cliInstance, Controller controller) {
+<b class="nc"><i>46</i>&nbsp;        super(controller);</b>
+<b class="nc"><i>47</i>&nbsp;        this.cliInstance = cliInstance;</b>
+<b class="nc"><i>48</i>&nbsp;    }</b>
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    /**
+<i>51</i>&nbsp;     * This method handles {@link MatchStartedUpdate} arrived from the {@link Cli}.
+<i>52</i>&nbsp;     * It prints several lines in console, to let players know that match has started.
+<i>53</i>&nbsp;     *
+<i>54</i>&nbsp;     * @param update is the instance of {@link MatchStartedUpdate} from {@link Cli}.
+<i>55</i>&nbsp;     */
+<i>56</i>&nbsp;    @Override
+<i>57</i>&nbsp;    public void handle(MatchStartedUpdate update) {
+<b class="nc"><i>58</i>&nbsp;        cliInstance.printBoard(update.getBoard());</b>
+<b class="nc"><i>59</i>&nbsp;        cliInstance.println(Cli.toBold(&quot;MATCH STARTED!&quot;));</b>
+<b class="nc"><i>60</i>&nbsp;        cliInstance.newLine();</b>
+<b class="nc"><i>61</i>&nbsp;        cliInstance.println(Cli.toBold(&quot;Tip&quot;) + &quot;: type &#39;help &quot; + cliInstance.getCurrentPhaseString() + &quot;&#39; to know command format&quot;);</b>
+<b class="nc"><i>62</i>&nbsp;        cliInstance.newLine();</b>
+<b class="nc"><i>63</i>&nbsp;        cliInstance.printCurrentTurn();</b>
+<b class="nc"><i>64</i>&nbsp;    }</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    /**
+<i>67</i>&nbsp;     * This method handles {@link GodsUpdate} arrived from the {@link Cli}.
+<i>68</i>&nbsp;     * In this method there is a distinction between GodChooser and other players.
+<i>69</i>&nbsp;     * If the player in Cli associated is GodChooser than some lines explains him what to do,
+<i>70</i>&nbsp;     * In non-GodChooser case players are invited to select their Gods.
+<i>71</i>&nbsp;     *
+<i>72</i>&nbsp;     * @param update is the instance of {@link GodsUpdate} from {@link Cli}.
+<i>73</i>&nbsp;     */
+<i>74</i>&nbsp;    @Override
+<i>75</i>&nbsp;    public void handle(GodsUpdate update) {
+<b class="nc"><i>76</i>&nbsp;        if (update.getSelectedGods().size() == cliInstance.getPlayersNumber()) {</b>
+<b class="nc"><i>77</i>&nbsp;            cliInstance.setPlayersGods(update.getSelectedGods());</b>
+<b class="nc"><i>78</i>&nbsp;            cliInstance.printPlayerGods();</b>
+<i>79</i>&nbsp;        } else {
+<b class="nc"><i>80</i>&nbsp;            if (!controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) return;</b>
+<i>81</i>&nbsp;
+<b class="nc"><i>82</i>&nbsp;            if (controller.isClientPlayerGodChooser()) {</b>
+<b class="nc"><i>83</i>&nbsp;                cliInstance.setInitialGodChooser(true);</b>
+<b class="nc"><i>84</i>&nbsp;                cliInstance.println(Cli.toBold(&quot;You are the God Chooser!&quot;));</b>
+<b class="nc"><i>85</i>&nbsp;                cliInstance.newLine();</b>
+<b class="nc"><i>86</i>&nbsp;                cliInstance.println(Cli.toBold(&quot;Choose &quot;) + cliInstance.getPlayersNumber() + &quot; gods. For a perfect match, choose the ones you like most!    Command &quot; + Cli.toBold(&quot;format&quot;) + &quot; expected: select [god(1)] ... [god(n)]&quot;);</b>
+<b class="nc"><i>87</i>&nbsp;                cliInstance.newLine();</b>
+<b class="nc"><i>88</i>&nbsp;                cliInstance.println(&quot;Available gods are: &quot; + availableGods());</b>
+<b class="nc"><i>89</i>&nbsp;                cliInstance.newLine();</b>
+<b class="nc"><i>90</i>&nbsp;                cliInstance.println(&quot;REMEMBER: if you need info about a god and his/her powers, type &#39;info [god]&#39;&quot;);</b>
+<i>91</i>&nbsp;            } else {
+<b class="nc"><i>92</i>&nbsp;                cliInstance.setInitialGodChooser(false);</b>
+<b class="nc"><i>93</i>&nbsp;                cliInstance.setSelectableGods(update.getSelectableGods());</b>
+<b class="nc"><i>94</i>&nbsp;                cliInstance.println(Cli.toBold(&quot;Choose &quot;) + &quot;your god.    Command &quot; + Cli.toBold(&quot;format&quot;) + &quot; expected: select [god]&quot;);</b>
+<b class="nc"><i>95</i>&nbsp;                if (View.listToStringBuilder(update.getSelectableGods()) != null) {</b>
+<b class="nc"><i>96</i>&nbsp;                    cliInstance.newLine();</b>
+<b class="nc"><i>97</i>&nbsp;                    cliInstance.println(&quot;Available choices are: &quot; + View.listToStringBuilder(update.getSelectableGods()));</b>
+<i>98</i>&nbsp;                }
+<b class="nc"><i>99</i>&nbsp;                cliInstance.newLine();</b>
+<b class="nc"><i>100</i>&nbsp;                cliInstance.println(&quot;REMEMBER: if you need info about a god, type &#39;info [god]&#39;&quot;);</b>
+<i>101</i>&nbsp;            }
+<b class="nc"><i>102</i>&nbsp;            cliInstance.newLine();</b>
+<i>103</i>&nbsp;        }
+<b class="nc"><i>104</i>&nbsp;    }</b>
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;    /**
+<i>107</i>&nbsp;     * This method handles {@link InitialInfoUpdate} arrived from the {@link Cli}.
+<i>108</i>&nbsp;     * Once players choose how many players are involved in their match, they have to choose
+<i>109</i>&nbsp;     * a nickname and a color to play. This class notifies them about that, inviting them
+<i>110</i>&nbsp;     * to choose a nickname and a color, not already chosen from other players.
+<i>111</i>&nbsp;     *
+<i>112</i>&nbsp;     * @param update is the instance of {@link InitialInfoUpdate} from {@link Cli}.
+<i>113</i>&nbsp;     */
+<i>114</i>&nbsp;    @Override
+<i>115</i>&nbsp;    public void handle(InitialInfoUpdate update) {
+<i>116</i>&nbsp;
+<b class="nc"><i>117</i>&nbsp;        if (update.getInitialInfo().size() == cliInstance.getPlayersNumber()) {</b>
+<b class="nc"><i>118</i>&nbsp;            cliInstance.setPlayersColors(update.getInitialInfo());</b>
+<b class="nc"><i>119</i>&nbsp;            cliInstance.printPlayersColors();</b>
+<i>120</i>&nbsp;        } else {
+<b class="nc"><i>121</i>&nbsp;            if (!controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) return;</b>
+<i>122</i>&nbsp;
+<b class="nc"><i>123</i>&nbsp;            cliInstance.println(&quot;Type your &quot; + Cli.toBold(&quot;nickname and color&quot;) + &quot; separated by a space.    Command &quot; + Cli.toBold(&quot;format&quot;) + &quot; expected: pick [nickname] [color]&quot;);</b>
+<i>124</i>&nbsp;
+<b class="nc"><i>125</i>&nbsp;            List&lt;String&gt; selectedNicknames = extractSelectedNicknames(update);</b>
+<b class="nc"><i>126</i>&nbsp;            List&lt;PrintableColor&gt; selectedColors = extractSelectedColors(update);</b>
+<b class="nc"><i>127</i>&nbsp;            List&lt;PrintableColor&gt; selectableColors = extractSelectableColors(selectedColors);</b>
+<i>128</i>&nbsp;
+<i>129</i>&nbsp;
+<b class="nc"><i>130</i>&nbsp;            if (!selectedNicknames.isEmpty()) {</b>
+<b class="nc"><i>131</i>&nbsp;                cliInstance.newLine();</b>
+<b class="nc"><i>132</i>&nbsp;                cliInstance.println(&quot;Nicknames already taken are: &quot; + View.listToStringBuilder(selectedNicknames));</b>
+<i>133</i>&nbsp;            }
+<i>134</i>&nbsp;
+<b class="nc"><i>135</i>&nbsp;            cliInstance.newLine();</b>
+<i>136</i>&nbsp;
+<b class="nc"><i>137</i>&nbsp;            cliInstance.setSelectedNicknames(selectedNicknames);</b>
+<b class="nc"><i>138</i>&nbsp;            cliInstance.println(&quot;Available colors are: &quot;);</b>
+<i>139</i>&nbsp;
+<b class="nc"><i>140</i>&nbsp;            selectableColors.forEach((color) -&gt; cliInstance.println(Cli.convertColorToAnsi(color) + color + PrintableColor.RESET));</b>
+<i>141</i>&nbsp;
+<i>142</i>&nbsp;
+<b class="nc"><i>143</i>&nbsp;            cliInstance.setSelectableColors(selectableColors);</b>
+<b class="nc"><i>144</i>&nbsp;            cliInstance.newLine();</b>
+<i>145</i>&nbsp;        }
+<b class="nc"><i>146</i>&nbsp;    }</b>
+<i>147</i>&nbsp;
+<i>148</i>&nbsp;    /**
+<i>149</i>&nbsp;     * This method handles {@link BoardUpdate} arrived from the {@link Cli}.
+<i>150</i>&nbsp;     * This method manages commands during REAL_GAME phase. In cases in which players
+<i>151</i>&nbsp;     * move or build in a specific cell, to let all players clearly know about that,
+<i>152</i>&nbsp;     * it is printed that player has [moved/built] with a worker in a cell.
+<i>153</i>&nbsp;     *
+<i>154</i>&nbsp;     * @param update is the instance of {@link BoardUpdate} from {@link Cli}.
+<i>155</i>&nbsp;     */
+<i>156</i>&nbsp;    @Override
+<i>157</i>&nbsp;    public void handle(BoardUpdate update) {
+<i>158</i>&nbsp;
+<b class="nc"><i>159</i>&nbsp;        if (cliInstance.getCurrentPhase().equals(GamePhase.MATCH_LOST) &amp;&amp; !cliInstance.wantsToContinueToWatch()) return;</b>
+<i>160</i>&nbsp;
+<b class="nc"><i>161</i>&nbsp;        if ((update.getExecutedCommand() == null || update.getExecutedCommand().commandType != CommandType.END_TURN)) {</b>
+<b class="nc"><i>162</i>&nbsp;            cliInstance.printBoard(update.getBoard());</b>
+<i>163</i>&nbsp;        }
+<i>164</i>&nbsp;
+<b class="nc"><i>165</i>&nbsp;        if (update.getExecutedCommand() != null &amp;&amp; (update.getExecutedCommand().commandType == CommandType.BUILD || update.getExecutedCommand().commandType == CommandType.MOVE)) {</b>
+<b class="nc"><i>166</i>&nbsp;            PlayerCommand executedCommand = update.getExecutedCommand();</b>
+<b class="nc"><i>167</i>&nbsp;            cliInstance.newLine();</b>
+<i>168</i>&nbsp;
+<b class="nc"><i>169</i>&nbsp;            String nickname = executedCommand.getPlayerNickname() != null ? executedCommand.getPlayerNickname() : &quot;Player&quot;;</b>
+<b class="nc"><i>170</i>&nbsp;            String rowChar = &quot;&quot;;</b>
+<i>171</i>&nbsp;
+<b class="nc"><i>172</i>&nbsp;            switch (executedCommand.row) {</b>
+<i>173</i>&nbsp;                case 0:
+<b class="nc"><i>174</i>&nbsp;                    rowChar = &quot;A&quot;;</b>
+<b class="nc"><i>175</i>&nbsp;                    break;</b>
+<i>176</i>&nbsp;                case 1:
+<b class="nc"><i>177</i>&nbsp;                    rowChar = &quot;B&quot;;</b>
+<b class="nc"><i>178</i>&nbsp;                    break;</b>
+<i>179</i>&nbsp;                case 2:
+<b class="nc"><i>180</i>&nbsp;                    rowChar = &quot;C&quot;;</b>
+<b class="nc"><i>181</i>&nbsp;                    break;</b>
+<i>182</i>&nbsp;                case 3:
+<b class="nc"><i>183</i>&nbsp;                    rowChar = &quot;D&quot;;</b>
+<b class="nc"><i>184</i>&nbsp;                    break;</b>
+<i>185</i>&nbsp;                case 4:
+<b class="nc"><i>186</i>&nbsp;                    rowChar = &quot;E&quot;;</b>
+<i>187</i>&nbsp;                    break;
+<i>188</i>&nbsp;            }
+<i>189</i>&nbsp;
+<b class="nc"><i>190</i>&nbsp;            if (executedCommand.commandType == CommandType.MOVE) {</b>
+<b class="nc"><i>191</i>&nbsp;                cliInstance.println(cliInstance.playerWithColor(nickname) + &quot; moved &quot; + executedCommand.workerID.toUpperCase() + &quot; to &quot; + rowChar + (executedCommand.col + 1));</b>
+<i>192</i>&nbsp;            } else {
+<b class="nc"><i>193</i>&nbsp;                cliInstance.println(cliInstance.playerWithColor(nickname) + &quot; built with &quot; + executedCommand.workerID.toUpperCase() + &quot; in &quot; + rowChar + (executedCommand.col + 1));</b>
+<i>194</i>&nbsp;            }
+<i>195</i>&nbsp;
+<b class="nc"><i>196</i>&nbsp;            cliInstance.newLine();</b>
+<i>197</i>&nbsp;
+<i>198</i>&nbsp;        }
+<b class="nc"><i>199</i>&nbsp;        cliInstance.printCurrentTurn();</b>
+<b class="nc"><i>200</i>&nbsp;    }</b>
+<i>201</i>&nbsp;
+<i>202</i>&nbsp;    /**
+<i>203</i>&nbsp;     * This method handles {@link ErrorUpdate}  arrived from the {@link Cli}.
+<i>204</i>&nbsp;     * This method manages all the wrong command generated. Once the command is parsed
+<i>205</i>&nbsp;     * for the correct-format it is notified to the Controller, after some checks server-side
+<i>206</i>&nbsp;     * if an ErrorUpdate is notified it means that the command was correct in syntax but
+<i>207</i>&nbsp;     * an impossible action was requested.
+<i>208</i>&nbsp;     *
+<i>209</i>&nbsp;     * @param update the instance of {@link ErrorUpdate} given from {@link Cli}.
+<i>210</i>&nbsp;     */
+<i>211</i>&nbsp;    @Override
+<i>212</i>&nbsp;    public void handle(ErrorUpdate update) {
+<i>213</i>&nbsp;
+<b class="nc"><i>214</i>&nbsp;        if (!update.getCurrentPlayer().getPlayerID().equals(controller.getClientPlayerID())) return;</b>
+<i>215</i>&nbsp;
+<b class="nc"><i>216</i>&nbsp;        switch (update.command) {</b>
+<i>217</i>&nbsp;            case MOVE:
+<i>218</i>&nbsp;
+<b class="nc"><i>219</i>&nbsp;                if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {</b>
+<i>220</i>&nbsp;
+<b class="nc"><i>221</i>&nbsp;                    String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);</b>
+<i>222</i>&nbsp;
+<b class="nc"><i>223</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Move Error&quot;) + &quot;: you can&#39;t perform this move because &quot; + inhibitorGod + &quot; doesn&#39;t let you move in the position you specified!&quot;);</b>
+<b class="nc"><i>224</i>&nbsp;                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {</b>
+<b class="nc"><i>225</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Move Error&quot;) + &quot;: you can&#39;t perform this move because you can&#39;t move to this cell now (maybe you&#39;ve already moved), or your God doesn&#39;t let you move in the position you specified!&quot;);</b>
+<b class="nc"><i>226</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_TURN) {</b>
+<b class="nc"><i>227</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Move Error&quot;) + &quot;: you can&#39;t perform this move because it&#39;s not your turn!&quot;);</b>
+<i>228</i>&nbsp;                } else {
+<b class="nc"><i>229</i>&nbsp;                    commonErrorHandling(update);</b>
+<i>230</i>&nbsp;                }
+<i>231</i>&nbsp;
+<b class="nc"><i>232</i>&nbsp;                break;</b>
+<i>233</i>&nbsp;
+<i>234</i>&nbsp;            case BUILD:
+<i>235</i>&nbsp;
+<b class="nc"><i>236</i>&nbsp;                if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {</b>
+<b class="nc"><i>237</i>&nbsp;                    String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);</b>
+<b class="nc"><i>238</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Build Error&quot;) + &quot;: you can&#39;t perform this build because &quot; + inhibitorGod + &quot; doesn&#39;t let you build in the position you specified!&quot;);</b>
+<b class="nc"><i>239</i>&nbsp;                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {</b>
+<b class="nc"><i>240</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Build Error&quot;) + &quot;: you can&#39;t perform this build because you can&#39;t build in this cell (maybe you haven&#39;t moved yet), or your God doesn&#39;t let you build in the position you specified!&quot;);</b>
+<b class="nc"><i>241</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_TURN) {</b>
+<b class="nc"><i>242</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Build Error&quot;) + &quot;: you can&#39;t perform this build because it&#39;s not your turn!&quot;);</b>
+<b class="nc"><i>243</i>&nbsp;                } else commonErrorHandling(update);</b>
+<i>244</i>&nbsp;
+<b class="nc"><i>245</i>&nbsp;                break;</b>
+<i>246</i>&nbsp;
+<i>247</i>&nbsp;            case END_TURN:
+<b class="nc"><i>248</i>&nbsp;                if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {</b>
+<b class="nc"><i>249</i>&nbsp;                    String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);</b>
+<b class="nc"><i>250</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;End Turn Error&quot;) + &quot;: &quot; + inhibitorGod + &quot; doesn&#39;t let you end your turn now!&quot;);</b>
+<b class="nc"><i>251</i>&nbsp;                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {</b>
+<b class="nc"><i>252</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;End Turn Error&quot;) + &quot;: you can&#39;t end your turn now: maybe you must move or build!&quot;);</b>
+<b class="nc"><i>253</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_TURN) {</b>
+<b class="nc"><i>254</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;End Turn Error&quot;) + &quot;: you can&#39;t end your turn because it&#39;s not your turn!&quot;);</b>
+<b class="nc"><i>255</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {</b>
+<b class="nc"><i>256</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Wrong Game Phase&quot;) + &quot;: current Game Phase is not Real Game Phase&quot;);</b>
+<i>257</i>&nbsp;                }
+<i>258</i>&nbsp;
+<i>259</i>&nbsp;                break;
+<i>260</i>&nbsp;
+<i>261</i>&nbsp;            case PICK:
+<i>262</i>&nbsp;
+<b class="nc"><i>263</i>&nbsp;                if (update.errorType == ErrorType.ALREADY_TAKEN_NICKNAME) {</b>
+<b class="nc"><i>264</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Nickname Error&quot;) + &quot;: already taken nickname&quot;);</b>
+<b class="nc"><i>265</i>&nbsp;                } else if (update.errorType == ErrorType.INVALID_COLOR) {</b>
+<b class="nc"><i>266</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Color Error&quot;) + &quot;: invalid or already taken color&quot;);</b>
+<b class="nc"><i>267</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_TURN) {</b>
+<b class="nc"><i>268</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Turn Error&quot;) + &quot;: Not your turn!&quot;);</b>
+<b class="nc"><i>269</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {</b>
+<b class="nc"><i>270</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Wrong Game Phase&quot;) + &quot;: current Game Phase is not Initial Info Phase&quot;);</b>
+<i>271</i>&nbsp;                }
+<i>272</i>&nbsp;
+<i>273</i>&nbsp;                break;
+<i>274</i>&nbsp;
+<i>275</i>&nbsp;            case PLACE:
+<b class="nc"><i>276</i>&nbsp;                if (update.errorType == ErrorType.DENIED_BY_OPPONENT_GOD) {</b>
+<b class="nc"><i>277</i>&nbsp;                    String inhibitorGod = update.getInhibitorGod().get(GodsUtils.GOD_NAME);</b>
+<b class="nc"><i>278</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Game Preparation Error&quot;) + &quot;: you can&#39;t place your Worker where you specified because &quot; + inhibitorGod + &quot; doesn&#39;t allow it&quot;);</b>
+<b class="nc"><i>279</i>&nbsp;                } else if (update.errorType == ErrorType.DENIED_BY_PLAYER_GOD) {</b>
+<b class="nc"><i>280</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Game Preparation Error&quot;) + &quot;: you can&#39;t place your Workers where you specified because your God doesn&#39;t allow it&quot;);</b>
+<b class="nc"><i>281</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_TURN) {</b>
+<b class="nc"><i>282</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Game Preparation Error&quot;) + &quot;: you can&#39;t place your Workers because it&#39;s not your turn!&quot;);</b>
+<b class="nc"><i>283</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {</b>
+<b class="nc"><i>284</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Wrong Game Phase&quot;) + &quot;: current Game Phase is not Game Preparation Phase&quot;);</b>
+<i>285</i>&nbsp;                }
+<i>286</i>&nbsp;                break;
+<i>287</i>&nbsp;
+<i>288</i>&nbsp;            case SELECT:
+<i>289</i>&nbsp;
+<b class="nc"><i>290</i>&nbsp;                if (update.errorType == ErrorType.WRONG_TURN) {</b>
+<b class="nc"><i>291</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;God Choice Error&quot;) + &quot;: you can&#39;t choose your God because it&#39;s not your turn!&quot;);</b>
+<b class="nc"><i>292</i>&nbsp;                } else if (update.errorType == ErrorType.WRONG_GAME_PHASE) {</b>
+<b class="nc"><i>293</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;Wrong Game Phase&quot;) + &quot;: current Game Phase is not Gods Choice Phase&quot;);</b>
+<b class="nc"><i>294</i>&nbsp;                } else if (update.errorType == ErrorType.INVALID_GOD) {</b>
+<b class="nc"><i>295</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;God Error&quot;) + &quot;: invalid God selected, it&#39;s not in selectable Gods list!&quot;);</b>
+<i>296</i>&nbsp;                }
+<i>297</i>&nbsp;                break;
+<i>298</i>&nbsp;        }
+<b class="nc"><i>299</i>&nbsp;        cliInstance.println(&quot;For more information about commands or rules, type &#39;help &quot; + cliInstance.getCurrentPhaseString() + &quot;&#39; or &#39;rules&#39;&quot;);</b>
+<b class="nc"><i>300</i>&nbsp;        cliInstance.newLine();</b>
+<b class="nc"><i>301</i>&nbsp;    }</b>
+<i>302</i>&nbsp;
+<i>303</i>&nbsp;    /**
+<i>304</i>&nbsp;     * This private method was extracted from error handling procedure, to avoid duplicates for errors handled the same way for different {@link CommandType}.
+<i>305</i>&nbsp;     * Specifically, this handles {@link ErrorType#WRONG_GAME_PHASE}, {@link ErrorType#INVALID_CELL} and {@link ErrorType#GENERIC_ERROR}.
+<i>306</i>&nbsp;     *
+<i>307</i>&nbsp;     * @param update the error update which arrived from {@link Cli}.
+<i>308</i>&nbsp;     */
+<i>309</i>&nbsp;    private void commonErrorHandling(ErrorUpdate update) {
+<b class="nc"><i>310</i>&nbsp;        if (update.errorType == ErrorType.WRONG_GAME_PHASE) {</b>
+<b class="nc"><i>311</i>&nbsp;            cliInstance.println(Cli.toBold(&quot;Wrong Game Phase&quot;) + &quot;: current Game Phase is not Real Game Phase&quot;);</b>
+<b class="nc"><i>312</i>&nbsp;        } else if (update.errorType == ErrorType.INVALID_CELL) {</b>
+<b class="nc"><i>313</i>&nbsp;            cliInstance.println(Cli.toBold(&quot;Error&quot;) + &quot;: Invalid Cell&quot;);</b>
+<b class="nc"><i>314</i>&nbsp;        } else if (update.errorType == ErrorType.GENERIC_ERROR) {</b>
+<b class="nc"><i>315</i>&nbsp;            cliInstance.println(Cli.toBold(&quot;Generic Error&quot;) + &quot;: please, try another command&quot;);</b>
+<i>316</i>&nbsp;        }
+<b class="nc"><i>317</i>&nbsp;    }</b>
+<i>318</i>&nbsp;
+<i>319</i>&nbsp;    /**
+<i>320</i>&nbsp;     * This method handles {@link GamePhaseUpdate}  arrived from the {@link Cli}.
+<i>321</i>&nbsp;     * Every time the game phase changes, this method prints the name of the new current phase
+<i>322</i>&nbsp;     * upper case font to all the players involved in the match.
+<i>323</i>&nbsp;     *
+<i>324</i>&nbsp;     * @param update contains a reference to the new {@link GamePhase}.
+<i>325</i>&nbsp;     */
+<i>326</i>&nbsp;    @Override
+<i>327</i>&nbsp;    public void handle(GamePhaseUpdate update) {
+<b class="nc"><i>328</i>&nbsp;        cliInstance.newLine();</b>
+<b class="nc"><i>329</i>&nbsp;        if (update.newGamePhase.isPrintable()) {</b>
+<b class="nc"><i>330</i>&nbsp;            switch (update.newGamePhase) {</b>
+<i>331</i>&nbsp;                case INITIAL_INFO:
+<b class="nc"><i>332</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;INITIAL INFORMATION PHASE&quot;));</b>
+<b class="nc"><i>333</i>&nbsp;                    break;</b>
+<i>334</i>&nbsp;                case CHOOSE_GODS:
+<b class="nc"><i>335</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;GODS CHOOSE PHASE&quot;));</b>
+<b class="nc"><i>336</i>&nbsp;                    break;</b>
+<i>337</i>&nbsp;                case GAME_PREPARATION:
+<b class="nc"><i>338</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;GAME PREPARATION PHASE&quot;));</b>
+<b class="nc"><i>339</i>&nbsp;                    break;</b>
+<i>340</i>&nbsp;                case REAL_GAME:
+<b class="nc"><i>341</i>&nbsp;                    cliInstance.println(Cli.toBold(&quot;GAME STARTED PHASE&quot;));</b>
+<i>342</i>&nbsp;                    break;
+<i>343</i>&nbsp;            }
+<i>344</i>&nbsp;        }
+<b class="nc"><i>345</i>&nbsp;        cliInstance.setCurrentGamePhase(update.newGamePhase);</b>
+<b class="nc"><i>346</i>&nbsp;    }</b>
+<i>347</i>&nbsp;
+<i>348</i>&nbsp;    /**
+<i>349</i>&nbsp;     * This method handles {@link TurnUpdate}  arrived from the {@link Cli}.
+<i>350</i>&nbsp;     * When a player ends is turn, new current turn pass to the next player in game.
+<i>351</i>&nbsp;     *
+<i>352</i>&nbsp;     * @param update contains information about the new turn, it means that new
+<i>353</i>&nbsp;     *               current turn needs to be updated.
+<i>354</i>&nbsp;     */
+<i>355</i>&nbsp;    @Override
+<i>356</i>&nbsp;    public void handle(TurnUpdate update) {
+<b class="nc"><i>357</i>&nbsp;        cliInstance.forwardNotify(update);</b>
+<i>358</i>&nbsp;
+<b class="nc"><i>359</i>&nbsp;        if (controller.getCurrentPlayerID().equals(controller.getClientPlayerID()) &amp;&amp; cliInstance.getCurrentPhase() == GamePhase.GAME_PREPARATION) {</b>
+<b class="nc"><i>360</i>&nbsp;            cliInstance.printGamePreparationInfo();</b>
+<i>361</i>&nbsp;        }
+<b class="nc"><i>362</i>&nbsp;    }</b>
+<i>363</i>&nbsp;
+<i>364</i>&nbsp;    /**
+<i>365</i>&nbsp;     * This method handles {@link WinUpdate}  arrived from the {@link Cli}.
+<i>366</i>&nbsp;     * When a player wins the match, all the players are notified, and they can decide
+<i>367</i>&nbsp;     * to play another game or exit the game.
+<i>368</i>&nbsp;     *
+<i>369</i>&nbsp;     * @param update contains information who won the match.
+<i>370</i>&nbsp;     */
+<i>371</i>&nbsp;    @Override
+<i>372</i>&nbsp;    public void handle(WinUpdate update) {
+<b class="nc"><i>373</i>&nbsp;        cliInstance.newLine();</b>
+<i>374</i>&nbsp;
+<b class="nc"><i>375</i>&nbsp;        if (update.getWinnerPlayer().getNickname().toLowerCase().equals(controller.getClientPlayer().getNickname().toLowerCase())) {</b>
+<b class="nc"><i>376</i>&nbsp;            cliInstance.println(&quot;You Win!&quot;);</b>
+<i>377</i>&nbsp;        } else {
+<b class="nc"><i>378</i>&nbsp;            cliInstance.println(cliInstance.playerWithColor(update.getWinnerPlayer().getNickname()) + &quot; Wins!&quot;);</b>
+<i>379</i>&nbsp;        }
+<b class="nc"><i>380</i>&nbsp;        cliInstance.newLine();</b>
+<b class="nc"><i>381</i>&nbsp;        cliInstance.println(&quot;Do you want to play another match?&quot;);</b>
+<b class="nc"><i>382</i>&nbsp;        cliInstance.newLine();</b>
+<b class="nc"><i>383</i>&nbsp;    }</b>
+<i>384</i>&nbsp;
+<i>385</i>&nbsp;    /**
+<i>386</i>&nbsp;     * This method handles {@link LoseUpdate}  arrived from the {@link Cli}.
+<i>387</i>&nbsp;     * When a player lose, the motivation of this lose is notified to all the players.
+<i>388</i>&nbsp;     * In case two other players remains, player who lost is asked if he wants to continue watch
+<i>389</i>&nbsp;     * the match in which he was involved. In case only one player remains, it automatically wins.
+<i>390</i>&nbsp;     *
+<i>391</i>&nbsp;     * @param update contains information about the new turn, it means that new
+<i>392</i>&nbsp;     *               current turn needs to be updated.
+<i>393</i>&nbsp;     */
+<i>394</i>&nbsp;    @Override
+<i>395</i>&nbsp;    public void handle(LoseUpdate update) {
+<i>396</i>&nbsp;
+<b class="nc"><i>397</i>&nbsp;        boolean hasClientLost = controller.getClientPlayerID().equals(update.getLoserPlayer().getPlayerID());</b>
+<i>398</i>&nbsp;
+<b class="nc"><i>399</i>&nbsp;        String subject = hasClientLost ? &quot;you&quot; : &quot;he/she&quot;; // update.getLoserPlayer().getNickname()</b>
+<b class="nc"><i>400</i>&nbsp;        String loseCauseMsg = &quot; because &quot; + subject + &quot; can&#39;t &quot; + (update.getLoseCause() == LoseUpdate.LoseCause.CANT_MOVE ? &quot;move&quot; : &quot;build&quot;) +</b>
+<i>401</i>&nbsp;                &quot; with any Worker&quot;;
+<i>402</i>&nbsp;
+<i>403</i>&nbsp;
+<b class="nc"><i>404</i>&nbsp;        if (controller.getClientPlayerID().equals(update.getLoserPlayer().getPlayerID())) {</b>
+<b class="nc"><i>405</i>&nbsp;            cliInstance.newLine();</b>
+<b class="nc"><i>406</i>&nbsp;            cliInstance.println(Cli.toBold(&quot;You lost&quot; + loseCauseMsg + &quot;!&quot;));</b>
+<b class="nc"><i>407</i>&nbsp;            cliInstance.newLine();</b>
+<b class="nc"><i>408</i>&nbsp;            cliInstance.setCurrentGamePhase(GamePhase.MATCH_LOST);</b>
+<i>409</i>&nbsp;
+<b class="nc"><i>410</i>&nbsp;            if (update.onePlayerRemaining) {</b>
+<b class="nc"><i>411</i>&nbsp;                cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);</b>
+<i>412</i>&nbsp;            } else {
+<b class="nc"><i>413</i>&nbsp;                cliInstance.println(&quot;Do you want to continue to watch this match?&quot;);</b>
+<i>414</i>&nbsp;            }
+<b class="nc"><i>415</i>&nbsp;        } else if (update.onePlayerRemaining) {</b>
+<b class="nc"><i>416</i>&nbsp;            cliInstance.newLine();</b>
+<b class="nc"><i>417</i>&nbsp;            cliInstance.println(cliInstance.playerWithColor(update.getLoserPlayer().getNickname()) + &quot; lost&quot; + loseCauseMsg + &quot;!&quot;);</b>
+<b class="nc"><i>418</i>&nbsp;            cliInstance.println(Cli.toBold(&quot;You Win!&quot;));</b>
+<b class="nc"><i>419</i>&nbsp;            cliInstance.newLine();</b>
+<b class="nc"><i>420</i>&nbsp;            cliInstance.setCurrentGamePhase(GamePhase.MATCH_ENDED);</b>
+<i>421</i>&nbsp;        } else {
+<b class="nc"><i>422</i>&nbsp;            cliInstance.newLine();</b>
+<i>423</i>&nbsp;
+<b class="nc"><i>424</i>&nbsp;            cliInstance.println(cliInstance.playerWithColor(update.getLoserPlayer().getNickname()) + &quot; lost&quot; + loseCauseMsg + &quot;!&quot;);</b>
+<i>425</i>&nbsp;        }
+<b class="nc"><i>426</i>&nbsp;    }</b>
+<i>427</i>&nbsp;
+<i>428</i>&nbsp;    /**
+<i>429</i>&nbsp;     * This method handles {@link ServerUnreachableUpdate}  arrived from the {@link it.polimi.ingsw.network.client.UpdateListener}.
+<i>430</i>&nbsp;     * This method informs players that something went wrong during connection to server phase, and quits the game.
+<i>431</i>&nbsp;     *
+<i>432</i>&nbsp;     * @param update contains the instance of the serverError given from client-side Controller.
+<i>433</i>&nbsp;     */
+<i>434</i>&nbsp;    @Override
+<i>435</i>&nbsp;    public void handle(ServerUnreachableUpdate update) {
+<b class="nc"><i>436</i>&nbsp;        cliInstance.println(&quot;Cannot communicate to the Server, maybe it&#39;s down. Otherwise, check your connection.&quot;);</b>
+<b class="nc"><i>437</i>&nbsp;        cliInstance.println(&quot;Quitting...&quot;);</b>
+<b class="nc"><i>438</i>&nbsp;        System.exit(0);</b>
+<b class="nc"><i>439</i>&nbsp;    }</b>
+<i>440</i>&nbsp;
+<i>441</i>&nbsp;    /**
+<i>442</i>&nbsp;     * This method handles {@link DisconnectedPlayerUpdate} arrived from the {@link Cli}.
+<i>443</i>&nbsp;     * When a player logs out the match ends and all the players are informed about the end
+<i>444</i>&nbsp;     * of the match due to &quot;[playerDisconnectedNickname] disconnected!&quot;
+<i>445</i>&nbsp;     *
+<i>446</i>&nbsp;     * @param update contains the information about which player logged out.
+<i>447</i>&nbsp;     */
+<i>448</i>&nbsp;    @Override
+<i>449</i>&nbsp;    public void handle(DisconnectedPlayerUpdate update) {
+<b class="nc"><i>450</i>&nbsp;        String nicknameToShow = update.getDisconnectedPlayer().getNickname() != null ? update.getDisconnectedPlayer().getNickname() : &quot;A player&quot;;</b>
+<b class="nc"><i>451</i>&nbsp;        cliInstance.println(nicknameToShow + &quot; disconnected!&quot;);</b>
+<b class="nc"><i>452</i>&nbsp;        this.cliInstance.println(&quot;Do you want to play another match?&quot;);</b>
+<b class="nc"><i>453</i>&nbsp;        this.cliInstance.newLine();</b>
+<i>454</i>&nbsp;
+<b class="nc"><i>455</i>&nbsp;    }</b>
+<i>456</i>&nbsp;
+<i>457</i>&nbsp;    /**
+<i>458</i>&nbsp;     * This private method creates a StringBuilder containing all
+<i>459</i>&nbsp;     * the names of all possible Gods available. It is used in CHOOSE_GODS game phase,
+<i>460</i>&nbsp;     * it allows GodChooser to choose as many Gods as players involved in the match,
+<i>461</i>&nbsp;     * having all the GodsName available in console.
+<i>462</i>&nbsp;     *
+<i>463</i>&nbsp;     * @return a String that is printed only for GodChooser during CHOOSE_GODS phase.
+<i>464</i>&nbsp;     */
+<i>465</i>&nbsp;    private StringBuilder availableGods() {
+<b class="nc"><i>466</i>&nbsp;        List&lt;String&gt; godNames = View.getGodsNamesList();</b>
+<b class="nc"><i>467</i>&nbsp;        StringBuilder result = new StringBuilder(godNames.get(0).toUpperCase());</b>
+<b class="nc"><i>468</i>&nbsp;        for (int i = 1; i &lt; godNames.size(); i++) {</b>
+<b class="nc"><i>469</i>&nbsp;            result.append(&quot;, &quot;).append(godNames.get(i).toUpperCase());</b>
+<i>470</i>&nbsp;        }
+<b class="nc"><i>471</i>&nbsp;        return result;</b>
+<i>472</i>&nbsp;    }
+<i>473</i>&nbsp;
+<i>474</i>&nbsp;}
+<i>475</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

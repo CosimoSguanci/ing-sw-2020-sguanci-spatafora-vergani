@@ -1,0 +1,69 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ObjectListener</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.network</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ObjectListener (it.polimi.ingsw.network)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ObjectListener</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.network;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.IOException;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * Interface which is implemented by any component which needs to listen from Objects from a remote endpoint (on a stream).
+<i>7</i>&nbsp; * Specifically, this interface is implemented by {@link it.polimi.ingsw.network.client.UpdateListener} and {@link it.polimi.ingsw.network.server.CommandListener},
+<i>8</i>&nbsp; * which are used both on client and server.
+<i>9</i>&nbsp; *
+<i>10</i>&nbsp; * @author Cosimo Sguanci
+<i>11</i>&nbsp; */
+<i>12</i>&nbsp;public interface ObjectListener {
+<i>13</i>&nbsp;    void setIsActive(boolean active);
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    boolean isActive();
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    void forwardNotify(Object object);
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    void handleConnectionTimeoutExpired() throws IOException;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    void handleConnectionReset();
+<i>22</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

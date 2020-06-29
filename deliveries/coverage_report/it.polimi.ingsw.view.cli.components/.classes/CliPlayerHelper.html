@@ -1,0 +1,275 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CliPlayerHelper</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.cli.components</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CliPlayerHelper (it.polimi.ingsw.view.cli.components)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CliPlayerHelper</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 84)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">CliPlayerHelper$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 85)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.cli.components;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.GamePhase;
+<i>4</i>&nbsp;import it.polimi.ingsw.controller.commands.CommandType;
+<i>5</i>&nbsp;import it.polimi.ingsw.exceptions.BadCommandException;
+<i>6</i>&nbsp;import it.polimi.ingsw.exceptions.UnknownGodException;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.utils.GodsUtils;
+<i>8</i>&nbsp;import it.polimi.ingsw.view.Manual;
+<i>9</i>&nbsp;import it.polimi.ingsw.view.cli.Cli;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import java.util.Map;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;/**
+<i>14</i>&nbsp; * This class is made to make Cli user-friendly, answering
+<i>15</i>&nbsp; * to every possible help request from users.
+<i>16</i>&nbsp; * This class specify a game manual, if someone is new to the game.
+<i>17</i>&nbsp; * CommandType.RULES, CommandType.HELP, CommandType.TURN, CommandType.GOD,
+<i>18</i>&nbsp; * CommandType.BOARD, CommandType.INFO are managed in this class by
+<i>19</i>&nbsp; * printing what a user requires.
+<i>20</i>&nbsp; *
+<i>21</i>&nbsp; * @author Andrea Vergani
+<i>22</i>&nbsp; * @author Roberto Spatafora
+<i>23</i>&nbsp; */
+<i>24</i>&nbsp;public class CliPlayerHelper {
+<i>25</i>&nbsp;    private final Cli cli;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * This is the constructor of this class. At the moment of the creation
+<i>29</i>&nbsp;     * of a single instance of CliPlayerHelper the cli associated to it is set
+<i>30</i>&nbsp;     *
+<i>31</i>&nbsp;     * @param cli contains reference to the Cli associated
+<i>32</i>&nbsp;     */
+<b class="nc"><i>33</i>&nbsp;    public CliPlayerHelper(Cli cli) {</b>
+<b class="nc"><i>34</i>&nbsp;        this.cli = cli;</b>
+<b class="nc"><i>35</i>&nbsp;    }</b>
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    /**
+<i>38</i>&nbsp;     * This method prints what is requested from users, responding to command as
+<i>39</i>&nbsp;     * RULES, HELP, TURN, GOD, BOARD, INFO.
+<i>40</i>&nbsp;     *
+<i>41</i>&nbsp;     * @param splitCommand is the split string, from the entire one, received as command from user
+<i>42</i>&nbsp;     */
+<i>43</i>&nbsp;    public void helperHandle(String[] splitCommand) {
+<b class="nc"><i>44</i>&nbsp;        if (CommandType.parseCommandType(splitCommand[0]) == CommandType.RULES &amp;&amp; splitCommand.length == 1) {</b>
+<b class="nc"><i>45</i>&nbsp;            cli.newLine();</b>
+<b class="nc"><i>46</i>&nbsp;            cli.println(Cli.toBold(&quot;MANUAL&quot;));</b>
+<b class="nc"><i>47</i>&nbsp;            cli.println(Manual.manual());</b>
+<b class="nc"><i>48</i>&nbsp;        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP &amp;&amp; (splitCommand.length == 1)) {</b>
+<b class="nc"><i>49</i>&nbsp;            cli.println(&quot;If you want information about a specific game-phase: help &lt;game-phase&gt;&quot;);</b>
+<b class="nc"><i>50</i>&nbsp;            cli.println(&quot;Game-phases are: &quot; + GamePhase.toStringBuilder());</b>
+<b class="nc"><i>51</i>&nbsp;            cli.println(&quot;Help Specific-Phase Example: help initial_info&quot;);</b>
+<b class="nc"><i>52</i>&nbsp;            cli.println(&quot;Help Current-Phase Example: help &quot; + cli.getCurrentPhaseString());</b>
+<b class="nc"><i>53</i>&nbsp;            cli.println(&quot;(If a match hasn&#39;t started yet, help for current-phase may not be recognized, since there is no current phase!)&quot;);</b>
+<b class="nc"><i>54</i>&nbsp;            cli.println(&quot;help -&gt; print command list and tutorial&quot;);</b>
+<b class="nc"><i>55</i>&nbsp;            cli.println(&quot;rules -&gt; print game manual&quot;);</b>
+<b class="nc"><i>56</i>&nbsp;            cli.println(&quot;info &lt;god&gt; -&gt; get info about a god&quot;);</b>
+<b class="nc"><i>57</i>&nbsp;            cli.println(&quot;Info Example: info Apollo&quot;);</b>
+<b class="nc"><i>58</i>&nbsp;        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.HELP &amp;&amp; (splitCommand.length == 2) &amp;&amp; (GamePhase.isGamePhase(splitCommand[1]) || infoAboutGamePhase(splitCommand[1]))) {</b>
+<b class="nc"><i>59</i>&nbsp;            if (infoAboutGamePhase(splitCommand[1])) {</b>
+<b class="nc"><i>60</i>&nbsp;                helpString(cli.getCurrentPhase());</b>
+<i>61</i>&nbsp;            } else {
+<b class="nc"><i>62</i>&nbsp;                helpString(GamePhase.parseGamePhase(splitCommand[1]));</b>
+<i>63</i>&nbsp;            }
+<b class="nc"><i>64</i>&nbsp;        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.TURN &amp;&amp; splitCommand.length == 1) {</b>
+<b class="nc"><i>65</i>&nbsp;            if (cli.getCurrentPhase() == GamePhase.REAL_GAME || cli.getCurrentPhase() == GamePhase.GAME_PREPARATION) {  //it&#39;s interesting to know who is playing only in these phases</b>
+<b class="nc"><i>66</i>&nbsp;                cli.printCurrentTurn();</b>
+<i>67</i>&nbsp;            } else {
+<b class="nc"><i>68</i>&nbsp;                cli.println(&quot;It is not the right moment for this command. Retry after match started&quot;);</b>
+<i>69</i>&nbsp;            }
+<b class="nc"><i>70</i>&nbsp;        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.GOD &amp;&amp; splitCommand.length == 1) {</b>
+<b class="nc"><i>71</i>&nbsp;            if (cli.getCurrentPhase() == GamePhase.REAL_GAME || cli.getCurrentPhase() == GamePhase.GAME_PREPARATION) {  //it&#39;s interesting to know players-gods mapping only in these phases</b>
+<b class="nc"><i>72</i>&nbsp;                cli.printPlayerGods();</b>
+<i>73</i>&nbsp;            } else {
+<b class="nc"><i>74</i>&nbsp;                cli.println(&quot;It is not the right moment for this command. Retry after match started&quot;);</b>
+<i>75</i>&nbsp;            }
+<b class="nc"><i>76</i>&nbsp;        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.BOARD &amp;&amp; splitCommand.length == 1) {</b>
+<b class="nc"><i>77</i>&nbsp;            if (cli.getCurrentPhase() == GamePhase.REAL_GAME || cli.getCurrentPhase() == GamePhase.GAME_PREPARATION) {  //it&#39;s interesting to see the board only in these phases</b>
+<b class="nc"><i>78</i>&nbsp;                cli.printBoard(cli.getCurrentBoard());</b>
+<i>79</i>&nbsp;            } else {
+<b class="nc"><i>80</i>&nbsp;                cli.println(&quot;It is not the right moment for this command. Retry after match started&quot;);</b>
+<i>81</i>&nbsp;            }
+<b class="nc"><i>82</i>&nbsp;        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.INFO) {</b>
+<b class="nc"><i>83</i>&nbsp;            if (splitCommand.length != 2) {</b>
+<b class="nc"><i>84</i>&nbsp;                throw new BadCommandException();</b>
+<i>85</i>&nbsp;            }
+<b class="nc"><i>86</i>&nbsp;            String god = splitCommand[1];</b>
+<b class="nc"><i>87</i>&nbsp;            printGodInfo(god);</b>
+<b class="nc"><i>88</i>&nbsp;        } else if (CommandType.parseCommandType(splitCommand[0]) == CommandType.QUIT) {</b>
+<b class="nc"><i>89</i>&nbsp;            if (splitCommand.length &gt; 1) {</b>
+<b class="nc"><i>90</i>&nbsp;                throw new BadCommandException();</b>
+<i>91</i>&nbsp;            }
+<b class="nc"><i>92</i>&nbsp;            cli.println(&quot;Quitting...&quot;);</b>
+<b class="nc"><i>93</i>&nbsp;            System.exit(0);</b>
+<i>94</i>&nbsp;        }
+<b class="nc"><i>95</i>&nbsp;    }</b>
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    /**
+<i>98</i>&nbsp;     * This private method, prints different strings based on gamePhase
+<i>99</i>&nbsp;     *
+<i>100</i>&nbsp;     * @param gamePhase indicates the gamePhase that distinguishes which
+<i>101</i>&nbsp;     *                  string is to be printed.
+<i>102</i>&nbsp;     */
+<i>103</i>&nbsp;    private void helpString(GamePhase gamePhase) {
+<b class="nc"><i>104</i>&nbsp;        switch (gamePhase) {</b>
+<i>105</i>&nbsp;            case INITIAL_INFO:
+<b class="nc"><i>106</i>&nbsp;                cli.println(&quot;In this phase, you decide your nickname and your workers&#39; color&quot;);</b>
+<b class="nc"><i>107</i>&nbsp;                cli.println(&quot;Command format: pick &lt;nickname&gt; &lt;color&gt;&quot;);</b>
+<b class="nc"><i>108</i>&nbsp;                cli.println(&quot;Command example: pick Mike green&quot;);</b>
+<b class="nc"><i>109</i>&nbsp;                break;</b>
+<i>110</i>&nbsp;            case CHOOSE_GODS:
+<b class="nc"><i>111</i>&nbsp;                cli.println(&quot;In this phase, you select your god&quot;);</b>
+<b class="nc"><i>112</i>&nbsp;                cli.println(&quot;Command format: select &lt;god&gt;&quot;);</b>
+<b class="nc"><i>113</i>&nbsp;                cli.println(&quot;Command example: select Apollo&quot;);</b>
+<b class="nc"><i>114</i>&nbsp;                break;</b>
+<i>115</i>&nbsp;            case GAME_PREPARATION:
+<b class="nc"><i>116</i>&nbsp;                cli.println(&quot;In this phase, you place your workers on the board&quot;);</b>
+<b class="nc"><i>117</i>&nbsp;                cli.println(&quot;Command format: place w1 [letter][number] w2 [letter][number]&quot;);</b>
+<b class="nc"><i>118</i>&nbsp;                cli.println(&quot;Command example: place w1 A1 w2 B2&quot;);</b>
+<b class="nc"><i>119</i>&nbsp;                cli.println(&quot;Want to know who is playing in this moment? Type &#39;turn&#39;&quot;);</b>
+<b class="nc"><i>120</i>&nbsp;                cli.println(&quot;Don&#39;t remember the association player &lt;-&gt; god? Type &#39;god&#39;&quot;);</b>
+<b class="nc"><i>121</i>&nbsp;                cli.println(&quot;Got lost and want to see the current situation of the board? Type &#39;board&#39;&quot;);</b>
+<b class="nc"><i>122</i>&nbsp;                break;</b>
+<i>123</i>&nbsp;            case REAL_GAME:
+<b class="nc"><i>124</i>&nbsp;                cli.println(&quot;In this phase, you play!&quot;);</b>
+<b class="nc"><i>125</i>&nbsp;                cli.println(&quot;Move format: move w1/w2 [letter][number] -&gt; tries to move with the chosen Worker to the specified position&quot;);</b>
+<b class="nc"><i>126</i>&nbsp;                cli.println(&quot;Move example: move w1 A1&quot;);</b>
+<b class="nc"><i>127</i>&nbsp;                cli.println(&quot;Build format: build w1/w2 [letter][number] [optional: blockType {one, two, three, dome}] -&gt; tries to build with the chosen Worker in the specified position&quot;);</b>
+<b class="nc"><i>128</i>&nbsp;                cli.println(&quot;Build example: build w1 A2&quot;);</b>
+<b class="nc"><i>129</i>&nbsp;                cli.println(&quot;Build example: build w1 A2 dome&quot;);</b>
+<b class="nc"><i>130</i>&nbsp;                cli.println(&quot;End format: end -&gt; tries to end the current turn&quot;);</b>
+<b class="nc"><i>131</i>&nbsp;                cli.println(&quot;End example: end&quot;);</b>
+<b class="nc"><i>132</i>&nbsp;                cli.println(&quot;Want to know who is playing in this moment? Type &#39;turn&#39;&quot;);</b>
+<b class="nc"><i>133</i>&nbsp;                cli.println(&quot;Don&#39;t remember the association player &lt;-&gt; god? Type &#39;god&#39;&quot;);</b>
+<b class="nc"><i>134</i>&nbsp;                cli.println(&quot;Got lost and want to see the current situation of the board? Type &#39;board&#39;&quot;);</b>
+<b class="nc"><i>135</i>&nbsp;                break;</b>
+<i>136</i>&nbsp;            default:
+<b class="nc"><i>137</i>&nbsp;                throw new BadCommandException();</b>
+<i>138</i>&nbsp;        }
+<b class="nc"><i>139</i>&nbsp;    }</b>
+<i>140</i>&nbsp;
+<i>141</i>&nbsp;    /**
+<i>142</i>&nbsp;     * @param input should indicates a GamePhase. More general it can be a String
+<i>143</i>&nbsp;     * @return true if the string received as parameter indicates the currentGamePhase
+<i>144</i>&nbsp;     * false otherwise.
+<i>145</i>&nbsp;     */
+<i>146</i>&nbsp;    private boolean infoAboutGamePhase(String input) {
+<b class="nc"><i>147</i>&nbsp;        return input.equals(cli.getCurrentPhaseString());</b>
+<i>148</i>&nbsp;    }
+<i>149</i>&nbsp;
+<i>150</i>&nbsp;    /**
+<i>151</i>&nbsp;     * This method is used to print information about a specific requested God.
+<i>152</i>&nbsp;     *
+<i>153</i>&nbsp;     * @param god is the God whom information is requested.
+<i>154</i>&nbsp;     */
+<i>155</i>&nbsp;    private void printGodInfo(String god) {
+<i>156</i>&nbsp;        try {
+<b class="nc"><i>157</i>&nbsp;            Map&lt;String, String&gt; godInfo = GodsUtils.parseGodName(god);</b>
+<b class="nc"><i>158</i>&nbsp;            cli.println(&quot;Name: &quot; + godInfo.get(GodsUtils.GOD_NAME));</b>
+<b class="nc"><i>159</i>&nbsp;            cli.println(&quot;Description: &quot; + godInfo.get(GodsUtils.GOD_DESCRIPTION));</b>
+<b class="nc"><i>160</i>&nbsp;            cli.println(&quot;Power: &quot; + godInfo.get(GodsUtils.POWER_DESCRIPTION));</b>
+<b class="nc"><i>161</i>&nbsp;        } catch (UnknownGodException e) {</b>
+<b class="nc"><i>162</i>&nbsp;            cli.println(&quot;Unknown God Typed&quot;);</b>
+<b class="nc"><i>163</i>&nbsp;            throw new BadCommandException();</b>
+<b class="nc"><i>164</i>&nbsp;        }</b>
+<b class="nc"><i>165</i>&nbsp;    }</b>
+<i>166</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

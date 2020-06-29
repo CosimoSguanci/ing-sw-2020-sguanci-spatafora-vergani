@@ -1,0 +1,192 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: OtherInfoHandler</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.cli.components</a> ]
+</div>
+
+<h1>Coverage Summary for Class: OtherInfoHandler (it.polimi.ingsw.view.cli.components)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OtherInfoHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 27)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">OtherInfoHandler$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 28)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.cli.components;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.GamePhase;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.PrintableColor;
+<i>5</i>&nbsp;import it.polimi.ingsw.view.View;
+<i>6</i>&nbsp;import it.polimi.ingsw.view.cli.Cli;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * This class manages changes in a single match.
+<i>10</i>&nbsp; *
+<i>11</i>&nbsp; * @author Andrea Vergani
+<i>12</i>&nbsp; * @author Roberto Spatafora
+<i>13</i>&nbsp; * @author Cosimo Sguanci
+<i>14</i>&nbsp; */
+<i>15</i>&nbsp;public class OtherInfoHandler {
+<i>16</i>&nbsp;    private final Cli cli;
+<i>17</i>&nbsp;
+<b class="nc"><i>18</i>&nbsp;    private boolean soundPlayed = false;</b>
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * This is the constructor of this class. At the moment of the creation
+<i>22</i>&nbsp;     * of a single instance of OtherInfoHandler, the cli associated to it is set
+<i>23</i>&nbsp;     *
+<i>24</i>&nbsp;     * @param cli contains reference to the Cli associated
+<i>25</i>&nbsp;     */
+<b class="nc"><i>26</i>&nbsp;    public OtherInfoHandler(Cli cli) {</b>
+<b class="nc"><i>27</i>&nbsp;        this.cli = cli;</b>
+<b class="nc"><i>28</i>&nbsp;    }</b>
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    /**
+<i>31</i>&nbsp;     * This method handles tha changing in the turn.
+<i>32</i>&nbsp;     * Once a player ends his turn, current turn goes to the next player,
+<i>33</i>&nbsp;     * everyone is notified about the current turn. The current player
+<i>34</i>&nbsp;     * is also informed by a sound.
+<i>35</i>&nbsp;     */
+<i>36</i>&nbsp;    public void printCurrentTurn() {
+<b class="nc"><i>37</i>&nbsp;        String currentPlayerNickname = this.cli.getController().getCurrentPlayerNickname();</b>
+<b class="nc"><i>38</i>&nbsp;        if (currentPlayerNickname != null &amp;&amp; this.cli.playerWithColor(currentPlayerNickname) != null) {</b>
+<b class="nc"><i>39</i>&nbsp;            if (!this.cli.getController().getCurrentPlayerID().equals(this.cli.getController().getClientPlayerID())) {  //not player&#39;s turn</b>
+<b class="nc"><i>40</i>&nbsp;                soundPlayed = false;</b>
+<b class="nc"><i>41</i>&nbsp;                this.cli.println(&quot;It&#39;s &quot; + this.cli.playerWithColor(currentPlayerNickname) + &quot;&#39;s turn!&quot;);</b>
+<i>42</i>&nbsp;            } else {  //client&#39;s turn
+<b class="nc"><i>43</i>&nbsp;                this.cli.println(&quot;It&#39;s&quot; + Cli.convertColorToAnsi(this.cli.getPlayersColors().get(currentPlayerNickname)) + &quot; your &quot; + PrintableColor.RESET + &quot;turn!&quot;);</b>
+<b class="nc"><i>44</i>&nbsp;                if (!soundPlayed) {</b>
+<b class="nc"><i>45</i>&nbsp;                    View.playOnTurnSound();</b>
+<b class="nc"><i>46</i>&nbsp;                    soundPlayed = true;</b>
+<i>47</i>&nbsp;                }
+<i>48</i>&nbsp;            }
+<b class="nc"><i>49</i>&nbsp;            this.cli.newLine();</b>
+<i>50</i>&nbsp;        }
+<b class="nc"><i>51</i>&nbsp;    }</b>
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    /**
+<i>54</i>&nbsp;     * This method is useful to advise players that everything is working.
+<i>55</i>&nbsp;     * They have just to wait for other player to complete the task requested
+<i>56</i>&nbsp;     * for a specific game phase
+<i>57</i>&nbsp;     *
+<i>58</i>&nbsp;     * @param currentGamePhase contains a reference to the new phase.
+<i>59</i>&nbsp;     *                         It is given from the updateHandler.
+<i>60</i>&nbsp;     */
+<i>61</i>&nbsp;    public void printGamePhase(GamePhase currentGamePhase) {
+<b class="nc"><i>62</i>&nbsp;        switch (currentGamePhase) {</b>
+<i>63</i>&nbsp;            case INITIAL_INFO:
+<b class="nc"><i>64</i>&nbsp;                this.cli.println(&quot;Players are choosing nickname and color... Wait for your turn.&quot;);</b>
+<b class="nc"><i>65</i>&nbsp;                this.cli.newLine();</b>
+<b class="nc"><i>66</i>&nbsp;                break;</b>
+<i>67</i>&nbsp;            case CHOOSE_GODS:
+<b class="nc"><i>68</i>&nbsp;                this.cli.println(&quot;Players are choosing their gods... Wait for your turn.&quot;);</b>
+<b class="nc"><i>69</i>&nbsp;                this.cli.newLine();</b>
+<b class="nc"><i>70</i>&nbsp;                break;</b>
+<i>71</i>&nbsp;            case GAME_PREPARATION:
+<i>72</i>&nbsp;
+<b class="nc"><i>73</i>&nbsp;                if (this.cli.getController().getCurrentPlayerID().equals(this.cli.getController().getClientPlayerID())) {</b>
+<b class="nc"><i>74</i>&nbsp;                    this.cli.printGamePreparationInfo();</b>
+<i>75</i>&nbsp;                } else {
+<b class="nc"><i>76</i>&nbsp;                    this.cli.println(&quot;Players are placing their Workers... Wait for your turn.&quot;);</b>
+<b class="nc"><i>77</i>&nbsp;                    this.cli.newLine();</b>
+<i>78</i>&nbsp;                }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;                break;
+<i>81</i>&nbsp;        }
+<b class="nc"><i>82</i>&nbsp;    }</b>
+<i>83</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

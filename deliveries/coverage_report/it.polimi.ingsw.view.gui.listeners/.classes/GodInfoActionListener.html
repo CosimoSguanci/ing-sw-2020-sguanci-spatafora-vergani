@@ -1,0 +1,137 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GodInfoActionListener</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.gui.listeners</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GodInfoActionListener (it.polimi.ingsw.view.gui.listeners)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GodInfoActionListener</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.gui.listeners;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.utils.GodsUtils;
+<i>4</i>&nbsp;import it.polimi.ingsw.view.gui.ui.JGodButton;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import javax.swing.*;
+<i>7</i>&nbsp;import java.awt.*;
+<i>8</i>&nbsp;import java.awt.event.ActionEvent;
+<i>9</i>&nbsp;import java.awt.event.ActionListener;
+<i>10</i>&nbsp;import java.util.Map;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;/**
+<i>13</i>&nbsp; * This class is the listener of a button which indicates a player wants
+<i>14</i>&nbsp; * information about a specific God.
+<i>15</i>&nbsp; * Once clicked it will display a Dialog which contains info about the specified God.
+<i>16</i>&nbsp; *
+<i>17</i>&nbsp; * @author Roberto Spatafora
+<i>18</i>&nbsp; * @author Cosimo Sguanci
+<i>19</i>&nbsp; * @author Andrea Vergani
+<i>20</i>&nbsp; */
+<i>21</i>&nbsp;public class GodInfoActionListener implements ActionListener {
+<i>22</i>&nbsp;    private final Container container;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    /**
+<i>25</i>&nbsp;     * This is the creator of the class. At the moment of creation an association
+<i>26</i>&nbsp;     * between the listener and the component in which is contained is made.
+<i>27</i>&nbsp;     *
+<i>28</i>&nbsp;     * @param container contains a reference to the component which contains the lisener
+<i>29</i>&nbsp;     */
+<b class="nc"><i>30</i>&nbsp;    public GodInfoActionListener(Container container) {</b>
+<b class="nc"><i>31</i>&nbsp;        this.container = container;</b>
+<b class="nc"><i>32</i>&nbsp;    }</b>
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    /**
+<i>35</i>&nbsp;     * This method is invoked when a particular God is clicked in GodInfo component.
+<i>36</i>&nbsp;     * When a button is clicked it displays a Dialog in which is specified the power of the selected God.
+<i>37</i>&nbsp;     *
+<i>38</i>&nbsp;     * @param e contains a reference to the button clicked.
+<i>39</i>&nbsp;     */
+<i>40</i>&nbsp;    @Override
+<i>41</i>&nbsp;    public void actionPerformed(ActionEvent e) {
+<b class="nc"><i>42</i>&nbsp;        JGodButton pressedButton = (JGodButton) e.getSource();</b>
+<b class="nc"><i>43</i>&nbsp;        String god = pressedButton.getGodName();</b>
+<i>44</i>&nbsp;
+<b class="nc"><i>45</i>&nbsp;        Map&lt;String, String&gt; godInfo = GodsUtils.parseGodName(god);  //all god&#39;s information</b>
+<i>46</i>&nbsp;
+<b class="nc"><i>47</i>&nbsp;        int godIconWidth = 70;</b>
+<b class="nc"><i>48</i>&nbsp;        String godChoiceImgPath = &quot;/images/GodChoice/&quot;;</b>
+<b class="nc"><i>49</i>&nbsp;        ImageIcon godIcon = new ImageIcon(getClass().getResource(godChoiceImgPath + god + &quot;.png&quot;));  //god&#39;s image</b>
+<b class="nc"><i>50</i>&nbsp;        godIcon = new ImageIcon(godIcon.getImage().getScaledInstance(godIconWidth, -1, Image.SCALE_SMOOTH));</b>
+<i>51</i>&nbsp;
+<b class="nc"><i>52</i>&nbsp;        JOptionPane.showMessageDialog(this.container, godInfo.get(GodsUtils.POWER_DESCRIPTION), godInfo.get(GodsUtils.GOD_NAME) + &quot;, &quot; + godInfo.get(GodsUtils.GOD_DESCRIPTION), JOptionPane.INFORMATION_MESSAGE, godIcon);</b>
+<b class="nc"><i>53</i>&nbsp;    }</b>
+<i>54</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

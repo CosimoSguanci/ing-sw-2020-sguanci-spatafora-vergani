@@ -1,0 +1,184 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: UpdateListener</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.network.client</a> ]
+</div>
+
+<h1>Coverage Summary for Class: UpdateListener (it.polimi.ingsw.network.client)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UpdateListener</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14,3%
+  </span>
+  <span class="absValue">
+    (1/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    21,1%
+  </span>
+  <span class="absValue">
+    (4/ 19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.network.client;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.updates.ServerUnreachableUpdate;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.updates.Update;
+<i>5</i>&nbsp;import it.polimi.ingsw.network.ObjectListener;
+<i>6</i>&nbsp;import it.polimi.ingsw.network.ObjectListenerDelegate;
+<i>7</i>&nbsp;import it.polimi.ingsw.observer.Observable;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import java.io.IOException;
+<i>10</i>&nbsp;import java.net.Socket;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;/**
+<i>13</i>&nbsp; * This class implements the capability of listen asynchronously the client-server stream to catch {@link Update} objects sent from server to client.
+<i>14</i>&nbsp; * Composition-over-inheritance principle is applied to let this class extend Observable (the {@link it.polimi.ingsw.view.View} must
+<i>15</i>&nbsp; * observe an instance of this class in order to handle updates and notify the users about the game state), but also share code with {@link it.polimi.ingsw.network.server.CommandListener}.
+<i>16</i>&nbsp; *
+<i>17</i>&nbsp; * @author Cosimo Sguanci
+<i>18</i>&nbsp; * @see ObjectListenerDelegate
+<i>19</i>&nbsp; */
+<i>20</i>&nbsp;public class UpdateListener extends Observable&lt;Update&gt; implements ObjectListener, Runnable {
+<i>21</i>&nbsp;    /**
+<i>22</i>&nbsp;     * The delegate that actually reads the Socket to catch the objects sent from the server
+<i>23</i>&nbsp;     */
+<i>24</i>&nbsp;    private final ObjectListenerDelegate objectListenerDelegate;
+<i>25</i>&nbsp;    private final Socket socket;
+<i>26</i>&nbsp;    private boolean isActive;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    /**
+<i>29</i>&nbsp;     * This method is useful to check if the communication between client and server is still in progress.
+<i>30</i>&nbsp;     *
+<i>31</i>&nbsp;     * @return true if the socket is still open, false otherwise.
+<i>32</i>&nbsp;     */
+<i>33</i>&nbsp;    public boolean isActive() {
+<b class="nc"><i>34</i>&nbsp;        return this.isActive;</b>
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    /**
+<i>38</i>&nbsp;     * Active flag setter
+<i>39</i>&nbsp;     *
+<i>40</i>&nbsp;     * @param active the new value of the active flag
+<i>41</i>&nbsp;     */
+<i>42</i>&nbsp;    public void setIsActive(boolean active) {
+<b class="nc"><i>43</i>&nbsp;        this.isActive = active;</b>
+<b class="nc"><i>44</i>&nbsp;    }</b>
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    /**
+<i>47</i>&nbsp;     * UpdateListener constructor: a new instance of {@link ObjectListenerDelegate} is created in order
+<i>48</i>&nbsp;     * to actually listen to the stream.
+<i>49</i>&nbsp;     *
+<i>50</i>&nbsp;     * @param socket the channel between client and server.
+<i>51</i>&nbsp;     */
+<b class="fc"><i>52</i>&nbsp;    public UpdateListener(Socket socket) {</b>
+<b class="fc"><i>53</i>&nbsp;        this.socket = socket;</b>
+<b class="fc"><i>54</i>&nbsp;        objectListenerDelegate = new ObjectListenerDelegate(this.socket);</b>
+<b class="fc"><i>55</i>&nbsp;    }</b>
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    /**
+<i>58</i>&nbsp;     * Classic overridden version of run method (from {@link Runnable} interface). Note that
+<i>59</i>&nbsp;     * the channel is listen on a separate thread (the new Thread is launched at application startup).
+<i>60</i>&nbsp;     */
+<i>61</i>&nbsp;    @Override
+<i>62</i>&nbsp;    public void run() {
+<b class="nc"><i>63</i>&nbsp;        this.isActive = true;</b>
+<b class="nc"><i>64</i>&nbsp;        objectListenerDelegate.listen(this);</b>
+<b class="nc"><i>65</i>&nbsp;    }</b>
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    /**
+<i>68</i>&nbsp;     * Forwards notiy messages from {@link ObjectListenerDelegate} to the {@link it.polimi.ingsw.view.View}
+<i>69</i>&nbsp;     *
+<i>70</i>&nbsp;     * @param update the {@link Update} received from the server
+<i>71</i>&nbsp;     */
+<i>72</i>&nbsp;    @Override
+<i>73</i>&nbsp;    public void forwardNotify(Object update) {
+<b class="nc"><i>74</i>&nbsp;        if (update instanceof Update) {</b>
+<b class="nc"><i>75</i>&nbsp;            notify((Update) update);</b>
+<i>76</i>&nbsp;        }
+<b class="nc"><i>77</i>&nbsp;    }</b>
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    /**
+<i>80</i>&nbsp;     * Callback called when the timeout for socket read is expired. If setIsActive(false) was called, close the relative socket.
+<i>81</i>&nbsp;     *
+<i>82</i>&nbsp;     * @throws IOException if socket.close() encounters an error.
+<i>83</i>&nbsp;     */
+<i>84</i>&nbsp;    @Override
+<i>85</i>&nbsp;    public void handleConnectionTimeoutExpired() throws IOException {
+<b class="nc"><i>86</i>&nbsp;        if (!isActive()) {</b>
+<b class="nc"><i>87</i>&nbsp;            socket.close();</b>
+<i>88</i>&nbsp;        }
+<b class="nc"><i>89</i>&nbsp;    }</b>
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;    /**
+<i>92</i>&nbsp;     * Callback called when the communication between client and server is interrupted. It notifies the {@link it.polimi.ingsw.view.View}, which shows
+<i>93</i>&nbsp;     * an error message to the user.
+<i>94</i>&nbsp;     */
+<i>95</i>&nbsp;    @Override
+<i>96</i>&nbsp;    public void handleConnectionReset() {
+<b class="nc"><i>97</i>&nbsp;        ServerUnreachableUpdate serverUnreachableUpdate = new ServerUnreachableUpdate();</b>
+<b class="nc"><i>98</i>&nbsp;        notify(serverUnreachableUpdate); // notify the view</b>
+<b class="nc"><i>99</i>&nbsp;    }</b>
+<i>100</i>&nbsp;}
+<i>101</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

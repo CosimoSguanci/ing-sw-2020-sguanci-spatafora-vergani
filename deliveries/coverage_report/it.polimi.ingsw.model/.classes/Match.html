@@ -1,0 +1,241 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Match</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Match (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Match</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (30/ 30)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.GamePhase;
+<i>4</i>&nbsp;import it.polimi.ingsw.exceptions.AlreadyInsidePlayerException;
+<i>5</i>&nbsp;import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import java.util.ArrayList;
+<i>8</i>&nbsp;import java.util.List;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;/**
+<i>12</i>&nbsp; * Match is the class that contains general information about current game, such as
+<i>13</i>&nbsp; * reference to players in it, the board (made up of cells where workers can move
+<i>14</i>&nbsp; * and build), ...
+<i>15</i>&nbsp; * This class sets up all data needed before starting the game, then controls some
+<i>16</i>&nbsp; * aspects such as the rotation of turns, the total number of players involved in the
+<i>17</i>&nbsp; * match and the possibility to do (or not) some moves. In this context, it is important
+<i>18</i>&nbsp; * to specify canMove-parameter&#39;s role: it is a flag connected with Athena&#39;s power, so
+<i>19</i>&nbsp; * its value depends on moves by the player owning this God (if there is one).
+<i>20</i>&nbsp; *
+<i>21</i>&nbsp; * @author Andrea Mario Vergani
+<i>22</i>&nbsp; * @author Cosimo Sguanci
+<i>23</i>&nbsp; */
+<i>24</i>&nbsp;public class Match {
+<i>25</i>&nbsp;    private final ArrayList&lt;Player&gt; players;
+<i>26</i>&nbsp;    private final Board matchBoard;
+<i>27</i>&nbsp;    private int turn;
+<i>28</i>&nbsp;    private final int playersNumber;
+<i>29</i>&nbsp;    private GamePhase currentGamePhase;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    /**
+<i>32</i>&nbsp;     * The constructor creates an instance of Match class starting from the number of
+<i>33</i>&nbsp;     * players who are going to join the match. So, it sets the right number of players
+<i>34</i>&nbsp;     * and some other general things about moves (such as attributes &#39;turn&#39; and &#39;canMove&#39;
+<i>35</i>&nbsp;     * &lt;p&gt;
+<i>36</i>&nbsp;     *
+<i>37</i>&nbsp;     * @param playersNumber number of total players who will join the match
+<i>38</i>&nbsp;     * @throws it.polimi.ingsw.exceptions.InvalidPlayerNumberException when the number of players is not 2 or 3 (game option)     * @param playersNumber
+<i>39</i>&nbsp;     */
+<b class="fc"><i>40</i>&nbsp;    public Match(int playersNumber) throws InvalidPlayerNumberException {</b>
+<b class="fc"><i>41</i>&nbsp;        if (playersNumber != 2 &amp;&amp; playersNumber != 3) throw new InvalidPlayerNumberException();</b>
+<b class="fc"><i>42</i>&nbsp;        this.players = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>43</i>&nbsp;        this.matchBoard = new Board();</b>
+<b class="fc"><i>44</i>&nbsp;        this.turn = 0;</b>
+<b class="fc"><i>45</i>&nbsp;        this.playersNumber = playersNumber;</b>
+<b class="fc"><i>46</i>&nbsp;        this.currentGamePhase = GamePhase.firstPhase();</b>
+<b class="fc"><i>47</i>&nbsp;    }</b>
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    /**
+<i>51</i>&nbsp;     * The method adds a player to the list of the ones joining the match. It is called
+<i>52</i>&nbsp;     * when a new player wants to enter a game room
+<i>53</i>&nbsp;     *
+<i>54</i>&nbsp;     * @param p the player who wants to join the match
+<i>55</i>&nbsp;     * @throws InvalidPlayerNumberException if there is no possibility for the player to join, because the selected total number has already been reached
+<i>56</i>&nbsp;     * @throws AlreadyInsidePlayerException if the Player passed as parameter has already been added to the match
+<i>57</i>&nbsp;     */
+<i>58</i>&nbsp;    public void addPlayer(Player p) throws InvalidPlayerNumberException, AlreadyInsidePlayerException {
+<b class="fc"><i>59</i>&nbsp;        if (players.size() &gt;= playersNumber) throw new InvalidPlayerNumberException();</b>
+<b class="fc"><i>60</i>&nbsp;        if (players.contains(p)) throw new AlreadyInsidePlayerException();</b>
+<b class="fc"><i>61</i>&nbsp;        players.add(p);</b>
+<b class="fc"><i>62</i>&nbsp;    }</b>
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    /**
+<i>65</i>&nbsp;     * The method removes the player from the match, if he/she is present. Otherwise,
+<i>66</i>&nbsp;     * nothing happens
+<i>67</i>&nbsp;     *
+<i>68</i>&nbsp;     * @param p the player to be removed from the match
+<i>69</i>&nbsp;     */
+<i>70</i>&nbsp;    public void removePlayer(Player p) {
+<b class="fc"><i>71</i>&nbsp;        int position = players.indexOf(p);</b>
+<b class="fc"><i>72</i>&nbsp;        if (position &gt;= 0) {</b>
+<b class="fc"><i>73</i>&nbsp;            players.remove(position);</b>
+<b class="fc"><i>74</i>&nbsp;            players.trimToSize();</b>
+<i>75</i>&nbsp;            // when current player is removed, turn goes directly to the next player, without calling nextTurn()
+<b class="fc"><i>76</i>&nbsp;            if (position == players.size()) {</b>
+<b class="fc"><i>77</i>&nbsp;                turn = 0;</b>
+<i>78</i>&nbsp;            }
+<i>79</i>&nbsp;        }
+<b class="fc"><i>80</i>&nbsp;    }</b>
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;    /**
+<i>83</i>&nbsp;     * Match players list getter
+<i>84</i>&nbsp;     *
+<i>85</i>&nbsp;     * @return the list of the currently playing users.
+<i>86</i>&nbsp;     */
+<i>87</i>&nbsp;    public List&lt;Player&gt; getPlayers() {
+<b class="fc"><i>88</i>&nbsp;        return this.players;</b>
+<i>89</i>&nbsp;    }
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;    /**
+<i>92</i>&nbsp;     * Players number getter
+<i>93</i>&nbsp;     *
+<i>94</i>&nbsp;     * @return the specific Players number (2 or 3 in this version) chosen for this match.
+<i>95</i>&nbsp;     */
+<i>96</i>&nbsp;    public int getPlayersNumber() {
+<b class="fc"><i>97</i>&nbsp;        return this.playersNumber;</b>
+<i>98</i>&nbsp;    }
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;    /**
+<i>102</i>&nbsp;     * The method establishes who is the next player to play the turn. As seen, &#39;turn&#39;
+<i>103</i>&nbsp;     * attribute decides who takes the current turn, so the the attribute&#39;s value is
+<i>104</i>&nbsp;     * the playing person&#39;s index in the ArrayList of players.
+<i>105</i>&nbsp;     * This method is an automatic setter of &#39;turn&#39; parameter, based on the concept of
+<i>106</i>&nbsp;     * an established order that must be repeated until a player wins the match
+<i>107</i>&nbsp;     */
+<i>108</i>&nbsp;    public void nextTurn() {
+<b class="fc"><i>109</i>&nbsp;        this.turn = (this.turn + 1) % players.size();</b>
+<b class="fc"><i>110</i>&nbsp;    }</b>
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    /**
+<i>113</i>&nbsp;     * Initial Turn setter
+<i>114</i>&nbsp;     *
+<i>115</i>&nbsp;     * @param initialTurn the initial turn for this match
+<i>116</i>&nbsp;     */
+<i>117</i>&nbsp;    public void setInitialTurn(int initialTurn) {
+<b class="fc"><i>118</i>&nbsp;        this.turn = initialTurn;</b>
+<b class="fc"><i>119</i>&nbsp;    }</b>
+<i>120</i>&nbsp;
+<i>121</i>&nbsp;    /**
+<i>122</i>&nbsp;     * The method returns the player who has the right to play his (current) turn
+<i>123</i>&nbsp;     *
+<i>124</i>&nbsp;     * @return player who is playing / going to play
+<i>125</i>&nbsp;     */
+<i>126</i>&nbsp;    public Player getCurrentPlayer() {
+<b class="fc"><i>127</i>&nbsp;        return this.players.get(turn);</b>
+<i>128</i>&nbsp;    }
+<i>129</i>&nbsp;
+<i>130</i>&nbsp;
+<i>131</i>&nbsp;    /**
+<i>132</i>&nbsp;     * The method returns corresponding game board of this specific match
+<i>133</i>&nbsp;     *
+<i>134</i>&nbsp;     * @return the board that is being used for this match
+<i>135</i>&nbsp;     */
+<i>136</i>&nbsp;    public Board getMatchBoard() {
+<b class="fc"><i>137</i>&nbsp;        return this.matchBoard;</b>
+<i>138</i>&nbsp;    }
+<i>139</i>&nbsp;
+<i>140</i>&nbsp;    /**
+<i>141</i>&nbsp;     * The method is the getter for current GamePhase of the match.
+<i>142</i>&nbsp;     *
+<i>143</i>&nbsp;     * @return current GamePhase
+<i>144</i>&nbsp;     */
+<i>145</i>&nbsp;    public GamePhase getCurrentGamePhase() {
+<b class="fc"><i>146</i>&nbsp;        return this.currentGamePhase;</b>
+<i>147</i>&nbsp;    }
+<i>148</i>&nbsp;
+<i>149</i>&nbsp;    /**
+<i>150</i>&nbsp;     * This method performs a chronological switch of GamePhase. For example,
+<i>151</i>&nbsp;     * Santorini&#39;s manual says that, after choosing gods, every player must
+<i>152</i>&nbsp;     * place his/her workers on the board: these situations correspond
+<i>153</i>&nbsp;     * to different GamePhases, and after choosing gods the switch takes place.
+<i>154</i>&nbsp;     */
+<i>155</i>&nbsp;    public void nextGamePhase() {
+<b class="fc"><i>156</i>&nbsp;        this.currentGamePhase = GamePhase.nextGamePhase(this.currentGamePhase);</b>
+<b class="fc"><i>157</i>&nbsp;    }</b>
+<i>158</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,179 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Hephaestus</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.gods</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Hephaestus (it.polimi.ingsw.model.gods)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Hephaestus</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/ 17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.gods;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.BlockType;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.Cell;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.Player;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.Worker;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * This class implements the Hephaestus strategy used by the {@link Player} who chose the powers of this God.
+<i>10</i>&nbsp; * Specifically, Hephaestus allows the selected {@link Worker} to build on one additional block (not a dome)
+<i>11</i>&nbsp; * on top of the first block built. For this purpose a {@link MultipleBuildDelegate} is used to perform 2 build phases,
+<i>12</i>&nbsp; * while a {@link PreviousCellNeededDelegate} is used to check that the second build is done on the same previous
+<i>13</i>&nbsp; * buildCell.
+<i>14</i>&nbsp; *
+<i>15</i>&nbsp; * @author Cosimo Sguanci
+<i>16</i>&nbsp; */
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;public class Hephaestus extends GodStrategy {
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    public static final String NAME = &quot;Hephaestus&quot;;
+<i>21</i>&nbsp;    public static final String DESCRIPTION = &quot;God of Blacksmiths&quot;;
+<i>22</i>&nbsp;    public static final String POWER_DESCRIPTION = &quot;Your Build: Your Worker may build one additional block (not dome) on top of your first block&quot;;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    /**
+<i>25</i>&nbsp;     * Max number of levels buildable by Hephaestus in the same turn.
+<i>26</i>&nbsp;     */
+<b class="fc"><i>27</i>&nbsp;    final int HEPHAESTUS_MAX_BUILD_NUM = 2;</b>
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    /**
+<i>30</i>&nbsp;     * Delegate used to handle the fact that Hephaestus can build more than one time in the same turn.
+<i>31</i>&nbsp;     */
+<i>32</i>&nbsp;    private final MultipleBuildDelegate multipleBuildDelegate;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    /**
+<i>35</i>&nbsp;     * Used to save the previous cell where Hephaestus built a level.
+<i>36</i>&nbsp;     */
+<i>37</i>&nbsp;    private final PreviousCellNeededDelegate previousCellNeededDelegate;
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    public Hephaestus() {
+<b class="fc"><i>41</i>&nbsp;        super(NAME, DESCRIPTION, POWER_DESCRIPTION);</b>
+<b class="fc"><i>42</i>&nbsp;        multipleBuildDelegate = new MultipleBuildDelegate(HEPHAESTUS_MAX_BUILD_NUM);</b>
+<b class="fc"><i>43</i>&nbsp;        previousCellNeededDelegate = new PreviousCellNeededDelegate();</b>
+<b class="fc"><i>44</i>&nbsp;    }</b>
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    /**
+<i>47</i>&nbsp;     * If it&#39;s the first building, this method calls the superclass (standard) checkBuild. Otherwise,
+<i>48</i>&nbsp;     * if the player is trying to perform the second build action, the check is delegated to the {@link MultipleBuildDelegate},
+<i>49</i>&nbsp;     * and additional controls are performed to ensure that the new buildCell is equal to the first build Cell
+<i>50</i>&nbsp;     * and that the second level built it&#39;s not a Dome.
+<i>51</i>&nbsp;     *
+<i>52</i>&nbsp;     * @param worker    the worker who want to build a new level.
+<i>53</i>&nbsp;     * @param buildCell the cell in which the Player want to build a new level.
+<i>54</i>&nbsp;     * @return true if the Build passed as parameter can be performed, false otherwise.
+<i>55</i>&nbsp;     * @see GodStrategy#checkBuild(Worker, Cell, BlockType)
+<i>56</i>&nbsp;     * @see MultipleBuildDelegate#checkBuild(Worker, Cell, BlockType, Worker)
+<i>57</i>&nbsp;     */
+<i>58</i>&nbsp;    @Override
+<i>59</i>&nbsp;    public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+<i>60</i>&nbsp;
+<b class="fc"><i>61</i>&nbsp;        if (multipleBuildDelegate.getBuildCount() == 0) {</b>
+<b class="fc"><i>62</i>&nbsp;            return super.checkBuild(worker, buildCell, buildCellBlockType);</b>
+<i>63</i>&nbsp;        }
+<i>64</i>&nbsp;
+<b class="fc"><i>65</i>&nbsp;        Cell prevBuildCell = previousCellNeededDelegate.getPreviousCell();</b>
+<i>66</i>&nbsp;
+<b class="fc"><i>67</i>&nbsp;        return multipleBuildDelegate.checkBuild(worker, buildCell, buildCellBlockType, selectedWorker) &amp;&amp; buildCell.equals(prevBuildCell) &amp;&amp; buildCellBlockType != BlockType.DOME &amp;&amp; prevBuildCell.getLevel() != BlockType.LEVEL_THREE;</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    /**
+<i>71</i>&nbsp;     * Decorates the standard executeBuild increasing the build count of delegate and saving a reference to the last buildCell.
+<i>72</i>&nbsp;     *
+<i>73</i>&nbsp;     * @param worker    the worker who want to build a new level.
+<i>74</i>&nbsp;     * @param buildCell the cell in which the Player want to build a new level.
+<i>75</i>&nbsp;     * @see GodStrategy#executeBuild(Worker, Cell, BlockType)
+<i>76</i>&nbsp;     */
+<i>77</i>&nbsp;    @Override
+<i>78</i>&nbsp;    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+<b class="fc"><i>79</i>&nbsp;        super.executeBuild(worker, buildCell, buildCellBlockType);</b>
+<b class="fc"><i>80</i>&nbsp;        multipleBuildDelegate.increaseBuildCount();</b>
+<b class="fc"><i>81</i>&nbsp;        previousCellNeededDelegate.setPreviousCell(buildCell);</b>
+<b class="fc"><i>82</i>&nbsp;    }</b>
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;    /**
+<i>85</i>&nbsp;     * Calls superclass endTurn and resets delegates properties.
+<i>86</i>&nbsp;     *
+<i>87</i>&nbsp;     * @param player The player whose turn is ending.
+<i>88</i>&nbsp;     * @see GodStrategy#endPlayerTurn(Player)
+<i>89</i>&nbsp;     */
+<i>90</i>&nbsp;    @Override
+<i>91</i>&nbsp;    public void endPlayerTurn(Player player) {
+<b class="fc"><i>92</i>&nbsp;        super.endPlayerTurn(player);</b>
+<b class="fc"><i>93</i>&nbsp;        multipleBuildDelegate.reinitializeBuildCount();</b>
+<b class="fc"><i>94</i>&nbsp;        previousCellNeededDelegate.reinitializeCell();</b>
+<b class="fc"><i>95</i>&nbsp;    }</b>
+<i>96</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

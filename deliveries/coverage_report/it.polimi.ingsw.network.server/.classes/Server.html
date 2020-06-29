@@ -1,0 +1,347 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Server</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.network.server</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Server (it.polimi.ingsw.network.server)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Server</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 69)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.network.server;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.Controller;
+<i>4</i>&nbsp;import it.polimi.ingsw.exceptions.InvalidPlayerNumberException;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.Match;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.Model;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.Player;
+<i>8</i>&nbsp;import it.polimi.ingsw.network.CustomThreadPoolExecutor;
+<i>9</i>&nbsp;import it.polimi.ingsw.observer.Observer;
+<i>10</i>&nbsp;import it.polimi.ingsw.view.RemoteView;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import java.io.IOException;
+<i>13</i>&nbsp;import java.net.ServerSocket;
+<i>14</i>&nbsp;import java.net.Socket;
+<i>15</i>&nbsp;import java.util.*;
+<i>16</i>&nbsp;import java.util.concurrent.ExecutorService;
+<i>17</i>&nbsp;import java.util.stream.Collectors;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;/**
+<i>21</i>&nbsp; * Server class handles all what is related to network for server-side. In particular, this project
+<i>22</i>&nbsp; * is based on a distributed client-server approach through socket: server is where Model and Controller (MVC
+<i>23</i>&nbsp; * pattern) reside, so it is game&#39;s handler in all the senses; it waits for clients&#39; connections on a specific
+<i>24</i>&nbsp; * PORT, organizes matches when player number has been reached and, once a match started, shares
+<i>25</i>&nbsp; * appropriate objects with clients.
+<i>26</i>&nbsp; * Server can handle multiple matches at the same time.
+<i>27</i>&nbsp; * Network connection between server and client is based on TCP.
+<i>28</i>&nbsp; *
+<i>29</i>&nbsp; * @author Andrea Mario Vergani
+<i>30</i>&nbsp; * @author Cosimo Sguanci
+<i>31</i>&nbsp; * @author Roberto Spatafora
+<i>32</i>&nbsp; */
+<i>33</i>&nbsp;public class Server implements Observer&lt;Controller&gt; {
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    public final static int TIMEOUT_MS = 2000;
+<i>36</i>&nbsp;    public final static String PING_MSG = &quot;PING&quot;;
+<i>37</i>&nbsp;    private static final int PORT = 12345;
+<i>38</i>&nbsp;    private static final int MAX_PLAYERS_NUM = 3;
+<i>39</i>&nbsp;    private static boolean isActive;
+<i>40</i>&nbsp;    private final ServerSocket serverSocket;
+<i>41</i>&nbsp;    /**
+<i>42</i>&nbsp;     * Cached ThreadPool without idle threads termination
+<i>43</i>&nbsp;     */
+<b class="nc"><i>44</i>&nbsp;    private final ExecutorService executor = CustomThreadPoolExecutor.createNew();</b>
+<i>45</i>&nbsp;
+<b class="nc"><i>46</i>&nbsp;    private final Set&lt;ClientHandler&gt; waitingConnections = new HashSet&lt;&gt;();</b>
+<b class="nc"><i>47</i>&nbsp;    private final Set&lt;ClientHandler&gt; playingConnections = new HashSet&lt;&gt;();</b>
+<b class="nc"><i>48</i>&nbsp;    private final Map&lt;Controller, Set&lt;ClientHandler&gt;&gt; controllerClientsMap = new HashMap&lt;&gt;();</b>
+<i>49</i>&nbsp;
+<b class="nc"><i>50</i>&nbsp;    private final Set&lt;Socket&gt; pingWaitingList = new HashSet&lt;&gt;();</b>
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    /**
+<i>53</i>&nbsp;     * The constructor creates a server-side socket on the given port (class attribute). Server waits for
+<i>54</i>&nbsp;     * connections coming from clients.
+<i>55</i>&nbsp;     *
+<i>56</i>&nbsp;     * @throws IOException if an I/O error occurs when opening the socket
+<i>57</i>&nbsp;     */
+<b class="nc"><i>58</i>&nbsp;    public Server() throws IOException {</b>
+<b class="nc"><i>59</i>&nbsp;        this.serverSocket = new ServerSocket(PORT);</b>
+<b class="nc"><i>60</i>&nbsp;    }</b>
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    /**
+<i>63</i>&nbsp;     * The method gives information about server socket&#39;s availability.
+<i>64</i>&nbsp;     *
+<i>65</i>&nbsp;     * @return true if server is active (available for connection), false otherwise
+<i>66</i>&nbsp;     */
+<i>67</i>&nbsp;    public static boolean isActive() {
+<b class="nc"><i>68</i>&nbsp;        return isActive;</b>
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    /**
+<i>72</i>&nbsp;     * This method is the setter for isActive attribute, which keeps information about server socket&#39;s
+<i>73</i>&nbsp;     * availability.
+<i>74</i>&nbsp;     *
+<i>75</i>&nbsp;     * @param active true to set that Server is active (available), false otherwise
+<i>76</i>&nbsp;     */
+<i>77</i>&nbsp;    public static void setIsActive(boolean active) {
+<b class="nc"><i>78</i>&nbsp;        isActive = active;</b>
+<b class="nc"><i>79</i>&nbsp;    }</b>
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    /**
+<i>82</i>&nbsp;     * The method checks if a player-number (for a match) received by client is valid or not. Remember that
+<i>83</i>&nbsp;     * Santorini is an online game for 2 or 3 players; opponent&#39;s number can be decided during connection to
+<i>84</i>&nbsp;     * a match.
+<i>85</i>&nbsp;     *
+<i>86</i>&nbsp;     * @param playersNum match&#39;s number of players (selected client-side)
+<i>87</i>&nbsp;     * @return true if parameter is a valid player number for an online match; false otherwise
+<i>88</i>&nbsp;     */
+<i>89</i>&nbsp;    public static boolean isValidPlayerNumber(int playersNum) {
+<b class="nc"><i>90</i>&nbsp;        return playersNum &gt; 1 &amp;&amp; playersNum &lt;= MAX_PLAYERS_NUM;</b>
+<i>91</i>&nbsp;    }
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;    /**
+<i>94</i>&nbsp;     * The method returns all client handlers that are currently waiting for a specific kind of match (2-players
+<i>95</i>&nbsp;     * or 3-players match).
+<i>96</i>&nbsp;     *
+<i>97</i>&nbsp;     * @param playersNum player-number that identifies the kind of match
+<i>98</i>&nbsp;     * @return a set of all client handlers waiting for the given kind of match
+<i>99</i>&nbsp;     */
+<i>100</i>&nbsp;    private Set&lt;ClientHandler&gt; getSuitableConnectionsForMatch(int playersNum) {
+<b class="nc"><i>101</i>&nbsp;        return this.waitingConnections.stream().filter((connection) -&gt; connection.playersNum == playersNum).collect(Collectors.toSet());</b>
+<i>102</i>&nbsp;    }
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;    /**
+<i>106</i>&nbsp;     * The method handles decisions about wait or start a match, based on the number of players that are waiting.
+<i>107</i>&nbsp;     * A 2-players match can start only when there are two players waiting for it; so, the first player waits
+<i>108</i>&nbsp;     * until a second one connects to server and selects he/she wants to play a 2-players match. Same for a
+<i>109</i>&nbsp;     * 3-players match, where the first two players wait and, as soon as a third player connects, the match starts.
+<i>110</i>&nbsp;     * Server supports multiple matches, so if (for example) a 3-player match is active and three other players
+<i>111</i>&nbsp;     * want to start another match, they can.
+<i>112</i>&nbsp;     * Handling 2-players and 3-players matches is separated, in the sense that a player who wants to play a
+<i>113</i>&nbsp;     * 2-players match will not start until another player wants to play the same kind of match (while if another
+<i>114</i>&nbsp;     * player selects 3-players match, no match will immediately start).
+<i>115</i>&nbsp;     * If correct player-number for a match is reached, the match starts.
+<i>116</i>&nbsp;     *
+<i>117</i>&nbsp;     * @param newClientHandler object that handles connection between new client in the lobby and server
+<i>118</i>&nbsp;     * @throws InvalidPlayerNumberException if player-number selected client-side is not valid
+<i>119</i>&nbsp;     */
+<i>120</i>&nbsp;    public synchronized void lobby(ClientHandler newClientHandler) {
+<i>121</i>&nbsp;
+<b class="nc"><i>122</i>&nbsp;        if (!isValidPlayerNumber(newClientHandler.playersNum)) {</b>
+<b class="nc"><i>123</i>&nbsp;            throw new InvalidPlayerNumberException();</b>
+<i>124</i>&nbsp;        }
+<i>125</i>&nbsp;
+<b class="nc"><i>126</i>&nbsp;        int playersNum = newClientHandler.playersNum;</b>
+<i>127</i>&nbsp;
+<b class="nc"><i>128</i>&nbsp;        this.waitingConnections.add(newClientHandler);</b>
+<i>129</i>&nbsp;
+<b class="nc"><i>130</i>&nbsp;        Set&lt;ClientHandler&gt; suitableConnections = getSuitableConnectionsForMatch(playersNum);</b>
+<i>131</i>&nbsp;
+<b class="nc"><i>132</i>&nbsp;        if (suitableConnections.size() == playersNum) {</b>
+<i>133</i>&nbsp;
+<b class="nc"><i>134</i>&nbsp;            Match match = new Match(playersNum);</b>
+<b class="nc"><i>135</i>&nbsp;            Model model = new Model(match);</b>
+<b class="nc"><i>136</i>&nbsp;            Controller controller = new Controller(model);</b>
+<i>137</i>&nbsp;
+<b class="nc"><i>138</i>&nbsp;            for (ClientHandler clientHandler : suitableConnections) {</b>
+<b class="nc"><i>139</i>&nbsp;                Player player = new Player(clientHandler.clientID, model, match);</b>
+<b class="nc"><i>140</i>&nbsp;                this.playingConnections.add(clientHandler);</b>
+<b class="nc"><i>141</i>&nbsp;                this.waitingConnections.remove(clientHandler);</b>
+<b class="nc"><i>142</i>&nbsp;                match.addPlayer(player);</b>
+<b class="nc"><i>143</i>&nbsp;                RemoteView remoteView = new RemoteView(clientHandler);</b>
+<b class="nc"><i>144</i>&nbsp;                model.addObserver(remoteView);</b>
+<b class="nc"><i>145</i>&nbsp;                remoteView.addObserver(controller);</b>
+<i>146</i>&nbsp;
+<b class="nc"><i>147</i>&nbsp;                clientHandler.clientSocket.getRemoteSocketAddress();</b>
+<b class="nc"><i>148</i>&nbsp;            }</b>
+<i>149</i>&nbsp;
+<i>150</i>&nbsp;
+<b class="nc"><i>151</i>&nbsp;            this.controllerClientsMap.put(controller, suitableConnections);</b>
+<i>152</i>&nbsp;
+<b class="nc"><i>153</i>&nbsp;            controller.initialPhase();</b>
+<i>154</i>&nbsp;        }
+<b class="nc"><i>155</i>&nbsp;    }</b>
+<i>156</i>&nbsp;
+<i>157</i>&nbsp;    /**
+<i>158</i>&nbsp;     * The method makes server active (effectively); through this, server is able to accept connections coming
+<i>159</i>&nbsp;     * from clients. A client-handler is created and executed for every client connected to server.
+<i>160</i>&nbsp;     */
+<i>161</i>&nbsp;    public void runServer() {
+<b class="nc"><i>162</i>&nbsp;        System.out.println(&quot;Waiting for incoming connections...&quot;);</b>
+<b class="nc"><i>163</i>&nbsp;        while (isActive()) {</b>
+<i>164</i>&nbsp;            try {
+<b class="nc"><i>165</i>&nbsp;                Socket socket = serverSocket.accept();</b>
+<b class="nc"><i>166</i>&nbsp;                System.out.println(&quot;Player connected &quot; + socket.getInetAddress() + &quot; : &quot; + socket.getPort());</b>
+<b class="nc"><i>167</i>&nbsp;                ClientHandler clientHandler = new ClientHandler(this, socket);</b>
+<b class="nc"><i>168</i>&nbsp;                this.executor.execute(clientHandler);</b>
+<b class="nc"><i>169</i>&nbsp;            } catch (IOException e) {</b>
+<b class="nc"><i>170</i>&nbsp;                System.err.println(&quot;Connection error&quot;);</b>
+<b class="nc"><i>171</i>&nbsp;            }</b>
+<i>172</i>&nbsp;        }
+<b class="nc"><i>173</i>&nbsp;    }</b>
+<i>174</i>&nbsp;
+<i>175</i>&nbsp;    /**
+<i>176</i>&nbsp;     * Server must always control that all connected clients are always active, so there are no connection errors
+<i>177</i>&nbsp;     * or something like this. To do that, a ping-message mechanism is performed: pings are continuously sent
+<i>178</i>&nbsp;     * only by clients, while server waits for them.
+<i>179</i>&nbsp;     * The method adds an active client to ping waiting list; from this moment on, client&#39;s connection is checked
+<i>180</i>&nbsp;     * by server, and if a ping-message does not arrive client is considered to have disconnected.
+<i>181</i>&nbsp;     *
+<i>182</i>&nbsp;     * @param socket socket on which client must send ping-messages
+<i>183</i>&nbsp;     */
+<i>184</i>&nbsp;    public synchronized void addToPingWaitingList(Socket socket) {
+<b class="nc"><i>185</i>&nbsp;        this.pingWaitingList.add(socket);</b>
+<b class="nc"><i>186</i>&nbsp;    }</b>
+<i>187</i>&nbsp;
+<i>188</i>&nbsp;    /**
+<i>189</i>&nbsp;     * Server must always control that all connected clients are always active, so there are no connection errors
+<i>190</i>&nbsp;     * or something like this. To do that, a ping-message mechanism is performed: pings are continuously sent
+<i>191</i>&nbsp;     * only by clients, while server waits for them.
+<i>192</i>&nbsp;     * The method removes a client from ping waiting list.
+<i>193</i>&nbsp;     *
+<i>194</i>&nbsp;     * @param socket socket on which client was sending ping-messages
+<i>195</i>&nbsp;     */
+<i>196</i>&nbsp;    public synchronized void removeFromPingWaitingList(Socket socket) {
+<b class="nc"><i>197</i>&nbsp;        this.pingWaitingList.remove(socket);</b>
+<b class="nc"><i>198</i>&nbsp;    }</b>
+<i>199</i>&nbsp;
+<i>200</i>&nbsp;    /**
+<i>201</i>&nbsp;     * Server must always control that all connected clients are always active, so there are no connection errors
+<i>202</i>&nbsp;     * or something like this. To do that, a ping-message mechanism is performed: pings are continuously sent
+<i>203</i>&nbsp;     * only by clients, while server waits for them.
+<i>204</i>&nbsp;     * The method tells if server is currently waiting for a ping-message on the given socket.
+<i>205</i>&nbsp;     *
+<i>206</i>&nbsp;     * @param socket socket on which client sends ping-messages
+<i>207</i>&nbsp;     * @return true if server is waiting for ping-message on the given socket, false otherwise
+<i>208</i>&nbsp;     */
+<i>209</i>&nbsp;    public synchronized boolean waitingPingFrom(Socket socket) {
+<b class="nc"><i>210</i>&nbsp;        return this.pingWaitingList.contains(socket);</b>
+<i>211</i>&nbsp;    }
+<i>212</i>&nbsp;
+<i>213</i>&nbsp;    /**
+<i>214</i>&nbsp;     * The method handles a request for connection reset by one of the clients. When this request happens, the
+<i>215</i>&nbsp;     * match in which client is involved must end, and all other clients connected are notified.
+<i>216</i>&nbsp;     *
+<i>217</i>&nbsp;     * @param clientSocket socket of client that requested a disconnection from server
+<i>218</i>&nbsp;     */
+<i>219</i>&nbsp;    void handleConnectionReset(Socket clientSocket) {
+<i>220</i>&nbsp;
+<b class="nc"><i>221</i>&nbsp;        Optional&lt;ClientHandler&gt; clientHandlerToRemoveOpt = this.playingConnections.stream().filter((clientHandler -&gt; clientHandler.clientSocket.equals(clientSocket))).findFirst();</b>
+<i>222</i>&nbsp;
+<b class="nc"><i>223</i>&nbsp;        if (clientHandlerToRemoveOpt.isPresent()) {</b>
+<i>224</i>&nbsp;            // need to end the match
+<i>225</i>&nbsp;
+<b class="nc"><i>226</i>&nbsp;            ClientHandler clientHandlerToRemove = clientHandlerToRemoveOpt.get();</b>
+<i>227</i>&nbsp;
+<b class="nc"><i>228</i>&nbsp;            Optional&lt;Controller&gt; controllerToRemoveOpt = this.controllerClientsMap.entrySet().stream().filter((mapping) -&gt; mapping.getValue().contains(clientHandlerToRemove)).map(Map.Entry::getKey).findFirst();</b>
+<i>229</i>&nbsp;
+<b class="nc"><i>230</i>&nbsp;            if (controllerToRemoveOpt.isPresent()) {</b>
+<i>231</i>&nbsp;
+<b class="nc"><i>232</i>&nbsp;                Controller controllerToRemove = controllerToRemoveOpt.get();</b>
+<b class="nc"><i>233</i>&nbsp;                Set&lt;String&gt; clientsIDToRemove = this.controllerClientsMap.get(controllerToRemove).stream().map(clientHandler -&gt; clientHandler.clientID).collect(Collectors.toSet());</b>
+<b class="nc"><i>234</i>&nbsp;                this.playingConnections.removeIf((clientHandler -&gt; clientsIDToRemove.contains(clientHandler.clientID)));</b>
+<b class="nc"><i>235</i>&nbsp;                this.controllerClientsMap.remove(controllerToRemove);</b>
+<i>236</i>&nbsp;
+<b class="nc"><i>237</i>&nbsp;                controllerToRemove.onPlayerDisconnected(clientHandlerToRemove.clientID); // Notify users through Controller</b>
+<i>238</i>&nbsp;            }
+<i>239</i>&nbsp;
+<b class="nc"><i>240</i>&nbsp;        } else {</b>
+<b class="nc"><i>241</i>&nbsp;            this.waitingConnections.removeIf((clientHandler -&gt; clientHandler.clientSocket.equals(clientSocket)));</b>
+<i>242</i>&nbsp;        }
+<i>243</i>&nbsp;
+<b class="nc"><i>244</i>&nbsp;    }</b>
+<i>245</i>&nbsp;
+<i>246</i>&nbsp;    /**
+<i>247</i>&nbsp;     * Updates implemented following Observer Pattern.
+<i>248</i>&nbsp;     * This method is fired from the Controller (Server is an observer of Controller) when a Player wins the Match,
+<i>249</i>&nbsp;     * in order to start the procedures needed to gracefully end a match and remove all the reference to it.
+<i>250</i>&nbsp;     *
+<i>251</i>&nbsp;     * @param controller the Controller instance corresponding to the Match which is about to end.
+<i>252</i>&nbsp;     */
+<i>253</i>&nbsp;    @Override
+<i>254</i>&nbsp;    public void update(Controller controller) {
+<i>255</i>&nbsp;
+<b class="nc"><i>256</i>&nbsp;        Set&lt;ClientHandler&gt; clientHandlers = controllerClientsMap.get(controller);</b>
+<i>257</i>&nbsp;
+<b class="nc"><i>258</i>&nbsp;        for (ClientHandler clientHandler : clientHandlers) {</b>
+<b class="nc"><i>259</i>&nbsp;            playingConnections.remove(clientHandler);</b>
+<b class="nc"><i>260</i>&nbsp;        }</b>
+<i>261</i>&nbsp;
+<b class="nc"><i>262</i>&nbsp;        controllerClientsMap.remove(controller);</b>
+<b class="nc"><i>263</i>&nbsp;    }</b>
+<i>264</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

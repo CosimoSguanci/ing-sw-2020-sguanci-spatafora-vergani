@@ -1,0 +1,125 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Update</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.updates</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Update (it.polimi.ingsw.model.updates)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Update</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.updates;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.view.UpdateHandler;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.io.Serializable;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * This abstract class represents a message exchanged between Client and Server.
+<i>9</i>&nbsp; * Specifically, unlike {@link it.polimi.ingsw.controller.commands.Command} are sent from Server to Client.
+<i>10</i>&nbsp; * They encapsulate any changes made to the Game State.
+<i>11</i>&nbsp; *
+<i>12</i>&nbsp; * @author Cosimo Sguanci
+<i>13</i>&nbsp; */
+<i>14</i>&nbsp;public abstract class Update implements Serializable {
+<i>15</i>&nbsp;    private static final long serialVersionUID = 8108733601179952266L;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    /**
+<i>18</i>&nbsp;     * JSON Serialized Board representation
+<i>19</i>&nbsp;     */
+<i>20</i>&nbsp;    private final String board;
+<i>21</i>&nbsp;
+<b class="fc"><i>22</i>&nbsp;    public Update(String board) {</b>
+<b class="fc"><i>23</i>&nbsp;        this.board = board;</b>
+<b class="fc"><i>24</i>&nbsp;    }</b>
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * Serialized Board getter
+<i>28</i>&nbsp;     *
+<i>29</i>&nbsp;     * @return JSON String Serialized version of the Match Board
+<i>30</i>&nbsp;     */
+<i>31</i>&nbsp;    public String getBoard() {
+<b class="fc"><i>32</i>&nbsp;        return this.board;</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * Utility method used to implement Visitor Pattern for Updates handling.
+<i>37</i>&nbsp;     *
+<i>38</i>&nbsp;     * @param handler which handle the updates to update the View
+<i>39</i>&nbsp;     * @see UpdateHandler
+<i>40</i>&nbsp;     */
+<i>41</i>&nbsp;    public abstract void handleUpdate(UpdateHandler handler);
+<i>42</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

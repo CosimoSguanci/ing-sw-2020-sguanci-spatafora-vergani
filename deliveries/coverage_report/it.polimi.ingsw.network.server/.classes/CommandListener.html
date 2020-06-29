@@ -1,0 +1,199 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CommandListener</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.network.server</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CommandListener (it.polimi.ingsw.network.server)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CommandListener</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.network.server;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.commands.Command;
+<i>4</i>&nbsp;import it.polimi.ingsw.network.ObjectListener;
+<i>5</i>&nbsp;import it.polimi.ingsw.network.ObjectListenerDelegate;
+<i>6</i>&nbsp;import it.polimi.ingsw.observer.Observable;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.io.IOException;
+<i>9</i>&nbsp;import java.net.Socket;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;/**
+<i>12</i>&nbsp; * This class implements the capability of listen asynchronously the client-server stream to catch {@link Command} objects sent from client to server.
+<i>13</i>&nbsp; * Composition-over-inheritance principle is applied to let this class extend Observable (the {@link ClientHandler} must
+<i>14</i>&nbsp; * observe an instance of this class in order to catch commands and to notify the {@link it.polimi.ingsw.controller.Controller} about new commands sent from client to server),
+<i>15</i>&nbsp; * but also share code with {@link it.polimi.ingsw.network.client.UpdateListener}.
+<i>16</i>&nbsp; *
+<i>17</i>&nbsp; * @author Cosimo Sguanci
+<i>18</i>&nbsp; * @see ObjectListenerDelegate
+<i>19</i>&nbsp; */
+<i>20</i>&nbsp;public class CommandListener extends Observable&lt;Command&gt; implements ObjectListener, Runnable {
+<i>21</i>&nbsp;    /**
+<i>22</i>&nbsp;     * The delegate that actually reads the Socket to catch the objects sent from the server
+<i>23</i>&nbsp;     */
+<i>24</i>&nbsp;    private final ObjectListenerDelegate objectListenerDelegate;
+<i>25</i>&nbsp;    private final Socket socket;
+<i>26</i>&nbsp;    private final Server server; // needed to handle clients disconnection
+<i>27</i>&nbsp;    private boolean isActive;
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    /**
+<i>30</i>&nbsp;     * This method is useful to check if the communication between client and server is still in progress.
+<i>31</i>&nbsp;     *
+<i>32</i>&nbsp;     * @return true if the socket is still open, false otherwise.
+<i>33</i>&nbsp;     */
+<i>34</i>&nbsp;    public boolean isActive() {
+<b class="nc"><i>35</i>&nbsp;        return this.isActive;</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * Active flag setter
+<i>40</i>&nbsp;     *
+<i>41</i>&nbsp;     * @param active the new value of the active flag
+<i>42</i>&nbsp;     */
+<i>43</i>&nbsp;    public void setIsActive(boolean active) {
+<b class="nc"><i>44</i>&nbsp;        this.isActive = active;</b>
+<b class="nc"><i>45</i>&nbsp;    }</b>
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    /**
+<i>48</i>&nbsp;     * CommandListener constructor: a new instance of {@link ObjectListenerDelegate} is created in order
+<i>49</i>&nbsp;     * to actually listen to the stream.
+<i>50</i>&nbsp;     *
+<i>51</i>&nbsp;     * @param socket the channel between client and server.
+<i>52</i>&nbsp;     * @param server server instance, needed to handle clients disconnections.
+<i>53</i>&nbsp;     */
+<b class="nc"><i>54</i>&nbsp;    public CommandListener(Socket socket, Server server) {</b>
+<b class="nc"><i>55</i>&nbsp;        objectListenerDelegate = new ObjectListenerDelegate(socket);</b>
+<b class="nc"><i>56</i>&nbsp;        this.socket = socket;</b>
+<b class="nc"><i>57</i>&nbsp;        this.server = server;</b>
+<b class="nc"><i>58</i>&nbsp;    }</b>
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    /**
+<i>61</i>&nbsp;     * Classic overridden version of run method (from {@link Runnable} interface). Note that
+<i>62</i>&nbsp;     * the channel is listen on a separate thread (the new Thread is every time a new client connects
+<i>63</i>&nbsp;     * to the server).
+<i>64</i>&nbsp;     */
+<i>65</i>&nbsp;    @Override
+<i>66</i>&nbsp;    public void run() {
+<b class="nc"><i>67</i>&nbsp;        this.isActive = true;</b>
+<b class="nc"><i>68</i>&nbsp;        objectListenerDelegate.listen(this);</b>
+<b class="nc"><i>69</i>&nbsp;    }</b>
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    /**
+<i>72</i>&nbsp;     * Forwards {@link Command} objects to the {@link ClientHandler} instance if a command is received.
+<i>73</i>&nbsp;     * Otherwise, it checks if the object received is a ping message (health checks sent from clients), and remove
+<i>74</i>&nbsp;     * the client from the list of client which haven&#39;t sent a ping message in the last timeout period yet.
+<i>75</i>&nbsp;     *
+<i>76</i>&nbsp;     * @param command the object received
+<i>77</i>&nbsp;     * @see Server#removeFromPingWaitingList(Socket)
+<i>78</i>&nbsp;     */
+<i>79</i>&nbsp;    @Override
+<i>80</i>&nbsp;    public void forwardNotify(Object command) {
+<b class="nc"><i>81</i>&nbsp;        if (command instanceof String &amp;&amp; command.equals(Server.PING_MSG)) {</b>
+<b class="nc"><i>82</i>&nbsp;            server.removeFromPingWaitingList(socket);</b>
+<i>83</i>&nbsp;        } else {
+<b class="nc"><i>84</i>&nbsp;            if (command instanceof Command) {</b>
+<b class="nc"><i>85</i>&nbsp;                notify((Command) command);</b>
+<i>86</i>&nbsp;            }
+<i>87</i>&nbsp;        }
+<b class="nc"><i>88</i>&nbsp;    }</b>
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;    /**
+<i>91</i>&nbsp;     * Callback called when the listen timeout expires for a client. If the server was waiting for a ping message (and it hasn&#39;t received one),
+<i>92</i>&nbsp;     * the socket is closed and the Player is &quot;marked&quot; as disconnected, otherwise it is added to the waiting list to check if it&#39;s still alive.
+<i>93</i>&nbsp;     *
+<i>94</i>&nbsp;     * @throws IOException if socket.close() encounters some unexpected error.
+<i>95</i>&nbsp;     * @see Server#addToPingWaitingList(Socket)
+<i>96</i>&nbsp;     */
+<i>97</i>&nbsp;    @Override
+<i>98</i>&nbsp;    public void handleConnectionTimeoutExpired() throws IOException {
+<b class="nc"><i>99</i>&nbsp;        if (server.waitingPingFrom(socket)) {</b>
+<b class="nc"><i>100</i>&nbsp;            socket.close();</b>
+<i>101</i>&nbsp;        } else {
+<b class="nc"><i>102</i>&nbsp;            server.addToPingWaitingList(socket);</b>
+<i>103</i>&nbsp;        }
+<b class="nc"><i>104</i>&nbsp;    }</b>
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;    /**
+<i>107</i>&nbsp;     * Callback called when a client disconnects (read exception or socket.close done from handleConnectionTimeoutExpired).
+<i>108</i>&nbsp;     * It delegates connection reset handling to {@link Server}.
+<i>109</i>&nbsp;     *
+<i>110</i>&nbsp;     * @see Server#handleConnectionReset(Socket)
+<i>111</i>&nbsp;     */
+<i>112</i>&nbsp;    @Override
+<i>113</i>&nbsp;    public void handleConnectionReset() {
+<b class="nc"><i>114</i>&nbsp;        server.handleConnectionReset(socket);</b>
+<b class="nc"><i>115</i>&nbsp;    }</b>
+<i>116</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

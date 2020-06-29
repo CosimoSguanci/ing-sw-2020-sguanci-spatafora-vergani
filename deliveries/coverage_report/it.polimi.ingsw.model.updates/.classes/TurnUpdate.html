@@ -1,0 +1,125 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TurnUpdate</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.updates</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TurnUpdate (it.polimi.ingsw.model.updates)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TurnUpdate</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.updates;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.Player;
+<i>4</i>&nbsp;import it.polimi.ingsw.view.UpdateHandler;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;/**
+<i>7</i>&nbsp; * This class represents an update sent from Server to Client every time the current turn changes.
+<i>8</i>&nbsp; *
+<i>9</i>&nbsp; * @author Cosimo Sguanci
+<i>10</i>&nbsp; */
+<i>11</i>&nbsp;public class TurnUpdate extends Update {
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    /**
+<i>14</i>&nbsp;     * New current player
+<i>15</i>&nbsp;     */
+<i>16</i>&nbsp;    private final Player currentPlayer;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    public TurnUpdate(Player currentPlayer) {
+<b class="fc"><i>19</i>&nbsp;        super(null);</b>
+<b class="fc"><i>20</i>&nbsp;        this.currentPlayer = currentPlayer;</b>
+<b class="fc"><i>21</i>&nbsp;    }</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    /**
+<i>24</i>&nbsp;     * New current player getter
+<i>25</i>&nbsp;     *
+<i>26</i>&nbsp;     * @return the new current player
+<i>27</i>&nbsp;     */
+<i>28</i>&nbsp;    public Player getCurrentPlayer() {
+<b class="fc"><i>29</i>&nbsp;        return this.currentPlayer;</b>
+<i>30</i>&nbsp;    }
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    /**
+<i>33</i>&nbsp;     * Utility method used to implement Visitor Pattern for Updates handling.
+<i>34</i>&nbsp;     *
+<i>35</i>&nbsp;     * @param handler which handle the updates to update the View
+<i>36</i>&nbsp;     * @see UpdateHandler
+<i>37</i>&nbsp;     */
+<i>38</i>&nbsp;    @Override
+<i>39</i>&nbsp;    public void handleUpdate(UpdateHandler handler) {
+<b class="fc"><i>40</i>&nbsp;        handler.handle(this);</b>
+<b class="fc"><i>41</i>&nbsp;    }</b>
+<i>42</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

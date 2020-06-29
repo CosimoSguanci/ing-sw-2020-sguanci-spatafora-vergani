@@ -1,0 +1,230 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GamePhase</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GamePhase (it.polimi.ingsw.controller)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GamePhase</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (27/ 27)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GamePhase$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (28/ 28)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.exceptions.BadCommandException;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.util.ArrayList;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * GamePhase is the enumeration for all match&#39;s phases. The main game-phases are: initial-info,
+<i>10</i>&nbsp; * when players decide a nickname and colour; choose-gods, when the god-chooser selects some gods
+<i>11</i>&nbsp; * and every player chooses the one he/she wants to play with; game-preparation, when every player
+<i>12</i>&nbsp; * places the workers on the board; real-game, when the real match is played; match-ended, the phase
+<i>13</i>&nbsp; * that follows a match; match-lost, phase for who lost a match.
+<i>14</i>&nbsp; *
+<i>15</i>&nbsp; * @author Andrea Mario Vergani
+<i>16</i>&nbsp; * @author Cosimo Sguanci
+<i>17</i>&nbsp; */
+<b class="fc"><i>18</i>&nbsp;public enum GamePhase {</b>
+<b class="fc"><i>19</i>&nbsp;    INITIAL_INFO, CHOOSE_GODS, GAME_PREPARATION, REAL_GAME, MATCH_ENDED, MATCH_LOST;</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    /**
+<i>23</i>&nbsp;     * This static method simply returns the first phase of a match.
+<i>24</i>&nbsp;     *
+<i>25</i>&nbsp;     * @return the (chronological) first phase
+<i>26</i>&nbsp;     */
+<i>27</i>&nbsp;    public static GamePhase firstPhase() {
+<b class="fc"><i>28</i>&nbsp;        return INITIAL_INFO;</b>
+<i>29</i>&nbsp;    }
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    /**
+<i>33</i>&nbsp;     * This static method returns the phase that follows the parameter-phase.
+<i>34</i>&nbsp;     *
+<i>35</i>&nbsp;     * @param currentGamePhase the current game phase
+<i>36</i>&nbsp;     * @return the (chronological) next phase
+<i>37</i>&nbsp;     * @throws IllegalArgumentException if parameter-phase is not valid or not followed
+<i>38</i>&nbsp;     *                                  by another phase
+<i>39</i>&nbsp;     */
+<i>40</i>&nbsp;    public static GamePhase nextGamePhase(GamePhase currentGamePhase) {
+<b class="fc"><i>41</i>&nbsp;        switch (currentGamePhase) {</b>
+<i>42</i>&nbsp;            case INITIAL_INFO:
+<b class="fc"><i>43</i>&nbsp;                return CHOOSE_GODS;</b>
+<i>44</i>&nbsp;            case CHOOSE_GODS:
+<b class="fc"><i>45</i>&nbsp;                return GAME_PREPARATION;</b>
+<i>46</i>&nbsp;            case GAME_PREPARATION:
+<b class="fc"><i>47</i>&nbsp;                return REAL_GAME;</b>
+<i>48</i>&nbsp;            case REAL_GAME:
+<b class="fc"><i>49</i>&nbsp;                return MATCH_ENDED;</b>
+<i>50</i>&nbsp;            default:
+<b class="fc"><i>51</i>&nbsp;                throw new IllegalArgumentException();</b>
+<i>52</i>&nbsp;        }
+<i>53</i>&nbsp;    }
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    /**
+<i>56</i>&nbsp;     * This static method parses a string and verifies if it represents a valid game-phase.
+<i>57</i>&nbsp;     *
+<i>58</i>&nbsp;     * @param input an input string, that should represent a game-phase
+<i>59</i>&nbsp;     * @return true if the parameter is one of the GamePhases (hypothetical .toString), false
+<i>60</i>&nbsp;     * otherwise
+<i>61</i>&nbsp;     */
+<i>62</i>&nbsp;    public static boolean isGamePhase(String input) {
+<b class="fc"><i>63</i>&nbsp;        ArrayList&lt;String&gt; values = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>64</i>&nbsp;        for (GamePhase gamePhase : GamePhase.values()) {</b>
+<b class="fc"><i>65</i>&nbsp;            values.add(gamePhase.toString().toLowerCase());</b>
+<i>66</i>&nbsp;        }
+<i>67</i>&nbsp;        //values now contains all the enum values, in the form of String
+<b class="fc"><i>68</i>&nbsp;        return values.contains(input.toLowerCase());</b>
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;    /**
+<i>73</i>&nbsp;     * This static method parses a string and verifies which of the valid game-phases it represents.
+<i>74</i>&nbsp;     *
+<i>75</i>&nbsp;     * @param input an input string, that should represent a game-phase
+<i>76</i>&nbsp;     * @return the correspondent GamePhase if the parameter is one of the GamePhases
+<i>77</i>&nbsp;     * (hypothetical .toString)
+<i>78</i>&nbsp;     * @throws BadCommandException if parameter-string does not represent any GamePhase
+<i>79</i>&nbsp;     */
+<i>80</i>&nbsp;    public static GamePhase parseGamePhase(String input) {
+<i>81</i>&nbsp;        try {
+<b class="fc"><i>82</i>&nbsp;            return Enum.valueOf(GamePhase.class, input.toUpperCase());</b>
+<b class="fc"><i>83</i>&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc"><i>84</i>&nbsp;            throw new BadCommandException();</b>
+<i>85</i>&nbsp;        }
+<i>86</i>&nbsp;    }
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;    /**
+<i>89</i>&nbsp;     * This static method returns a StringBuilder containing all the game-phases that must be
+<i>90</i>&nbsp;     * printed, in the form &quot;gamePhase1, gamePhase2, ...&quot;
+<i>91</i>&nbsp;     *
+<i>92</i>&nbsp;     * @return all the game-phases that must be printed, in the form &quot;gamePhase1, gamePhase2, ...&quot;
+<i>93</i>&nbsp;     */
+<i>94</i>&nbsp;    public static StringBuilder toStringBuilder() {
+<i>95</i>&nbsp;        int j;
+<b class="fc"><i>96</i>&nbsp;        GamePhase[] phases = GamePhase.class.getEnumConstants();</b>
+<b class="fc"><i>97</i>&nbsp;        StringBuilder result = new StringBuilder();</b>
+<b class="fc"><i>98</i>&nbsp;        for (j = 0; j &lt; phases.length; j++) {</b>
+<b class="fc"><i>99</i>&nbsp;            if (phases[j].isPrintable()) {</b>
+<b class="fc"><i>100</i>&nbsp;                result.append(phases[j].toString().toLowerCase());</b>
+<b class="fc"><i>101</i>&nbsp;                break;</b>
+<i>102</i>&nbsp;            }
+<i>103</i>&nbsp;        }
+<b class="fc"><i>104</i>&nbsp;        for (int i = j + 1; i &lt; phases.length; i++) {</b>
+<b class="fc"><i>105</i>&nbsp;            if (phases[i].isPrintable()) {</b>
+<b class="fc"><i>106</i>&nbsp;                result.append(&quot;, &quot;).append(phases[i].toString().toLowerCase());</b>
+<i>107</i>&nbsp;            }
+<i>108</i>&nbsp;        }
+<b class="fc"><i>109</i>&nbsp;        return result;</b>
+<i>110</i>&nbsp;    }
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    /**
+<i>113</i>&nbsp;     * This static method verifies if the caller is a printable game-phase (so it must be printed
+<i>114</i>&nbsp;     * as a string in some help command or something like this).
+<i>115</i>&nbsp;     *
+<i>116</i>&nbsp;     * @return true if the caller is printable, false otherwise
+<i>117</i>&nbsp;     */
+<i>118</i>&nbsp;    public boolean isPrintable() {
+<b class="fc"><i>119</i>&nbsp;        return this != MATCH_ENDED &amp;&amp; this != MATCH_LOST;</b>
+<i>120</i>&nbsp;    }
+<i>121</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,260 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: JCellButton</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.gui.ui</a> ]
+</div>
+
+<h1>Coverage Summary for Class: JCellButton (it.polimi.ingsw.view.gui.ui)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">JCellButton</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 32)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">JCellButton$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 33)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.gui.ui;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.BlockType;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.Worker;
+<i>5</i>&nbsp;import it.polimi.ingsw.view.gui.Gui;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import javax.swing.*;
+<i>8</i>&nbsp;import java.awt.*;
+<i>9</i>&nbsp;import java.io.IOException;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;/**
+<i>12</i>&nbsp; * This class defines a button which is used in RealGame phase.
+<i>13</i>&nbsp; * When a match starts, cells can have different levels: GROUND, ONE, TWO, THREE
+<i>14</i>&nbsp; */
+<i>15</i>&nbsp;public class JCellButton extends JButton {
+<i>16</i>&nbsp;    private final BlockType blockLevel;
+<i>17</i>&nbsp;    private final int row;
+<i>18</i>&nbsp;    private final int col;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    private JLabel workerLabel;
+<b class="nc"><i>21</i>&nbsp;    private boolean isEmpty = true;</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    private Worker worker;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    /**
+<i>26</i>&nbsp;     * This is the creator of the class. At the moment of creation:
+<i>27</i>&nbsp;     *
+<i>28</i>&nbsp;     * @param worker     contains a reference of a Worker. If no worker is in referred cell it would be null
+<i>29</i>&nbsp;     * @param blockLevel contains information about the level of the cell
+<i>30</i>&nbsp;     * @param row        is an integer which indicates the number of row which identifies the cell in the Board
+<i>31</i>&nbsp;     * @param col        is an integer which indicates the number of column which identifies the cell in the Board
+<i>32</i>&nbsp;     */
+<b class="nc"><i>33</i>&nbsp;    public JCellButton(Worker worker, BlockType blockLevel, int row, int col) {</b>
+<b class="nc"><i>34</i>&nbsp;        this.worker = worker;</b>
+<b class="nc"><i>35</i>&nbsp;        this.blockLevel = blockLevel;</b>
+<b class="nc"><i>36</i>&nbsp;        this.row = row;</b>
+<b class="nc"><i>37</i>&nbsp;        this.col = col;</b>
+<b class="nc"><i>38</i>&nbsp;    }</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    /**
+<i>41</i>&nbsp;     * This method is a simple getter of the Worker inside the cell.
+<i>42</i>&nbsp;     *
+<i>43</i>&nbsp;     * @return a Worker if inside a cell
+<i>44</i>&nbsp;     */
+<i>45</i>&nbsp;    public Worker getWorker() {
+<b class="nc"><i>46</i>&nbsp;        return worker;</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    /**
+<i>50</i>&nbsp;     * This method is a simple setter of the class.
+<i>51</i>&nbsp;     *
+<i>52</i>&nbsp;     * @param worker contains a reference of the worker that is in the cell
+<i>53</i>&nbsp;     */
+<i>54</i>&nbsp;    public void setWorker(Worker worker) {
+<b class="nc"><i>55</i>&nbsp;        this.worker = worker;</b>
+<b class="nc"><i>56</i>&nbsp;    }</b>
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    /**
+<i>59</i>&nbsp;     * This method is a getter of the boolean attribute of the class.
+<i>60</i>&nbsp;     *
+<i>61</i>&nbsp;     * @return true if the cell doesn&#39;t contains any worker inside, false otherwise.
+<i>62</i>&nbsp;     */
+<i>63</i>&nbsp;    public boolean isEmpty() {
+<b class="nc"><i>64</i>&nbsp;        return this.isEmpty;</b>
+<i>65</i>&nbsp;    }
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    /**
+<i>68</i>&nbsp;     * This method is a simple setter of the boolean attribute of the cell
+<i>69</i>&nbsp;     *
+<i>70</i>&nbsp;     * @param isEmpty is a boolean value which if true indicates that no worker is in the cell.
+<i>71</i>&nbsp;     */
+<i>72</i>&nbsp;    public void setEmpty(boolean isEmpty) {
+<b class="nc"><i>73</i>&nbsp;        this.isEmpty = isEmpty;</b>
+<b class="nc"><i>74</i>&nbsp;    }</b>
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;    /**
+<i>77</i>&nbsp;     * This method is a simple getter of the class.
+<i>78</i>&nbsp;     *
+<i>79</i>&nbsp;     * @return a JLabel which indicates the presence of a worker in the cell.
+<i>80</i>&nbsp;     */
+<i>81</i>&nbsp;    public JLabel getWorkerLabel() {
+<b class="nc"><i>82</i>&nbsp;        return this.workerLabel;</b>
+<i>83</i>&nbsp;    }
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;    /**
+<i>86</i>&nbsp;     * This method is a simple setter of the class attribute workerLabel.
+<i>87</i>&nbsp;     *
+<i>88</i>&nbsp;     * @param workerLabel contains an image which indicates the presence of a worker
+<i>89</i>&nbsp;     */
+<i>90</i>&nbsp;    public void setWorkerLabel(JLabel workerLabel) {
+<b class="nc"><i>91</i>&nbsp;        this.workerLabel = workerLabel;</b>
+<b class="nc"><i>92</i>&nbsp;    }</b>
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;    /**
+<i>95</i>&nbsp;     * This is a simple getter of the integer number which identifies the column of the cell related to the button
+<i>96</i>&nbsp;     *
+<i>97</i>&nbsp;     * @return the integer number which identifies the cell row in the board.
+<i>98</i>&nbsp;     */
+<i>99</i>&nbsp;    public int getRow() {
+<b class="nc"><i>100</i>&nbsp;        return row;</b>
+<i>101</i>&nbsp;    }
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;    /**
+<i>104</i>&nbsp;     * This is a simple getter of the integer number which identifies the column of the cell related to the button
+<i>105</i>&nbsp;     *
+<i>106</i>&nbsp;     * @return the integer number which identifies the cell column in the board.
+<i>107</i>&nbsp;     */
+<i>108</i>&nbsp;    public int getCol() {
+<b class="nc"><i>109</i>&nbsp;        return col;</b>
+<i>110</i>&nbsp;    }
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    /**
+<i>113</i>&nbsp;     * This method is used to set the background of the cell.
+<i>114</i>&nbsp;     *
+<i>115</i>&nbsp;     * @param g contains a reference to the button of which we want to set the background
+<i>116</i>&nbsp;     */
+<i>117</i>&nbsp;    @Override
+<i>118</i>&nbsp;    protected void paintComponent(Graphics g) {
+<b class="nc"><i>119</i>&nbsp;        super.paintComponent(g);</b>
+<b class="nc"><i>120</i>&nbsp;        Image backgroundImage = null;</b>
+<i>121</i>&nbsp;        try {
+<b class="nc"><i>122</i>&nbsp;            backgroundImage = computeImage();</b>
+<b class="nc"><i>123</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>124</i>&nbsp;            System.err.println(&quot;Error loading some Cell Button resource&quot;);</b>
+<b class="nc"><i>125</i>&nbsp;        }</b>
+<i>126</i>&nbsp;
+<b class="nc"><i>127</i>&nbsp;        g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);</b>
+<b class="nc"><i>128</i>&nbsp;    }</b>
+<i>129</i>&nbsp;
+<i>130</i>&nbsp;    /**
+<i>131</i>&nbsp;     * This private method computes the image that will be set as background image of the button
+<i>132</i>&nbsp;     *
+<i>133</i>&nbsp;     * @return an Image which would be used as background
+<i>134</i>&nbsp;     * @throws IOException when some error is encountered while getting the needed resources
+<i>135</i>&nbsp;     */
+<i>136</i>&nbsp;    private Image computeImage() throws IOException {
+<b class="nc"><i>137</i>&nbsp;        switch (blockLevel) {</b>
+<i>138</i>&nbsp;            case DOME:
+<i>139</i>&nbsp;            case GROUND:
+<b class="nc"><i>140</i>&nbsp;                return new ImageIcon(Gui.class.getResource(&quot;/images/BoardScreen/row-&quot; + (row + 1) + &quot;-col-&quot; + (col + 1) + &quot;.png&quot;)).getImage();</b>
+<i>141</i>&nbsp;            case LEVEL_ONE:
+<b class="nc"><i>142</i>&nbsp;                return new ImageIcon(Gui.class.getResource(&quot;/images/BoardScreen/row-&quot; + (row + 1) + &quot;-col-&quot; + (col + 1) + &quot;-level1.png&quot;)).getImage();</b>
+<i>143</i>&nbsp;            case LEVEL_TWO:
+<b class="nc"><i>144</i>&nbsp;                return new ImageIcon(Gui.class.getResource(&quot;/images/BoardScreen/row-&quot; + (row + 1) + &quot;-col-&quot; + (col + 1) + &quot;-level2.png&quot;)).getImage();</b>
+<i>145</i>&nbsp;            case LEVEL_THREE:
+<b class="nc"><i>146</i>&nbsp;                return new ImageIcon(Gui.class.getResource(&quot;/images/BoardScreen/row-&quot; + (row + 1) + &quot;-col-&quot; + (col + 1) + &quot;-level3.png&quot;)).getImage();</b>
+<i>147</i>&nbsp;            default:
+<b class="nc"><i>148</i>&nbsp;                throw new IOException();</b>
+<i>149</i>&nbsp;        }
+<i>150</i>&nbsp;    }
+<i>151</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

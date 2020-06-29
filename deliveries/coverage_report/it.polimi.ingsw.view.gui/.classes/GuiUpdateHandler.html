@@ -1,0 +1,342 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GuiUpdateHandler</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.gui</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GuiUpdateHandler (it.polimi.ingsw.view.gui)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GuiUpdateHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 54)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GuiUpdateHandler$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 55)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.gui;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.GamePhase;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.PrintableColor;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.updates.*;
+<i>6</i>&nbsp;import it.polimi.ingsw.network.client.controller.Controller;
+<i>7</i>&nbsp;import it.polimi.ingsw.view.UpdateHandler;
+<i>8</i>&nbsp;import it.polimi.ingsw.view.View;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import java.util.List;
+<i>11</i>&nbsp;import java.util.Map;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;/**
+<i>14</i>&nbsp; * This class handles all the updates from server to different clients.
+<i>15</i>&nbsp; * Every possible updates go to this class before it&#39;s viewable from users (in the GUI).
+<i>16</i>&nbsp; * BoardUpdate, DisconnectedPlayerUpdate, ErrorUpdate, GamePhaseUpdate,
+<i>17</i>&nbsp; * GodsUpdate, InitialInfoUpdate, LoseUpdate, MatchStartedUpdate,
+<i>18</i>&nbsp; * ServerUnreachableUpdate, TurnUpdate, WinUpdate are all managed in this class.
+<i>19</i>&nbsp; * &lt;p&gt;
+<i>20</i>&nbsp; * This class represent the Visitor in the Visitor Pattern, it implements {@link UpdateHandler}
+<i>21</i>&nbsp; * to have all the necessary methods to handle all possible updates.
+<i>22</i>&nbsp; *
+<i>23</i>&nbsp; * @author Cosimo Sguanci
+<i>24</i>&nbsp; * @author Roberto Spatafora
+<i>25</i>&nbsp; * @author Andrea Vergani
+<i>26</i>&nbsp; * @see UpdateHandler
+<i>27</i>&nbsp; */
+<i>28</i>&nbsp;public class GuiUpdateHandler extends UpdateHandler {
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    /**
+<i>31</i>&nbsp;     * Instance of the {@link Gui} which this handler has to update
+<i>32</i>&nbsp;     */
+<i>33</i>&nbsp;    private final Gui guiInstance;
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * This is the creator of the class. At the moment of the instance creation
+<i>37</i>&nbsp;     * an instance of {@link Gui} and {@link Controller}, to which the class refers, are set.
+<i>38</i>&nbsp;     *
+<i>39</i>&nbsp;     * @param guiInstance is the instance of {@link Gui} associated to the CliUpdateHandle for updates.
+<i>40</i>&nbsp;     * @param controller  is the instance of the controller that is observed by the {@link Gui}.
+<i>41</i>&nbsp;     */
+<i>42</i>&nbsp;    GuiUpdateHandler(Gui guiInstance, Controller controller) {
+<b class="nc"><i>43</i>&nbsp;        super(controller);</b>
+<b class="nc"><i>44</i>&nbsp;        this.guiInstance = guiInstance;</b>
+<b class="nc"><i>45</i>&nbsp;    }</b>
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    /**
+<i>48</i>&nbsp;     * This method handles {@link GamePhaseUpdate} arrived from the {@link Gui}.
+<i>49</i>&nbsp;     * Current game phase setter is invoked, and the correct method of {@link Gui} is called
+<i>50</i>&nbsp;     * to start the new game phase and show the correct content to the user.
+<i>51</i>&nbsp;     *
+<i>52</i>&nbsp;     * @param update is the instance of {@link GamePhaseUpdate} from server.
+<i>53</i>&nbsp;     * @see Gui#startInitialInfoPhase()
+<i>54</i>&nbsp;     * @see Gui#startGodChoicePhase()
+<i>55</i>&nbsp;     * @see Gui#startGamePreparation()
+<i>56</i>&nbsp;     * @see Gui#startRealGame()
+<i>57</i>&nbsp;     * @see Gui#onMatchFinished(GamePhase)
+<i>58</i>&nbsp;     */
+<i>59</i>&nbsp;    public void handle(GamePhaseUpdate update) {
+<i>60</i>&nbsp;
+<b class="nc"><i>61</i>&nbsp;        guiInstance.setCurrentGamePhase(update.newGamePhase);</b>
+<i>62</i>&nbsp;
+<b class="nc"><i>63</i>&nbsp;        switch (update.newGamePhase) {</b>
+<i>64</i>&nbsp;            case INITIAL_INFO:
+<b class="nc"><i>65</i>&nbsp;                guiInstance.startInitialInfoPhase();</b>
+<b class="nc"><i>66</i>&nbsp;                break;</b>
+<i>67</i>&nbsp;            case CHOOSE_GODS:
+<b class="nc"><i>68</i>&nbsp;                guiInstance.startGodChoicePhase();</b>
+<b class="nc"><i>69</i>&nbsp;                break;</b>
+<i>70</i>&nbsp;            case GAME_PREPARATION:
+<b class="nc"><i>71</i>&nbsp;                guiInstance.startGamePreparation();</b>
+<b class="nc"><i>72</i>&nbsp;                break;</b>
+<i>73</i>&nbsp;            case REAL_GAME:
+<b class="nc"><i>74</i>&nbsp;                guiInstance.startRealGame();</b>
+<b class="nc"><i>75</i>&nbsp;                break;</b>
+<i>76</i>&nbsp;            case MATCH_ENDED:
+<i>77</i>&nbsp;            case MATCH_LOST:
+<b class="nc"><i>78</i>&nbsp;                guiInstance.onMatchFinished(update.newGamePhase);</b>
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;        }
+<b class="nc"><i>81</i>&nbsp;    }</b>
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;    /**
+<i>84</i>&nbsp;     * This method handles {@link TurnUpdate} arrived from the {@link Gui}.
+<i>85</i>&nbsp;     * The update is notified to the client side {@link Controller} to let it keep
+<i>86</i>&nbsp;     * a reference to the current player in turn. Moreover, the {@link Gui#onTurnChanged()}
+<i>87</i>&nbsp;     * callback is fired to update the UI.
+<i>88</i>&nbsp;     *
+<i>89</i>&nbsp;     * @param update is the instance of {@link TurnUpdate} from server.
+<i>90</i>&nbsp;     * @see Gui#onTurnChanged()
+<i>91</i>&nbsp;     */
+<i>92</i>&nbsp;    public void handle(TurnUpdate update) {
+<b class="nc"><i>93</i>&nbsp;        guiInstance.forwardNotify(update);</b>
+<b class="nc"><i>94</i>&nbsp;        guiInstance.onTurnChanged();</b>
+<b class="nc"><i>95</i>&nbsp;    }</b>
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    /**
+<i>98</i>&nbsp;     * This method handles {@link InitialInfoUpdate} arrived from the {@link Gui}.
+<i>99</i>&nbsp;     * If initial info for all players have been chosen, this information is showed to
+<i>100</i>&nbsp;     * the user. Otherwise, the {@link Gui} let the user choose its initial info.
+<i>101</i>&nbsp;     *
+<i>102</i>&nbsp;     * @param update is the instance of {@link InitialInfoUpdate} from server.
+<i>103</i>&nbsp;     * @see Gui#setPlayersColors(Map)
+<i>104</i>&nbsp;     * @see Gui#showInitialInfoOnTurn()
+<i>105</i>&nbsp;     */
+<i>106</i>&nbsp;    public void handle(InitialInfoUpdate update) {
+<i>107</i>&nbsp;
+<b class="nc"><i>108</i>&nbsp;        if (update.getInitialInfo().size() == guiInstance.getPlayersNumber()) {</b>
+<b class="nc"><i>109</i>&nbsp;            guiInstance.setPlayersColors(update.getInitialInfo());</b>
+<b class="nc"><i>110</i>&nbsp;        } else if (controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {</b>
+<i>111</i>&nbsp;
+<b class="nc"><i>112</i>&nbsp;            List&lt;String&gt; selectedNicknames = extractSelectedNicknames(update);</b>
+<b class="nc"><i>113</i>&nbsp;            List&lt;PrintableColor&gt; selectedColors = extractSelectedColors(update);</b>
+<b class="nc"><i>114</i>&nbsp;            List&lt;PrintableColor&gt; selectableColors = extractSelectableColors(selectedColors);</b>
+<i>115</i>&nbsp;
+<b class="nc"><i>116</i>&nbsp;            guiInstance.setSelectableColors(selectableColors);</b>
+<b class="nc"><i>117</i>&nbsp;            guiInstance.setSelectedNicknames(selectedNicknames);</b>
+<i>118</i>&nbsp;
+<b class="nc"><i>119</i>&nbsp;            guiInstance.showInitialInfoOnTurn();</b>
+<i>120</i>&nbsp;        }
+<b class="nc"><i>121</i>&nbsp;    }</b>
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;    /**
+<i>124</i>&nbsp;     * This method handles {@link GodsUpdate} arrived from the {@link Gui}.
+<i>125</i>&nbsp;     * If gods for all players have been chosen, this information is showed to
+<i>126</i>&nbsp;     * the user. Otherwise, the {@link Gui} let the user choose its god.
+<i>127</i>&nbsp;     *
+<i>128</i>&nbsp;     * @param update is the instance of {@link GodsUpdate} from server.
+<i>129</i>&nbsp;     * @see Gui#setPlayersGods(Map)
+<i>130</i>&nbsp;     * @see Gui#showGodsChoiceOnTurn()
+<i>131</i>&nbsp;     */
+<i>132</i>&nbsp;    public void handle(GodsUpdate update) {
+<i>133</i>&nbsp;
+<b class="nc"><i>134</i>&nbsp;        if (update.getSelectedGods().size() == guiInstance.getPlayersNumber()) {</b>
+<b class="nc"><i>135</i>&nbsp;            guiInstance.setPlayersGods(update.getSelectedGods());</b>
+<b class="nc"><i>136</i>&nbsp;        } else if (controller.getCurrentPlayerID().equals(controller.getClientPlayerID())) {</b>
+<b class="nc"><i>137</i>&nbsp;            if (controller.isClientPlayerGodChooser()) {</b>
+<b class="nc"><i>138</i>&nbsp;                List&lt;String&gt; selectableGods = View.getGodsNamesList();</b>
+<b class="nc"><i>139</i>&nbsp;                guiInstance.setSelectableGods(selectableGods);</b>
+<b class="nc"><i>140</i>&nbsp;            } else {</b>
+<b class="nc"><i>141</i>&nbsp;                guiInstance.setSelectableGods(update.getSelectableGods());</b>
+<i>142</i>&nbsp;            }
+<b class="nc"><i>143</i>&nbsp;            guiInstance.showGodsChoiceOnTurn();</b>
+<i>144</i>&nbsp;        }
+<b class="nc"><i>145</i>&nbsp;    }</b>
+<i>146</i>&nbsp;
+<i>147</i>&nbsp;    /**
+<i>148</i>&nbsp;     * This method handles {@link MatchStartedUpdate} arrived from the {@link Gui}.
+<i>149</i>&nbsp;     * {@link Gui#onBoardChanged(String)} callback is invoked, in order to update the user
+<i>150</i>&nbsp;     * interface with the new {@link it.polimi.ingsw.model.Board} associated with the update.
+<i>151</i>&nbsp;     *
+<i>152</i>&nbsp;     * @param update is the instance of {@link MatchStartedUpdate} from server.
+<i>153</i>&nbsp;     * @see Gui#onBoardChanged(String)
+<i>154</i>&nbsp;     */
+<i>155</i>&nbsp;    public void handle(MatchStartedUpdate update) {
+<b class="nc"><i>156</i>&nbsp;        guiInstance.onBoardChanged(update.getBoard());</b>
+<b class="nc"><i>157</i>&nbsp;    }</b>
+<i>158</i>&nbsp;
+<i>159</i>&nbsp;    /**
+<i>160</i>&nbsp;     * This method handles {@link BoardUpdate} arrived from the {@link Gui}.
+<i>161</i>&nbsp;     * {@link Gui#onBoardChanged(String)} callback is invoked, in order to update the user
+<i>162</i>&nbsp;     * interface with the new {@link it.polimi.ingsw.model.Board} associated with the update.
+<i>163</i>&nbsp;     *
+<i>164</i>&nbsp;     * @param update is the instance of {@link BoardUpdate} from server.
+<i>165</i>&nbsp;     * @see Gui#onBoardChanged(String)
+<i>166</i>&nbsp;     */
+<i>167</i>&nbsp;    public void handle(BoardUpdate update) {
+<b class="nc"><i>168</i>&nbsp;        guiInstance.onBoardChanged(update.getBoard());</b>
+<b class="nc"><i>169</i>&nbsp;    }</b>
+<i>170</i>&nbsp;
+<i>171</i>&nbsp;    /**
+<i>172</i>&nbsp;     * This method handles {@link ErrorUpdate} arrived from the {@link Gui}.
+<i>173</i>&nbsp;     * If the error was not caused by this player, nothing gets done. Otherwise,
+<i>174</i>&nbsp;     * the {@link Gui} shows an error dialog to the user.
+<i>175</i>&nbsp;     *
+<i>176</i>&nbsp;     * @param update is the instance of {@link ErrorUpdate} from server.
+<i>177</i>&nbsp;     * @see Gui#showError(ErrorUpdate)
+<i>178</i>&nbsp;     */
+<i>179</i>&nbsp;    public void handle(ErrorUpdate update) {
+<b class="nc"><i>180</i>&nbsp;        if (!update.getCurrentPlayer().getPlayerID().equals(controller.getClientPlayerID())) return;</b>
+<i>181</i>&nbsp;
+<b class="nc"><i>182</i>&nbsp;        guiInstance.showError(update);</b>
+<b class="nc"><i>183</i>&nbsp;    }</b>
+<i>184</i>&nbsp;
+<i>185</i>&nbsp;    /**
+<i>186</i>&nbsp;     * This method handles {@link WinUpdate} arrived from the {@link Gui}.
+<i>187</i>&nbsp;     * A win message dialog is shown to the user (the content will change depending on
+<i>188</i>&nbsp;     * who actually won the match).
+<i>189</i>&nbsp;     *
+<i>190</i>&nbsp;     * @param update is the instance of {@link WinUpdate} from server.
+<i>191</i>&nbsp;     * @see Gui#showWinMessageDialog(WinUpdate)
+<i>192</i>&nbsp;     */
+<i>193</i>&nbsp;    public void handle(WinUpdate update) {
+<b class="nc"><i>194</i>&nbsp;        guiInstance.showWinMessageDialog(update);</b>
+<b class="nc"><i>195</i>&nbsp;    }</b>
+<i>196</i>&nbsp;
+<i>197</i>&nbsp;    /**
+<i>198</i>&nbsp;     * This method handles {@link LoseUpdate} arrived from the {@link Gui}.
+<i>199</i>&nbsp;     * A lost message dialog is shown to the user (the content will change depending on
+<i>200</i>&nbsp;     * how many players are still in game).
+<i>201</i>&nbsp;     *
+<i>202</i>&nbsp;     * @param update is the instance of {@link LoseUpdate} from server.
+<i>203</i>&nbsp;     * @see Gui#showLoseMessageDialog(LoseUpdate)
+<i>204</i>&nbsp;     */
+<i>205</i>&nbsp;    public void handle(LoseUpdate update) {
+<b class="nc"><i>206</i>&nbsp;        guiInstance.showLoseMessageDialog(update);</b>
+<b class="nc"><i>207</i>&nbsp;    }</b>
+<i>208</i>&nbsp;
+<i>209</i>&nbsp;    /**
+<i>210</i>&nbsp;     * This method handles {@link DisconnectedPlayerUpdate} arrived from the {@link Gui}.
+<i>211</i>&nbsp;     * if the game phase is not {@link GamePhase#MATCH_ENDED} an error dialog is shown to the user, which
+<i>212</i>&nbsp;     * will decide to play another match or quit the game.
+<i>213</i>&nbsp;     *
+<i>214</i>&nbsp;     * @param update is the instance of {@link DisconnectedPlayerUpdate} from server.
+<i>215</i>&nbsp;     * @see Gui#showDisconnectedPlayerDialog(DisconnectedPlayerUpdate)
+<i>216</i>&nbsp;     */
+<i>217</i>&nbsp;    public void handle(DisconnectedPlayerUpdate update) {
+<b class="nc"><i>218</i>&nbsp;        if (guiInstance.getCurrentPhase() != GamePhase.MATCH_ENDED &amp;&amp; guiInstance.showDisconnectedDialog) {</b>
+<b class="nc"><i>219</i>&nbsp;            guiInstance.showDisconnectedPlayerDialog(update);</b>
+<i>220</i>&nbsp;        }
+<b class="nc"><i>221</i>&nbsp;    }</b>
+<i>222</i>&nbsp;
+<i>223</i>&nbsp;    /**
+<i>224</i>&nbsp;     * This method handles {@link ServerUnreachableUpdate} arrived from the {@link it.polimi.ingsw.network.client.UpdateListener}.
+<i>225</i>&nbsp;     * An error dialog is shown to the user, and the game exits because communication with server it&#39;s not possible at the moment.
+<i>226</i>&nbsp;     *
+<i>227</i>&nbsp;     * @param update is the instance of {@link ServerUnreachableUpdate} from server.
+<i>228</i>&nbsp;     * @see Gui#showServerUnreachableDialog()
+<i>229</i>&nbsp;     */
+<i>230</i>&nbsp;    public void handle(ServerUnreachableUpdate update) {
+<b class="nc"><i>231</i>&nbsp;        guiInstance.showServerUnreachableDialog();</b>
+<b class="nc"><i>232</i>&nbsp;    }</b>
+<i>233</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

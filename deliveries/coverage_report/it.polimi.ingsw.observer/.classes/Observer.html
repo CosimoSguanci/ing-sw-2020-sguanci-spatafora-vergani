@@ -1,0 +1,72 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Observer</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.observer</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Observer (it.polimi.ingsw.observer)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">Observer</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.observer;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;/**
+<i>5</i>&nbsp; * This interface represents an observer, typical of MVC paradigm. An
+<i>6</i>&nbsp; * observer is an object that is synchronized on changes of other objects
+<i>7</i>&nbsp; * (called observable): observers are interested to be notified by observable
+<i>8</i>&nbsp; * when something new occurs.
+<i>9</i>&nbsp; * In MVC pattern, an observer must implement this interface.
+<i>10</i>&nbsp; * When a observer is created, it is synchronized on no observable objects.
+<i>11</i>&nbsp; *
+<i>12</i>&nbsp; * @author Andrea Mario Vergani
+<i>13</i>&nbsp; */
+<i>14</i>&nbsp;public interface Observer&lt;T&gt; {
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    /**
+<i>17</i>&nbsp;     * The method tells the observer what to do after a change. In fact,
+<i>18</i>&nbsp;     * observers are interested in any changes of observable object they
+<i>19</i>&nbsp;     * are &quot;listening&quot; to; on the basis of this notify, they can update or
+<i>20</i>&nbsp;     * do something else: the instructions are in this method.
+<i>21</i>&nbsp;     *
+<i>22</i>&nbsp;     * @param message object that represents the change on observable object
+<i>23</i>&nbsp;     */
+<i>24</i>&nbsp;    void update(T message);
+<i>25</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

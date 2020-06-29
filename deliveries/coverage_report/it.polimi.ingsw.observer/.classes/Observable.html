@@ -1,0 +1,134 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Observable</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.observer</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Observable (it.polimi.ingsw.observer)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Observable</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/ 12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.observer;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.ArrayList;
+<i>4</i>&nbsp;import java.util.List;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * This class represents an observable object in MVC paradigm. An observable
+<i>9</i>&nbsp; * object is &quot;listened&quot; by other objects. So, an observable object has one
+<i>10</i>&nbsp; * or more observers that are interested to be notified when some changes
+<i>11</i>&nbsp; * occur (in observed object).
+<i>12</i>&nbsp; * Note that an observer is an object implementing interface Observer.
+<i>13</i>&nbsp; * When an observable object is created, no observers are &quot;listening&quot; to it.
+<i>14</i>&nbsp; *
+<i>15</i>&nbsp; * @author Andrea Mario Vergani
+<i>16</i>&nbsp; */
+<i>17</i>&nbsp;
+<b class="fc"><i>18</i>&nbsp;public class Observable&lt;T&gt; {</b>
+<i>19</i>&nbsp;
+<b class="fc"><i>20</i>&nbsp;    private final List&lt;Observer&lt;T&gt;&gt; observers = new ArrayList&lt;&gt;();</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    /**
+<i>23</i>&nbsp;     * This method attaches the parameter object (an observer) to the list
+<i>24</i>&nbsp;     * of observable object&#39;s observers. Only observers in this list can
+<i>25</i>&nbsp;     * be notified by observable object of any changes on it.
+<i>26</i>&nbsp;     *
+<i>27</i>&nbsp;     * @param observer observer object that wants to attach to observable&#39;s list
+<i>28</i>&nbsp;     */
+<i>29</i>&nbsp;    public void addObserver(Observer&lt;T&gt; observer) {
+<b class="fc"><i>30</i>&nbsp;        synchronized (observers) {</b>
+<b class="fc"><i>31</i>&nbsp;            observers.add(observer);</b>
+<b class="fc"><i>32</i>&nbsp;        }</b>
+<b class="fc"><i>33</i>&nbsp;    }</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * This method is useful to notify to all observers (in the list) of a
+<i>37</i>&nbsp;     * change. In fact, observers are interested in any changes of observable
+<i>38</i>&nbsp;     * object they are &quot;listening&quot; to; on the basis of this notify, they can
+<i>39</i>&nbsp;     * update or do some specific operations.
+<i>40</i>&nbsp;     *
+<i>41</i>&nbsp;     * @param message object that represents the change, so that observers can understand what happened
+<i>42</i>&nbsp;     */
+<i>43</i>&nbsp;    public void notify(T message) {
+<b class="fc"><i>44</i>&nbsp;        synchronized (observers) {</b>
+<b class="fc"><i>45</i>&nbsp;            for (Observer&lt;T&gt; observer : observers) {</b>
+<b class="fc"><i>46</i>&nbsp;                observer.update(message);</b>
+<b class="fc"><i>47</i>&nbsp;            }</b>
+<b class="fc"><i>48</i>&nbsp;        }</b>
+<b class="fc"><i>49</i>&nbsp;    }</b>
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>
