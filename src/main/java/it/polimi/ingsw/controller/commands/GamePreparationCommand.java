@@ -20,12 +20,12 @@ import java.util.Map;
 public class GamePreparationCommand extends Command {
 
     /**
-     * "First" {@link it.polimi.ingsw.model.Worker} position (to be set by the {@link it.polimi.ingsw.controller.Controller} on server.
+     * "First" {@link it.polimi.ingsw.model.Worker} position (to be set by the {@link it.polimi.ingsw.controller.Controller} on server).
      */
     private transient Cell workerFirstCell;
 
     /**
-     * "Second" {@link it.polimi.ingsw.model.Worker} position (to be set by the {@link it.polimi.ingsw.controller.Controller} on server.
+     * "Second" {@link it.polimi.ingsw.model.Worker} position (to be set by the {@link it.polimi.ingsw.controller.Controller} on server).
      */
     private transient Cell workerSecondCell;
 
