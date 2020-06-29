@@ -1,0 +1,202 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CommandType</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.controller.commands</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CommandType (it.polimi.ingsw.controller.commands)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CommandType</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (24/ 24)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.controller.commands;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.exceptions.BadCommandException;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * CommandType is the enumeration for the type of command a player can do.
+<i>7</i>&nbsp; * In Santorini there are different type of possible commands.
+<i>8</i>&nbsp; *
+<i>9</i>&nbsp; * @author Roberto Spatafora
+<i>10</i>&nbsp; * @author Cosimo Sguanci
+<i>11</i>&nbsp; */
+<b class="fc"><i>12</i>&nbsp;public enum CommandType {</b>
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    /**
+<i>15</i>&nbsp;     * Used to move a player&#39;s worker to a different cell.
+<i>16</i>&nbsp;     */
+<b class="fc"><i>17</i>&nbsp;    MOVE,</b>
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    /**
+<i>20</i>&nbsp;     * Used to build in a cell according to its restrictions.
+<i>21</i>&nbsp;     */
+<b class="fc"><i>22</i>&nbsp;    BUILD,</b>
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    /**
+<i>25</i>&nbsp;     * Used to declare the end of the turn (and then the turn passes to another player).
+<i>26</i>&nbsp;     */
+<b class="fc"><i>27</i>&nbsp;    END_TURN,</b>
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    /**
+<i>30</i>&nbsp;     * Used to select nickname and color.
+<i>31</i>&nbsp;     */
+<b class="fc"><i>32</i>&nbsp;    PICK,</b>
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    /**
+<i>35</i>&nbsp;     * Used to choose a god or some gods if it&#39;s the god chooser.
+<i>36</i>&nbsp;     */
+<b class="fc"><i>37</i>&nbsp;    SELECT,</b>
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    /**
+<i>40</i>&nbsp;     * Used to decide the initial position of the workers on the board.
+<i>41</i>&nbsp;     */
+<b class="fc"><i>42</i>&nbsp;    PLACE,</b>
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    /**
+<i>45</i>&nbsp;     * Used to receive some information about what to do.
+<i>46</i>&nbsp;     */
+<b class="fc"><i>47</i>&nbsp;    HELP,</b>
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    /**
+<i>50</i>&nbsp;     * Used to have more specific information than HELP.
+<i>51</i>&nbsp;     */
+<b class="fc"><i>52</i>&nbsp;    INFO,</b>
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    /**
+<i>55</i>&nbsp;     * Used to leave a match.
+<i>56</i>&nbsp;     */
+<b class="fc"><i>57</i>&nbsp;    QUIT,</b>
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    /**
+<i>60</i>&nbsp;     * Used to &quot;ask&quot; who is playing his/her turn.
+<i>61</i>&nbsp;     */
+<b class="fc"><i>62</i>&nbsp;    TURN,</b>
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    /**
+<i>65</i>&nbsp;     * Used to read a short version of Santorini&#39;s manual.
+<i>66</i>&nbsp;     */
+<b class="fc"><i>67</i>&nbsp;    RULES,</b>
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;    /**
+<i>70</i>&nbsp;     * Used to know the association between player and god during a match.
+<i>71</i>&nbsp;     */
+<b class="fc"><i>72</i>&nbsp;    GOD,</b>
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    /**
+<i>75</i>&nbsp;     * Used to see the current board (and situation) of the match.
+<i>76</i>&nbsp;     */
+<b class="fc"><i>77</i>&nbsp;    BOARD;</b>
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    /**
+<i>81</i>&nbsp;     * This static method parses a string and sees if it corresponds to one of the CommandTypes.
+<i>82</i>&nbsp;     * Matching takes place when the string is equal to a sort of .toString for CommandType; note
+<i>83</i>&nbsp;     * that the string &quot;end&quot; is considered to match with CommandType.END_TURN.
+<i>84</i>&nbsp;     *
+<i>85</i>&nbsp;     * @param input the String that the user typed
+<i>86</i>&nbsp;     * @return the matching command-type
+<i>87</i>&nbsp;     * @throws BadCommandException if parameter string does not represent any CommandType
+<i>88</i>&nbsp;     */
+<i>89</i>&nbsp;    public static CommandType parseCommandType(String input) {
+<i>90</i>&nbsp;        try {
+<b class="fc"><i>91</i>&nbsp;            return Enum.valueOf(CommandType.class, input.toUpperCase());</b>
+<b class="fc"><i>92</i>&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc"><i>93</i>&nbsp;            if (input.toUpperCase().equals(&quot;END&quot;)) {</b>
+<b class="fc"><i>94</i>&nbsp;                return END_TURN;</b>
+<i>95</i>&nbsp;            } else {
+<b class="fc"><i>96</i>&nbsp;                throw new BadCommandException();</b>
+<i>97</i>&nbsp;            }
+<i>98</i>&nbsp;        }
+<i>99</i>&nbsp;    }
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;    /**
+<i>102</i>&nbsp;     * This static method parses a string and sees if it corresponds to one of the CommandTypes of the
+<i>103</i>&nbsp;     * &quot;Help class&quot;; this &quot;class&quot; is composed by all sort of CommandTypes that give information in order
+<i>104</i>&nbsp;     * to help to play a better match.
+<i>105</i>&nbsp;     * Matching takes place when the string is equal to a sort of .toString for CommandType.
+<i>106</i>&nbsp;     *
+<i>107</i>&nbsp;     * @param command the String that the user typed
+<i>108</i>&nbsp;     * @return true if the string matches a CommandType of &quot;Help class&quot;, false otherwise
+<i>109</i>&nbsp;     */
+<i>110</i>&nbsp;    public static boolean isHelperCommandType(String command) {
+<i>111</i>&nbsp;        CommandType enumCommand;
+<i>112</i>&nbsp;        try {
+<b class="fc"><i>113</i>&nbsp;            enumCommand = Enum.valueOf(CommandType.class, command.toUpperCase());</b>
+<b class="fc"><i>114</i>&nbsp;        } catch (IllegalArgumentException e) {</b>
+<b class="fc"><i>115</i>&nbsp;            return false;</b>
+<b class="fc"><i>116</i>&nbsp;        }</b>
+<b class="fc"><i>117</i>&nbsp;        return enumCommand.equals(CommandType.HELP) || enumCommand.equals(CommandType.INFO) || enumCommand.equals(CommandType.QUIT) || enumCommand.equals(CommandType.TURN) || enumCommand.equals(CommandType.RULES) || enumCommand.equals(CommandType.GOD) || enumCommand.equals(CommandType.BOARD);</b>
+<i>118</i>&nbsp;    }
+<i>119</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,171 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Manual</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Manual (it.polimi.ingsw.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Manual</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 36)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.PrintableColor;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.util.LinkedHashMap;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * This class defines a Game Manual. This manual is available to all players in all game phases
+<i>9</i>&nbsp; *
+<i>10</i>&nbsp; * @author Roberto Spatafora
+<i>11</i>&nbsp; * @author Cosimo Sguanci
+<i>12</i>&nbsp; * @author Andrea Vergani
+<i>13</i>&nbsp; */
+<i>14</i>&nbsp;public class Manual {
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    private static final String info = &quot;General information&quot;;
+<i>17</i>&nbsp;    private static final String play = &quot;How to play&quot;;
+<i>18</i>&nbsp;    private static final String winLose = &quot;Win and lose a match&quot;;
+<b class="nc"><i>19</i>&nbsp;    private static final String generalInfo = &quot;Santorini is a strategy board-game;&quot; +</b>
+<i>20</i>&nbsp;            &quot; in this version, you play online against 1 or 2 other players.&quot; +
+<b class="nc"><i>21</i>&nbsp;            System.lineSeparator() +</b>
+<i>22</i>&nbsp;            &quot;Every player is identified by a unique nickname during a match.&quot;;
+<b class="nc"><i>23</i>&nbsp;    private static final String howToPlay = &quot;Players take turns, starting with the Start Player, who first&quot; +</b>
+<b class="nc"><i>24</i>&nbsp;            &quot; places his/her workers.&quot; + System.lineSeparator() +</b>
+<i>25</i>&nbsp;            &quot;On your turn, select one of your workers. In general, you must move and then build &quot; +
+<b class="nc"><i>26</i>&nbsp;            &quot;with the selected worker.&quot; + System.lineSeparator() +</b>
+<i>27</i>&nbsp;            &quot;A Worker may move up a maximum of one level higher, &quot; +
+<i>28</i>&nbsp;            &quot;move down any number of levels lower, or move along the same level.&quot; +
+<b class="nc"><i>29</i>&nbsp;            System.lineSeparator() + &quot;Every move must be performed into a neighbouring cell, &quot; +</b>
+<b class="nc"><i>30</i>&nbsp;            &quot;where there is not a dome or another worker.&quot; + System.lineSeparator() +</b>
+<i>31</i>&nbsp;            &quot;A worker can build only in an unoccupied cell and can only increase its height of one level.&quot; +
+<b class="nc"><i>32</i>&nbsp;            System.lineSeparator() + &quot;Possible levels are: ground(0), 1, 2, 3, dome(4).&quot;;</b>
+<b class="nc"><i>33</i>&nbsp;    private static final String howToWinAndLose = &quot;If one of your workers moves &quot; +</b>
+<i>34</i>&nbsp;            &quot;up on top of level 3 during your turn, you instantly win!&quot; +
+<b class="nc"><i>35</i>&nbsp;            System.lineSeparator() + &quot;You must always perform a move then build &quot; +</b>
+<i>36</i>&nbsp;            &quot;on your turn. If you are unable to, you lose.&quot;;
+<b class="nc"><i>37</i>&nbsp;    private static final String chooseGods = &quot;Gods provide you with powerful abilities &quot; +</b>
+<i>38</i>&nbsp;            &quot;that can be used throughout the game. &quot; +
+<b class="nc"><i>39</i>&nbsp;            &quot;Every player has one god, chosen in the way described below.&quot; + System.lineSeparator() +</b>
+<i>40</i>&nbsp;            &quot;A random player becomes the god-chooser and selects a number of gods equal to the number of players.&quot; +
+<b class="nc"><i>41</i>&nbsp;            System.lineSeparator() + &quot;Then, every player chooses his/her god, and the god-chooser receives the remaining one.&quot;;</b>
+<b class="nc"><i>42</i>&nbsp;    private static final String gameWithGods = &quot;God powers apply or are triggered at a &quot; +</b>
+<b class="nc"><i>43</i>&nbsp;            &quot;specific time, according to the god&#39;s power description.&quot; + System.lineSeparator() +</b>
+<b class="nc"><i>44</i>&nbsp;            &quot;You can have more information about god powers in-game.&quot; + System.lineSeparator() +</b>
+<i>45</i>&nbsp;            &quot;REMEMBER: some god powers may cause workers to be &#39;forced&#39; into another space.&quot; +
+<b class="nc"><i>46</i>&nbsp;            System.lineSeparator() + &quot;A Worker that is &#39;forced&#39;, is not considered to have moved. &quot; +</b>
+<i>47</i>&nbsp;            &quot;For example, being &#39;forced&#39; to move up at level 3 does not mean winning!&quot;;
+<i>48</i>&nbsp;    private static final String gods = &quot;Gods&quot;;
+<i>49</i>&nbsp;    private static final String infoGods = &quot;More about gods&quot;;
+<i>50</i>&nbsp;
+<b class="nc"><i>51</i>&nbsp;    private Manual() {</b>
+<b class="nc"><i>52</i>&nbsp;    }</b>
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    /**
+<i>55</i>&nbsp;     * This method is used to generate a String which contains all the game rules
+<i>56</i>&nbsp;     *
+<i>57</i>&nbsp;     * @return a String which contains information about info, play, win conditions, gods and info about them
+<i>58</i>&nbsp;     */
+<i>59</i>&nbsp;    public static String manual() {
+<b class="nc"><i>60</i>&nbsp;        String info = PrintableColor.BOLD + Manual.info + PrintableColor.RESET;</b>
+<b class="nc"><i>61</i>&nbsp;        String play = PrintableColor.BOLD + Manual.play + PrintableColor.RESET;</b>
+<b class="nc"><i>62</i>&nbsp;        String winLose = PrintableColor.BOLD + Manual.winLose + PrintableColor.RESET;</b>
+<b class="nc"><i>63</i>&nbsp;        String gods = PrintableColor.BOLD + Manual.gods + PrintableColor.RESET;</b>
+<b class="nc"><i>64</i>&nbsp;        String infoGods = PrintableColor.BOLD + Manual.infoGods + PrintableColor.RESET;</b>
+<i>65</i>&nbsp;
+<b class="nc"><i>66</i>&nbsp;        return info + System.lineSeparator() + generalInfo + System.lineSeparator() +</b>
+<b class="nc"><i>67</i>&nbsp;                play + System.lineSeparator() + howToPlay + System.lineSeparator() +</b>
+<b class="nc"><i>68</i>&nbsp;                winLose + System.lineSeparator() + howToWinAndLose + System.lineSeparator() +</b>
+<b class="nc"><i>69</i>&nbsp;                gods + System.lineSeparator() + chooseGods + System.lineSeparator() +</b>
+<b class="nc"><i>70</i>&nbsp;                infoGods + System.lineSeparator() + gameWithGods + System.lineSeparator();</b>
+<i>71</i>&nbsp;    }
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    /**
+<i>74</i>&nbsp;     * This method is a simple getter of a correspondence between info Title and the explanation of them
+<i>75</i>&nbsp;     *
+<i>76</i>&nbsp;     * @return a Map which contains a correspondence between info title and the explanation
+<i>77</i>&nbsp;     */
+<i>78</i>&nbsp;    public static LinkedHashMap&lt;String, String&gt; getRules() {
+<b class="nc"><i>79</i>&nbsp;        LinkedHashMap&lt;String, String&gt; result = new LinkedHashMap&lt;&gt;();</b>
+<b class="nc"><i>80</i>&nbsp;        result.put(info, generalInfo);</b>
+<b class="nc"><i>81</i>&nbsp;        result.put(play, howToPlay);</b>
+<b class="nc"><i>82</i>&nbsp;        result.put(winLose, howToWinAndLose);</b>
+<b class="nc"><i>83</i>&nbsp;        result.put(gods, chooseGods);</b>
+<b class="nc"><i>84</i>&nbsp;        result.put(infoGods, gameWithGods);</b>
+<b class="nc"><i>85</i>&nbsp;        return result;</b>
+<i>86</i>&nbsp;    }
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

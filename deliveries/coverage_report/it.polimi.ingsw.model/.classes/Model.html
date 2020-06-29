@@ -1,0 +1,412 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Model</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Model (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Model</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (22/ 22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (61/ 61)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$6eZqElck</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$8V0u7cuc</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$cOnCrUfU</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$CsRaj2l0</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$df2oJ6dp</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$DJ9bBPRe</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$dlhfb5gW</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$EIWiq7zi</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$Eq6G8x7I</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$eQLikjpC</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$jj33Kp7r</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$kJYiX8ty</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$L8uH7mw0</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$LN5ZqGSK</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$n7VmOXAC</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$NZtwQFMO</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$OixxAREa</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$orvCbNNH</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$Rk2lEL0A</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$rMG44sgb</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$TDk630MK</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$TmrkvN1H</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$VEEGKRcQ</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$VqCsCjAP</td>
+  </tr>
+  <tr>
+    <td class="name">Model$MockitoMock$1701569491$auxiliary$Xkl5n5z9</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (22/ 22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (61/ 61)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.GamePhase;
+<i>4</i>&nbsp;import it.polimi.ingsw.controller.commands.CommandType;
+<i>5</i>&nbsp;import it.polimi.ingsw.controller.commands.PlayerCommand;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.updates.*;
+<i>7</i>&nbsp;import it.polimi.ingsw.observer.Observable;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import java.util.List;
+<i>10</i>&nbsp;import java.util.Map;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;/**
+<i>13</i>&nbsp; * This class is a &quot;proxy&quot; between Controller and other components, such as the {@link Match} current state, and the {@link it.polimi.ingsw.view.RemoteView}.
+<i>14</i>&nbsp; * It&#39;s used by the Controller:
+<i>15</i>&nbsp; * - to get information about the current game (model) state;
+<i>16</i>&nbsp; * - to update the game state according to the command received by Players;
+<i>17</i>&nbsp; * - to notify Updates to the connected Players.
+<i>18</i>&nbsp; * &lt;p&gt;
+<i>19</i>&nbsp; * This class is useful in particular to add a layer of abstraction and to decouple responsibilities between Model and Controller: in this way the
+<i>20</i>&nbsp; * component responsible to notify state changes to the View is always the Model component.
+<i>21</i>&nbsp; *
+<i>22</i>&nbsp; * @author Cosimo Sguanci
+<i>23</i>&nbsp; * @author Andrea Mario Vergani
+<i>24</i>&nbsp; * @author Roberto Spatafora
+<i>25</i>&nbsp; */
+<i>26</i>&nbsp;public class Model extends Observable&lt;Update&gt; {
+<i>27</i>&nbsp;    private final Match match;
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;    public Model(Match match) {</b>
+<b class="fc"><i>30</i>&nbsp;        this.match = match;</b>
+<b class="fc"><i>31</i>&nbsp;    }</b>
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    /**
+<i>35</i>&nbsp;     * The method returns current player of the match.
+<i>36</i>&nbsp;     *
+<i>37</i>&nbsp;     * @return current player
+<i>38</i>&nbsp;     */
+<i>39</i>&nbsp;    public Player getCurrentPlayer() {
+<b class="fc"><i>40</i>&nbsp;        return this.match.getCurrentPlayer();</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    /**
+<i>44</i>&nbsp;     * Game Board getter
+<i>45</i>&nbsp;     *
+<i>46</i>&nbsp;     * @return the Game Board
+<i>47</i>&nbsp;     */
+<i>48</i>&nbsp;    public Board getBoard() {
+<b class="fc"><i>49</i>&nbsp;        return this.match.getMatchBoard();</b>
+<i>50</i>&nbsp;    }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    /**
+<i>53</i>&nbsp;     * Match Players List getter
+<i>54</i>&nbsp;     *
+<i>55</i>&nbsp;     * @return the List of the the Players playing this Match
+<i>56</i>&nbsp;     */
+<i>57</i>&nbsp;    public List&lt;Player&gt; getPlayers() {
+<b class="fc"><i>58</i>&nbsp;        return match.getPlayers();</b>
+<i>59</i>&nbsp;    }
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    /**
+<i>62</i>&nbsp;     * Removes a {@link Player} from the players list (used for example when a {@link Player} loses).
+<i>63</i>&nbsp;     *
+<i>64</i>&nbsp;     * @param player the player to remove
+<i>65</i>&nbsp;     */
+<i>66</i>&nbsp;    public void removePlayer(Player player) {
+<b class="fc"><i>67</i>&nbsp;        match.removePlayer(player);</b>
+<b class="fc"><i>68</i>&nbsp;    }</b>
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    /**
+<i>71</i>&nbsp;     * This method is called to end the turn of the current {@link Player}.
+<i>72</i>&nbsp;     */
+<i>73</i>&nbsp;    public void endTurn() {
+<b class="fc"><i>74</i>&nbsp;        match.nextTurn();</b>
+<b class="fc"><i>75</i>&nbsp;        turnUpdate(match.getCurrentPlayer());</b>
+<b class="fc"><i>76</i>&nbsp;    }</b>
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;    /**
+<i>79</i>&nbsp;     * This method is used at startup to set the initial turn
+<i>80</i>&nbsp;     *
+<i>81</i>&nbsp;     * @param initialTurn the index corresponding to the Player which will be the first to play
+<i>82</i>&nbsp;     */
+<i>83</i>&nbsp;    public void setInitialTurn(int initialTurn) {
+<b class="fc"><i>84</i>&nbsp;        match.setInitialTurn(initialTurn);</b>
+<b class="fc"><i>85</i>&nbsp;    }</b>
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;    /**
+<i>88</i>&nbsp;     * Current Game Phase getter used by {@link it.polimi.ingsw.controller.Controller}
+<i>89</i>&nbsp;     *
+<i>90</i>&nbsp;     * @return the current Game Phase
+<i>91</i>&nbsp;     */
+<i>92</i>&nbsp;    public GamePhase getCurrentGamePhase() {
+<b class="fc"><i>93</i>&nbsp;        return match.getCurrentGamePhase();</b>
+<i>94</i>&nbsp;    }
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;    /**
+<i>97</i>&nbsp;     * Game Phase updater method used by Controller to change the state when a new Game Phase needs to be started
+<i>98</i>&nbsp;     */
+<i>99</i>&nbsp;    public void nextGamePhase() {
+<b class="fc"><i>100</i>&nbsp;        match.nextGamePhase();</b>
+<b class="fc"><i>101</i>&nbsp;    }</b>
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;    /**
+<i>104</i>&nbsp;     * Callback method called when a Player lost. If a Player lost, its Workers have to be removed from the game Board, and its reference
+<i>105</i>&nbsp;     * has to be removed from the Match Players List.
+<i>106</i>&nbsp;     *
+<i>107</i>&nbsp;     * @param loserPlayer the Player who just lost
+<i>108</i>&nbsp;     * @param loseCause   the reason why the Player lost
+<i>109</i>&nbsp;     */
+<i>110</i>&nbsp;    public void onPlayerLose(Player loserPlayer, LoseUpdate.LoseCause loseCause) {
+<b class="fc"><i>111</i>&nbsp;        loserPlayer.getWorkerFirst().getPosition().setWorker(null);</b>
+<b class="fc"><i>112</i>&nbsp;        loserPlayer.getWorkerSecond().getPosition().setWorker(null);</b>
+<b class="fc"><i>113</i>&nbsp;        removePlayer(loserPlayer);</b>
+<b class="fc"><i>114</i>&nbsp;        loseUpdate(loserPlayer, loseCause);</b>
+<b class="fc"><i>115</i>&nbsp;        turnUpdate(getCurrentPlayer());</b>
+<b class="fc"><i>116</i>&nbsp;    }</b>
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;    /**
+<i>119</i>&nbsp;     * Players Number getter
+<i>120</i>&nbsp;     *
+<i>121</i>&nbsp;     * @return the number of Players chosen for this match
+<i>122</i>&nbsp;     */
+<i>123</i>&nbsp;    public int getPlayersNumber() {
+<b class="fc"><i>124</i>&nbsp;        return match.getPlayersNumber();</b>
+<i>125</i>&nbsp;    }
+<i>126</i>&nbsp;
+<i>127</i>&nbsp;    /**
+<i>128</i>&nbsp;     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that the current {@link GamePhase} has changed.
+<i>129</i>&nbsp;     *
+<i>130</i>&nbsp;     * @param newGamePhase the new current {@link GamePhase} for this match
+<i>131</i>&nbsp;     */
+<i>132</i>&nbsp;    public void gamePhaseUpdate(GamePhase newGamePhase) {
+<b class="fc"><i>133</i>&nbsp;        GamePhaseUpdate gamePhaseUpdate = new GamePhaseUpdate(newGamePhase);</b>
+<b class="fc"><i>134</i>&nbsp;        notify(gamePhaseUpdate);</b>
+<b class="fc"><i>135</i>&nbsp;    }</b>
+<i>136</i>&nbsp;
+<i>137</i>&nbsp;    /**
+<i>138</i>&nbsp;     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that there was an error executing a {@link it.polimi.ingsw.controller.commands.Command}.
+<i>139</i>&nbsp;     *
+<i>140</i>&nbsp;     * @param player       the Player who made the Command which caused the error
+<i>141</i>&nbsp;     * @param commandType  the commandType corresponding to the attempted Command
+<i>142</i>&nbsp;     * @param errorType    the specific ErrorType of the error raised
+<i>143</i>&nbsp;     * @param inhibitorGod [optional] the God that made the Command not executable
+<i>144</i>&nbsp;     */
+<i>145</i>&nbsp;    public void reportError(Player player, CommandType commandType, ErrorType errorType, Map&lt;String, String&gt; inhibitorGod) {
+<b class="fc"><i>146</i>&nbsp;        ErrorUpdate errorUpdate = new ErrorUpdate(player, commandType, errorType, inhibitorGod);</b>
+<b class="fc"><i>147</i>&nbsp;        notify(errorUpdate);</b>
+<b class="fc"><i>148</i>&nbsp;    }</b>
+<i>149</i>&nbsp;
+<i>150</i>&nbsp;    /**
+<i>151</i>&nbsp;     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that some new Initial Info has been set for a {@link Player}.
+<i>152</i>&nbsp;     *
+<i>153</i>&nbsp;     * @param initialInfo the map which associates Players nicknames and Players colors.
+<i>154</i>&nbsp;     */
+<i>155</i>&nbsp;    public void initialInfoUpdate(Map&lt;String, PrintableColor&gt; initialInfo) {
+<b class="fc"><i>156</i>&nbsp;        InitialInfoUpdate initialInfoUpdate = new InitialInfoUpdate(initialInfo);</b>
+<b class="fc"><i>157</i>&nbsp;        notify(initialInfoUpdate);</b>
+<b class="fc"><i>158</i>&nbsp;    }</b>
+<i>159</i>&nbsp;
+<i>160</i>&nbsp;    /**
+<i>161</i>&nbsp;     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a new God has been set for a {@link Player}.
+<i>162</i>&nbsp;     *
+<i>163</i>&nbsp;     * @param selectableGods the Gods that have been selected by the GodChooser, but have not been chosen by any {@link Player}.
+<i>164</i>&nbsp;     * @param selectedGods   the map which associates Players nicknames and Players Gods.
+<i>165</i>&nbsp;     */
+<i>166</i>&nbsp;    public void godsUpdate(List&lt;String&gt; selectableGods, Map&lt;String, String&gt; selectedGods) {
+<b class="fc"><i>167</i>&nbsp;        GodsUpdate godsUpdate = new GodsUpdate(selectableGods, selectedGods);</b>
+<b class="fc"><i>168</i>&nbsp;        notify(godsUpdate);</b>
+<b class="fc"><i>169</i>&nbsp;    }</b>
+<i>170</i>&nbsp;
+<i>171</i>&nbsp;    /**
+<i>172</i>&nbsp;     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a there was some changes in the Game {@link Board}
+<i>173</i>&nbsp;     * (a {@link Worker} moved or built a new level)
+<i>174</i>&nbsp;     */
+<i>175</i>&nbsp;    public void boardUpdate() {
+<b class="fc"><i>176</i>&nbsp;        BoardUpdate boardUpdate = new BoardUpdate(match.getMatchBoard().toString());</b>
+<b class="fc"><i>177</i>&nbsp;        notify(boardUpdate);</b>
+<b class="fc"><i>178</i>&nbsp;    }</b>
+<i>179</i>&nbsp;
+<i>180</i>&nbsp;    /**
+<i>181</i>&nbsp;     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a there was some changes in the Game {@link Board}
+<i>182</i>&nbsp;     * (a {@link Worker} moved or built a new level)
+<i>183</i>&nbsp;     *
+<i>184</i>&nbsp;     * @param executedCommand the command which caused the changes to the Game {@link Board}
+<i>185</i>&nbsp;     */
+<i>186</i>&nbsp;    public void boardUpdate(PlayerCommand executedCommand) {
+<b class="fc"><i>187</i>&nbsp;        BoardUpdate boardUpdate = new BoardUpdate(match.getMatchBoard().toString());</b>
+<b class="fc"><i>188</i>&nbsp;        executedCommand.setPlayerNickname(executedCommand.getPlayer().getNickname());</b>
+<b class="fc"><i>189</i>&nbsp;        boardUpdate.setExecutedCommand(executedCommand);</b>
+<b class="fc"><i>190</i>&nbsp;        notify(boardUpdate);</b>
+<b class="fc"><i>191</i>&nbsp;    }</b>
+<i>192</i>&nbsp;
+<i>193</i>&nbsp;    /**
+<i>194</i>&nbsp;     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that the {@link Match} has actually started.
+<i>195</i>&nbsp;     */
+<i>196</i>&nbsp;    public void matchStartedUpdate() {
+<b class="fc"><i>197</i>&nbsp;        TurnUpdate turnUpdate = new TurnUpdate(match.getCurrentPlayer());</b>
+<b class="fc"><i>198</i>&nbsp;        notify(turnUpdate);</b>
+<b class="fc"><i>199</i>&nbsp;        MatchStartedUpdate matchStartedUpdate = new MatchStartedUpdate(match.getMatchBoard().toString());</b>
+<b class="fc"><i>200</i>&nbsp;        notify(matchStartedUpdate);</b>
+<b class="fc"><i>201</i>&nbsp;    }</b>
+<i>202</i>&nbsp;
+<i>203</i>&nbsp;    /**
+<i>204</i>&nbsp;     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that the current turn has changed.
+<i>205</i>&nbsp;     *
+<i>206</i>&nbsp;     * @param currentPlayer the new {@link Player} in turn now
+<i>207</i>&nbsp;     */
+<i>208</i>&nbsp;    public void turnUpdate(Player currentPlayer) {
+<b class="fc"><i>209</i>&nbsp;        TurnUpdate turnUpdate = new TurnUpdate(currentPlayer);</b>
+<b class="fc"><i>210</i>&nbsp;        notify(turnUpdate);</b>
+<b class="fc"><i>211</i>&nbsp;    }</b>
+<i>212</i>&nbsp;
+<i>213</i>&nbsp;    /**
+<i>214</i>&nbsp;     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a {@link Player} won.
+<i>215</i>&nbsp;     *
+<i>216</i>&nbsp;     * @param winnerPlayer the {@link Player} who has won the Match
+<i>217</i>&nbsp;     */
+<i>218</i>&nbsp;    public void winUpdate(Player winnerPlayer) {
+<b class="fc"><i>219</i>&nbsp;        WinUpdate winUpdate = new WinUpdate(winnerPlayer);</b>
+<b class="fc"><i>220</i>&nbsp;        notify(winUpdate);</b>
+<b class="fc"><i>221</i>&nbsp;    }</b>
+<i>222</i>&nbsp;
+<i>223</i>&nbsp;    /**
+<i>224</i>&nbsp;     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a {@link Player} lost.
+<i>225</i>&nbsp;     *
+<i>226</i>&nbsp;     * @param loserPlayer the {@link Player} who just lost
+<i>227</i>&nbsp;     * @param loseCause   the reason why the {@link Player} lost
+<i>228</i>&nbsp;     */
+<i>229</i>&nbsp;    public void loseUpdate(Player loserPlayer, LoseUpdate.LoseCause loseCause) {
+<b class="fc"><i>230</i>&nbsp;        boolean onePlayerRemaining = getPlayers().size() == 1;</b>
+<b class="fc"><i>231</i>&nbsp;        LoseUpdate loseUpdate = new LoseUpdate(loserPlayer, loseCause, onePlayerRemaining, match.getMatchBoard().toString());</b>
+<b class="fc"><i>232</i>&nbsp;        notify(loseUpdate);</b>
+<b class="fc"><i>233</i>&nbsp;    }</b>
+<i>234</i>&nbsp;
+<i>235</i>&nbsp;    /**
+<i>236</i>&nbsp;     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a {@link Player} disconnected.
+<i>237</i>&nbsp;     *
+<i>238</i>&nbsp;     * @param disconnectedPlayer the {@link Player} who disconnected from the match
+<i>239</i>&nbsp;     */
+<i>240</i>&nbsp;    public void disconnectedPlayerUpdate(Player disconnectedPlayer) {
+<b class="fc"><i>241</i>&nbsp;        DisconnectedPlayerUpdate disconnectedPlayerUpdate = new DisconnectedPlayerUpdate(disconnectedPlayer, match.getMatchBoard().toString());</b>
+<b class="fc"><i>242</i>&nbsp;        notify(disconnectedPlayerUpdate);</b>
+<b class="fc"><i>243</i>&nbsp;    }</b>
+<i>244</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

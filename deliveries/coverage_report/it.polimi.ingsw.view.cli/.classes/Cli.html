@@ -1,0 +1,463 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Cli</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.cli</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Cli (it.polimi.ingsw.view.cli)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Cli</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 79)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.cli;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.GamePhase;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.PrintableColor;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.updates.Update;
+<i>6</i>&nbsp;import it.polimi.ingsw.network.client.Client;
+<i>7</i>&nbsp;import it.polimi.ingsw.network.client.controller.Controller;
+<i>8</i>&nbsp;import it.polimi.ingsw.observer.Observer;
+<i>9</i>&nbsp;import it.polimi.ingsw.view.View;
+<i>10</i>&nbsp;import it.polimi.ingsw.view.cli.components.GamePhaseCommandHandler;
+<i>11</i>&nbsp;import it.polimi.ingsw.view.cli.components.OtherInfoHandler;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import java.io.IOException;
+<i>14</i>&nbsp;import java.io.PrintStream;
+<i>15</i>&nbsp;import java.util.List;
+<i>16</i>&nbsp;import java.util.Scanner;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;/**
+<i>20</i>&nbsp; * Cli is the class in which interactions with users are managed.
+<i>21</i>&nbsp; * This class extends Observable interface and different types of
+<i>22</i>&nbsp; * command observe it.
+<i>23</i>&nbsp; *
+<i>24</i>&nbsp; * @author Cosimo Sguanci
+<i>25</i>&nbsp; * @author Roberto Spatafora
+<i>26</i>&nbsp; * @author Andrea Vergani
+<i>27</i>&nbsp; */
+<i>28</i>&nbsp;public class Cli extends View implements Observer&lt;Update&gt; {
+<b class="nc"><i>29</i>&nbsp;    private final GamePhaseCommandHandler gamePhaseCommandHandler = new GamePhaseCommandHandler(this);</b>
+<b class="nc"><i>30</i>&nbsp;    private final OtherInfoHandler otherInfoHandler = new OtherInfoHandler(this);</b>
+<i>31</i>&nbsp;    private Scanner stdin;
+<i>32</i>&nbsp;    private PrintStream stdout;
+<i>33</i>&nbsp;    private List&lt;String&gt; selectedNicknames;
+<i>34</i>&nbsp;    private List&lt;PrintableColor&gt; selectableColors;
+<i>35</i>&nbsp;    private List&lt;String&gt; selectableGods;
+<b class="nc"><i>36</i>&nbsp;    private boolean isInitialGodChooser = false;</b>
+<b class="nc"><i>37</i>&nbsp;    private boolean continueToWatch = false;</b>
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * JSON representation of current board of the match
+<i>40</i>&nbsp;     */
+<i>41</i>&nbsp;    private String currentBoard;
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    /**
+<i>44</i>&nbsp;     * Cli is the builder of the class. At the moment of the Cli creation
+<i>45</i>&nbsp;     * a client and a controller of the client are associated to it.
+<i>46</i>&nbsp;     * A new instance of CliUpdateHandler is created which manages
+<i>47</i>&nbsp;     * all the updates notified by server.
+<i>48</i>&nbsp;     *
+<i>49</i>&nbsp;     * @param client     indicates the client with whom a conversation with
+<i>50</i>&nbsp;     *                   the Cli instance created will take place.
+<i>51</i>&nbsp;     * @param controller indicates clientSideController implements client-side checks
+<i>52</i>&nbsp;     *                   in order to avoid repeated and unnecessary interactions with the server.
+<i>53</i>&nbsp;     */
+<i>54</i>&nbsp;    public Cli(Client client, Controller controller) {
+<b class="nc"><i>55</i>&nbsp;        super(client, controller);</b>
+<b class="nc"><i>56</i>&nbsp;        this.updateHandler = new CliUpdateHandler(this, controller);</b>
+<b class="nc"><i>57</i>&nbsp;    }</b>
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    /**
+<i>60</i>&nbsp;     * This method converts a color given as parameter according to enum
+<i>61</i>&nbsp;     * defined, and it is used to have the correct correspondence Ansi color.
+<i>62</i>&nbsp;     *
+<i>63</i>&nbsp;     * @param color is the PrintableColor you want to calculate the Ansi code
+<i>64</i>&nbsp;     * @return the string of the respective Ansi color.
+<i>65</i>&nbsp;     */
+<i>66</i>&nbsp;    public static String convertColorToAnsi(PrintableColor color) {
+<b class="nc"><i>67</i>&nbsp;        return PrintableColor.convertColorToAnsi(color);</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    /**
+<i>71</i>&nbsp;     * This method is used to make a string given as parameter in bold
+<i>72</i>&nbsp;     *
+<i>73</i>&nbsp;     * @param s is the string that you want in bold
+<i>74</i>&nbsp;     * @return the bold String
+<i>75</i>&nbsp;     */
+<i>76</i>&nbsp;    public static String toBold(String s) {
+<b class="nc"><i>77</i>&nbsp;        return PrintableColor.BOLD + s + PrintableColor.RESET;</b>
+<i>78</i>&nbsp;    }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    /**
+<i>81</i>&nbsp;     * This is a method useful to avoid code repetitions
+<i>82</i>&nbsp;     * It is an abbreviation of stdout.println
+<i>83</i>&nbsp;     *
+<i>84</i>&nbsp;     * @param string id the string printed by this method.
+<i>85</i>&nbsp;     */
+<i>86</i>&nbsp;    public void println(String string) {
+<b class="nc"><i>87</i>&nbsp;        if (stdout == null)</b>
+<b class="nc"><i>88</i>&nbsp;            return;</b>
+<b class="nc"><i>89</i>&nbsp;        stdout.println(string);</b>
+<b class="nc"><i>90</i>&nbsp;    }</b>
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;    /**
+<i>93</i>&nbsp;     * This is a method useful to avoid code repetitions.
+<i>94</i>&nbsp;     * It simply prints a blank line
+<i>95</i>&nbsp;     */
+<i>96</i>&nbsp;    public void newLine() {
+<b class="nc"><i>97</i>&nbsp;        if (stdout == null)</b>
+<b class="nc"><i>98</i>&nbsp;            return;</b>
+<b class="nc"><i>99</i>&nbsp;        stdout.println();</b>
+<b class="nc"><i>100</i>&nbsp;    }</b>
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;    /**
+<i>103</i>&nbsp;     * In this method, once a connection between client and server
+<i>104</i>&nbsp;     * is established, every game phase is managed.
+<i>105</i>&nbsp;     */
+<i>106</i>&nbsp;    @Override
+<i>107</i>&nbsp;    public void start() {
+<b class="nc"><i>108</i>&nbsp;        stdin = new Scanner(System.in);</b>
+<b class="nc"><i>109</i>&nbsp;        stdout = System.out;</b>
+<i>110</i>&nbsp;        try {
+<i>111</i>&nbsp;            do {
+<b class="nc"><i>112</i>&nbsp;                println(&quot;How many players do you want in your match? &quot;);</b>
+<b class="nc"><i>113</i>&nbsp;                String playersNumString = stdin.nextLine();</b>
+<b class="nc"><i>114</i>&nbsp;                if (playersNumString.equals(&quot;2&quot;)) {</b>
+<b class="nc"><i>115</i>&nbsp;                    this.playersNumber = 2;</b>
+<b class="nc"><i>116</i>&nbsp;                } else if (playersNumString.equals(&quot;3&quot;)) {</b>
+<b class="nc"><i>117</i>&nbsp;                    this.playersNumber = 3;</b>
+<i>118</i>&nbsp;                } else {
+<b class="nc"><i>119</i>&nbsp;                    println(&quot;Invalid Players number: 2 or 3 players matches are available.&quot;);</b>
+<i>120</i>&nbsp;                }
+<b class="nc"><i>121</i>&nbsp;            } while (this.playersNumber != 2 &amp;&amp; this.playersNumber != 3);</b>
+<b class="nc"><i>122</i>&nbsp;            client.sendPlayersNumber(this.playersNumber);</b>
+<b class="nc"><i>123</i>&nbsp;            String clientID = client.readPlayerID();</b>
+<b class="nc"><i>124</i>&nbsp;            controller.setClientPlayerID(clientID);</b>
+<b class="nc"><i>125</i>&nbsp;            client.setupUpdateListener();</b>
+<b class="nc"><i>126</i>&nbsp;            client.getUpdateListener().addObserver(this); // Register to UpdateListener</b>
+<b class="nc"><i>127</i>&nbsp;            this.gamePhaseCommandHandler.gameLoop();</b>
+<b class="nc"><i>128</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>129</i>&nbsp;            System.err.println(&quot;The Game couldn&#39;t start, maybe there was some network error or the server isn&#39;t available.&quot;);</b>
+<b class="nc"><i>130</i>&nbsp;            System.exit(0);</b>
+<b class="nc"><i>131</i>&nbsp;        }</b>
+<b class="nc"><i>132</i>&nbsp;    }</b>
+<i>133</i>&nbsp;
+<i>134</i>&nbsp;    /**
+<i>135</i>&nbsp;     * This method is a simple getter to have access to the private
+<i>136</i>&nbsp;     * instance of the boolean attribute isInitialGodChooser of this class.
+<i>137</i>&nbsp;     *
+<i>138</i>&nbsp;     * @return true if isInitialGodChooser is true value set,
+<i>139</i>&nbsp;     * otherwise it returns false.
+<i>140</i>&nbsp;     */
+<i>141</i>&nbsp;    public boolean getInitialGodChooser() {
+<b class="nc"><i>142</i>&nbsp;        return this.isInitialGodChooser;</b>
+<i>143</i>&nbsp;    }
+<i>144</i>&nbsp;
+<i>145</i>&nbsp;    /**
+<i>146</i>&nbsp;     * This method is a setter used to set to the received value of
+<i>147</i>&nbsp;     * the parameter if this client is or not the GodChooser.
+<i>148</i>&nbsp;     *
+<i>149</i>&nbsp;     * @param value is received as boolean parameter from the server,
+<i>150</i>&nbsp;     *              after having it randomly from the players list.
+<i>151</i>&nbsp;     */
+<i>152</i>&nbsp;    void setInitialGodChooser(boolean value) {
+<b class="nc"><i>153</i>&nbsp;        this.isInitialGodChooser = value;</b>
+<b class="nc"><i>154</i>&nbsp;    }</b>
+<i>155</i>&nbsp;
+<i>156</i>&nbsp;    /**
+<i>157</i>&nbsp;     * This is a method used to have a List that contains all the Gods a player can
+<i>158</i>&nbsp;     * choose after GodChooser player selected them.
+<i>159</i>&nbsp;     *
+<i>160</i>&nbsp;     * @return a List with Gods references which are selectable from a
+<i>161</i>&nbsp;     * single player, during CHOOSE_GODS game phase.
+<i>162</i>&nbsp;     */
+<i>163</i>&nbsp;    public List&lt;String&gt; getSelectableGods() {
+<b class="nc"><i>164</i>&nbsp;        return this.selectableGods;</b>
+<i>165</i>&nbsp;    }
+<i>166</i>&nbsp;
+<i>167</i>&nbsp;    /**
+<i>168</i>&nbsp;     * This method make possible client who are not GodChooser to select
+<i>169</i>&nbsp;     * a God once the GodChooser selected Gods that will be involved in the match.
+<i>170</i>&nbsp;     *
+<i>171</i>&nbsp;     * @param selectableGods is as list used to have references to all Gods
+<i>172</i>&nbsp;     *                       a player can choose in a specific match (once GodChooser selected them)
+<i>173</i>&nbsp;     */
+<i>174</i>&nbsp;    @Override
+<i>175</i>&nbsp;    public void setSelectableGods(List&lt;String&gt; selectableGods) {
+<b class="nc"><i>176</i>&nbsp;        this.selectableGods = selectableGods;</b>
+<b class="nc"><i>177</i>&nbsp;    }</b>
+<i>178</i>&nbsp;
+<i>179</i>&nbsp;    /**
+<i>180</i>&nbsp;     * This method is used to have a list that contains all the nicknames already
+<i>181</i>&nbsp;     * chosen from different Players in a match. It is used in the first phase
+<i>182</i>&nbsp;     * of a match, during INITIAL_INFO game phase, to avoid the possibility that
+<i>183</i>&nbsp;     * different players involved in a match choose the same nicknames.
+<i>184</i>&nbsp;     *
+<i>185</i>&nbsp;     * @return a List with all the names already chosen from
+<i>186</i>&nbsp;     * other players for a single match.
+<i>187</i>&nbsp;     */
+<i>188</i>&nbsp;    public List&lt;String&gt; getSelectedNicknames() {
+<b class="nc"><i>189</i>&nbsp;        return this.selectedNicknames;</b>
+<i>190</i>&nbsp;    }
+<i>191</i>&nbsp;
+<i>192</i>&nbsp;    /**
+<i>193</i>&nbsp;     * This method let clients choose a nickname unique in the match.
+<i>194</i>&nbsp;     *
+<i>195</i>&nbsp;     * @param selectedNicknames is a list of all nickname already chosen from players.
+<i>196</i>&nbsp;     */
+<i>197</i>&nbsp;    @Override
+<i>198</i>&nbsp;    public void setSelectedNicknames(List&lt;String&gt; selectedNicknames) {
+<b class="nc"><i>199</i>&nbsp;        this.selectedNicknames = selectedNicknames;</b>
+<b class="nc"><i>200</i>&nbsp;    }</b>
+<i>201</i>&nbsp;
+<i>202</i>&nbsp;    /**
+<i>203</i>&nbsp;     * This method is used to have a list that contains all the colors already
+<i>204</i>&nbsp;     * chosen from different Players in a match. It is used in the first phase
+<i>205</i>&nbsp;     * of a match, during INITIAL_INFO game phase, to avoid the possibility that
+<i>206</i>&nbsp;     * different players involved in a match choose the same color.
+<i>207</i>&nbsp;     *
+<i>208</i>&nbsp;     * @return a List with all the colors already chosen from
+<i>209</i>&nbsp;     * other players for a single match.
+<i>210</i>&nbsp;     */
+<i>211</i>&nbsp;    public List&lt;PrintableColor&gt; getSelectableColors() {
+<b class="nc"><i>212</i>&nbsp;        return this.selectableColors;</b>
+<i>213</i>&nbsp;    }
+<i>214</i>&nbsp;
+<i>215</i>&nbsp;    /**
+<i>216</i>&nbsp;     * This method let clients choose a color unique in the match.
+<i>217</i>&nbsp;     *
+<i>218</i>&nbsp;     * @param selectableColors is a list of all color not yet chosen from players.
+<i>219</i>&nbsp;     */
+<i>220</i>&nbsp;    @Override
+<i>221</i>&nbsp;    public void setSelectableColors(List&lt;PrintableColor&gt; selectableColors) {
+<b class="nc"><i>222</i>&nbsp;        this.selectableColors = selectableColors;</b>
+<b class="nc"><i>223</i>&nbsp;    }</b>
+<i>224</i>&nbsp;
+<i>225</i>&nbsp;    /**
+<i>226</i>&nbsp;     * This setter method is used to set a specific game phase.
+<i>227</i>&nbsp;     * It is necessary to have this method to change different phase during the match.
+<i>228</i>&nbsp;     *
+<i>229</i>&nbsp;     * @param newGamePhase is the new phase that it is set with the invocation of this method.
+<i>230</i>&nbsp;     */
+<i>231</i>&nbsp;    public void setCurrentGamePhase(GamePhase newGamePhase) {
+<b class="nc"><i>232</i>&nbsp;        this.currentGamePhase = newGamePhase;</b>
+<b class="nc"><i>233</i>&nbsp;        this.otherInfoHandler.printGamePhase(this.currentGamePhase);</b>
+<b class="nc"><i>234</i>&nbsp;    }</b>
+<i>235</i>&nbsp;
+<i>236</i>&nbsp;    /**
+<i>237</i>&nbsp;     * This method manages all the message received from the server.
+<i>238</i>&nbsp;     * Visitor pattern used to invoke the correct method for each different
+<i>239</i>&nbsp;     * instance of update from server to client.
+<i>240</i>&nbsp;     *
+<i>241</i>&nbsp;     * @param update contains references to what changes server-side
+<i>242</i>&nbsp;     *               and it is notified to the client.
+<i>243</i>&nbsp;     */
+<i>244</i>&nbsp;    @Override
+<i>245</i>&nbsp;    public void update(Update update) {
+<b class="nc"><i>246</i>&nbsp;        update.handleUpdate(this.updateHandler);</b>
+<b class="nc"><i>247</i>&nbsp;    }</b>
+<i>248</i>&nbsp;
+<i>249</i>&nbsp;    /**
+<i>250</i>&nbsp;     * This method is used to print Gods chosen by users.
+<i>251</i>&nbsp;     * Its format is [nickname] has [God Name] and it is
+<i>252</i>&nbsp;     * printed for each player involved in the match
+<i>253</i>&nbsp;     */
+<i>254</i>&nbsp;    public void printPlayerGods() {
+<b class="nc"><i>255</i>&nbsp;        this.playersGods.keySet().forEach((key) -&gt; println(playerWithColor(key) + &quot; has &quot; + playersGods.get(key)));</b>
+<b class="nc"><i>256</i>&nbsp;    }</b>
+<i>257</i>&nbsp;
+<i>258</i>&nbsp;    /**
+<i>259</i>&nbsp;     * This method is used to print colors chosen by users.
+<i>260</i>&nbsp;     * Its format is [nickname] is [color] and it is
+<i>261</i>&nbsp;     * printed for each player involved in the match
+<i>262</i>&nbsp;     */
+<i>263</i>&nbsp;    void printPlayersColors() {
+<b class="nc"><i>264</i>&nbsp;        this.playersColors.keySet().forEach((key) -&gt; println(key + &quot; is &quot; + convertColorToAnsi(playersColors.get(key)) + playersColors.get(key) + PrintableColor.RESET));</b>
+<b class="nc"><i>265</i>&nbsp;    }</b>
+<i>266</i>&nbsp;
+<i>267</i>&nbsp;    /**
+<i>268</i>&nbsp;     * This method is used to print a specific nickname of a player
+<i>269</i>&nbsp;     * involved in a match with the same color the player choose
+<i>270</i>&nbsp;     * during the INITIAL_INFO game phase.
+<i>271</i>&nbsp;     *
+<i>272</i>&nbsp;     * @param nickname is a String which contains the nickname of a player
+<i>273</i>&nbsp;     *                 involved in the match.
+<i>274</i>&nbsp;     * @return a colored String. Colored with color chosen from the player with
+<i>275</i>&nbsp;     * the nickname given as parameter.
+<i>276</i>&nbsp;     */
+<i>277</i>&nbsp;    public String playerWithColor(String nickname) {
+<b class="nc"><i>278</i>&nbsp;        if (this.playersColors != null) {</b>
+<i>279</i>&nbsp;
+<b class="nc"><i>280</i>&nbsp;            if (!this.playersColors.containsKey(nickname) &amp;&amp; nickname.equals(&quot;Player&quot;)) {</b>
+<b class="nc"><i>281</i>&nbsp;                return nickname;</b>
+<i>282</i>&nbsp;            }
+<i>283</i>&nbsp;
+<b class="nc"><i>284</i>&nbsp;            return convertColorToAnsi(this.playersColors.get(nickname)) + nickname + PrintableColor.RESET;</b>
+<i>285</i>&nbsp;        }
+<b class="nc"><i>286</i>&nbsp;        return null;</b>
+<i>287</i>&nbsp;    }
+<i>288</i>&nbsp;
+<i>289</i>&nbsp;    /**
+<i>290</i>&nbsp;     * This method is simply used as delegator. It is invoked from CliUpdateHandler
+<i>291</i>&nbsp;     * when a match starts, a player&#39;s turn ends or when a player asks whose turn is it.
+<i>292</i>&nbsp;     * It invokes otherInfoHandler.printCurrentTurn in which all the prints are defined.
+<i>293</i>&nbsp;     */
+<i>294</i>&nbsp;    public void printCurrentTurn() {
+<b class="nc"><i>295</i>&nbsp;        this.otherInfoHandler.printCurrentTurn();</b>
+<b class="nc"><i>296</i>&nbsp;    }</b>
+<i>297</i>&nbsp;
+<i>298</i>&nbsp;    /**
+<i>299</i>&nbsp;     * This method is used to print during GAME_PREPARATION game phase
+<i>300</i>&nbsp;     * a particular string which invites Players to place them workers
+<i>301</i>&nbsp;     * on the board.
+<i>302</i>&nbsp;     */
+<i>303</i>&nbsp;    public void printGamePreparationInfo() {
+<b class="nc"><i>304</i>&nbsp;        println(&quot;Game Preparation: place your &quot; + Cli.toBold(&quot;workers&quot;) + &quot;.    Command &quot; + Cli.toBold(&quot;format&quot;) + &quot; expected: place W1 [row1][col1]  W2 [row2][col2]&quot;);</b>
+<b class="nc"><i>305</i>&nbsp;        newLine();</b>
+<b class="nc"><i>306</i>&nbsp;    }</b>
+<i>307</i>&nbsp;
+<i>308</i>&nbsp;
+<i>309</i>&nbsp;    /**
+<i>310</i>&nbsp;     * This method is a simply getter. Once the player associated to the Cli
+<i>311</i>&nbsp;     * lose, this method gives information if the wants to continue watch the match
+<i>312</i>&nbsp;     * in which he was involved.
+<i>313</i>&nbsp;     *
+<i>314</i>&nbsp;     * @return true if the player response to the question
+<i>315</i>&nbsp;     * &quot;Do you want to continue to watch this match?&quot; was positive, false otherwise.
+<i>316</i>&nbsp;     */
+<i>317</i>&nbsp;    boolean wantsToContinueToWatch() {
+<b class="nc"><i>318</i>&nbsp;        return this.continueToWatch;</b>
+<i>319</i>&nbsp;    }
+<i>320</i>&nbsp;
+<i>321</i>&nbsp;    /**
+<i>322</i>&nbsp;     * This method set continueToWatch attribute to the boolean value given
+<i>323</i>&nbsp;     * as parameter. It indicates if a player which is involved in a match, after
+<i>324</i>&nbsp;     * losing the match wants to watch other players play
+<i>325</i>&nbsp;     *
+<i>326</i>&nbsp;     * @param continueToWatch is a boolean value that indicates if the
+<i>327</i>&nbsp;     *                        player wants continue to watch
+<i>328</i>&nbsp;     */
+<i>329</i>&nbsp;    public void setContinueToWatch(boolean continueToWatch) {
+<b class="nc"><i>330</i>&nbsp;        this.continueToWatch = continueToWatch;</b>
+<b class="nc"><i>331</i>&nbsp;    }</b>
+<i>332</i>&nbsp;
+<i>333</i>&nbsp;    /**
+<i>334</i>&nbsp;     * This method is used to have the JSON representation of the current Board.
+<i>335</i>&nbsp;     *
+<i>336</i>&nbsp;     * @return the String JSON-format of the board
+<i>337</i>&nbsp;     */
+<i>338</i>&nbsp;    public String getCurrentBoard() {
+<b class="nc"><i>339</i>&nbsp;        return this.currentBoard;</b>
+<i>340</i>&nbsp;    }
+<i>341</i>&nbsp;
+<i>342</i>&nbsp;    /**
+<i>343</i>&nbsp;     * This method is a simple setter of the String attribute currentBoard to the
+<i>344</i>&nbsp;     *
+<i>345</i>&nbsp;     * @param board given in JSON representation.
+<i>346</i>&nbsp;     */
+<i>347</i>&nbsp;    public void setCurrentBoard(String board) {
+<b class="nc"><i>348</i>&nbsp;        this.currentBoard = board;</b>
+<b class="nc"><i>349</i>&nbsp;    }</b>
+<i>350</i>&nbsp;
+<i>351</i>&nbsp;    /**
+<i>352</i>&nbsp;     * This method is a String getter which
+<i>353</i>&nbsp;     *
+<i>354</i>&nbsp;     * @return a particular string useful in many prints
+<i>355</i>&nbsp;     */
+<i>356</i>&nbsp;    public String getCurrentPhaseString() {
+<b class="nc"><i>357</i>&nbsp;        return &quot;current_phase&quot;;</b>
+<i>358</i>&nbsp;    }
+<i>359</i>&nbsp;
+<i>360</i>&nbsp;    /**
+<i>361</i>&nbsp;     * This method prints the board. It is used when a player moves one of
+<i>362</i>&nbsp;     * his workers, or build a level. It is also used when a player requests
+<i>363</i>&nbsp;     * &quot;BOARD&quot; command.
+<i>364</i>&nbsp;     *
+<i>365</i>&nbsp;     * @param board is the JSON-format of the board to be printed.
+<i>366</i>&nbsp;     */
+<i>367</i>&nbsp;    public void printBoard(String board) {
+<b class="nc"><i>368</i>&nbsp;        this.gamePhaseCommandHandler.printBoard(board);</b>
+<b class="nc"><i>369</i>&nbsp;    }</b>
+<i>370</i>&nbsp;
+<i>371</i>&nbsp;    /**
+<i>372</i>&nbsp;     * This method makes available what is received as input from console.
+<i>373</i>&nbsp;     *
+<i>374</i>&nbsp;     * @return the Scanner stdin attribute in order to have access to monitor
+<i>375</i>&nbsp;     * what Cli receives as input in console.
+<i>376</i>&nbsp;     */
+<i>377</i>&nbsp;    public Scanner getStdin() {
+<b class="nc"><i>378</i>&nbsp;        return this.stdin;</b>
+<i>379</i>&nbsp;    }
+<i>380</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

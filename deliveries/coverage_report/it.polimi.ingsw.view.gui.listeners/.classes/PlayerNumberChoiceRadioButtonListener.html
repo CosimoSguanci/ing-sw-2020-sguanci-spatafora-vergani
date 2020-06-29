@@ -1,0 +1,129 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PlayerNumberChoiceRadioButtonListener</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.gui.listeners</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PlayerNumberChoiceRadioButtonListener (it.polimi.ingsw.view.gui.listeners)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PlayerNumberChoiceRadioButtonListener</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.gui.listeners;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.view.gui.components.PlayerNumberChoice;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import javax.swing.*;
+<i>6</i>&nbsp;import java.awt.event.ActionEvent;
+<i>7</i>&nbsp;import java.awt.event.ActionListener;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;/**
+<i>10</i>&nbsp; * This class is the listener of the PlayerNumberChoice.
+<i>11</i>&nbsp; * When a player connects to the server, he is asked to select how many
+<i>12</i>&nbsp; * player does he wants in his match and there are two radio button available.
+<i>13</i>&nbsp; * This class is a listener of this two possible options.
+<i>14</i>&nbsp; *
+<i>15</i>&nbsp; * @author Roberto Spatafora
+<i>16</i>&nbsp; * @author Cosimo Sguanci
+<i>17</i>&nbsp; * @author Andrea Vergani
+<i>18</i>&nbsp; */
+<i>19</i>&nbsp;public class PlayerNumberChoiceRadioButtonListener implements ActionListener {
+<i>20</i>&nbsp;    private final PlayerNumberChoice playerNumberChoice;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    /**
+<i>23</i>&nbsp;     * This is the constructor of the class. At the moment of creation an association
+<i>24</i>&nbsp;     * between listener and PlayerNumberChoice component is made
+<i>25</i>&nbsp;     *
+<i>26</i>&nbsp;     * @param playerNumberChoice the number of players that are playing the match
+<i>27</i>&nbsp;     */
+<b class="nc"><i>28</i>&nbsp;    public PlayerNumberChoiceRadioButtonListener(PlayerNumberChoice playerNumberChoice) {</b>
+<b class="nc"><i>29</i>&nbsp;        this.playerNumberChoice = playerNumberChoice;</b>
+<b class="nc"><i>30</i>&nbsp;    }</b>
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    /**
+<i>33</i>&nbsp;     * This method is invoked when a player click on the RadioButton which
+<i>34</i>&nbsp;     * gives him the possibility to choose how many player he wants in his match.
+<i>35</i>&nbsp;     * In this method a PlayerNumberChoice method is invoked giving button
+<i>36</i>&nbsp;     * clicked as parameter and it will manages all the possibilities.
+<i>37</i>&nbsp;     *
+<i>38</i>&nbsp;     * @param e contains a reference to the button clicked.
+<i>39</i>&nbsp;     */
+<i>40</i>&nbsp;    @Override
+<i>41</i>&nbsp;    public void actionPerformed(ActionEvent e) {
+<b class="nc"><i>42</i>&nbsp;        JRadioButton btn = (JRadioButton) e.getSource();</b>
+<b class="nc"><i>43</i>&nbsp;        playerNumberChoice.setPlayerNumberSelected(btn);</b>
+<b class="nc"><i>44</i>&nbsp;        playerNumberChoice.refresh();</b>
+<b class="nc"><i>45</i>&nbsp;    }</b>
+<i>46</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

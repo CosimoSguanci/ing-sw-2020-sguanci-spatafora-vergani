@@ -1,0 +1,193 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Apollo</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.gods</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Apollo (it.polimi.ingsw.model.gods)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Apollo</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (23/ 23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.gods;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.*;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;/**
+<i>7</i>&nbsp; * This class implements the Apollo strategy used by the {@link Player} who chose the powers of this God.
+<i>8</i>&nbsp; * Specifically, Apollo allows the {@link Worker} to move to a {@link Cell} which is occupied by another player&#39;s worker,
+<i>9</i>&nbsp; * swapping the worker&#39;s positions.
+<i>10</i>&nbsp; *
+<i>11</i>&nbsp; * @author Cosimo Sguanci
+<i>12</i>&nbsp; */
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;public class Apollo extends GodStrategy {
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    public static final String NAME = &quot;Apollo&quot;;
+<i>17</i>&nbsp;    public static final String DESCRIPTION = &quot;God Of Music&quot;;
+<i>18</i>&nbsp;    public static final String POWER_DESCRIPTION = &quot;Your Move: Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated&quot;;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * Delegation pattern (composition over inheritance) is used to share common behaviours
+<i>22</i>&nbsp;     * between gods and to allow a single god to inherit multiple common properties.
+<i>23</i>&nbsp;     * &lt;p&gt;
+<i>24</i>&nbsp;     * {@link OpponentWorkerMoverDelegate} is used by Apollo to swap positions with an opponent worker, if necessary.
+<i>25</i>&nbsp;     */
+<i>26</i>&nbsp;    private final OpponentWorkerMoverDelegate opponentWorkerMoverDelegate;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    public Apollo() {
+<b class="fc"><i>29</i>&nbsp;        super(NAME, DESCRIPTION, POWER_DESCRIPTION);</b>
+<b class="fc"><i>30</i>&nbsp;        this.opponentWorkerMoverDelegate = new OpponentWorkerMoverDelegate();</b>
+<b class="fc"><i>31</i>&nbsp;    }</b>
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    /**
+<i>34</i>&nbsp;     * Implements standard controls on worker movement, except the check about emptiness of the new position
+<i>35</i>&nbsp;     * (Apollo player&#39;s worker can be swapped with an adjacent worker).
+<i>36</i>&nbsp;     *
+<i>37</i>&nbsp;     * @param worker   the worker that the Player wants to move.
+<i>38</i>&nbsp;     * @param moveCell the cell in which the Player want to move the worker.
+<i>39</i>&nbsp;     * @return true if the Move passed as parameter can be performed, false otherwise.
+<i>40</i>&nbsp;     */
+<i>41</i>&nbsp;    @Override
+<i>42</i>&nbsp;    public boolean checkMove(Worker worker, Cell moveCell) {
+<b class="fc"><i>43</i>&nbsp;        if (selectedWorker != null)</b>
+<b class="fc"><i>44</i>&nbsp;            return false; // if selectedWorker is not null, move has already been executed this turn</b>
+<i>45</i>&nbsp;
+<b class="fc"><i>46</i>&nbsp;        return !worker.hasMoved() &amp;&amp; !worker.hasBuilt() &amp;&amp; worker.getPosition().isAdjacentTo(moveCell)</b>
+<b class="fc"><i>47</i>&nbsp;                &amp;&amp; worker.getPosition().isLevelDifferenceOk(moveCell)</b>
+<b class="fc"><i>48</i>&nbsp;                &amp;&amp; (moveCell.isEmpty() || opponentWorkerMoverDelegate.isNotOtherPlayerWorkerPosition(worker, moveCell))</b>
+<b class="fc"><i>49</i>&nbsp;                &amp;&amp; moveCell.getLevel() != BlockType.DOME;</b>
+<i>50</i>&nbsp;    }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    /**
+<i>53</i>&nbsp;     * Implements standard execute worker movement, but if moveCell is not empty,
+<i>54</i>&nbsp;     * the opponent&#39;s worker that is occupying moveCell must be moved out of it,
+<i>55</i>&nbsp;     * and this is done delegating to {@link OpponentWorkerMoverDelegate}.
+<i>56</i>&nbsp;     *
+<i>57</i>&nbsp;     * @param worker   the worker that the Player wants to move.
+<i>58</i>&nbsp;     * @param moveCell the cell in which the Player want to move the worker.
+<i>59</i>&nbsp;     * @see GodStrategy#executeMove(Worker, Cell)
+<i>60</i>&nbsp;     * @see OpponentWorkerMoverDelegate#moveOpponentWorker(Worker, Cell)
+<i>61</i>&nbsp;     */
+<i>62</i>&nbsp;    @Override
+<i>63</i>&nbsp;    public void executeMove(Worker worker, Cell moveCell) {
+<i>64</i>&nbsp;
+<b class="fc"><i>65</i>&nbsp;        if (!moveCell.isEmpty()) {</b>
+<b class="fc"><i>66</i>&nbsp;            opponentWorkerMoverDelegate.moveOpponentWorker(moveCell.getWorker(), worker.getPosition());</b>
+<i>67</i>&nbsp;        }
+<i>68</i>&nbsp;
+<b class="fc"><i>69</i>&nbsp;        super.executeMove(worker, moveCell);</b>
+<b class="fc"><i>70</i>&nbsp;    }</b>
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;    /**
+<i>73</i>&nbsp;     * This method checks if Apollo&#39;s {@link Player} has at least an available Cell to move to.
+<i>74</i>&nbsp;     *
+<i>75</i>&nbsp;     * @param board  the Match board to consider
+<i>76</i>&nbsp;     * @param player the Player whose ability to move is about to be tested
+<i>77</i>&nbsp;     * @return true if Apollo Player can move, false otherwise.
+<i>78</i>&nbsp;     * @see GodStrategy#canMove
+<i>79</i>&nbsp;     */
+<i>80</i>&nbsp;    @Override
+<i>81</i>&nbsp;    public boolean canMove(Board board, Player player) {
+<b class="fc"><i>82</i>&nbsp;        Cell cellOne = player.getWorkerFirst().getPosition();</b>
+<b class="fc"><i>83</i>&nbsp;        Cell cellTwo = player.getWorkerSecond().getPosition();</b>
+<b class="fc"><i>84</i>&nbsp;        boolean possibleOne = canApolloMoveFromCell(board, cellOne);  //true if movement from cellOne is possible, so first worker can move somewhere</b>
+<b class="fc"><i>85</i>&nbsp;        boolean possibleTwo = canApolloMoveFromCell(board, cellTwo);  //true if movement from cellTwo is possible, so second worker can move somewhere</b>
+<b class="fc"><i>86</i>&nbsp;        return (possibleOne || possibleTwo);</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    /**
+<i>90</i>&nbsp;     * This method checks if Apollo&#39;s Worker can move from a specific {@link Cell}.
+<i>91</i>&nbsp;     * The main difference from a &quot;standard&quot; canMove, is that here we must consider that Apollo
+<i>92</i>&nbsp;     * can swap its position with an opponent Worker, so we avoid to check if adjacent cells are empty.
+<i>93</i>&nbsp;     *
+<i>94</i>&nbsp;     * @param board the Match {@link Board} to consider
+<i>95</i>&nbsp;     * @param cell  the {@link Cell} from which the worker would move
+<i>96</i>&nbsp;     * @return true if an Apollo movement is possible from the cell passed by parameter, false otherwise.
+<i>97</i>&nbsp;     */
+<i>98</i>&nbsp;    private boolean canApolloMoveFromCell(Board board, Cell cell) {
+<i>99</i>&nbsp;
+<b class="fc"><i>100</i>&nbsp;        for (int i = 0; i &lt; Board.WIDTH_SIZE; i++) {</b>
+<b class="fc"><i>101</i>&nbsp;            for (int j = 0; j &lt; Board.HEIGHT_SIZE; j++) {</b>
+<b class="fc"><i>102</i>&nbsp;                if (cell.isAdjacentTo(board.getCell(i, j)) &amp;&amp; cell.isLevelDifferenceOk(board.getCell(i, j)) &amp;&amp; board.getCell(i, j).getLevel() != BlockType.DOME) {</b>
+<b class="fc"><i>103</i>&nbsp;                    return true;</b>
+<i>104</i>&nbsp;                }
+<i>105</i>&nbsp;            }
+<i>106</i>&nbsp;        }
+<i>107</i>&nbsp;
+<b class="fc"><i>108</i>&nbsp;        return false;</b>
+<i>109</i>&nbsp;    }
+<i>110</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

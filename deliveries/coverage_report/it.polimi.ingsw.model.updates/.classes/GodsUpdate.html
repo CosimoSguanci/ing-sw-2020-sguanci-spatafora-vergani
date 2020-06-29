@@ -1,0 +1,142 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GodsUpdate</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.updates</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GodsUpdate (it.polimi.ingsw.model.updates)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GodsUpdate</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/ 8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.updates;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.view.UpdateHandler;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.util.List;
+<i>6</i>&nbsp;import java.util.Map;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * This class represents an update sent from Server to Client every time new Gods have been chosen (so the game state changed)
+<i>10</i>&nbsp; *
+<i>11</i>&nbsp; * @author Cosimo Sguanci
+<i>12</i>&nbsp; */
+<i>13</i>&nbsp;public class GodsUpdate extends Update {
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    /**
+<i>16</i>&nbsp;     * Gods which are still available to select, the God Chooser chose them but they&#39;ve not been assigned yet
+<i>17</i>&nbsp;     */
+<i>18</i>&nbsp;    private final List&lt;String&gt; selectableGods;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * Association between players and gods that have been selected (Nickname : godName)
+<i>22</i>&nbsp;     */
+<i>23</i>&nbsp;    private final Map&lt;String, String&gt; selectedGods;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    public GodsUpdate(List&lt;String&gt; selectableGods, Map&lt;String, String&gt; selectedGods) {
+<b class="fc"><i>26</i>&nbsp;        super(null);</b>
+<b class="fc"><i>27</i>&nbsp;        this.selectableGods = selectableGods;</b>
+<b class="fc"><i>28</i>&nbsp;        this.selectedGods = selectedGods;</b>
+<b class="fc"><i>29</i>&nbsp;    }</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    /**
+<i>32</i>&nbsp;     * SelectableGods getter
+<i>33</i>&nbsp;     *
+<i>34</i>&nbsp;     * @return the list of available Gods (String rep)
+<i>35</i>&nbsp;     */
+<i>36</i>&nbsp;    public List&lt;String&gt; getSelectableGods() {
+<b class="fc"><i>37</i>&nbsp;        return this.selectableGods;</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    /**
+<i>41</i>&nbsp;     * SelectedGods getter
+<i>42</i>&nbsp;     *
+<i>43</i>&nbsp;     * @return the list of selected Gods (String rep)
+<i>44</i>&nbsp;     */
+<i>45</i>&nbsp;    public Map&lt;String, String&gt; getSelectedGods() {
+<b class="fc"><i>46</i>&nbsp;        return this.selectedGods;</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    /**
+<i>50</i>&nbsp;     * Utility method used to implement Visitor Pattern for Updates handling.
+<i>51</i>&nbsp;     *
+<i>52</i>&nbsp;     * @param handler which handle the updates to update the View
+<i>53</i>&nbsp;     * @see UpdateHandler
+<i>54</i>&nbsp;     */
+<i>55</i>&nbsp;    @Override
+<i>56</i>&nbsp;    public void handleUpdate(UpdateHandler handler) {
+<b class="fc"><i>57</i>&nbsp;        handler.handle(this);</b>
+<b class="fc"><i>58</i>&nbsp;    }</b>
+<i>59</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,202 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GodInfo</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.gui.components</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GodInfo (it.polimi.ingsw.view.gui.components)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GodInfo</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 33)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GodInfo$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 37)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.gui.components;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.view.View;
+<i>4</i>&nbsp;import it.polimi.ingsw.view.gui.Gui;
+<i>5</i>&nbsp;import it.polimi.ingsw.view.gui.listeners.GodInfoActionListener;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import javax.swing.*;
+<i>8</i>&nbsp;import java.awt.*;
+<i>9</i>&nbsp;import java.io.IOException;
+<i>10</i>&nbsp;import java.util.ArrayList;
+<i>11</i>&nbsp;import java.util.List;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;/**
+<i>14</i>&nbsp; * GodInfo is a class used to give players information about God.
+<i>15</i>&nbsp; * This class gives players the possibility to have information
+<i>16</i>&nbsp; * about Gods. During GodChoice game phase players can click on info button
+<i>17</i>&nbsp; * and based on GodChooser or other they can have information about Gods.
+<i>18</i>&nbsp; * GodChooser has the possibility to read all the God&#39;s power by clicking on them,
+<i>19</i>&nbsp; * other players, by clicking on the info button, can see the power of Gods chosen
+<i>20</i>&nbsp; * from GodChooser for their match.
+<i>21</i>&nbsp; *
+<i>22</i>&nbsp; * @author Roberto Spatafora
+<i>23</i>&nbsp; * @author Andrea Vergani
+<i>24</i>&nbsp; */
+<b class="nc"><i>25</i>&nbsp;public class GodInfo extends JDialog {</b>
+<i>26</i>&nbsp;
+<b class="nc"><i>27</i>&nbsp;    private final Gui gui = Gui.getInstance();</b>
+<i>28</i>&nbsp;    private final List&lt;String&gt; selectableGods;
+<b class="nc"><i>29</i>&nbsp;    private final String godChoiceImgPath = &quot;/images/GodChoice/&quot;;</b>
+<b class="nc"><i>30</i>&nbsp;    private final Image backgroundImage = new ImageIcon(getClass().getResource(godChoiceImgPath + &quot;title_sky.png&quot;)).getImage();</b>
+<i>31</i>&nbsp;    private GodScreen godScreen;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    /**
+<i>34</i>&nbsp;     * This method is the constructor of the class.
+<i>35</i>&nbsp;     * At the moment of creation a list of String containing available God&#39;s names is given as parameter.
+<i>36</i>&nbsp;     * By the strings received the constructor generates a JDialog with as many info about God buttons as
+<i>37</i>&nbsp;     * the number of selectableGods.
+<i>38</i>&nbsp;     *
+<i>39</i>&nbsp;     * @param selectableGods is a list which contains selectable Gods names.
+<i>40</i>&nbsp;     *                       Every String in list comports the presence of a button that
+<i>41</i>&nbsp;     *                       if clicked it appears a JDialog with information about the power of that God
+<i>42</i>&nbsp;     */
+<i>43</i>&nbsp;    public GodInfo(List&lt;String&gt; selectableGods) {
+<b class="nc"><i>44</i>&nbsp;        super((Frame) null, &quot;Information about Gods&quot;, false);</b>
+<i>45</i>&nbsp;
+<b class="nc"><i>46</i>&nbsp;        this.selectableGods = selectableGods;</b>
+<b class="nc"><i>47</i>&nbsp;        int playersNumber = gui.getPlayersNumber();</b>
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;        try {
+<b class="nc"><i>51</i>&nbsp;            LayoutManager layoutManager = new BorderLayout();</b>
+<b class="nc"><i>52</i>&nbsp;            this.setLayout(layoutManager);</b>
+<b class="nc"><i>53</i>&nbsp;            JPanel mainPanel = new JPanel() {</b>
+<i>54</i>&nbsp;                @Override
+<i>55</i>&nbsp;                protected void paintComponent(Graphics g) {
+<b class="nc"><i>56</i>&nbsp;                    super.paintComponent(g);</b>
+<b class="nc"><i>57</i>&nbsp;                    g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);</b>
+<b class="nc"><i>58</i>&nbsp;                }</b>
+<i>59</i>&nbsp;            };
+<b class="nc"><i>60</i>&nbsp;            mainPanel.setOpaque(false);</b>
+<b class="nc"><i>61</i>&nbsp;            mainPanel.setLayout(new BorderLayout());</b>
+<b class="nc"><i>62</i>&nbsp;            this.godScreen = new GodScreen(playersNumber, this.selectableGods);</b>
+<b class="nc"><i>63</i>&nbsp;            this.godScreen.setOpaque(false);</b>
+<b class="nc"><i>64</i>&nbsp;            this.godScreen.setTitle(&quot;Click on a God to have info about his/her powers!&quot;);</b>
+<b class="nc"><i>65</i>&nbsp;            addListeners();</b>
+<b class="nc"><i>66</i>&nbsp;            mainPanel.add(this.godScreen, BorderLayout.CENTER);</b>
+<b class="nc"><i>67</i>&nbsp;            this.add(mainPanel);</b>
+<b class="nc"><i>68</i>&nbsp;            this.revalidate();</b>
+<b class="nc"><i>69</i>&nbsp;            this.repaint();</b>
+<b class="nc"><i>70</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>71</i>&nbsp;            System.err.println(&quot;Error loading some God Info resource&quot;);</b>
+<b class="nc"><i>72</i>&nbsp;        }</b>
+<i>73</i>&nbsp;
+<b class="nc"><i>74</i>&nbsp;        this.revalidate();</b>
+<b class="nc"><i>75</i>&nbsp;        this.repaint();</b>
+<i>76</i>&nbsp;
+<b class="nc"><i>77</i>&nbsp;    }</b>
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    /**
+<i>80</i>&nbsp;     * This private method is used to add listeners to buttons that contains
+<i>81</i>&nbsp;     * information about the power of a God in the component.
+<i>82</i>&nbsp;     */
+<i>83</i>&nbsp;    private void addListeners() {
+<b class="nc"><i>84</i>&nbsp;        boolean isGodChooser = this.gui.getController().isClientPlayerGodChooser();</b>
+<b class="nc"><i>85</i>&nbsp;        List&lt;String&gt; gods = isGodChooser ? View.getGodsNamesList() : this.selectableGods;</b>
+<b class="nc"><i>86</i>&nbsp;        ArrayList&lt;JButton&gt; godButtons = this.godScreen.getButtons();</b>
+<b class="nc"><i>87</i>&nbsp;        for (int i = 0; i &lt; gods.size(); i++) {</b>
+<b class="nc"><i>88</i>&nbsp;            GodInfoActionListener godInfoActionListener = new GodInfoActionListener(this);</b>
+<b class="nc"><i>89</i>&nbsp;            godButtons.get(i).addActionListener(godInfoActionListener);</b>
+<i>90</i>&nbsp;        }
+<b class="nc"><i>91</i>&nbsp;    }</b>
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PreviousCellNeededDelegate</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.gods</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PreviousCellNeededDelegate (it.polimi.ingsw.model.gods)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PreviousCellNeededDelegate</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.gods;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.Cell;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * This class represent the delegate that Gods can use if their power needs to save any previous position of a {@link it.polimi.ingsw.model.Worker}.
+<i>7</i>&nbsp; * &lt;p&gt;
+<i>8</i>&nbsp; * The use of this kind of delegates allows the application of the Composition over Inheritance principle,
+<i>9</i>&nbsp; * making it easy to have Gods that are not strictly categorized and that can instead share and use features which are
+<i>10</i>&nbsp; * in common with other Gods, in order to also reduce redundancy and code duplication. Moreover, using Delegates instead of
+<i>11</i>&nbsp; * Interfaces allows not only to implement non-static shared methods and centralized state management, but also to avoid the
+<i>12</i>&nbsp; * exposure of some methods which should only be used by Gods, and not visible from outside.
+<i>13</i>&nbsp; * For this purpose, Delegates class and methods are package-level visibility, while attributes are private to the Delegate.
+<i>14</i>&nbsp; *
+<i>15</i>&nbsp; * @author Cosimo Sguanci
+<i>16</i>&nbsp; */
+<i>17</i>&nbsp;
+<b class="fc"><i>18</i>&nbsp;class PreviousCellNeededDelegate {</b>
+<i>19</i>&nbsp;    private Cell previousCell;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    /**
+<i>22</i>&nbsp;     * Previous {@link Cell} getter
+<i>23</i>&nbsp;     *
+<i>24</i>&nbsp;     * @return the previous {@link Cell} saved
+<i>25</i>&nbsp;     */
+<i>26</i>&nbsp;    Cell getPreviousCell() {
+<b class="fc"><i>27</i>&nbsp;        return this.previousCell;</b>
+<i>28</i>&nbsp;    }
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    /**
+<i>31</i>&nbsp;     * Previous {@link Cell} setter
+<i>32</i>&nbsp;     *
+<i>33</i>&nbsp;     * @param cell the &quot;new&quot; previous {@link Cell}
+<i>34</i>&nbsp;     */
+<i>35</i>&nbsp;    void setPreviousCell(Cell cell) {
+<b class="fc"><i>36</i>&nbsp;        this.previousCell = cell;</b>
+<b class="fc"><i>37</i>&nbsp;    }</b>
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    /**
+<i>40</i>&nbsp;     * Method used to check if previous {@link Cell} has been set or not.
+<i>41</i>&nbsp;     *
+<i>42</i>&nbsp;     * @return true if and only if the previous {@link Cell} is not null
+<i>43</i>&nbsp;     */
+<i>44</i>&nbsp;    boolean hasPreviousCell() {
+<b class="fc"><i>45</i>&nbsp;        return this.previousCell != null;</b>
+<i>46</i>&nbsp;    }
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    /**
+<i>49</i>&nbsp;     * Reinitialize previous {@link Cell} to null
+<i>50</i>&nbsp;     */
+<i>51</i>&nbsp;    void reinitializeCell() {
+<b class="fc"><i>52</i>&nbsp;        this.previousCell = null;</b>
+<b class="fc"><i>53</i>&nbsp;    }</b>
+<i>54</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: InvalidGodException</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.exceptions</a> ]
+</div>
+
+<h1>Coverage Summary for Class: InvalidGodException (it.polimi.ingsw.exceptions)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">InvalidGodException</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.exceptions;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;/**
+<i>4</i>&nbsp; * This exception is raised when a {@link it.polimi.ingsw.model.Player} tries to select a {@link it.polimi.ingsw.model.gods.GodStrategy}
+<i>5</i>&nbsp; * which is not valid or because that {@link it.polimi.ingsw.model.gods.GodStrategy} has already been chosen, or it&#39;s not selectable for this match.
+<i>6</i>&nbsp; * This can happen in {@link it.polimi.ingsw.controller.GamePhase#CHOOSE_GODS} game phase.
+<i>7</i>&nbsp; *
+<i>8</i>&nbsp; * @author Cosimo Sguanci
+<i>9</i>&nbsp; * @author Roberto Spatafora
+<i>10</i>&nbsp; * @author Andrea Mario Vergani
+<i>11</i>&nbsp; */
+<i>12</i>&nbsp;public class InvalidGodException extends RuntimeException {
+<i>13</i>&nbsp;    private final static String ERROR_MESSAGE = &quot;Invalid god chosen&quot;;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    public InvalidGodException() {
+<b class="fc"><i>16</i>&nbsp;        super(ERROR_MESSAGE);</b>
+<b class="fc"><i>17</i>&nbsp;    }</b>
+<i>18</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>

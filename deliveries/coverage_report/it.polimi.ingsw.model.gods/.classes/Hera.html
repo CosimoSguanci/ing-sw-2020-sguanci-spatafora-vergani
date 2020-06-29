@@ -1,0 +1,134 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Hera</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.gods</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Hera (it.polimi.ingsw.model.gods)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Hera</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.gods;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.Board;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.Cell;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.Player;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.Worker;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * This class implements the Hera strategy used by the {@link Player} who chose the powers of this God.
+<i>10</i>&nbsp; * Specifically, Hera imposes Win constraints to other players: an opponent cannot win by moving into a perimeter space.
+<i>11</i>&nbsp; *
+<i>12</i>&nbsp; * @author Cosimo Sguanci
+<i>13</i>&nbsp; */
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;public class Hera extends GodStrategy {
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    public static final String NAME = &quot;Hera&quot;;
+<i>18</i>&nbsp;    public static final String DESCRIPTION = &quot;Godness of Marriage&quot;;
+<i>19</i>&nbsp;    public static final String POWER_DESCRIPTION = &quot;Opponent’s Turn: An opponent cannot win by moving into a perimeter space&quot;;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    public Hera() {
+<b class="fc"><i>22</i>&nbsp;        super(NAME, DESCRIPTION, POWER_DESCRIPTION);</b>
+<b class="fc"><i>23</i>&nbsp;    }</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * Implements Hera Win Constraints to other players.
+<i>28</i>&nbsp;     *
+<i>29</i>&nbsp;     * @param opponentWorker the opponent selected worker for the current turn.
+<i>30</i>&nbsp;     * @param moveCell       the cell in which the opponent Player moved the selected worker.
+<i>31</i>&nbsp;     * @return true if the Cell where the opposite Worker moved is not a perimeter Cell, false otherwise
+<i>32</i>&nbsp;     * @see Hera#isPerimeterCell(Cell)
+<i>33</i>&nbsp;     */
+<i>34</i>&nbsp;    @Override
+<i>35</i>&nbsp;    public boolean checkWinConstraints(Worker opponentWorker, Cell moveCell) {
+<b class="fc"><i>36</i>&nbsp;        return !isPerimeterCell(moveCell);</b>
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    /**
+<i>40</i>&nbsp;     * Checks if the {@link Cell} passed is on the perimeter of the game {@link Board}.
+<i>41</i>&nbsp;     *
+<i>42</i>&nbsp;     * @param cell the Cell in which the Opponent Worker was moved
+<i>43</i>&nbsp;     * @return true if the Cell is in the perimeter of the game Board, false otherwise.
+<i>44</i>&nbsp;     * @see Board#WIDTH_SIZE
+<i>45</i>&nbsp;     * @see Board#HEIGHT_SIZE
+<i>46</i>&nbsp;     */
+<i>47</i>&nbsp;    private boolean isPerimeterCell(Cell cell) {
+<b class="fc"><i>48</i>&nbsp;        return cell.getColIdentifier() == Board.WIDTH_SIZE - 1 || cell.getRowIdentifier() == Board.HEIGHT_SIZE - 1</b>
+<b class="fc"><i>49</i>&nbsp;                || cell.getColIdentifier() == 0 || cell.getRowIdentifier() == 0;</b>
+<i>50</i>&nbsp;    }
+<i>51</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-29 21:50</div>
+</div>
+</body>
+</html>
