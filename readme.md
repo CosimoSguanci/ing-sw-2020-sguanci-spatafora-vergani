@@ -31,6 +31,15 @@ java -jar gui.jar
 
 Or you can simply double click the JAR file.
 
+## Dependencies
+
+| Dependency | Usage |
+| --- | --- |
+| `maven` | Package manager used for building and managing the project, with a particular focus on lifecycle handling (running tests, building executables). |
+| `junit` | Tool used to unit test Java classes. In particular, it was used in this project to test Model and Controller components (MVC). |
+| `gson` | Used to serialize the game Board as a JSON String in order to avoid the necessity to send complex object through the Socket's stream. |
+| `mockito` | Used as a support to JUnit tests and to improve the code coverage of the tests themselves. It adds the capability to test that a specific method with certain parameter has been called under certain conditions. |
+
 ## Tests Coverage Details:
 
 ![Coverage](https://i.ibb.co/9H0zSVj/coverage-details-readme.png)
