@@ -69,18 +69,16 @@ public class BoardDelegate {
         cli.println("");
 
         for (int i = 0; i < 5; i++) {    //Single cell printed as 5x5: +---+ boarders; " "/"1"/"2" if worker is inside; BlockType specified.
-            System.out.println("\t+  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +");
-            System.out.println("\t|         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 0).getLevel()) + " | " +
-                    " |         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 1).getLevel()) + " | " +
-                    " |         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 2).getLevel()) + " | " +
-                    " |         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 3).getLevel()) + " | " +
-                    " |         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 4).getLevel()) + " | ");
+            System.out.println("\t╔═══════════╦═══════════╦═══════════╦═══════════╦═══════════╗");
+            System.out.println("\t║         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 0).getLevel()) + " " +
+                    "║         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 1).getLevel()) + " " +
+                    "║         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 2).getLevel()) + " " +
+                    "║         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 3).getLevel()) + " " +
+                    "║         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 4).getLevel()) + " ║");
 
-            System.out.print(rowIdentifier + "\t");
-            rowIdentifier++;
-
+            System.out.print("\t");
             for (int j = 0; j < 5; j++) {
-                System.out.print("|    ");
+                System.out.print("║    ");
                 if (!gameBoard.getCell(i, j).isEmpty()) {
 
                     Worker printableWorker = gameBoard.getCell(i, j).getWorker();
@@ -92,19 +90,21 @@ public class BoardDelegate {
                 } else {
                     System.out.print("   ");
                 }
-                System.out.print("    |  ");
+                System.out.print("    ");
 
             }
 
-            System.out.println();
-            System.out.println("\t|           |  |           |  |           |  |           |  |           |");
-            System.out.println("\t+  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +  +  -  -  -  +");
+
+            System.out.print("║");
+            System.out.println("\t" + rowIdentifier);
+            rowIdentifier++;
+            System.out.println("\t║           ║           ║           ║           ║           ║");
+            System.out.println("\t╚═══════════╩═══════════╩═══════════╩═══════════╩═══════════╝");
 
         }
 
 
-        System.out.println("\t      1              2              3              4              5    ");
-
+        System.out.println("\t      1           2           3           4           5    ");
 
         cli.println("");
         cli.println("");
