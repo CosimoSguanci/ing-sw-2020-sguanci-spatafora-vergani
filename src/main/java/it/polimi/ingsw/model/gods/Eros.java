@@ -3,11 +3,11 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 
 /**
- * This class implements the Eros strategy used by the Player who chose the powers of this God.
+ * This class implements the Eros strategy used by the {@link Player} who chose the powers of this God.
  * Specifically, Eros imposes a Game Preparation constraints: the Player's worker must be placed
  * at opposite borders when the match starts. Moreover, it has some additional Win Conditions: Eros Player
  * wins also if one workers moves to a position adjacent to the other (unmoved) worker's position
- * (they must also be both on the level one, or the same level in a 3-Players Match).
+ * (they must also be both on the level one, or the same level in a 3-Players {@link Match}).
  *
  * @author Cosimo Sguanci
  */
@@ -90,7 +90,7 @@ public class Eros extends GodStrategy {
     }
 
     /**
-     * Calls superclass endTurn and resets flags to false.
+     * Calls superclass endTurn and resets the win condition flag to false.
      *
      * @param player The player whose turn is ending.
      * @see GodStrategy#endPlayerTurn(Player)

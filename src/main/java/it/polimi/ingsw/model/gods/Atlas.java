@@ -2,11 +2,12 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
 /**
- * This class implements the Atlas strategy used by the Player who chose the powers of this God.
- * Specifically, an Atlas Worker can build a dome at any level.
+ * This class implements the Atlas strategy used by the {@link Player} who chose the powers of this God.
+ * Specifically, an Atlas {@link Worker} can build a dome at any level.
  *
  * @author Cosimo Sguanci
  */

@@ -33,8 +33,8 @@ public class Match {
      * players who are going to join the match. So, it sets the right number of players
      * and some other general things about moves (such as attributes 'turn' and 'canMove'
      * <p>
-     * @param playersNumber   number of total players who will join the match
      *
+     * @param playersNumber number of total players who will join the match
      * @throws it.polimi.ingsw.exceptions.InvalidPlayerNumberException when the number of players is not 2 or 3 (game option)     * @param playersNumber
      */
     public Match(int playersNumber) throws InvalidPlayerNumberException {

@@ -11,7 +11,7 @@ import java.util.Map;
 
 
 /**
- * Command is an abstract class extended by all sort of commands addressed to Controller (Server) by Clients.
+ * Command is an abstract class extended by all sort of commands addressed to {@link it.polimi.ingsw.controller.Controller} by clients.
  * Every Command is characterized by a type, the player who sends it (nickname and ID) and the proper message.
  * A Command is used by Clients to communicate with Server. For this reason, this class is Serializable.
  *
@@ -28,10 +28,21 @@ public abstract class Command implements Serializable {
     public final static String WORKER_FIRST = "w1";
     public final static String WORKER_SECOND = "w2";
 
+    /**
+     * Key for row used to get the value from the Map returned by {@link Command#parseCellIdentifiers(String)}
+     */
     protected final static String ROW_KEY = "row";
+
+    /**
+     * Key for column used to get the value from the Map returned by {@link Command#parseCellIdentifiers(String)}
+     */
     protected final static String COL_KEY = "col";
 
     public final CommandType commandType;
+
+    /**
+     * The {@link Player} who sent the command
+     */
     protected transient Player player;
 
     protected String playerNickname;

@@ -85,6 +85,7 @@ public class ConnectionError {
 
         /**
          * This method set the background image of the panel
+         *
          * @param g contains a reference to the component which we want to set the background image.
          */
         @Override

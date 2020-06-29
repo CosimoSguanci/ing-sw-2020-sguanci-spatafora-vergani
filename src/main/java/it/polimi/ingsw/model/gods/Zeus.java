@@ -6,8 +6,8 @@ import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Worker;
 
 /**
- * This class implements the Zeus strategy used by the Player who chose the powers of this God.
- * Specifically, the selected Worker is allowed to build a block under itself.
+ * This class implements the Zeus strategy used by the {@link it.polimi.ingsw.model.Player} who chose the powers of this God.
+ * Specifically, the selected {@link Worker} is allowed to build a block under itself.
  *
  * @author Cosimo Sguanci
  */
@@ -32,10 +32,9 @@ public class Zeus extends GodStrategy {
      */
     @Override
     public boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
-        if(!worker.getPosition().equals(buildCell)) {
+        if (!worker.getPosition().equals(buildCell)) {
             return super.checkBuild(worker, buildCell, buildCellBlockType);
-        }
-        else return isUsingSelectedWorker(worker) &&
+        } else return isUsingSelectedWorker(worker) &&
                 worker.hasMoved() &&
                 !worker.hasBuilt() &&
                 (worker.getPosition().isAdjacentTo(buildCell) || worker.getPosition().equals(buildCell)) &&
@@ -44,12 +43,18 @@ public class Zeus extends GodStrategy {
                 (buildCellBlockType == null || buildCellBlockType.getLevelNumber() == buildCell.getLevel().getLevelNumber() + 1);
     }
 
+    /**
+     * Decorates the standard executeBuild by handling the case when Zeus is trying to build under itself.
+     *
+     * @param worker    the worker who want to build a new level.
+     * @param buildCell the cell in which the Player want to build a new level.
+     * @see GodStrategy#executeBuild(Worker, Cell, BlockType)
+     */
     @Override
-    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) { // todo test
-        if(!worker.getPosition().equals(buildCell) || buildCellBlockType == null) {
+    public void executeBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType) {
+        if (!worker.getPosition().equals(buildCell) || buildCellBlockType == null) {
             super.executeBuild(worker, buildCell, buildCellBlockType);
-        }
-        else {
+        } else {
             buildCell.increaseLevel();
             worker.setHasBuilt();
         }

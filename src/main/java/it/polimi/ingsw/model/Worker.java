@@ -1,24 +1,38 @@
 package it.polimi.ingsw.model;
 
-
 import it.polimi.ingsw.exceptions.CannotIncreaseLevelException;
 import it.polimi.ingsw.exceptions.CellNotEmptyException;
 
 /**
  * This class contains information about the state of a single worker. Players in game
  * have two different worker and every worker has the possibility to move and build on
- * the Board. Workers are associated to a Player who can move them. Every worker has a
- * different position (cell) on the board from the others and they are all on the same
- * board.
+ * the Board. Workers are associated to a {@link Player} who can move them. Every worker has a
+ * different position ({@link Cell}) on the board from the others and they are all on the same
+ * {@link Board}.
  * The class include methods to control the movement and construction of workers.
  *
  * @author Roberto Spatafora
  * @author Cosimo Sguanci
  */
 public class Worker {
+
+    /**
+     * The {@link Player} associated with this worker.
+     */
     public final Player player;
+
+    /**
+     * The {@link Board} where this worker is playing the game.
+     */
     public final transient Board board;
+
+    /**
+     * The type of this worker.
+     * Can be either {@link it.polimi.ingsw.controller.commands.Command#WORKER_FIRST}
+     * or {@link it.polimi.ingsw.controller.commands.Command#WORKER_SECOND}.
+     */
     public final String workerType;
+
     private transient Cell position;
     private transient BlockType previousPositionBlockType;
     private transient boolean hasMoved;
@@ -28,8 +42,8 @@ public class Worker {
      * Worker is the builder of the class. At the moment of a worker creation a player is
      * associated to it and the relative board in which the player is playing.
      *
-     * @param player indicates the player who has the control on the worker being created.
-     * @param board  indicates the board table in which the player is involved in.
+     * @param player     indicates the player who has the control on the worker being created.
+     * @param board      indicates the board table in which the player is involved in.
      * @param workerType the type of the Worker. Can be WORKER_FIRST or WORKER_SECOND.
      * @see it.polimi.ingsw.controller.commands.Command#WORKER_FIRST
      * @see it.polimi.ingsw.controller.commands.Command#WORKER_SECOND
@@ -100,9 +114,8 @@ public class Worker {
      * This method implements the standard checks that have to be done if a Player wants to use a Worker to build a block,
      * following the standard set of rules.
      *
-     * @param buildCell the cell in which the Player want to build a new level.
+     * @param buildCell          the cell in which the Player want to build a new level.
      * @param buildCellBlockType [optional] the specific level that the Worker wants to build.
-     *
      * @return true if (AND conditions):
      * - The Worker has already performed a move but NOT another build;
      * - The build Cell is adjacent to the current Worker's position;
@@ -146,9 +159,8 @@ public class Worker {
      * reach and the cell is adjacent to the cell the worker is at the moment of invocation.
      * As a result of this method the level of a cell is increased.
      *
-     * @param buildCell indicates the Cell in which a player wants his worker to build in.
+     * @param buildCell          indicates the Cell in which a player wants his worker to build in.
      * @param buildCellBlockType [optional] the specific level that the Worker wants to build.
-     *
      * @throws CannotIncreaseLevelException if the worker tries to build where there's a Dome.
      * @throws CellNotEmptyException        if the worker tries to build in an occupied Cell.
      */
@@ -190,7 +202,7 @@ public class Worker {
 
     /**
      * hasBuilt flag setter
-     */ // todo test
+     */
     public void setHasBuilt() {
         this.hasBuilt = true;
     }

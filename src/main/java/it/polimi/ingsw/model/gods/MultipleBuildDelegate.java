@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.BlockType;
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
 /**
@@ -59,14 +60,14 @@ class MultipleBuildDelegate {
     }
 
     /**
-     * This method is used to check if the build action that Player attempted can be performed. It is necessary because the Gods which have
+     * This method is used to check if the build action that {@link Player} attempted can be performed. It is necessary because the Gods which have
      * multiple builds power cannot use {@link GodStrategy} checkBuild, because it always return false if the Worker already built a block
      * (following the standard game rules).
      *
-     * @param worker         the worker who want to build a new level.
-     * @param buildCell      the cell in which the Player want to build a new level.
+     * @param worker             the worker who want to build a new level.
+     * @param buildCell          the cell in which the Player want to build a new level.
      * @param buildCellBlockType [optional] the level that the Worker wants to build.
-     * @param selectedWorker to check if the worker that is trying to build is the same worker that performed movement.
+     * @param selectedWorker     to check if the worker that is trying to build is the same worker that performed movement.
      * @return true if the buildCount is less than the max number of times that the God can build each turn and other standard check are satisfied, false otherwise.
      */
     boolean checkBuild(Worker worker, Cell buildCell, BlockType buildCellBlockType, Worker selectedWorker) {

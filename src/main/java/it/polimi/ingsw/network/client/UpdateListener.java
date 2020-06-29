@@ -14,8 +14,8 @@ import java.net.Socket;
  * Composition-over-inheritance principle is applied to let this class extend Observable (the {@link it.polimi.ingsw.view.View} must
  * observe an instance of this class in order to handle updates and notify the users about the game state), but also share code with {@link it.polimi.ingsw.network.server.CommandListener}.
  *
- * @see ObjectListenerDelegate
  * @author Cosimo Sguanci
+ * @see ObjectListenerDelegate
  */
 public class UpdateListener extends Observable<Update> implements ObjectListener, Runnable {
     /**
@@ -27,6 +27,7 @@ public class UpdateListener extends Observable<Update> implements ObjectListener
 
     /**
      * This method is useful to check if the communication between client and server is still in progress.
+     *
      * @return true if the socket is still open, false otherwise.
      */
     public boolean isActive() {
@@ -35,6 +36,7 @@ public class UpdateListener extends Observable<Update> implements ObjectListener
 
     /**
      * Active flag setter
+     *
      * @param active the new value of the active flag
      */
     public void setIsActive(boolean active) {
@@ -64,6 +66,7 @@ public class UpdateListener extends Observable<Update> implements ObjectListener
 
     /**
      * Forwards notiy messages from {@link ObjectListenerDelegate} to the {@link it.polimi.ingsw.view.View}
+     *
      * @param update the {@link Update} received from the server
      */
     @Override
@@ -75,6 +78,7 @@ public class UpdateListener extends Observable<Update> implements ObjectListener
 
     /**
      * Callback called when the timeout for socket read is expired. If setIsActive(false) was called, close the relative socket.
+     *
      * @throws IOException if socket.close() encounters an error.
      */
     @Override
