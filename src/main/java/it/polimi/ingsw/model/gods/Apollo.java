@@ -4,8 +4,8 @@ import it.polimi.ingsw.model.*;
 
 
 /**
- * This class implements the Apollo strategy used by the Player who chose the powers of this God.
- * Specifically, Apollo allows the Worker to move to a Cell which is occupied by another player's worker,
+ * This class implements the Apollo strategy used by the {@link Player} who chose the powers of this God.
+ * Specifically, Apollo allows the {@link Worker} to move to a {@link Cell} which is occupied by another player's worker,
  * swapping the worker's positions.
  *
  * @author Cosimo Sguanci
@@ -70,7 +70,7 @@ public class Apollo extends GodStrategy {
     }
 
     /**
-     * This method checks if Apollo's Player has at least an available Cell to move to.
+     * This method checks if Apollo's {@link Player} has at least an available Cell to move to.
      *
      * @param board  the Match board to consider
      * @param player the Player whose ability to move is about to be tested
@@ -87,12 +87,12 @@ public class Apollo extends GodStrategy {
     }
 
     /**
-     * This method checks if Apollo's Worker can move from a specific Cell.
+     * This method checks if Apollo's Worker can move from a specific {@link Cell}.
      * The main difference from a "standard" canMove, is that here we must consider that Apollo
      * can swap its position with an opponent Worker, so we avoid to check if adjacent cells are empty.
      *
-     * @param board the Match board to consider
-     * @param cell  the Cell from which the worker would move
+     * @param board the Match {@link Board} to consider
+     * @param cell  the {@link Cell} from which the worker would move
      * @return true if an Apollo movement is possible from the cell passed by parameter, false otherwise.
      */
     private boolean canApolloMoveFromCell(Board board, Cell cell) {

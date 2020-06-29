@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.gods;
 import it.polimi.ingsw.model.*;
 
 /**
- * This class implements the Hestia strategy used by the Player who chose the powers of this God.
+ * This class implements the Hestia strategy used by the {@link Player} who chose the powers of this God.
  * Specifically, Hestia allows the selected worker to build an additional time using {@link MultipleBuildDelegate}, but not on a perimeter space.
  *
  * @author Cosimo Sguanci
@@ -15,7 +15,14 @@ public class Hestia extends GodStrategy {
     public static final String DESCRIPTION = "Goddess of Hearth and Home";
     public static final String POWER_DESCRIPTION = "Your Build: Your Worker may build one additional time, but this cannot be on a perimeter space";
 
+    /**
+     * Max number of levels buildable by Hestia in the same turn.
+     */
     final int HESTIA_MAX_BUILD_NUM = 2;
+
+    /**
+     * Delegate used to handle the fact that Hestia can build more than one time in the same turn.
+     */
     private final MultipleBuildDelegate multipleBuildDelegate;
 
     public Hestia() {
@@ -55,7 +62,7 @@ public class Hestia extends GodStrategy {
     }
 
     /**
-     * Checks if the Cell passed is on the perimeter of the game Board.
+     * Checks if the {@link Cell} passed is on the perimeter of the game {@link Board}.
      *
      * @param cell the Cell in which the Opponent Worker was moved
      * @return true if the Cell is in the perimeter of the game Board, false otherwise.

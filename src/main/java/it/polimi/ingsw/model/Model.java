@@ -59,7 +59,7 @@ public class Model extends Observable<Update> {
     }
 
     /**
-     * Removes a Player from the Players list (used for example when a Player loses).
+     * Removes a {@link Player} from the players list (used for example when a {@link Player} loses).
      *
      * @param player the player to remove
      */
@@ -68,7 +68,7 @@ public class Model extends Observable<Update> {
     }
 
     /**
-     * This method is called to end the turn of the current Player.
+     * This method is called to end the turn of the current {@link Player}.
      */
     public void endTurn() {
         match.nextTurn();
@@ -85,7 +85,7 @@ public class Model extends Observable<Update> {
     }
 
     /**
-     * Current Game Phase getter used by Controller
+     * Current Game Phase getter used by {@link it.polimi.ingsw.controller.Controller}
      *
      * @return the current Game Phase
      */
@@ -125,9 +125,9 @@ public class Model extends Observable<Update> {
     }
 
     /**
-     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that the current GamePhase has changed.
+     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that the current {@link GamePhase} has changed.
      *
-     * @param newGamePhase the new current GamePhase for this match
+     * @param newGamePhase the new current {@link GamePhase} for this match
      */
     public void gamePhaseUpdate(GamePhase newGamePhase) {
         GamePhaseUpdate gamePhaseUpdate = new GamePhaseUpdate(newGamePhase);
@@ -135,7 +135,7 @@ public class Model extends Observable<Update> {
     }
 
     /**
-     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that there was an error executing a Command.
+     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that there was an error executing a {@link it.polimi.ingsw.controller.commands.Command}.
      *
      * @param player       the Player who made the Command which caused the error
      * @param commandType  the commandType corresponding to the attempted Command
@@ -148,7 +148,7 @@ public class Model extends Observable<Update> {
     }
 
     /**
-     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that some new Initial Info has been set for a Player.
+     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that some new Initial Info has been set for a {@link Player}.
      *
      * @param initialInfo the map which associates Players nicknames and Players colors.
      */
@@ -158,9 +158,9 @@ public class Model extends Observable<Update> {
     }
 
     /**
-     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a new God has been set for a Player.
+     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a new God has been set for a {@link Player}.
      *
-     * @param selectableGods the Gods that have been selected by the GodChooser, but have not been chosen by any Player.
+     * @param selectableGods the Gods that have been selected by the GodChooser, but have not been chosen by any {@link Player}.
      * @param selectedGods   the map which associates Players nicknames and Players Gods.
      */
     public void godsUpdate(List<String> selectableGods, Map<String, String> selectedGods) {
@@ -169,8 +169,8 @@ public class Model extends Observable<Update> {
     }
 
     /**
-     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a there was some changes in the Game Board
-     * (a Worker moved or built a new level)
+     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a there was some changes in the Game {@link Board}
+     * (a {@link Worker} moved or built a new level)
      */
     public void boardUpdate() {
         BoardUpdate boardUpdate = new BoardUpdate(match.getMatchBoard().toString());
@@ -178,10 +178,10 @@ public class Model extends Observable<Update> {
     }
 
     /**
-     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a there was some changes in the Game Board
-     * (a Worker moved or built a new level)
+     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a there was some changes in the Game {@link Board}
+     * (a {@link Worker} moved or built a new level)
      *
-     * @param executedCommand the command which caused the changes to the Game Board
+     * @param executedCommand the command which caused the changes to the Game {@link Board}
      */
     public void boardUpdate(PlayerCommand executedCommand) {
         BoardUpdate boardUpdate = new BoardUpdate(match.getMatchBoard().toString());
@@ -191,7 +191,7 @@ public class Model extends Observable<Update> {
     }
 
     /**
-     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that the Match has actually started.
+     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that the {@link Match} has actually started.
      */
     public void matchStartedUpdate() {
         TurnUpdate turnUpdate = new TurnUpdate(match.getCurrentPlayer());
@@ -203,7 +203,7 @@ public class Model extends Observable<Update> {
     /**
      * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that the current turn has changed.
      *
-     * @param currentPlayer the new Player in turn now
+     * @param currentPlayer the new {@link Player} in turn now
      */
     public void turnUpdate(Player currentPlayer) {
         TurnUpdate turnUpdate = new TurnUpdate(currentPlayer);
@@ -211,9 +211,9 @@ public class Model extends Observable<Update> {
     }
 
     /**
-     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a Player won.
+     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a {@link Player} won.
      *
-     * @param winnerPlayer the Player who has won the Match
+     * @param winnerPlayer the {@link Player} who has won the Match
      */
     public void winUpdate(Player winnerPlayer) {
         WinUpdate winUpdate = new WinUpdate(winnerPlayer);
@@ -221,10 +221,10 @@ public class Model extends Observable<Update> {
     }
 
     /**
-     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a Player lost.
+     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a {@link Player} lost.
      *
-     * @param loserPlayer the Player who just lost
-     * @param loseCause   the reason why the Player lost
+     * @param loserPlayer the {@link Player} who just lost
+     * @param loseCause   the reason why the {@link Player} lost
      */
     public void loseUpdate(Player loserPlayer, LoseUpdate.LoseCause loseCause) {
         boolean onePlayerRemaining = getPlayers().size() == 1;
@@ -233,9 +233,9 @@ public class Model extends Observable<Update> {
     }
 
     /**
-     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a Player disconnected.
+     * Notifies the {@link it.polimi.ingsw.view.View} (using {@link it.polimi.ingsw.view.RemoteView} abstraction) that a {@link Player} disconnected.
      *
-     * @param disconnectedPlayer the Player who disconnected from the match
+     * @param disconnectedPlayer the {@link Player} who disconnected from the match
      */
     public void disconnectedPlayerUpdate(Player disconnectedPlayer) {
         DisconnectedPlayerUpdate disconnectedPlayerUpdate = new DisconnectedPlayerUpdate(disconnectedPlayer, match.getMatchBoard().toString());

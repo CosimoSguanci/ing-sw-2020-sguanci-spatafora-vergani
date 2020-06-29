@@ -6,14 +6,13 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This enum represent a color that the Player can choose in the Initial Info game phase.
+ * This enum represent a color that the {@link Player} can choose in the Initial Info {@link it.polimi.ingsw.controller.GamePhase}.
  *
  * @author Roberto Spatafora
  */
 public enum PrintableColor {
-    /**
-     * Currently available colors
-     */
+
+    //Currently available colors
     RED, GREEN, BLUE, YELLOW, PURPLE;
 
     public static final String RESET = "\u001B[0m";

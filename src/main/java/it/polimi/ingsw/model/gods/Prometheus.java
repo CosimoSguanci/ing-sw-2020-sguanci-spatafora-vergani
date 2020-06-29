@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * This class implements the Prometheus strategy used by the Player who chose the powers of this God.
- * Specifically, if the selected Worker does not move up, it can build both before and after moving.
+ * This class implements the Prometheus strategy used by the {@link Player} who chose the powers of this God.
+ * Specifically, if the selected {@link Worker} does not move up, it can build both before and after moving.
  *
  * @author Cosimo Sguanci
  */
@@ -23,8 +23,19 @@ public class Prometheus extends GodStrategy {
     public static final String DESCRIPTION = "Titan Benefactor of Mankind";
     public static final String POWER_DESCRIPTION = "Your Turn: If your Worker does not move up, it may build both before and after moving";
 
+    /**
+     * Max number of levels potentially buildable by Prometheus in the same turn.
+     */
     final int PROMETHEUS_MAX_BUILD_NUM = 2;
+
+    /**
+     * Delegate used to handle the fact that Prometheus can potentially build more than one time in the same turn.
+     */
     private final MultipleBuildDelegate multipleBuildDelegate;
+
+    /**
+     * Flag used to check if Prometheus built before moving or not.
+     */
     private boolean builtBeforeMoving;
 
 

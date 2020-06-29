@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model.gods;
 
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
 /**
- * This class implements the Pan strategy used by the Player who chose the powers of this God.
- * Specifically, Pan adds a Win Condition: the Player also win if the selected Worker moves
+ * This class implements the Pan strategy used by the {@link Player} who chose the powers of this God.
+ * Specifically, Pan adds a Win Condition: the {@link Player} also win if the selected {@link Worker} moves
  * down two or more levels.
  *
  * @author Cosimo Sguanci
@@ -16,11 +17,11 @@ public class Pan extends GodStrategy {
     public static final String NAME = "Pan";
     public static final String DESCRIPTION = "God of the Wild";
     public static final String POWER_DESCRIPTION = "Win Condition: You also win if your Worker moves down two or more levels";
+
     /**
      * Flag used to determine if the Worker went down two or more levels.
      */
     private boolean downTwoLevels;
-
 
     public Pan() {
         super(NAME, DESCRIPTION, POWER_DESCRIPTION);

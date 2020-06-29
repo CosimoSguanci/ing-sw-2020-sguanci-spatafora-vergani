@@ -18,9 +18,9 @@ import static it.polimi.ingsw.model.utils.GodsUtils.*;
  * This class represents the Controller in MVC design pattern. The whole
  * application, in fact, is based on MVC pattern, and in particular
  * Controller class is View's observer. The "dialogue" between Controller
- * and View is possible (mainly) through Command class: this (abstract) class can represent a
- * move/build that a player wants to do during the game, or some initial information, ...
- * This is the reason for Controller class to implement Observer(Command), since (as
+ * and View is possible (mainly) through {@link Command}: this (abstract) class can represent a
+ * move/build that a {@link Player} wants to do during the game, or some initial information, ...
+ * This is the reason for Controller class to implement Observer (Command), since (as
  * explained) View notifies Controller using Command as update message.
  * Then, following MVC pattern, Controller invokes Model's methods to
  * modify the model itself.
@@ -40,7 +40,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     /**
      * The constructor creates an instance of Controller class. This class
-     * needs to reference to the general Model of the game, so that changes
+     * needs to reference to the general {@link Model} of the game, so that changes
      * and operations in it are possible.
      *
      * @param model class Model of MVC pattern
@@ -111,7 +111,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
 
     /**
-     * This method handles an InitialInfoCommand. In particular, its main task is to set the
+     * This method handles an {@link InitialInfoCommand}. In particular, its main task is to set the
      * chosen nickname and colour; then, the player's turn ends (with a possible change of
      * game-phase, if everyone has already finished InitialInfo phase).
      *
@@ -170,7 +170,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
 
     /**
-     * This method handles a GodChoiceCommand. In particular, its main task is to set the
+     * This method handles a {@link GodChoiceCommand}. In particular, its main task is to set the
      * chosen god (or gods, if the player is god-chooser); then, the player's turn ends
      * (with a possible change of game-phase, if everyone has already finished GodChoice
      * phase).
@@ -229,7 +229,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
 
     /**
-     * This method handles a GamePreparationCommand. In particular, its main task is to place
+     * This method handles a {@link GamePreparationCommand}. In particular, its main task is to place
      * workers in the specified positions; then, the player's turn ends (with a possible change
      * of game-phase, if everyone has already finished GamePreparation phase).
      *
@@ -270,7 +270,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     }
 
     /**
-     * This private method simply extends update's task, for PlayerCommand. In fact, to handle
+     * This private method simply extends update's task, for {@link PlayerCommand}. In fact, to handle
      * this command is necessary to: verify that the player who required it is
      * game's current player (otherwise, there is no need to call the Model,
      * since its state will not modify); call the selected command from the
@@ -435,11 +435,11 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
 
     /**
-     * This method checks all Players God's Win Constraints to check if there is a power which
-     * prevents the Player who executed the given PlayerCommand to win.
+     * This method checks all {@link Player} God's Win Constraints to check if there is a power which
+     * prevents the {@link Player} who executed the given {@link PlayerCommand} to win.
      *
      * @param playerCommand player command from View
-     * @return true if Win is permitted, false otherwise.
+     * @return true if win is permitted, false otherwise.
      */
     private boolean checkAllWinConstraints(PlayerCommand playerCommand) {
 
@@ -454,7 +454,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
 
     /**
-     * This method checks if a GamePreparationCommand is valid or not. A GamePreparationCommand
+     * This method checks if a {@link GamePreparationCommand} is valid or not. A {@link GamePreparationCommand}
      * can be not-valid when, for example, some rules (mainly related to god powers) are not respected.
      *
      * @param gamePreparationCommand the given command in GamePreparation Phase
@@ -486,8 +486,8 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
 
     /**
-     * This method checks all Players God's Move Constraints to check if there is a power which
-     * prevents the Player who executed the given PlayerCommand to move.
+     * This method checks all {@link Player} God's Move Constraints to check if there is a power which
+     * prevents the {@link Player} who executed the given {@link PlayerCommand} to move.
      *
      * @param playerCommand player command from View
      * @param inhibitor     an empty map that, in case, is filled with the name and description of the god that
@@ -509,8 +509,8 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     }
 
     /**
-     * This method checks all Players God's Build Constraints to check if there is a power which
-     * prevents the Player who executed the given PlayerCommand to build.
+     * This method checks all {@link Player} God's Build Constraints to check if there is a power which
+     * prevents the {@link Player} who executed the given {@link PlayerCommand} to build.
      *
      * @param playerCommand player command from View
      * @param inhibitor     an empty map that, in case, is filled with the name and description of the god that
@@ -533,7 +533,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
 
     /**
-     * This method checks if an End-Turn can be performed, or it is not allowed by some of the players' gods.
+     * This method checks if an End-Turn can be performed, or it is not allowed by some of the {@link Player}' gods.
      *
      * @param playerCommand player command from View
      * @param inhibitor     an empty map that, in case, is filled with the name and description of the god that
@@ -647,7 +647,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     }
 
     /**
-     * This method is the entry point from Server.java class. A random starting-player and god-chooser are chosen,
+     * This method is the entry point from Server class. A random starting-player and god-chooser are chosen,
      * and the players are notified about the first turn of the match. This starting phase is followed by
      * InitialInfo phase, where players choose their nicknames and colours.
      */
@@ -672,7 +672,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
 
     /**
-     * This method must be called when GodChoice Phase starts. Every player is notified in the proper way.
+     * This method must be called when God Choice Phase starts. Every {@link Player} is notified in the proper way.
      */
     private void godChoosePhase() {
         model.nextGamePhase();
@@ -681,7 +681,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     }
 
     /**
-     * This method must be called when GamePreparation Phase starts. Every player is notified in the proper way.
+     * This method must be called when Game Preparation Phase starts. Every {@link Player} is notified in the proper way.
      */
     private void gamePreparationPhase() {
         model.nextGamePhase();
@@ -690,7 +690,7 @@ public class Controller extends Observable<Controller> implements Observer<Comma
     }
 
     /**
-     * This method must be called when the real match starts. Every player is notified in the proper way.
+     * This method must be called when the real match starts. Every {@link Player} is notified in the proper way.
      */
     private void startMatch() {
         model.nextGamePhase();
@@ -704,9 +704,9 @@ public class Controller extends Observable<Controller> implements Observer<Comma
 
     /**
      * This method handles a disconnection from one of the clients involved in the match. In particular, when a
-     * player disconnects, he/she is removed; then, everyone must be notified and the match immediately ends.
+     * {@link Player} disconnects, he/she is removed; then, everyone must be notified and the match immediately ends.
      *
-     * @param playerID the ID of the Player that disconnected
+     * @param playerID the ID of the {@link Player} that disconnected
      */
     public void onPlayerDisconnected(String playerID) {
         Player disconnectedPlayer = model.getPlayers().stream().filter((player) -> player.getPlayerID().equals(playerID)).findFirst().orElse(null);

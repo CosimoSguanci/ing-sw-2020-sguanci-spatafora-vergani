@@ -14,8 +14,8 @@ import java.net.Socket;
  * observe an instance of this class in order to catch commands and to notify the {@link it.polimi.ingsw.controller.Controller} about new commands sent from client to server),
  * but also share code with {@link it.polimi.ingsw.network.client.UpdateListener}.
  *
- * @see ObjectListenerDelegate
  * @author Cosimo Sguanci
+ * @see ObjectListenerDelegate
  */
 public class CommandListener extends Observable<Command> implements ObjectListener, Runnable {
     /**
@@ -28,6 +28,7 @@ public class CommandListener extends Observable<Command> implements ObjectListen
 
     /**
      * This method is useful to check if the communication between client and server is still in progress.
+     *
      * @return true if the socket is still open, false otherwise.
      */
     public boolean isActive() {
@@ -36,6 +37,7 @@ public class CommandListener extends Observable<Command> implements ObjectListen
 
     /**
      * Active flag setter
+     *
      * @param active the new value of the active flag
      */
     public void setIsActive(boolean active) {
@@ -70,6 +72,7 @@ public class CommandListener extends Observable<Command> implements ObjectListen
      * Forwards {@link Command} objects to the {@link ClientHandler} instance if a command is received.
      * Otherwise, it checks if the object received is a ping message (health checks sent from clients), and remove
      * the client from the list of client which haven't sent a ping message in the last timeout period yet.
+     *
      * @param command the object received
      * @see Server#removeFromPingWaitingList(Socket)
      */
@@ -103,6 +106,7 @@ public class CommandListener extends Observable<Command> implements ObjectListen
     /**
      * Callback called when a client disconnects (read exception or socket.close done from handleConnectionTimeoutExpired).
      * It delegates connection reset handling to {@link Server}.
+     *
      * @see Server#handleConnectionReset(Socket)
      */
     @Override

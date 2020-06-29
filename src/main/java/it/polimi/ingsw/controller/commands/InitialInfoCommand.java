@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.PrintableColor;
 
 
 /**
- * InitialInfoCommand is the class that represents a Command specific for InitialInfo
- * phase. In particular, in this phase every player selects a nickname and a colour for
+ * InitialInfoCommand is the class that represents a {@link Command} specific for Initial Info
+ * phase. In particular, in this phase every player selects a nickname and a color for
  * the match.
  *
  * @author Andrea Mario Vergani
@@ -14,13 +14,21 @@ import it.polimi.ingsw.model.PrintableColor;
  * @author Roberto Spatafora
  */
 public class InitialInfoCommand extends Command {
+
+    /**
+     * The nickname chosen by the player.
+     */
     public final String nickname;
+
+    /**
+     * The color chosen by the player.
+     */
     public final PrintableColor color;
 
 
     /**
-     * The constructor creates a Command specific for InitialInfo phase: CommandType is PICK
-     * because this is what players must do in this phase; then, a nickname and a colour are
+     * The constructor creates a {@link Command} specific for Initial Info phase: {@link CommandType} is {@link CommandType#PICK}
+     * because this is what players must do in this phase; then, a nickname and a color are
      * selected.
      *
      * @param nickname the nickname chosen by the player

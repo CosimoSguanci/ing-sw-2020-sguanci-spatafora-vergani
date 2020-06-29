@@ -12,15 +12,20 @@ import it.polimi.ingsw.model.Worker;
  * are based on polymorphism: a general command arrives to Server, but the different ways
  * to handle it depend on the dynamic type of the command itself. Then, a proper call to
  * Controller is made, in order to interact directly with Model and modify it in the right
- * way (if necessary).
+ * way (if necessary). This follows Visitor Pattern guidelines.
  *
  * @author Cosimo Sguanci
+ * @see CommandHandler
  */
 class CommandHandlerImpl implements CommandHandler {
+
+    /**
+     * The instance of {@link Controller} which receives the {@link Command} objects from players.
+     */
     private final Controller controllerInstance;
 
     /**
-     * The constructor creates a CommandHandler related to a specific instance of
+     * The constructor creates a {@link CommandHandler} related to a specific instance of
      * Controller class.
      *
      * @param controllerInstance controller associated with the object
@@ -31,12 +36,13 @@ class CommandHandlerImpl implements CommandHandler {
 
 
     /**
-     * This method handles an InitialInfoCommand. In particular, it sets the player who
-     * gave the command to the command itself, then calls an appropriate Controller
+     * This method handles an {@link InitialInfoCommand}. In particular, it sets the {@link Player} who
+     * gave the command to the command itself, then calls an appropriate {@link Controller}
      * method for further things to do with it.
      *
      * @param command command containing player's nickname and colour
      * @throws WrongGamePhaseException if current phase is not InitialInfo phase
+     * @see Controller#handleInitialInfoCommand(InitialInfoCommand)
      */
     public synchronized void handle(InitialInfoCommand command) {
         if (controllerInstance.getCurrentGamePhase() == GamePhase.INITIAL_INFO) {
@@ -49,15 +55,16 @@ class CommandHandlerImpl implements CommandHandler {
 
 
     /**
-     * This method handles a PlayerCommand. In particular, it sets the player who
+     * This method handles a {@link PlayerCommand}. In particular, it sets the {@link Player} who
      * gave the command to the command itself, associates the coordinates to the
-     * "real" cell (Model-side) and workerID to the "real" worker (Model-side);
-     * then, an appropriate Controller method is called for further things to do with
+     * "real" {@link Cell} (Model-side) and worker ID to the "real" {@link Worker} (Model-side);
+     * then, an appropriate {@link Controller} method is called for further things to do with
      * the command.
      *
      * @param command command containing player's move, build, ... in RealGame phase (the
      *                proper match)
      * @throws WrongGamePhaseException if current phase is not RealGame phase
+     * @see Controller#handlePlayerCommand(PlayerCommand)
      */
     public synchronized void handle(PlayerCommand command) {
         if (controllerInstance.getCurrentGamePhase() == GamePhase.REAL_GAME) {
@@ -80,12 +87,13 @@ class CommandHandlerImpl implements CommandHandler {
 
 
     /**
-     * This method handles a GodChoiceCommand. In particular, it sets the player who
-     * gave the command to the command itself, then calls an appropriate Controller
+     * This method handles a {@link GodChoiceCommand}. In particular, it sets the {@link Player} who
+     * gave the command to the command itself, then calls an appropriate {@link Controller}
      * method for further things to do with it.
      *
      * @param command command containing player's chosen god (or gods if god-chooser player)
      * @throws WrongGamePhaseException if current phase is not ChooseGods phase
+     * @see Controller#handleGodChoiceCommand(GodChoiceCommand)
      */
     public synchronized void handle(GodChoiceCommand command) {
         if (controllerInstance.getCurrentGamePhase() == GamePhase.CHOOSE_GODS) {
@@ -98,13 +106,14 @@ class CommandHandlerImpl implements CommandHandler {
 
 
     /**
-     * This method handles a GamePreparationCommand. In particular, it sets the player who
+     * This method handles a {@link GamePreparationCommand}. In particular, it sets the {@link Player} who
      * gave the command to the command itself and associates the coordinates to the
-     * "real" cells (Model-side); then, an appropriate Controller method is called for further
+     * "real" {@link Cell} (Model-side); then, an appropriate {@link Controller} method is called for further
      * things to do with the command.
      *
      * @param command command containing initial positions of workers on the board
      * @throws WrongGamePhaseException if current phase is not GamePreparation phase
+     * @see Controller#handleGamePreparationCommand(GamePreparationCommand)
      */
     public synchronized void handle(GamePreparationCommand command) {
         if (controllerInstance.getCurrentGamePhase() == GamePhase.GAME_PREPARATION) {
@@ -124,7 +133,7 @@ class CommandHandlerImpl implements CommandHandler {
 
 
     /**
-     * This private method associates a given command to the player who gave it.
+     * This private method associates a given {@link Command} to the {@link Player} who gave it.
      *
      * @param command general command coming from one of the players (Client) to Server
      */

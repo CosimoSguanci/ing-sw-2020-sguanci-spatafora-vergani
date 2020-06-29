@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.gods.Apollo;
 import it.polimi.ingsw.model.gods.Athena;
 import it.polimi.ingsw.model.gods.Atlas;
 import it.polimi.ingsw.model.utils.GodsUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ControllerConcurrencyTest {
 
-    //@Disabled
+    @Disabled
     @Test
     public void concurrencyStressTest() {
 
@@ -56,40 +57,31 @@ public class ControllerConcurrencyTest {
             int k = 0;
             for (int j = 0; j < 50; j++) {
 
-                threads[k] = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nickname1, color1);
-                        initialInfoCommand.setPlayer(p1);
-                        controller.update(initialInfoCommand);
+                threads[k] = new Thread(() -> {
+                    InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nickname1, color1);
+                    initialInfoCommand.setPlayer(p1);
+                    controller.update(initialInfoCommand);
 
-                    }
                 });
 
                 threads[k].start();
 
                 k++;
 
-                threads[k] = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nickname2, color2);
-                        initialInfoCommand.setPlayer(p2);
-                        controller.update(initialInfoCommand);
-                    }
+                threads[k] = new Thread(() -> {
+                    InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nickname2, color2);
+                    initialInfoCommand.setPlayer(p2);
+                    controller.update(initialInfoCommand);
                 });
 
                 threads[k].start();
 
                 k++;
 
-                threads[k] = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nickname3, color3);
-                        initialInfoCommand.setPlayer(p3);
-                        controller.update(initialInfoCommand);
-                    }
+                threads[k] = new Thread(() -> {
+                    InitialInfoCommand initialInfoCommand = new InitialInfoCommand(nickname3, color3);
+                    initialInfoCommand.setPlayer(p3);
+                    controller.update(initialInfoCommand);
                 });
 
                 threads[k].start();
@@ -168,25 +160,22 @@ public class ControllerConcurrencyTest {
             int k = 0;
             for (int j = 0; j < 50; j++) {
 
-                threads[k] = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
+                threads[k] = new Thread(() -> {
 
-                        if (p1.equals(godChooser)) {
-                            List<String> gods = new ArrayList<>();
-                            gods.add("athena");
-                            gods.add("apollo");
-                            gods.add("atlas");
-                            GodChoiceCommand godChoiceCommand = new GodChoiceCommand(gods);
-                            godChoiceCommand.setPlayer(p1);
-                            controller.update(godChoiceCommand);
-                        } else {
-                            List<String> gods = new ArrayList<>();
-                            gods.add("athena");
-                            GodChoiceCommand godChoiceCommand = new GodChoiceCommand(gods);
-                            godChoiceCommand.setPlayer(p1);
-                            controller.update(godChoiceCommand);
-                        }
+                    if (p1.equals(godChooser)) {
+                        List<String> gods = new ArrayList<>();
+                        gods.add("athena");
+                        gods.add("apollo");
+                        gods.add("atlas");
+                        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(gods);
+                        godChoiceCommand.setPlayer(p1);
+                        controller.update(godChoiceCommand);
+                    } else {
+                        List<String> gods = new ArrayList<>();
+                        gods.add("athena");
+                        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(gods);
+                        godChoiceCommand.setPlayer(p1);
+                        controller.update(godChoiceCommand);
                     }
                 });
 
@@ -194,24 +183,20 @@ public class ControllerConcurrencyTest {
 
                 k++;
 
-                threads[k] = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (p2.equals(godChooser)) {
-                            List<String> gods = new ArrayList<>();
-                            gods.add("athena");
-                            gods.add("apollo");
-                            gods.add("atlas");
-                            GodChoiceCommand godChoiceCommand = new GodChoiceCommand(gods);
-                            godChoiceCommand.setPlayer(p2);
-                            controller.update(godChoiceCommand);
-                        } else {
-                            List<String> gods = new ArrayList<>();
-                            gods.add("apollo");
-                            GodChoiceCommand godChoiceCommand = new GodChoiceCommand(gods);
-                            godChoiceCommand.setPlayer(p2);
-                            controller.update(godChoiceCommand);
-                        }
+                threads[k] = new Thread(() -> {
+                    List<String> gods = new ArrayList<>();
+                    if (p2.equals(godChooser)) {
+                        gods.add("athena");
+                        gods.add("apollo");
+                        gods.add("atlas");
+                        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(gods);
+                        godChoiceCommand.setPlayer(p2);
+                        controller.update(godChoiceCommand);
+                    } else {
+                        gods.add("apollo");
+                        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(gods);
+                        godChoiceCommand.setPlayer(p2);
+                        controller.update(godChoiceCommand);
                     }
                 });
 
@@ -219,24 +204,20 @@ public class ControllerConcurrencyTest {
 
                 k++;
 
-                threads[k] = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (p3.equals(godChooser)) {
-                            List<String> gods = new ArrayList<>();
-                            gods.add("athena");
-                            gods.add("apollo");
-                            gods.add("atlas");
-                            GodChoiceCommand godChoiceCommand = new GodChoiceCommand(gods);
-                            godChoiceCommand.setPlayer(p3);
-                            controller.update(godChoiceCommand);
-                        } else {
-                            List<String> gods = new ArrayList<>();
-                            gods.add("atlas");
-                            GodChoiceCommand godChoiceCommand = new GodChoiceCommand(gods);
-                            godChoiceCommand.setPlayer(p3);
-                            controller.update(godChoiceCommand);
-                        }
+                threads[k] = new Thread(() -> {
+                    List<String> gods = new ArrayList<>();
+                    if (p3.equals(godChooser)) {
+                        gods.add("athena");
+                        gods.add("apollo");
+                        gods.add("atlas");
+                        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(gods);
+                        godChoiceCommand.setPlayer(p3);
+                        controller.update(godChoiceCommand);
+                    } else {
+                        gods.add("atlas");
+                        GodChoiceCommand godChoiceCommand = new GodChoiceCommand(gods);
+                        godChoiceCommand.setPlayer(p3);
+                        controller.update(godChoiceCommand);
                     }
                 });
 
@@ -321,39 +302,30 @@ public class ControllerConcurrencyTest {
             int k = 0;
             for (int j = 0; j < 50; j++) {
 
-                threads[k] = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput("place w1 a1 w2 a4");
-                        gamePreparationCommand.setPlayer(p1);
-                        controller.update(gamePreparationCommand);
-                    }
+                threads[k] = new Thread(() -> {
+                    GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput("place w1 a1 w2 a4");
+                    gamePreparationCommand.setPlayer(p1);
+                    controller.update(gamePreparationCommand);
                 });
 
                 threads[k].start();
 
                 k++;
 
-                threads[k] = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput("place w1 b4 w2 c3");
-                        gamePreparationCommand.setPlayer(p2);
-                        controller.update(gamePreparationCommand);
-                    }
+                threads[k] = new Thread(() -> {
+                    GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput("place w1 b4 w2 c3");
+                    gamePreparationCommand.setPlayer(p2);
+                    controller.update(gamePreparationCommand);
                 });
 
                 threads[k].start();
 
                 k++;
 
-                threads[k] = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput("place w1 d4 w2 e5");
-                        gamePreparationCommand.setPlayer(p3);
-                        controller.update(gamePreparationCommand);
-                    }
+                threads[k] = new Thread(() -> {
+                    GamePreparationCommand gamePreparationCommand = GamePreparationCommand.parseInput("place w1 d4 w2 e5");
+                    gamePreparationCommand.setPlayer(p3);
+                    controller.update(gamePreparationCommand);
                 });
 
                 threads[k].start();
@@ -494,21 +466,18 @@ public class ControllerConcurrencyTest {
             int k = 0;
             for (int j = 0; j < 50; j++) {
 
-                threads[k] = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 a2");
-                        playerCommand.setPlayer(p1);
-                        controller.update(playerCommand);
+                threads[k] = new Thread(() -> {
+                    PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 a2");
+                    playerCommand.setPlayer(p1);
+                    controller.update(playerCommand);
 
-                        playerCommand = PlayerCommand.parseInput("build w1 a1");
-                        playerCommand.setPlayer(p1);
-                        controller.update(playerCommand);
+                    playerCommand = PlayerCommand.parseInput("build w1 a1");
+                    playerCommand.setPlayer(p1);
+                    controller.update(playerCommand);
 
-                        playerCommand = PlayerCommand.parseInput("end");
-                        playerCommand.setPlayer(p1);
-                        controller.update(playerCommand);
-                    }
+                    playerCommand = PlayerCommand.parseInput("end");
+                    playerCommand.setPlayer(p1);
+                    controller.update(playerCommand);
                 });
 
                 threads[k].start();
@@ -528,21 +497,18 @@ public class ControllerConcurrencyTest {
 
                 k++;
 
-                threads[k] = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 d1");
-                        playerCommand.setPlayer(p2);
-                        controller.update(playerCommand);
+                threads[k] = new Thread(() -> {
+                    PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 d1");
+                    playerCommand.setPlayer(p2);
+                    controller.update(playerCommand);
 
-                        playerCommand = PlayerCommand.parseInput("build w1 d2");
-                        playerCommand.setPlayer(p2);
-                        controller.update(playerCommand);
+                    playerCommand = PlayerCommand.parseInput("build w1 d2");
+                    playerCommand.setPlayer(p2);
+                    controller.update(playerCommand);
 
-                        playerCommand = PlayerCommand.parseInput("end");
-                        playerCommand.setPlayer(p2);
-                        controller.update(playerCommand);
-                    }
+                    playerCommand = PlayerCommand.parseInput("end");
+                    playerCommand.setPlayer(p2);
+                    controller.update(playerCommand);
                 });
 
                 threads[k].start();
@@ -562,21 +528,18 @@ public class ControllerConcurrencyTest {
 
                 k++;
 
-                threads[k] = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 d5");
-                        playerCommand.setPlayer(p3);
-                        controller.update(playerCommand);
+                threads[k] = new Thread(() -> {
+                    PlayerCommand playerCommand = PlayerCommand.parseInput("move w1 d5");
+                    playerCommand.setPlayer(p3);
+                    controller.update(playerCommand);
 
-                        playerCommand = PlayerCommand.parseInput("build w1 c5 DOME");
-                        playerCommand.setPlayer(p3);
-                        controller.update(playerCommand);
+                    playerCommand = PlayerCommand.parseInput("build w1 c5 DOME");
+                    playerCommand.setPlayer(p3);
+                    controller.update(playerCommand);
 
-                        playerCommand = PlayerCommand.parseInput("end");
-                        playerCommand.setPlayer(p3);
-                        controller.update(playerCommand);
-                    }
+                    playerCommand = PlayerCommand.parseInput("end");
+                    playerCommand.setPlayer(p3);
+                    controller.update(playerCommand);
                 });
 
                 threads[k].start();

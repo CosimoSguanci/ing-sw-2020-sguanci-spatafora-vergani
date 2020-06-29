@@ -22,6 +22,7 @@ public class Cell {
     /**
      * Cell is the builder of the class. When a cell is created, its level is the ground
      * level and no worker is on it
+     *
      * @param rowIdentifier the row coordinate of this Cell
      * @param colIdentifier the col coordinate of this Cell
      */
@@ -34,10 +35,9 @@ public class Cell {
 
 
     /**
-     * The method returns 'true' if no worker is on the considered cell, so this one is
-     * "empty". Otherwise, the return value is 'false'
+     * This method checks the emptiness of this Cell.
      *
-     * @return true if the cell is empty, as explained above
+     * @return true if the cell is empty, false otherwise.
      */
     public boolean isEmpty() {
         return this.worker == null;
@@ -56,6 +56,7 @@ public class Cell {
 
     /**
      * The method is a simple setter of the worker on the considered cell.
+     *
      * @param worker the Worker that must be set for this Cell
      */
     public void setWorker(Worker worker) {

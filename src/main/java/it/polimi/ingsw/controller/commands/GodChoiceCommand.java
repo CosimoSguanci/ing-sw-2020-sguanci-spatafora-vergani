@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * GodChoiceCommand is the class that represents a Command specific for GodChoice
+ * GodChoiceCommand is the class that represents a {@link Command} specific for God Choice
  * phase. In particular, in this phase a god-chooser selects a number of gods equal
  * to the number of players involved in the match; then, every player chooses the god
  * he/she likes most.
@@ -16,11 +16,16 @@ import java.util.List;
  * @author Roberto Spatafora
  */
 public class GodChoiceCommand extends Command {
+
+    /**
+     * List of the gods (represented as strings - "apollo", "athena" ...) chosen with this {@link Command}.
+     * This list will have a length greater than 1 only if the user is the god chooser.
+     */
     private final List<String> chosenGods;
 
 
     /**
-     * The constructor creates a Command specific for GodChoice phase: CommandType is SELECT
+     * The constructor creates a {@link Command} specific for God Choice phase: {@link CommandType} is {@link CommandType#SELECT}
      * because this is what players must do in this phase; then, the god/gods are selected.
      *
      * @param chosenGods the list of gods chosen by the player: this list contains more than one

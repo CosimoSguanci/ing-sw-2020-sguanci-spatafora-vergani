@@ -11,9 +11,8 @@ import java.util.Map;
 
 /**
  * In this class there are references to the player who is playing
- * the current turn during the RealGame phase, the type of command requested by the player,
- * the worker he/she wants to move or build with and
- * the cell in which the player wants to move or build in.
+ * the current turn during the Real Game phase, the type of {@link Command} requested by the player,
+ * the worker he/she wants to move or build with and the cell in which the player wants to move or build in.
  *
  * @author Roberto Spatafora
  * @author Cosimo Sguanci
@@ -21,6 +20,9 @@ import java.util.Map;
 
 public class PlayerCommand extends Command {
 
+    /**
+     * The ID of the {@link Worker}. It will be either {@link Command#WORKER_FIRST} or {@link Command#WORKER_SECOND}.
+     */
     public final String workerID;
 
     /**
@@ -30,10 +32,13 @@ public class PlayerCommand extends Command {
     public final int row;
     public final int col;
 
+    /**
+     * This is an optional parameter which indicates which level the player wants to build.
+     */
     public final BlockType cellBlockType;
 
     /**
-     * This properties must be reconstructed by server-side Controller
+     * This properties must be reconstructed by server-side {@link it.polimi.ingsw.controller.Controller}.
      */
     private transient Worker worker;
     private transient Cell cell;
@@ -41,10 +46,10 @@ public class PlayerCommand extends Command {
 
     /**
      * PlayerCommand is the constructor of the class. It sets the class' attributes
-     * such as the commandType (move, build, ...), the interested worker, the destination-cell
+     * such as the {@link CommandType} ({@link CommandType#MOVE}, {@link CommandType#BUILD}, ...), the interested worker, the destination-cell
      * of move/build and an optional level (in case of building a block).
      *
-     * @param commandType   the type of command, specific of RealGame phase
+     * @param commandType   the type of {@link Command}, specific of RealGame phase
      * @param workerID      ID of worker to move/build with; null if the operation involves no
      *                      worker (such as an end of turn)
      * @param row           an integer representing the row of cell where to move/build in; possible
@@ -68,7 +73,7 @@ public class PlayerCommand extends Command {
 
     /**
      * This method is the setter for "cell" property, that must be reconstructed by server-side
-     * Controller.
+     * {@link it.polimi.ingsw.controller.Controller}.
      *
      * @param cell the cell where to move/build in
      */
@@ -90,7 +95,7 @@ public class PlayerCommand extends Command {
 
     /**
      * This method is the getter for "worker" property, that is reconstructed by server-side
-     * Controller.
+     * {@link it.polimi.ingsw.controller.Controller}.
      *
      * @return the worker that is going to move/build
      */
@@ -101,7 +106,7 @@ public class PlayerCommand extends Command {
 
     /**
      * This method is the setter for "worker" property, that must be reconstructed by server-side
-     * Controller.
+     * {@link it.polimi.ingsw.controller.Controller}.
      *
      * @param worker the worker that is going to move/build
      */
