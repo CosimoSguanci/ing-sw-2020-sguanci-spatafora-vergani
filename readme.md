@@ -44,7 +44,7 @@ Or you can simply double click the JAR file.
 
 ![Coverage](https://i.ibb.co/9H0zSVj/coverage-details-readme.png)
 
-[Test report](https://github.com/CosimoSguanci/ing-sw-2020-sguanci-spatafora-vergani/blob/master/deliveries/coverage_report/index.html)
+#### Test report is available on this [link](https://github.com/CosimoSguanci/ing-sw-2020-sguanci-spatafora-vergani/blob/master/deliveries/coverage-report/index.html)
 
 #### Note that, to test Server-side concurrency, an intensive stress [test](https://github.com/CosimoSguanci/ing-sw-2020-sguanci-spatafora-vergani/blob/master/src/test/java/it/polimi/ingsw/controller/ControllerConcurrencyTest.java) has been launched. However, it is marked as @Disabled in production (it won't run with `mvn test`) to make the test phase faster (that test lasts ~20 seconds).
 
