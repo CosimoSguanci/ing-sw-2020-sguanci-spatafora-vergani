@@ -29,7 +29,7 @@ To run the GUI Client Executable, you have 2 options: the classic command from t
 java -jar gui.jar
 ```
 
-Or you can simply double click the JAR file.
+Or, if you are on Windows or macOS, you can simply double click the JAR file.
 
 ## Dependencies
 
