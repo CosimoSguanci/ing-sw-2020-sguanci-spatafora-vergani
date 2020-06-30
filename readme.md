@@ -46,6 +46,12 @@ Or you can simply double click the JAR file.
 
 ##### Tests coverage report is available [here](https://github.com/CosimoSguanci/ing-sw-2020-sguanci-spatafora-vergani/blob/master/deliveries/coverage-report)
 
+#### To run the tests, run this command:
+
+```
+mvn test
+```
+
 #### Note that, to test Server-side concurrency, an intensive stress [test](https://github.com/CosimoSguanci/ing-sw-2020-sguanci-spatafora-vergani/blob/master/src/test/java/it/polimi/ingsw/controller/ControllerConcurrencyTest.java) has been launched. However, it is marked as @Disabled in production (it won't run with `mvn test`) to make the test phase faster (that test lasts ~20 seconds).
 
 ## JavaDoc
