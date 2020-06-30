@@ -68,8 +68,38 @@ public class BoardDelegate {
         cli.println("");
         cli.println("");
 
-        for (int i = 0; i < 5; i++) {    //Single cell printed as 5x5: +---+ boarders; " "/"1"/"2" if worker is inside; BlockType specified.
-            System.out.println("\t╔═══════════╦═══════════╦═══════════╦═══════════╦═══════════╗");
+        System.out.println("\t╔═══════════╦═══════════╦═══════════╦═══════════╦═══════════╗");
+        System.out.println("\t║         " + convertBlockTypeToUnicode(gameBoard.getCell(0, 0).getLevel()) + " " +
+                "║         " + convertBlockTypeToUnicode(gameBoard.getCell(0, 1).getLevel()) + " " +
+                "║         " + convertBlockTypeToUnicode(gameBoard.getCell(0, 2).getLevel()) + " " +
+                "║         " + convertBlockTypeToUnicode(gameBoard.getCell(0, 3).getLevel()) + " " +
+                "║         " + convertBlockTypeToUnicode(gameBoard.getCell(0, 4).getLevel()) + " ║");
+
+        System.out.print("\t");
+        for (int j = 0; j < 5; j++) {
+            System.out.print("║    ");
+            if (!gameBoard.getCell(0, j).isEmpty()) {
+
+                Worker printableWorker = gameBoard.getCell(0, j).getWorker();
+                if (printableWorker.workerType.equals(Command.WORKER_FIRST)) {
+                    System.out.print(Cli.convertColorToAnsi(printableWorker.player.getColor()) + " W1" + PrintableColor.RESET);
+                } else {
+                    System.out.print(Cli.convertColorToAnsi(printableWorker.player.getColor()) + " W2" + PrintableColor.RESET);
+                }
+            } else {
+                System.out.print("   ");
+            }
+            System.out.print("    ");
+
+        }
+
+
+        System.out.print("║");
+        System.out.println("\t" + rowIdentifier);
+        rowIdentifier++;
+        System.out.println("\t║           ║           ║           ║           ║           ║");
+        for (int i = 1; i < 4; i++) {    //Single cell printed as 5x5: +---+ boarders; " "/"1"/"2" if worker is inside; BlockType specified.
+            System.out.println("\t╠═══════════╬═══════════╬═══════════╬═══════════╬═══════════╣");
             System.out.println("\t║         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 0).getLevel()) + " " +
                     "║         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 1).getLevel()) + " " +
                     "║         " + convertBlockTypeToUnicode(gameBoard.getCell(i, 2).getLevel()) + " " +
@@ -99,9 +129,40 @@ public class BoardDelegate {
             System.out.println("\t" + rowIdentifier);
             rowIdentifier++;
             System.out.println("\t║           ║           ║           ║           ║           ║");
-            System.out.println("\t╚═══════════╩═══════════╩═══════════╩═══════════╩═══════════╝");
+            //System.out.println("\t╚═══════════╩═══════════╩═══════════╩═══════════╩═══════════╝");
 
         }
+        System.out.println("\t╠═══════════╬═══════════╬═══════════╬═══════════╬═══════════╣");
+        System.out.println("\t║         " + convertBlockTypeToUnicode(gameBoard.getCell(4, 0).getLevel()) + " " +
+                "║         " + convertBlockTypeToUnicode(gameBoard.getCell(4, 1).getLevel()) + " " +
+                "║         " + convertBlockTypeToUnicode(gameBoard.getCell(4, 2).getLevel()) + " " +
+                "║         " + convertBlockTypeToUnicode(gameBoard.getCell(4, 3).getLevel()) + " " +
+                "║         " + convertBlockTypeToUnicode(gameBoard.getCell(4, 4).getLevel()) + " ║");
+
+        System.out.print("\t");
+        for (int j = 0; j < 5; j++) {
+            System.out.print("║    ");
+            if (!gameBoard.getCell(4, j).isEmpty()) {
+
+                Worker printableWorker = gameBoard.getCell(4, j).getWorker();
+                if (printableWorker.workerType.equals(Command.WORKER_FIRST)) {
+                    System.out.print(Cli.convertColorToAnsi(printableWorker.player.getColor()) + " W1" + PrintableColor.RESET);
+                } else {
+                    System.out.print(Cli.convertColorToAnsi(printableWorker.player.getColor()) + " W2" + PrintableColor.RESET);
+                }
+            } else {
+                System.out.print("   ");
+            }
+            System.out.print("    ");
+
+        }
+
+
+        System.out.print("║");
+        System.out.println("\t" + rowIdentifier);
+        System.out.println("\t║           ║           ║           ║           ║           ║");
+        System.out.println("\t╚═══════════╩═══════════╩═══════════╩═══════════╩═══════════╝");
+
 
 
         System.out.println("\t      1           2           3           4           5    ");
