@@ -101,10 +101,8 @@ public class Controller extends Observable<Controller> implements Observer<Comma
         } catch (InvalidGodException | UnknownGodException e) {
             model.reportError(command.getPlayer(), command.commandType, ErrorType.INVALID_GOD, null);
         } catch (InvalidCellException | CannotIncreaseLevelException | CellNotEmptyException e) {
-            e.printStackTrace(); // todo remove
             model.reportError(command.getPlayer(), command.commandType, ErrorType.INVALID_CELL, null);
         } catch (NullPointerException e) {
-            e.printStackTrace(); // todo remove
             model.reportError(command.getPlayer(), command.commandType, ErrorType.GENERIC_ERROR, null);
         }
     }
