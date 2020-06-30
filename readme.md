@@ -5,19 +5,19 @@
 
 ## Build
 
-Maven command to build the server JAR:
+Maven command to build the Server JAR:
 
 ```
 mvn package -P server
 ```
 
-Maven command to build the client (CLI) JAR:
+Maven command to build the Client (CLI) JAR:
 
 ```
 mvn package -P client-cli
 ```
 
-Maven command to build the client (GUI) JAR:
+Maven command to build the Client (GUI) JAR:
 
 ```
 mvn package -P client-gui
