@@ -61,6 +61,7 @@ public class Minotaur extends GodStrategy {
                 return (selectedWorker == null || isUsingSelectedWorker(selectedWorker)) &&
                         !worker.hasMoved() &&
                         !worker.hasBuilt() &&
+                        worker.getPosition().isLevelDifferenceOk(moveCell) &&
                         (moveCell.isEmpty() || !moveCell.getWorker().equals(otherWorker)) &&
                         worker.getPosition().isAdjacentTo(moveCell) &&
                         backwardCell.getRowIdentifier() < Board.WIDTH_SIZE &&
@@ -185,7 +186,12 @@ public class Minotaur extends GodStrategy {
                     if (board.getCell(i, j).isEmpty())
                         return true;
                     else {
-                        return computeBackwardCell(board, cell, board.getCell(i, j)).isEmpty();
+                        try {
+                            Cell backwardCell = computeBackwardCell(board, cell, board.getCell(i, j));
+                            if(backwardCell.isEmpty() && backwardCell.getLevel() != BlockType.DOME) {
+                                return true;
+                            }
+                        } catch(InvalidCellException ignored) {}
                     }
                 }
             }

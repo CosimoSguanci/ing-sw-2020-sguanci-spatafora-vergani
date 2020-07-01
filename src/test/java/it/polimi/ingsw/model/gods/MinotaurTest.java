@@ -29,6 +29,19 @@ public class MinotaurTest {
         Worker oppositeWorker = oppositePlayer.getWorkerFirst();
 
         worker.setInitialPosition(0, 0);
+
+        match.getMatchBoard().getCell(0, 1).setLevel(BlockType.LEVEL_TWO);
+
+        oppositeWorker.setInitialPosition(0, 1);
+
+        assertFalse(minotaur.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
+
+        oppositeWorker.setInitialPosition(3, 3);
+
+        match.getMatchBoard().getCell(0, 1).setWorker(null);
+
+        match.getMatchBoard().getCell(0, 1).setLevel(BlockType.GROUND);
+
         oppositeWorker.setInitialPosition(0, 1);
 
         assertTrue(minotaur.checkMove(worker, match.getMatchBoard().getCell(0, 1)));
@@ -154,6 +167,12 @@ public class MinotaurTest {
 
         match.getMatchBoard().getCell(1, 1).setLevel(BlockType.DOME);
         match.getMatchBoard().getCell(1, 0).setLevel(BlockType.DOME);
+
+        assertTrue(minotaur.canMove(match.getMatchBoard(), player));
+
+        match.getMatchBoard().getCell(0, 2).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(3, 3).setLevel(BlockType.DOME);
+        match.getMatchBoard().getCell(4, 3).setLevel(BlockType.DOME);
 
         assertTrue(minotaur.canMove(match.getMatchBoard(), player));
     }

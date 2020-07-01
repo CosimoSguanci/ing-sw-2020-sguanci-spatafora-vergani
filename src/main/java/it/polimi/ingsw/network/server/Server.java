@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  */
 public class Server implements Observer<Controller> {
 
-    public final static int TIMEOUT_MS = 2000;
+    public final static int TIMEOUT_MS = 5000;
     public final static String PING_MSG = "PING";
     private static final int PORT = 12345;
     private static final int MAX_PLAYERS_NUM = 3;

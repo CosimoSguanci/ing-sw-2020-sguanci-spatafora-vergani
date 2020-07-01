@@ -1,7 +1,29 @@
 # Santorini - Sguanci Spatafora Vergani INGSW 19-20
 ![Santorini](https://i.ibb.co/nszm4hX/santorini-logo.png)
 
-## In order to run these executables, you need to install JDK 1.8 (available [here](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html))
+## In order to build and run these executables, you need to install JDK 1.8 (available [here](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html))
+
+## Build
+
+Maven command to build the Server JAR:
+
+```
+mvn package -P server
+```
+
+Maven command to build the Client (CLI) JAR:
+
+```
+mvn package -P client-cli
+```
+
+Maven command to build the Client (GUI) JAR:
+
+```
+mvn package -P client-gui
+```
+
+## Run
 
 JAR Executable files are placed in /deliveries/executables folder.
 
@@ -29,7 +51,7 @@ To run the GUI Client Executable, you have 2 options: the classic command from t
 java -jar gui.jar
 ```
 
-Or you can simply double click the JAR file.
+Or, if you are on Windows or macOS, you can simply double click the JAR file.
 
 ## Dependencies
 
