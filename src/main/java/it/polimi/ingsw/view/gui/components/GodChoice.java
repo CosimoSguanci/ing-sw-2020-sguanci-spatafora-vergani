@@ -134,39 +134,47 @@ public class GodChoice extends JPanel implements ActionListener {
         if (gui.getController().isClientPlayerGodChooser()) {
             if (!button.isSelected()) {
                 if (selectedGodsNumber < playersNumber) {
-                    handleGodChoiceSuccess(button);
+                    handleGodChoiceSelect(button);
                 }
             } else {
-                handleGodChoiceFail(button);
+                handleGodChoiceDeselect(button);
             }
 
         } else {
             if (!button.isSelected()) {
                 if (selectedGodsNumber < 1) {
-                    handleGodChoiceSuccess(button);
+                    handleGodChoiceSelect(button);
                 }
             } else {
-                handleGodChoiceFail(button);
+                handleGodChoiceDeselect(button);
             }
         }
 
     }
 
-    private void handleGodChoiceFail(JButton button) {
+    /**
+     * This method deselects a God if it is already selected by the player.
+     * @param button the button that was clicked
+     */
+    private void handleGodChoiceDeselect(JButton button) {
         button.setSelected(false);
         button.setBorder(UIManager.getBorder("Button.border"));
 
         String operatingSystem = System.getProperty("os.name").toLowerCase();
 
         if (operatingSystem.contains("mac")) {
-            button.setBorderPainted(true);
+            button.setBorderPainted(false);
         }
 
         selectedGodsNumber--;
         this.selectedGods.remove(button.getText());
     }
 
-    private void handleGodChoiceSuccess(JButton button) {
+    /**
+     * This method selects a God if it is not yet selected by the player.
+     * @param button the button that was clicked
+     */
+    private void handleGodChoiceSelect(JButton button) {
         button.setSelected(true);
 
         String operatingSystem = System.getProperty("os.name").toLowerCase();

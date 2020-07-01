@@ -171,7 +171,6 @@ public class MinotaurTest {
         assertTrue(minotaur.canMove(match.getMatchBoard(), player));
 
         match.getMatchBoard().getCell(0, 2).setLevel(BlockType.DOME);
-
         match.getMatchBoard().getCell(3, 3).setLevel(BlockType.DOME);
         match.getMatchBoard().getCell(4, 3).setLevel(BlockType.DOME);
 
