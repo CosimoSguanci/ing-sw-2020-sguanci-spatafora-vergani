@@ -52,10 +52,11 @@ public class ClientHandler extends Observable<Command> implements Runnable, Obse
 
     /**
      * Method called to send an {@link Update} from server to client (Model-View communication in MVC pattern).
+     * This method needs to be synchronized in order to be thread-safe (server is inherently a multi-threaded environment).
      *
      * @param update the update representing game state changes, used to notify all the clients.
      */
-    public void sendUpdate(Update update) {
+    public synchronized void sendUpdate(Update update) {
         try {
             objectOutputStream.reset(); // necessary to avoid cached objects
             objectOutputStream.writeObject(update);

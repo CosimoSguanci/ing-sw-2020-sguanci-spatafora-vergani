@@ -143,10 +143,12 @@ public class Client {
     /**
      * The method sends a Command, generated client-side, to server. In general, Client sends
      * Commands to Server, while receives Updates from it.
+     * This method needs to be synchronized in order to be thread-safe (client's GUI has multiple threads running,
+     * so they could have conflicts).
      *
      * @param command the command to send to server, through socket
      */
-    public void sendCommand(Command command) {
+    public synchronized void sendCommand(Command command) {
 
         try {
 
@@ -154,6 +156,7 @@ public class Client {
                 this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             }
 
+            objectOutputStream.reset(); // necessary to avoid cached objects
             objectOutputStream.writeObject(command);
             objectOutputStream.flush();
 
