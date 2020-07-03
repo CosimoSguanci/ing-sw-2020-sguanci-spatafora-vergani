@@ -216,7 +216,7 @@ public class Server implements Observer<Controller> {
      *
      * @param clientSocket socket of client that requested a disconnection from server
      */
-    void handleConnectionReset(Socket clientSocket) {
+    synchronized void handleConnectionReset(Socket clientSocket) {
 
         Optional<ClientHandler> clientHandlerToRemoveOpt = this.playingConnections.stream().filter((clientHandler -> clientHandler.clientSocket.equals(clientSocket))).findFirst();
 

@@ -20,7 +20,7 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class PingSender implements Runnable {
 
-    private final ObjectOutputStream objectOutputStream;
+    private final Client client;
     private final ScheduledExecutorService scheduler;
 
 
@@ -28,11 +28,11 @@ public class PingSender implements Runnable {
      * The constructor creates a PingSender object; ping messages are scheduled to be sent on a
      * given stream (from client to server) at specific times.
      *
-     * @param objectOutputStream stream where ping messages must be sent
-     * @param scheduler          contains time and settings for ping message sending
+     * @param client    the client used to send ping messages
+     * @param scheduler contains time and settings for ping message sending
      */
-    PingSender(ObjectOutputStream objectOutputStream, ScheduledExecutorService scheduler) {
-        this.objectOutputStream = objectOutputStream;
+    PingSender(Client client, ScheduledExecutorService scheduler) {
+        this.client = client;
         this.scheduler = scheduler;
     }
 
@@ -42,7 +42,7 @@ public class PingSender implements Runnable {
     @Override
     public void run() {
         try {
-            this.objectOutputStream.writeObject(Server.PING_MSG);
+            this.client.sendPing();
         } catch (IOException e) {
             scheduler.shutdown();
         }

@@ -38,8 +38,6 @@ public class ObjectListenerDelegate {
 
                 } catch (SocketTimeoutException e) {
                     objectListener.handleConnectionTimeoutExpired();
-                } catch (ClassCastException e) {
-                    e.printStackTrace();
                 }
             }
         } catch (IOException | ClassNotFoundException e) {

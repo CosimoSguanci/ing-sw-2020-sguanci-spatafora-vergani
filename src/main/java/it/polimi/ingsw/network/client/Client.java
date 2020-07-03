@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.network.CustomThreadPoolExecutor;
+import it.polimi.ingsw.network.server.Server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -27,10 +28,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Client {
 
-    //private final static String IP = "SantoriniServer-env.eba-idxatybv.us-east-1.elasticbeanstalk.com";
     private final static String IP = "cosimosguanci.ddns.net";
-    //private final static String IP = "116.203.106.110";
-    //private final static String IP = "127.0.0.1";
     private final static int PORT = 12345;
     private final static int TIMEOUT_MS = 5000;
     private final static int PONG_SCHEDULE_TIME_MS = 500;
@@ -100,7 +98,7 @@ public class Client {
         this.updateListener = new UpdateListener(socket);
         executor.execute(updateListener);
         this.pongScheduler = Executors.newScheduledThreadPool(1);
-        pongScheduler.scheduleAtFixedRate(new PingSender(this.objectOutputStream, this.pongScheduler), 0, PONG_SCHEDULE_TIME_MS, TimeUnit.MILLISECONDS);
+        pongScheduler.scheduleAtFixedRate(new PingSender(this, this.pongScheduler), 0, PONG_SCHEDULE_TIME_MS, TimeUnit.MILLISECONDS);
     }
 
 
@@ -156,12 +154,32 @@ public class Client {
                 this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             }
 
-            objectOutputStream.reset(); // necessary to avoid cached objects
             objectOutputStream.writeObject(command);
             objectOutputStream.flush();
 
         } catch (IOException e) {
             updateListener.handleConnectionReset();
+        }
+
+    }
+
+    /**
+     * Method used to send ping messages to server. It's Synchronized to avoid conflicts with sendCommand method
+     */
+    synchronized void sendPing() throws IOException {
+
+        try {
+
+            if (this.objectOutputStream == null) {
+                this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            }
+
+            objectOutputStream.writeObject(Server.PING_MSG);
+            objectOutputStream.flush();
+
+        } catch (IOException e) {
+            updateListener.handleConnectionReset();
+            throw new IOException();
         }
 
     }
