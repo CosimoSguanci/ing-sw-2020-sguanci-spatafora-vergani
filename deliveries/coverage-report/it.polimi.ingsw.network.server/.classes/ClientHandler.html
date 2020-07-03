@@ -126,72 +126,73 @@
 <i>52</i>&nbsp;
 <i>53</i>&nbsp;    /**
 <i>54</i>&nbsp;     * Method called to send an {@link Update} from server to client (Model-View communication in MVC pattern).
-<i>55</i>&nbsp;     *
-<i>56</i>&nbsp;     * @param update the update representing game state changes, used to notify all the clients.
-<i>57</i>&nbsp;     */
-<i>58</i>&nbsp;    public void sendUpdate(Update update) {
-<i>59</i>&nbsp;        try {
-<b class="nc"><i>60</i>&nbsp;            objectOutputStream.reset(); // necessary to avoid cached objects</b>
-<b class="nc"><i>61</i>&nbsp;            objectOutputStream.writeObject(update);</b>
-<b class="nc"><i>62</i>&nbsp;            objectOutputStream.flush();</b>
-<b class="nc"><i>63</i>&nbsp;        } catch (IOException e) {</b>
-<b class="nc"><i>64</i>&nbsp;            server.handleConnectionReset(this.clientSocket);</b>
-<b class="nc"><i>65</i>&nbsp;        }</b>
-<b class="nc"><i>66</i>&nbsp;    }</b>
-<i>67</i>&nbsp;
-<i>68</i>&nbsp;    /**
-<i>69</i>&nbsp;     * update method from Observer pattern. Specifically, this class observes {@link CommandListener} in order to notify the {@link it.polimi.ingsw.controller.Controller}
-<i>70</i>&nbsp;     * that a new {@link Command} has been sent. The controller will then handle the command and change the game state accordingly.
-<i>71</i>&nbsp;     *
-<i>72</i>&nbsp;     * @param command the command object received from the client.
-<i>73</i>&nbsp;     */
-<i>74</i>&nbsp;    @Override
-<i>75</i>&nbsp;    public void update(Command command) {
-<b class="nc"><i>76</i>&nbsp;        notify(command);</b>
-<b class="nc"><i>77</i>&nbsp;    }</b>
-<i>78</i>&nbsp;
-<i>79</i>&nbsp;    /**
-<i>80</i>&nbsp;     * In the Thread execution flow, this class handle the initial communication between client and server. It receives the
-<i>81</i>&nbsp;     * players number chosen by the client (and checks its correctness), and send to the client its unique ID, generate using UUID random method.
-<i>82</i>&nbsp;     * Then, the {@link CommandListener} Thread responsible to listen for commands is started, and the {@link Server#lobby(ClientHandler)} method is called
-<i>83</i>&nbsp;     * to insert the client in the waiting connections list (or start a new match if the right number of players is reached).
-<i>84</i>&nbsp;     */
-<i>85</i>&nbsp;    @Override
-<i>86</i>&nbsp;    public void run() {
-<i>87</i>&nbsp;        try {
-<b class="nc"><i>88</i>&nbsp;            DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());</b>
-<b class="nc"><i>89</i>&nbsp;            DataInputStream input = new DataInputStream(clientSocket.getInputStream());</b>
-<i>90</i>&nbsp;
-<b class="nc"><i>91</i>&nbsp;            this.playersNum = input.readInt();</b>
-<i>92</i>&nbsp;
-<b class="nc"><i>93</i>&nbsp;            while (!Server.isValidPlayerNumber(this.playersNum)) {</b>
-<b class="nc"><i>94</i>&nbsp;                this.playersNum = input.readInt();</b>
-<i>95</i>&nbsp;            }
-<i>96</i>&nbsp;
-<b class="nc"><i>97</i>&nbsp;            output.writeUTF(this.clientID);</b>
-<i>98</i>&nbsp;
-<b class="nc"><i>99</i>&nbsp;            this.clientSocket.setSoTimeout(TIMEOUT_MS);</b>
-<i>100</i>&nbsp;
-<i>101</i>&nbsp;            // Note that, if we don&#39;t open now the output stream from server to client, the client&#39;s getInputStream would block
-<b class="nc"><i>102</i>&nbsp;            this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());</b>
-<i>103</i>&nbsp;
-<b class="nc"><i>104</i>&nbsp;            CommandListener commandListener = new CommandListener(clientSocket, server);</b>
-<b class="nc"><i>105</i>&nbsp;            commandListener.addObserver(this);</b>
-<b class="nc"><i>106</i>&nbsp;            executor.execute(commandListener);</b>
-<i>107</i>&nbsp;
-<b class="nc"><i>108</i>&nbsp;            server.lobby(this);</b>
-<i>109</i>&nbsp;
-<b class="nc"><i>110</i>&nbsp;        } catch (IOException | NoSuchElementException e) {</b>
-<b class="nc"><i>111</i>&nbsp;            server.handleConnectionReset(clientSocket);</b>
-<b class="nc"><i>112</i>&nbsp;        }</b>
-<b class="nc"><i>113</i>&nbsp;    }</b>
-<i>114</i>&nbsp;}
+<i>55</i>&nbsp;     * This method needs to be synchronized in order to be thread-safe (server is inherently a multi-threaded environment).
+<i>56</i>&nbsp;     *
+<i>57</i>&nbsp;     * @param update the update representing game state changes, used to notify all the clients.
+<i>58</i>&nbsp;     */
+<i>59</i>&nbsp;    public synchronized void sendUpdate(Update update) {
+<i>60</i>&nbsp;        try {
+<b class="nc"><i>61</i>&nbsp;            objectOutputStream.reset(); // necessary to avoid cached objects</b>
+<b class="nc"><i>62</i>&nbsp;            objectOutputStream.writeObject(update);</b>
+<b class="nc"><i>63</i>&nbsp;            objectOutputStream.flush();</b>
+<b class="nc"><i>64</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>65</i>&nbsp;            server.handleConnectionReset(this.clientSocket);</b>
+<b class="nc"><i>66</i>&nbsp;        }</b>
+<b class="nc"><i>67</i>&nbsp;    }</b>
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;    /**
+<i>70</i>&nbsp;     * update method from Observer pattern. Specifically, this class observes {@link CommandListener} in order to notify the {@link it.polimi.ingsw.controller.Controller}
+<i>71</i>&nbsp;     * that a new {@link Command} has been sent. The controller will then handle the command and change the game state accordingly.
+<i>72</i>&nbsp;     *
+<i>73</i>&nbsp;     * @param command the command object received from the client.
+<i>74</i>&nbsp;     */
+<i>75</i>&nbsp;    @Override
+<i>76</i>&nbsp;    public void update(Command command) {
+<b class="nc"><i>77</i>&nbsp;        notify(command);</b>
+<b class="nc"><i>78</i>&nbsp;    }</b>
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    /**
+<i>81</i>&nbsp;     * In the Thread execution flow, this class handle the initial communication between client and server. It receives the
+<i>82</i>&nbsp;     * players number chosen by the client (and checks its correctness), and send to the client its unique ID, generate using UUID random method.
+<i>83</i>&nbsp;     * Then, the {@link CommandListener} Thread responsible to listen for commands is started, and the {@link Server#lobby(ClientHandler)} method is called
+<i>84</i>&nbsp;     * to insert the client in the waiting connections list (or start a new match if the right number of players is reached).
+<i>85</i>&nbsp;     */
+<i>86</i>&nbsp;    @Override
+<i>87</i>&nbsp;    public void run() {
+<i>88</i>&nbsp;        try {
+<b class="nc"><i>89</i>&nbsp;            DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());</b>
+<b class="nc"><i>90</i>&nbsp;            DataInputStream input = new DataInputStream(clientSocket.getInputStream());</b>
+<i>91</i>&nbsp;
+<b class="nc"><i>92</i>&nbsp;            this.playersNum = input.readInt();</b>
+<i>93</i>&nbsp;
+<b class="nc"><i>94</i>&nbsp;            while (!Server.isValidPlayerNumber(this.playersNum)) {</b>
+<b class="nc"><i>95</i>&nbsp;                this.playersNum = input.readInt();</b>
+<i>96</i>&nbsp;            }
+<i>97</i>&nbsp;
+<b class="nc"><i>98</i>&nbsp;            output.writeUTF(this.clientID);</b>
+<i>99</i>&nbsp;
+<b class="nc"><i>100</i>&nbsp;            this.clientSocket.setSoTimeout(TIMEOUT_MS);</b>
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;            // Note that, if we don&#39;t open now the output stream from server to client, the client&#39;s getInputStream would block
+<b class="nc"><i>103</i>&nbsp;            this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());</b>
+<i>104</i>&nbsp;
+<b class="nc"><i>105</i>&nbsp;            CommandListener commandListener = new CommandListener(clientSocket, server);</b>
+<b class="nc"><i>106</i>&nbsp;            commandListener.addObserver(this);</b>
+<b class="nc"><i>107</i>&nbsp;            executor.execute(commandListener);</b>
+<i>108</i>&nbsp;
+<b class="nc"><i>109</i>&nbsp;            server.lobby(this);</b>
+<i>110</i>&nbsp;
+<b class="nc"><i>111</i>&nbsp;        } catch (IOException | NoSuchElementException e) {</b>
+<b class="nc"><i>112</i>&nbsp;            server.handleConnectionReset(clientSocket);</b>
+<b class="nc"><i>113</i>&nbsp;        }</b>
+<b class="nc"><i>114</i>&nbsp;    }</b>
+<i>115</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-07-02 14:33</div>
+    <div style="float:right;">generated on 2020-07-03 04:11</div>
 </div>
 </body>
 </html>

@@ -58,10 +58,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    98,3%
   </span>
   <span class="absValue">
-    (57/ 57)
+    (57/ 58)
   </span>
 </td>
 </tr>
@@ -262,24 +262,25 @@
 <i>188</i>&nbsp;                    else {
 <i>189</i>&nbsp;                        try {
 <b class="fc"><i>190</i>&nbsp;                            Cell backwardCell = computeBackwardCell(board, cell, board.getCell(i, j));</b>
-<b class="fc"><i>191</i>&nbsp;                            if(backwardCell.isEmpty() &amp;&amp; backwardCell.getLevel() != BlockType.DOME) {</b>
+<b class="fc"><i>191</i>&nbsp;                            if (backwardCell.isEmpty() &amp;&amp; backwardCell.getLevel() != BlockType.DOME) {</b>
 <b class="fc"><i>192</i>&nbsp;                                return true;</b>
 <i>193</i>&nbsp;                            }
-<b class="fc"><i>194</i>&nbsp;                        } catch(InvalidCellException ignored) {}</b>
-<i>195</i>&nbsp;                    }
-<i>196</i>&nbsp;                }
-<i>197</i>&nbsp;            }
-<i>198</i>&nbsp;        }
-<i>199</i>&nbsp;
-<b class="fc"><i>200</i>&nbsp;        return false;</b>
-<i>201</i>&nbsp;    }
-<i>202</i>&nbsp;}
+<b class="nc"><i>194</i>&nbsp;                        } catch (InvalidCellException ignored) {</b>
+<b class="fc"><i>195</i>&nbsp;                        }</b>
+<i>196</i>&nbsp;                    }
+<i>197</i>&nbsp;                }
+<i>198</i>&nbsp;            }
+<i>199</i>&nbsp;        }
+<i>200</i>&nbsp;
+<b class="fc"><i>201</i>&nbsp;        return false;</b>
+<i>202</i>&nbsp;    }
+<i>203</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-07-02 14:33</div>
+    <div style="float:right;">generated on 2020-07-03 04:11</div>
 </div>
 </body>
 </html>

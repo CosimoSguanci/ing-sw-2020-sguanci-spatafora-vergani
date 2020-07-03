@@ -290,7 +290,7 @@
 <i>216</i>&nbsp;     *
 <i>217</i>&nbsp;     * @param clientSocket socket of client that requested a disconnection from server
 <i>218</i>&nbsp;     */
-<i>219</i>&nbsp;    void handleConnectionReset(Socket clientSocket) {
+<i>219</i>&nbsp;    synchronized void handleConnectionReset(Socket clientSocket) {
 <i>220</i>&nbsp;
 <b class="nc"><i>221</i>&nbsp;        Optional&lt;ClientHandler&gt; clientHandlerToRemoveOpt = this.playingConnections.stream().filter((clientHandler -&gt; clientHandler.clientSocket.equals(clientSocket))).findFirst();</b>
 <i>222</i>&nbsp;
@@ -341,7 +341,7 @@
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-07-02 14:33</div>
+    <div style="float:right;">generated on 2020-07-03 04:11</div>
 </div>
 </body>
 </html>

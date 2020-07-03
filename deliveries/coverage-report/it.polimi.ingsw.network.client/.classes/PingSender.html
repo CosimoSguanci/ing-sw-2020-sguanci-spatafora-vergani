@@ -61,7 +61,7 @@
     0%
   </span>
   <span class="absValue">
-    (0/ 9)
+    (0/ 11)
   </span>
 </td>
 </tr>
@@ -116,18 +116,22 @@
 <i>42</i>&nbsp;    @Override
 <i>43</i>&nbsp;    public void run() {
 <i>44</i>&nbsp;        try {
-<b class="nc"><i>45</i>&nbsp;            this.objectOutputStream.writeObject(Server.PING_MSG);</b>
-<b class="nc"><i>46</i>&nbsp;        } catch (IOException e) {</b>
-<b class="nc"><i>47</i>&nbsp;            scheduler.shutdown();</b>
-<b class="nc"><i>48</i>&nbsp;        }</b>
-<b class="nc"><i>49</i>&nbsp;    }</b>
-<i>50</i>&nbsp;}
+<i>45</i>&nbsp;
+<b class="nc"><i>46</i>&nbsp;            synchronized (this.objectOutputStream) {</b>
+<b class="nc"><i>47</i>&nbsp;                this.objectOutputStream.writeObject(Server.PING_MSG);</b>
+<b class="nc"><i>48</i>&nbsp;            }</b>
+<i>49</i>&nbsp;
+<b class="nc"><i>50</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>51</i>&nbsp;            scheduler.shutdown();</b>
+<b class="nc"><i>52</i>&nbsp;        }</b>
+<b class="nc"><i>53</i>&nbsp;    }</b>
+<i>54</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-07-02 14:33</div>
+    <div style="float:right;">generated on 2020-07-03 04:11</div>
 </div>
 </body>
 </html>
