@@ -167,12 +167,11 @@ public class Client {
      */
     synchronized void sendPing() throws IOException {
 
-        if (this.objectOutputStream == null) {
-            this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        if (this.objectOutputStream != null) {
+            objectOutputStream.writeObject(Server.PING_MSG);
+            objectOutputStream.flush();
         }
 
-        objectOutputStream.writeObject(Server.PING_MSG);
-        objectOutputStream.flush();
     }
 
     /**
