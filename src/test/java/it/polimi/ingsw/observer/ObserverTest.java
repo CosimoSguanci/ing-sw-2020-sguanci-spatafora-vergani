@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class ObserverTest implements Observer<Update>{
+public class ObserverTest implements Observer<Update> {
     @Test
     public void observerTest() {
         ObserverTest observerTest = Mockito.spy(new ObserverTest());

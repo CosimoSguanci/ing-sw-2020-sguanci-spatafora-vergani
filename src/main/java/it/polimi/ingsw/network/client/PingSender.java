@@ -1,9 +1,6 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.network.server.Server;
-
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.concurrent.ScheduledExecutorService;
 
 

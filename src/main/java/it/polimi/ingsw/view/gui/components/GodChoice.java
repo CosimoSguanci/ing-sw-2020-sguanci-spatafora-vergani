@@ -154,6 +154,7 @@ public class GodChoice extends JPanel implements ActionListener {
 
     /**
      * This method deselects a God if it is already selected by the player.
+     *
      * @param button the button that was clicked
      */
     private void handleGodChoiceDeselect(JButton button) {
@@ -172,6 +173,7 @@ public class GodChoice extends JPanel implements ActionListener {
 
     /**
      * This method selects a God if it is not yet selected by the player.
+     *
      * @param button the button that was clicked
      */
     private void handleGodChoiceSelect(JButton button) {

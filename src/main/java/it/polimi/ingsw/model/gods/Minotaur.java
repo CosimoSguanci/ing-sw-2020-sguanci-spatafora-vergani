@@ -188,10 +188,11 @@ public class Minotaur extends GodStrategy {
                     else {
                         try {
                             Cell backwardCell = computeBackwardCell(board, cell, board.getCell(i, j));
-                            if(backwardCell.isEmpty() && backwardCell.getLevel() != BlockType.DOME) {
+                            if (backwardCell.isEmpty() && backwardCell.getLevel() != BlockType.DOME) {
                                 return true;
                             }
-                        } catch(InvalidCellException ignored) {}
+                        } catch (InvalidCellException ignored) {
+                        }
                     }
                 }
             }
