@@ -160,28 +160,19 @@ public class Client {
         } catch (IOException e) {
             updateListener.handleConnectionReset();
         }
-
     }
 
     /**
-     * Method used to send ping messages to server. It's Synchronized to avoid conflicts with sendCommand method
+     * Method used to send ping messages to server. It's Synchronized to avoid conflicts with sendCommand method.
      */
     synchronized void sendPing() throws IOException {
 
-        try {
-
-            if (this.objectOutputStream == null) {
-                this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            }
-
-            objectOutputStream.writeObject(Server.PING_MSG);
-            objectOutputStream.flush();
-
-        } catch (IOException e) {
-            updateListener.handleConnectionReset();
-            throw new IOException();
+        if (this.objectOutputStream == null) {
+            this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         }
 
+        objectOutputStream.writeObject(Server.PING_MSG);
+        objectOutputStream.flush();
     }
 
     /**
