@@ -1,6 +1,9 @@
 package it.polimi.ingsw.network.client;
 
+import it.polimi.ingsw.network.server.Server;
+
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.concurrent.ScheduledExecutorService;
 
 
@@ -17,7 +20,7 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class PingSender implements Runnable {
 
-    private final Client client;
+    private final ObjectOutputStream objectOutputStream;
     private final ScheduledExecutorService scheduler;
 
 
@@ -25,11 +28,11 @@ public class PingSender implements Runnable {
      * The constructor creates a PingSender object; ping messages are scheduled to be sent on a
      * given stream (from client to server) at specific times.
      *
-     * @param client    the client used to send ping messages
-     * @param scheduler contains time and settings for ping message sending
+     * @param objectOutputStream stream where ping messages must be sent
+     * @param scheduler          contains time and settings for ping message sending
      */
-    PingSender(Client client, ScheduledExecutorService scheduler) {
-        this.client = client;
+    PingSender(ObjectOutputStream objectOutputStream, ScheduledExecutorService scheduler) {
+        this.objectOutputStream = objectOutputStream;
         this.scheduler = scheduler;
     }
 
@@ -39,7 +42,11 @@ public class PingSender implements Runnable {
     @Override
     public void run() {
         try {
-            this.client.sendPing();
+
+            synchronized (this.objectOutputStream) {
+                this.objectOutputStream.writeObject(Server.PING_MSG);
+            }
+
         } catch (IOException e) {
             scheduler.shutdown();
         }

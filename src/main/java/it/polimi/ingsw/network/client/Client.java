@@ -2,7 +2,6 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.controller.commands.Command;
 import it.polimi.ingsw.network.CustomThreadPoolExecutor;
-import it.polimi.ingsw.network.server.Server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -98,7 +97,7 @@ public class Client {
         this.updateListener = new UpdateListener(socket);
         executor.execute(updateListener);
         this.pongScheduler = Executors.newScheduledThreadPool(1);
-        pongScheduler.scheduleAtFixedRate(new PingSender(this, this.pongScheduler), 0, PONG_SCHEDULE_TIME_MS, TimeUnit.MILLISECONDS);
+        pongScheduler.scheduleAtFixedRate(new PingSender(this.objectOutputStream, this.pongScheduler), 0, PONG_SCHEDULE_TIME_MS, TimeUnit.MILLISECONDS);
     }
 
 
@@ -146,7 +145,7 @@ public class Client {
      *
      * @param command the command to send to server, through socket
      */
-    public synchronized void sendCommand(Command command) {
+    public void sendCommand(Command command) {
 
         try {
 
@@ -154,25 +153,19 @@ public class Client {
                 this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             }
 
-            objectOutputStream.writeObject(command);
-            objectOutputStream.flush();
+
+            synchronized (this.objectOutputStream) {
+
+                objectOutputStream.writeObject(command);
+                objectOutputStream.flush();
+
+            }
 
         } catch (IOException e) {
             updateListener.handleConnectionReset();
         }
     }
 
-    /**
-     * Method used to send ping messages to server. It's Synchronized to avoid conflicts with sendCommand method.
-     */
-    synchronized void sendPing() throws IOException {
-
-        if (this.objectOutputStream != null) {
-            objectOutputStream.writeObject(Server.PING_MSG);
-            objectOutputStream.flush();
-        }
-
-    }
 
     /**
      * This method is the getter for UpdateListener of Client Class; UpdateListener is Client's
